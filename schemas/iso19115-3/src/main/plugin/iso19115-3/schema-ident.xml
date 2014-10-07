@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://geonetwork-opensource.org/schemas/schema-ident"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://geonetwork-opensource.org/schemas/schema-ident http://geonetwork-opensource.org/schemas/schema-ident/schema-ident.xsd">
+  <name>iso19115-3</name>
+  <!--<url>http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798</url>-->
+  <id>73928c1f-6b15-422e-8209-1fb9ee96aa62</id>
+  <version>1.0</version>
+  <schemaLocation>http://www.isotc211.org/namespace/mds/1.0/2014-07-11 http://www.isotc211.org/namespace/mds/1.0/mds.xsd http://www.isotc211.org/namespace/dqm/1.0/2014-07-11 http://geonetwork-opensource.org/schemas/ISO_19157_Schemas/dqm.xsd</schemaLocation>
+  <autodetect xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
+              xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11">
+    <elements type="root">
+      <mdb:MD_Metadata/>
+      <cit:CI_Responsibility/>
+      <!-- TODO: Add subtemplate roots -->
+    </elements>
+  </autodetect>
+</schema>

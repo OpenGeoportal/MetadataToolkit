@@ -490,7 +490,11 @@
       <artifactId>schema-dublin-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.geonetwork-opensource</groupId>
+      <artifactId>schema-iso19115-3</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   
@@ -580,6 +584,10 @@
                 </resource>
                 <resource>
                   <directory>${project.basedir}/../schemas/fgdc-std/src/main/plugin</directory>
+                  <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins</targetPath>
+                </resource>
+                <resource>
+                  <directory>${project.basedir}/../schemas/iso19115-3/src/main/plugin</directory>
                   <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins</targetPath>
                 </resource>
               </resources>

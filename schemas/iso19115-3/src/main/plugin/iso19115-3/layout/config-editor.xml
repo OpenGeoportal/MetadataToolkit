@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../config-editor.xsd"
+  xmlns:gn="http://www.fao.org/geonetwork"
+  xmlns:srv="http://www.isotc211.org/namespace/srv/2.0/2014-07-11"
+  xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
+  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
+  xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
+  xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-07-11"
+  xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
+  xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
+  xmlns:msr="http://www.isotc211.org/namespace/msr/1.0/2014-07-11"
+  xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
+  xmlns:gcx="http://www.isotc211.org/namespace/gcx/1.0/2014-07-11"
+  xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
+  xmlns:dqm="http://www.isotc211.org/namespace/dqm/1.0/2014-07-11"
+  xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
+  xmlns:gco="http://www.isotc211.org/2005/gco"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <!-- Form field type configuration. Default is text. -->
+  <fields>
+    <for name="mri:abstract" use="textarea"/>
+    <for name="gmd:checkPointDescription" use="textarea"/>
+    <for name="mrl:credit" use="textarea"/>
+    <for name="mrd:description" use="textarea"/>
+    <for name="gmd:evaluationMethodDescription" use="textarea"/>
+    <for name="gmd:explanation" use="textarea"/>
+    <for name="gmd:handlingDescription" use="textarea"/>
+    <for name="gmd:maintenanceNote" use="textarea"/>
+    <for name="gmd:measureDescription" use="textarea"/>
+    <for name="gmd:purpose" use="textarea"/>
+    <for name="gmd:orderingInstructions" use="textarea"/>
+    <for name="gmd:otherConstraints" use="textarea"/>
+    <for name="mrl:statement" use="textarea"/>
+    <for name="mrl:supplementalInformation" use="textarea"/>
+    <for name="gmd:specificUsage" use="textarea"/>
+    <for name="gmd:userNote" use="textarea"/>
+    <for name="mco:useLimitation" use="textarea"/>
+
+
+    <for name="gco:Distance" use="number"/>
+    <for name="gco:Decimal" use="number"/>
+    <for name="gco:Integer" use="number"/>
+    <for name="gco:Boolean" use="checkbox"/>
+
+
+    <for name="gco:Date" use="data-gn-date-picker"/>
+    <for name="gco:DateTime" use="data-gn-date-picker"/>
+
+
+
+    <!-- gmx:FileName/@src attribute -->
+    <for name="src" use="data-gn-logo-selector"/>
+
+    <for name="gmd:electronicMailAddress" use="email"/>
+
+    <for name="lan:language" use="data-gn-language-picker"/>
+    <for name="lan:languageCode" use="data-gn-language-picker"/>
+
+    <for name="lan:country" use="data-gn-country-picker"/>
+    <for name="cit:country" use="data-gn-country-picker"/>
+
+    <for name="mdb:referenceSystemInfo" addDirective="data-gn-crs-selector"/>
+
+    <for name="mdb:contact" addDirective="data-gn-directory-entry-selector">
+      <directiveAttributes data-tag-name="cit:CI_Responsibility" data-param-name="cit:role/cit:CI_RoleCode/@codeListValue"/>
+    </for>
+    <for name="mri:pointOfContact" addDirective="data-gn-directory-entry-selector">
+      <directiveAttributes data-tag-name="cit:CI_Responsibility" data-param-name="cit:role/cit:CI_RoleCode/@codeListValue"/>
+    </for>
+    <for name="mrd:distributor" addDirective="data-gn-directory-entry-selector">
+      <directiveAttributes data-tag-name="cit:CI_Responsibility" data-param-name="cit:role/cit:CI_RoleCode/@codeListValue"/>
+    </for>
+    <for name="gmd:processor" addDirective="data-gn-directory-entry-selector">
+      <directiveAttributes data-tag-name="cit:CI_Responsibility" data-param-name="cit:role/cit:CI_RoleCode/@codeListValue"/>
+    </for>
+    <for name="cit:citedResponsibleParty" addDirective="data-gn-directory-entry-selector">
+      <directiveAttributes data-tag-name="cit:CI_Responsibility" data-param-name="cit:role/cit:CI_RoleCode/@codeListValue"/>
+    </for>
+    
+    <for name="gmd:descriptiveKeywords" addDirective="data-gn-thesaurus-selector"/>
+  </fields>
+
+
+  <fieldsWithFieldset>
+    <name>mcc:MD_Identifier</name>
+    <name>mdb:metadataScope</name>
+    <name>mdb:dateInfo</name>
+    <name>mdb:alternativeMetadataReference</name>
+    <name>mdb:metadataLinkage</name>
+    <name>mdb:identificationInfo</name>
+    <name>mdb:distributionInfo</name>
+    <name>mri:descriptiveKeywords</name>
+    <name>mri:thesaurusName</name>
+    <name>mdb:spatialRepresentationInfo</name>
+    <name>mri:pointOfContact</name>
+    <name>mdb:dataQualityInfo</name>
+    <name>mdb:resourceLineage</name>
+    <name>cit:citedResponsibleParty</name>
+    <name>cit:party</name>
+    <name>cit:individual</name>
+    <name>cit:logo</name>
+    <name>mrd:onLine</name>
+    <name>mdb:referenceSystemInfo</name>
+    <name>mri:equivalentScale</name>
+    <name>mri:graphicOverview</name>
+    <name>msr:projection</name>
+    <name>mdb:extent</name>
+    <name>cit:extent</name>
+    <name>gex:geographicBox</name>
+    <name>gex:EX_TemporalExtent</name>
+    <name>mrd:MD_Distributor</name>
+    <name>srv:containsOperations</name>
+    <name>srv:SV_CoupledResource</name>
+    <name>mdb:metadataConstraints</name>
+    <name>mri:associatedResource</name>
+  </fieldsWithFieldset>
+
+  <multilingualFields>
+    <!-- In multilingual mode, define which mode
+    the widget should have. If expanded, then one
+    field per language is displayed. -->
+    <expanded>
+      <name>cit:title</name>
+      <name>cit:abstract</name>
+    </expanded>
+    <!-- All fields in ISO could be multilingual.
+    Define element to exlcude. 
+    TODO: it may be relevant to have parent defined
+    to restrict the list.
+    -->
+    <exclude>
+      <!-- TODO: Update list -->
+      <name>gmd:identifier</name>
+      <name>gmd:metadataStandardName</name>
+      <name>gmd:metadataStandardVersion</name>
+      <name>gmd:hierarchyLevelName</name>
+      <name>gmd:dataSetURI</name>
+      <name>gmd:postalCode</name>
+      <name>gmd:city</name>
+      <name>gmd:administrativeArea</name>
+      <name>gmd:voice</name>
+      <name>gmd:facsimile</name>
+      <name>gmd:dataset</name>
+      <name>gmd:other</name>
+      <name>gmd:hoursOfService</name>
+      <name>gmd:applicationProfile</name>
+      <name>gmd:page</name>
+      <name>gmd:date</name>
+      <name>gmd:fileName</name>
+      <name>gmd:protocol</name>
+      <name>gmd:fileType</name>
+      <name>gmd:unitsOfDistribution</name>
+      <name>gmd:amendmentNumber</name>
+      <name>gmd:specification</name>
+      <name>gmd:fileDecompressionTechnique</name>
+      <name>gmd:turnaround</name>
+      <name>gmd:fees</name>
+      <name>gmd:userDeterminedLimitations</name>
+      <name>gmd:codeSpace</name>
+      <name>gmd:version</name>
+      <name>gmd:edition</name>
+      <name>gmd:ISBN</name>
+      <name>gmd:ISSN</name>
+      <name>gmd:errorStatistic</name>
+      <name>gmd:schemaAscii</name>
+      <name>gmd:softwareDevelopmentFileFormat</name>
+      <name>gmd:shortName</name>
+      <name>gmd:condition</name>
+      <name>gmd:maximumOccurence</name>
+      <name>gmd:domainValue</name>
+      <name>gmd:densityUnits</name>
+      <name>gmd:descriptor</name>
+      <name>gmd:denominator</name>
+      <name>gmd:classificationSystem</name>
+      <name>gmd:checkPointDescription</name>
+      <name>gmd:transformationDimensionDescription</name>
+      <name>gmd:orientationParameterDescription</name>
+      <name>srv:name</name>
+      <name>srv:invocationName</name>
+      <name>srv:serviceTypeVersion</name>
+      <name>srv:operationName</name>
+      <name>srv:identifier</name>
+    </exclude>
+  </multilingualFields>
+
+
+  <!-- View configuration -->
+  <views>
+    <view name="tufts-standard">
+
+      <tab id="tufts-standard2" default="true" mode="flat">
+        <section name="tufts-identificationinfo">
+          <!-- Metadata title -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+
+          <!-- Presentation form -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" or="presentationForm"
+                 in="/cit:CI_Citation"/>
+
+          <!-- Metadata originator -->
+          <section name="metadataOriginator">
+            <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
+                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                   del=".">
+              <template>
+                <values>
+                  <key label="organisationName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
+                  <key label="individualName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+                  <!--<key label="electronicMailAddress"
+                       xpath="gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
+                       use="email"/>
+                  <key label="role"
+                       xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
+                    <codelist name="gmd:CI_RoleCode"/>
+                  </key>-->
+                </values>
+                <snippet>
+                  <cit:citedResponsibleParty>
+                    <cit:CI_Responsibility>
+                      <cit:role>
+                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator">originator</cit:CI_RoleCode>
+                      </cit:role>
+                      <cit:party>
+                        <cit:CI_Organisation>
+                          <cit:name>
+                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
+                          </cit:name>
+                          <gn:copy select="cit:contactInfo"/>
+                          <cit:individual>
+                            <cit:CI_Individual>
+                              <cit:name>
+                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                              </cit:name>
+                            </cit:CI_Individual>
+                          </cit:individual>
+                        </cit:CI_Organisation>
+                      </cit:party>
+                    </cit:CI_Responsibility>
+                  </cit:citedResponsibleParty>
+                </snippet>
+              </template>
+            </field>
+
+            <action type="add" name="metadataOriginator"
+                    addDirective="data-gn-directory-entry-selector" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+
+          </section>
+
+          <!-- Publication date -->
+          <field name="publicationDate" templateModeOnly="true"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/
+              cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']"
+                 if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification) > 0">
+            <template>
+              <values>
+                <key label="date"
+                     xpath="cit:CI_Date/cit:date/*"
+                     use="gn-date-picker"
+                     tooltip="cit:date||/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date/cit:date"/>
+              </values>
+              <snippet>
+                <cit:date>
+                  <cit:CI_Date>
+                    <cit:date>{{date}}</cit:date>
+                    <cit:dateType>
+                      <cit:CI_DateTypeCode
+                          codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode"
+                          codeListValue="publication"/>
+                    </cit:dateType>
+                  </cit:CI_Date>
+                </cit:date>
+              </snippet>
+            </template>
+          </field>
+
+          <!-- Metadata abstract -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
+
+          <!-- Temporal extent -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
+
+          <action type="add"
+                  name="temporalElement" or="temporalElement"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
+            <template>
+              <snippet>
+                <gex:temporalElement>
+                  <gex:EX_TemporalExtent>
+                    <gex:extent>
+                      <gml:TimePeriod>
+                        <gml:beginPosition/>
+                        <gml:endPosition/>
+                      </gml:TimePeriod>
+                    </gex:extent>
+                  </gex:EX_TemporalExtent>
+                </gex:temporalElement>
+              </snippet>
+            </template>
+          </action>
+
+          <!-- Geographic extent -->
+          <field
+              xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/
+              mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+
+          <!-- Descriptive keywords -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"/>
+
+          <!-- TODO: Check why can't be removed  topic category -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
+
+          <action type="add"
+                  name="topicCategory" or="topicCategory"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+                <mri:topicCategory>
+                  <mri:MD_TopicCategoryCode></mri:MD_TopicCategoryCode>
+                </mri:topicCategory>
+              </snippet>
+            </template>
+          </action>
+
+          <!-- TODO: Language -->
+          <!--<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/gmd:language"/>-->
+
+          <!-- Access constraints -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:accessConstraints"/>
+
+          <action type="add"
+                  name="accessConstraints" or="accessConstraints"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints">
+            <template>
+              <snippet>
+                <mco:accessConstraints>
+                  <mco:MD_RestrictionCode codeListValue=""
+                                          codeList="http://www.isotc211.org/namespace/resources/codeList.xml#MD_RestrictionCode"/>
+                </mco:accessConstraints>
+              </snippet>
+            </template>
+          </action>
+
+          <!-- Use constraints -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:useConstraints"/>
+
+          <action type="add"
+                  name="useConstraints" or="useConstraints"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints">
+            <template>
+              <snippet>
+                <mco:useConstraints>
+                  <mco:MD_RestrictionCode codeListValue=""
+                                          codeList="http://www.isotc211.org/namespace/resources/codeList.xml#MD_RestrictionCode"/>
+                </mco:useConstraints>
+              </snippet>
+            </template>
+          </action>
+
+
+          <!-- Spatial resolution -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution"/>
+
+          <!-- TODO: Point of contact -->
+          <!--<field xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact"/>-->
+        </section>
+
+        <section name="tufts-metadata">
+          <!-- TODO: Template in layout-custom-fields.xsl not invoked with this, the field is editable -->
+          <!--<field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code"/>-->
+          <!-- TODO: This works, but shows codespace field also -->
+          <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
+
+          <field xpath="/mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='revision']/cit:date"/>
+
+          <!-- Metadata standard name -->
+          <!-- or/in is required to allow to add the element if doesn't exists in the template -->
+          <field xpath="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation/cit:title" or="title"
+                 in="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation"/>
+
+          <!-- Metadata standard version -->
+          <field xpath="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation/cit:edition" or="edition"
+                 in="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation"/>
+
+          <!-- Hierarchy level -->
+          <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope" or="resourceScope"
+                 in="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope"/>
+
+          <!-- Metadata language -->
+          <field xpath="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language" or="language" in="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale"/>
+
+          <!-- Metadata contact -->
+          <section name="metadataContact">
+            <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"
+                   xpath="/mdb:MD_Metadata/mdb:contact"
+                   del=".">
+              <template>
+                <values>
+                  <key label="organisationName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
+                  <key label="individualName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+                  <!--<key label="electronicMailAddress"
+                       xpath="gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
+                       use="email"/>
+                  <key label="role"
+                       xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
+                    <codelist name="gmd:CI_RoleCode"/>
+                  </key>-->
+                </values>
+                <snippet>
+                  <mdb:contact>
+                    <cit:CI_Responsibility>
+                      <cit:role>
+                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</cit:CI_RoleCode>
+                      </cit:role>
+                      <cit:party>
+                        <cit:CI_Organisation>
+                          <cit:name>
+                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
+                          </cit:name>
+                          <gn:copy select="cit:contactInfo"/>
+                          <cit:individual>
+                            <cit:CI_Individual>
+                              <cit:name>
+                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                              </cit:name>
+                            </cit:CI_Individual>
+                          </cit:individual>
+                        </cit:CI_Organisation>
+                      </cit:party>
+                    </cit:CI_Responsibility>
+                  </mdb:contact>
+                </snippet>
+              </template>
+            </field>
+
+            <action type="add" name="metadataContact"
+                    addDirective="data-gn-directory-entry-selector" or="contact" in="/mdb:MD_Metadata"/>
+
+          </section>
+        </section>
+      </tab>
+
+      <!-- Elements that should not use the "flat" mode -->
+      <flatModeExceptions>
+        <for name="gmd:descriptiveKeywords" />
+      </flatModeExceptions>
+    </view>
+
+    <view name="tufts-minimal">
+
+      <tab id="tufts-minimal2" default="true" mode="flat">
+
+        <section name="tufts-identificationinfo">
+          <!-- Metadata title -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+
+          <!-- Publication date -->
+          <field name="publicationDate" templateModeOnly="true"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/
+              cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']"
+                 if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification) > 0">
+            <template>
+              <values>
+                <key label="date"
+                     xpath="cit:CI_Date/cit:date/*"
+                     use="gn-date-picker"
+                     tooltip="cit:date||/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date/cit:date"/>
+              </values>
+              <snippet>
+                <cit:date>
+                  <cit:CI_Date>
+                    <cit:date>{{date}}</cit:date>
+                    <cit:dateType>
+                      <cit:CI_DateTypeCode
+                          codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode"
+                          codeListValue="publication"/>
+                    </cit:dateType>
+                  </cit:CI_Date>
+                </cit:date>
+              </snippet>
+            </template>
+          </field>
+
+          <section name="metadataOriginator">
+            <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
+                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                   del=".">
+              <template>
+                <values>
+                  <key label="organisationName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
+                  <key label="individualName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+                  <!--<key label="electronicMailAddress"
+                       xpath="gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
+                       use="email"/>
+                  <key label="role"
+                       xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
+                    <codelist name="gmd:CI_RoleCode"/>
+                  </key>-->
+                </values>
+                <snippet>
+                  <cit:citedResponsibleParty>
+                    <cit:CI_Responsibility>
+                      <cit:role>
+                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator">originator</cit:CI_RoleCode>
+                      </cit:role>
+                      <cit:party>
+                        <cit:CI_Organisation>
+                          <cit:name>
+                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
+                          </cit:name>
+                          <gn:copy select="cit:contactInfo"/>
+                          <cit:individual>
+                            <cit:CI_Individual>
+                              <cit:name>
+                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                              </cit:name>
+                            </cit:CI_Individual>
+                          </cit:individual>
+                        </cit:CI_Organisation>
+                      </cit:party>
+                    </cit:CI_Responsibility>
+                  </cit:citedResponsibleParty>
+                </snippet>
+              </template>
+            </field>
+
+            <action type="add" name="metadataOriginator"
+                    addDirective="data-gn-directory-entry-selector" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+
+          </section>
+
+          <!-- Metadata abstract -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
+
+          <!-- Temporal extent -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
+
+          <action type="add"
+                  name="temporalElement" or="temporalElement"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
+            <template>
+              <snippet>
+                <gex:temporalElement>
+                  <gex:EX_TemporalExtent>
+                    <gex:extent>
+                      <gml:TimePeriod>
+                        <gml:beginPosition/>
+                        <gml:endPosition/>
+                      </gml:TimePeriod>
+                    </gex:extent>
+                  </gex:EX_TemporalExtent>
+                </gex:temporalElement>
+              </snippet>
+            </template>
+          </action>
+
+          <!-- Geographic extent -->
+          <field
+              xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/
+              mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+
+
+        </section>
+
+
+        <section name="tufts-metadata">
+          <!-- TODO: Template in layout-custom-fields.xsl not invoked with this, the field is editable -->
+          <!--<field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code"/>-->
+          <!-- TODO: This works, but shows codespace field also -->
+          <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
+
+          <field xpath="/mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='revision']/cit:date"/>
+        </section>
+      </tab>
+
+      <!-- Elements that should not use the "flat" mode -->
+      <flatModeExceptions>
+        <for name="gmd:descriptiveKeywords" />
+      </flatModeExceptions>
+    </view>
+
+
+    <view name="default">
+      <tab id="default" default="true" mode="flat">
+        <section xpath="/mdb:MD_Metadata/mdb:identificationInfo"/>
+        <section xpath="/mdb:MD_Metadata/mdb:distributionInfo"/>
+        <section xpath="/mdb:MD_Metadata/mdb:dataQualityInfo"/>
+        <section name="mdb:MD_Metadata">
+          <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
+          <field xpath="/mdb:MD_Metadata/mdb:defaultLocale" or="defaultLocale"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:otherLocale" or="otherLocale"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:contact" or="contact" in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:parentMetadata" or="parentMetadata"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataScope" or="metadataScope"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:alternativeMetadataReference" or="alternativeMetadataReference"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataLinkage" or="metadataLinkage"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:dateInfo"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataStandard"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataProfile"/>
+        </section>
+      </tab>
+    </view>
+    <view name="advanced">
+      <tab id="identificationInfo" default="true">
+        <section xpath="/mdb:MD_Metadata/mdb:identificationInfo" or="identificationInfo"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="distributionInfo">
+        <section xpath="/mdb:MD_Metadata/mdb:distributionInfo" or="distributionInfo"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <!--
+      mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions
+      -->
+      <tab id="dataQualityInfo">
+        <section xpath="/mdb:MD_Metadata/mdb:dataQualityInfo" or="dataQualityInfo"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="resourceLineage">
+        <section xpath="/mdb:MD_Metadata/mdb:resourceLineage" or="resourceLineage"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="spatialRepresentationInfo">
+        <section xpath="/mdb:MD_Metadata/mdb:spatialRepresentationInfo"
+                 or="spatialRepresentationInfo" in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="referenceSystemInfo">
+        <section xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo" or="referenceSystemInfo"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="contentInfo" toggle="true">
+        <section xpath="/mdb:MD_Metadata/mdb:contentInfo" or="contentInfo" in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="portrayalCatalogueInfo" toggle="true">
+        <section xpath="/mdb:MD_Metadata/mdb:portrayalCatalogueInfo" or="portrayalCatalogueInfo"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="metadata">
+        <section name="mdb:MD_Metadata">
+          <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
+          <field xpath="/mdb:MD_Metadata/mdb:defaultLocale" or="defaultLocale"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:otherLocale" or="otherLocale"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:contact" or="contact" in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:parentMetadata" or="parentMetadata"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataScope" or="metadataScope"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:alternativeMetadataReference" or="alternativeMetadataReference"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataLinkage" or="metadataLinkage"
+                 in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:dateInfo"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataStandard"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataProfile"/>
+        </section>
+      </tab>
+      <tab id="metadataConstraints" toggle="true">
+        <section xpath="/mdb:MD_Metadata/mdb:metadataConstraints" or="metadataConstraints"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="metadataMaintenance" toggle="true">
+        <section xpath="/mdb:MD_Metadata/mdb:metadataMaintenance" or="metadataMaintenance"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <tab id="applicationSchemaInfo" toggle="true">
+        <section xpath="/mdb:MD_Metadata/mdb:applicationSchemaInfo" or="applicationSchemaInfo"
+                 in="/mdb:MD_Metadata"/>
+      </tab>
+      <!-- mdb:metadataExtensionInfo-->
+    </view>
+    <view name="xml">
+      <tab id="xml" default="true"/>
+    </view>
+  </views>
+</editor>
