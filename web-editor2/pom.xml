@@ -14,8 +14,8 @@
   <!-- =========================================================== -->
   <artifactId>web-editor2-app</artifactId>
   <packaging>war</packaging>
-  <name>GeoNetwork Web editor module</name>
-  <description> GeoNetwork web editor module description (TODO). </description>
+  <name>GeoNetwork Metadata Editor Web module</name>
+  <description> GeoNetwork metadata editor web module description (TODO). </description>
 
   <licenses>
     <license>
@@ -295,16 +295,18 @@
       <artifactId>cachingxslt</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>oaipmh</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency> <!-- dummy API for ARC SDE stuff -->
+    </dependency> -->
+
+    <!-- dummy API for ARC SDE stuff -->
+    <!-- <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>dummy-api</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency> -->
 
       <dependency>
           <groupId>${project.groupId}</groupId>
@@ -318,17 +320,17 @@
           <version>${project.version}</version>
       </dependency>
 
-      <dependency>
+      <!-- <dependency>
           <groupId>${project.groupId}</groupId>
           <artifactId>harvesters</artifactId>
           <version>${project.version}</version>
-      </dependency>
+      </dependency> -->
 
-      <dependency>
+      <!-- <dependency>
           <groupId>${project.groupId}</groupId>
           <artifactId>health-monitor</artifactId>
           <version>${project.version}</version>
-      </dependency>
+      </dependency> -->
 
       <!-- Handled locally by a temporarly repository -->
     <dependency>
@@ -339,7 +341,7 @@
       <groupId>lizard</groupId>
       <artifactId>lizard-tiff</artifactId>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>jzkit</groupId>
       <artifactId>jzkit-core</artifactId>
       <version>3.r260.geonetwork.patch.1</version>
@@ -358,7 +360,7 @@
       <groupId>jzkit</groupId>
       <artifactId>jzkit-z3950-plugin</artifactId>
       <version>3.r260.geonetwork.patch.1</version>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>jakarta</groupId>
       <artifactId>jakarta-slide-webdavlib</artifactId>
@@ -628,9 +630,9 @@
               </includes>
               <targetPath>WEB-INF/data/config/schema_plugins</targetPath>
             </resource>
-            <resource>
+            <!-- <resource>
               <directory>${project.basedir}/../web-client/src/main/resources</directory>
-            </resource>
+            </resource> -->
             <resource>
                   <directory>${project.basedir}/../web-ui/src/main/resources</directory>
             </resource>
@@ -713,11 +715,11 @@
             <contextPath>/geonetwork</contextPath>
             <descriptor>${project.build.directory}/WEB-INF/web.xml</descriptor>
             <baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
-            <resourcesAsCSV>
-              ${project.basedir}/src/main/webapp,
-              ${rootProjectDir}/web-ui/src/main/resources/,
-              ${build.webapp.resources},
-              ${rootProjectDir}/web-client/src/main/resources/</resourcesAsCSV>
+              <resourcesAsCSV>
+                ${project.basedir}/src/main/webapp,
+                ${rootProjectDir}/web-ui/src/main/resources/,
+                ${build.webapp.resources}
+              </resourcesAsCSV>
             </baseResource>
           </webApp>
           <systemProperties>
@@ -799,7 +801,7 @@
         <env>inspire</env>
       </properties>
     </profile>
-    <profile>
+    <!--<profile>
       <id>widgets</id>
       <properties>
         <web.xml.widget.config.overrides>/WEB-INF/config-overrides-widget.xml</web.xml.widget.config.overrides>
@@ -816,8 +818,8 @@
 		<properties>
 			<web.xml.widget.config.overrides>/WEB-INF/config-overrides-html5ui.xml</web.xml.widget.config.overrides>
 		</properties>
-    </profile>
-
+    </profile>-->
+    
   </profiles>
 
   <properties>
