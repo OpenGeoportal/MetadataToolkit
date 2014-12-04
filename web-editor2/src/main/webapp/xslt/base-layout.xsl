@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
   The main entry point for all user interface generated
-  from XSLT. 
+  from XSLT.
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -37,7 +37,7 @@
       </head>
 
 
-      <!-- The GnCatController takes care of 
+      <!-- The GnCatController takes care of
       loading site information, check user login state
       and a facet search to get main site information.
       -->
@@ -53,9 +53,8 @@
           <xsl:otherwise>
             <!-- AngularJS application -->
             <div data-ng-cloak="" class="ng-cloak">
-              <div class="navbar navbar-default gn-top-bar"
-                   data-ng-hide="layout.hideTopToolBar"
-                   data-ng-include="'{$uiResourcesPath}templates/top-toolbar.html'"></div>
+              <div class="navbar navbar-default" 
+                data-ng-include="'{$uiResourcesPath}templates/top-toolbar-editor.html'"> </div>
 
               <xsl:apply-templates mode="content" select="."/>
 
