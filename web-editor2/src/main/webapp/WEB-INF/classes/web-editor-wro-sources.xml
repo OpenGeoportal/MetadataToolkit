@@ -1,10 +1,42 @@
 <sources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../web-editor2/src/main/webResources/WEB-INF/wro-sources.xsd" >
-  <require pathOnDisk="web-ui/src/main/resources" >
+  <!-- <require pathOnDisk="web-ui/src/main/resources" >
     <jsSource webappPath="catalog/js" />
     <jsSource webappPath="catalog/components" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
     <cssSource webappPath="catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+  </require> -->
+
+  <require pathOnDisk="web-ui/src/main/resources">
+    <jsSource webappPath="catalog/js/edit" />
+    <!-- Moved the files under catalog/js to catalog/js/other, except
+    catalog/js/GnAdminModule.js to catalog/js/admin2/GnAdminModule.js,
+    not required in this app and catalog/js/GnModule.js to
+    catalog/js/gn/GnModule.js-->
+    <jsSource webappPath="catalog/js/other" />
+    <jsSource webappPath="catalog/js/search" />
+    <jsSource webappPath="catalog/js/gn" />
+
+    <!-- Moved to catalog/components/utility, jsSource doesn't accept file
+    names and if added catalog/components all is added -->
+    <!--<jsSource webappPath="catalog/components/UrlUtilsService.js" />-->
+    <jsSource webappPath="catalog/components/admin/importxsl" />
+    <!-- Moved catalog/components/admin/BatchService.js to catalog/components/admin/batch/BatchService.js  -->
+    <jsSource webappPath="catalog/components/admin/batch" />
+    <jsSource webappPath="catalog/components/catalog" />
+    <jsSource webappPath="catalog/components/category" />
+    <jsSource webappPath="catalog/components/common" />
+    <jsSource webappPath="catalog/components/contactus" />
+    <jsSource webappPath="catalog/components/edit" />
+    <jsSource webappPath="catalog/components/metadatamanager" />
+    <jsSource webappPath="catalog/components/search" />
+    <jsSource webappPath="catalog/components/thesaurus" />
+    <jsSource webappPath="catalog/components/utility" />
+    <jsSource webappPath="catalog/components/vcs" />
+
+    <cssSource webappPath="catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
   </require>
+
+
   <declarative name="lib" pathOnDisk="web-ui/src/main/resources">
     <jsSource webappPath="catalog/lib/modernizr.js"/>
     <jsSource webappPath="catalog/lib/jquery-2.0.3.min.js"/>
