@@ -62,6 +62,8 @@
     "errors": "erreurs",
     "featureCatalog": "Catalogue d'attributs",
     "file": "Fichier",
+    "fromFile": "à partir de fichier XML",
+    "fromFileText": "Ouvrir (fichier XML existant)",
     "fileType": "Type de fichier",
     "fromTemplate": "à partir de ",
     "generateUUID": "Générer un nouvel identifiant pour les métadonnées insérées",

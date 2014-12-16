@@ -149,6 +149,20 @@
         $scope.activeTpl = tpl;
       };
 
+      $scope.setFromFile = function(fromFile) {
+        $scope.fromFile = fromFile;
+      };
+
+      $scope.useTemplate = function(tpl) {
+        $scope.setFromFile(null);
+        $scope.setActiveTpl(tpl);
+      };
+
+      $scope.useFile = function(file) {
+        $scope.setActiveTpl(null);
+        $scope.setFromFile(file)
+      };
+
 
       if ($routeParams.childOf) {
         $scope.title = $translate('createChildOf');

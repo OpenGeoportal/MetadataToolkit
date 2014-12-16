@@ -63,6 +63,7 @@
     "featureCatalog": "Catálogo de Funcionalidades",
     "file": "Fichero",
     "fileType": "Tipo de fichero",
+    "fromFile": "De un archivo  XML",
     "fromTemplate": "De ",
     "generateUUID": "Generar UUID para el metadata insertado",
     "geopublisher": "Publicar como WMS, WFS, WCS",

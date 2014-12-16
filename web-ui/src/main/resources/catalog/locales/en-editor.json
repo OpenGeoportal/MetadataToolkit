@@ -63,6 +63,8 @@
     "featureCatalog": "Feature catalog",
     "file": "File",
     "fileType": "Type of file",
+    "fromFile": "From XML file",
+    "fromFileText": "Open (existing XML record)",
     "fromTemplate": "From ",
     "generateUUID": "Generate UUID for inserted metadata",
     "geopublisher": "Publish as WMS, WFS, WCS",
