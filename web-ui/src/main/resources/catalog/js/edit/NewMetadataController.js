@@ -23,6 +23,10 @@
       $scope.hasTemplates = true;
       $scope.mdList = null;
 
+      // Default group is Guest (-1)
+      $scope.ownerGroup = -1;
+
+
       // A map of icon to use for each types
       var icons = {
         featureCatalog: 'fa-table',

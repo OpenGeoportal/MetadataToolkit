@@ -1,7 +1,7 @@
 <div class="container" id="gn-new-metadata-container">
   <h2 data-translate="">{{title}}</h2>
 
-  <div class="alert alert-warning" data-ng-hide="hasTemplates" 
+  <div class="alert alert-warning" data-ng-hide="hasTemplates"
     data-translate="">noTemplatesAvailable</div>
 
   <div class="progress progress-striped active"
@@ -44,6 +44,8 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-sm-3">
       <!-- From file -->
       <div class="panel-default panel">
         <div class="panel-heading">
@@ -55,19 +57,8 @@
             <a href="" class="list-group-item"
                data-ng-click="useFile('xmlFile')"
                data-ng-class="{'active': 'xmlFile' == fromFile }"
-               >{{ 'fromFileText' | translate}}</a>
+                    >{{ 'fromFileText' | translate}}</a>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-3" data-ng-show="groups && groups.length > 1">
-      <div class="panel-default panel">
-        <div class="panel-heading"><span data-translate="">inGroup</span>
-          <strong>{{(ownerGroup.label[lang] || '...') | translate}}</strong>
-        </div>
-        <div class="panel-body">
-          <div data-groups-combo="" data-owner-group="ownerGroup" lang="lang"
-               data-groups="groups" data-profile="Editor"/>
         </div>
       </div>
     </div>
