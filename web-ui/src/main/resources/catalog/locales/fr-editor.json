@@ -96,6 +96,7 @@
     "mefFile": "MEF",
     "metadataNotFound": "Attention ! La fiche avec l'identifiant {{id}} n'a pas été trouvée. <a href='#/create'>En créer une nouvelle ?</a>",
     "metadataType": "Type de fiche",
+    "newBlankRecord": "Nouveau fiche vierge",
     "noLayersForThumbnail": "Aucune couche WMS définie dans la fiche pour générer un aperçu",
     "noTemplatesAvailable": "Attention ! Il n'y a aucun modèle de saisie dans ce catalogue. Vous devriez en ajouter ou <a href='admin.console#/metadata'>en importer</a>.",
     "none": "Aucune",

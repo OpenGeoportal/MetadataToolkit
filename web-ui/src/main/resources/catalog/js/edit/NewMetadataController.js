@@ -6,6 +6,14 @@
   var module = angular.module('gn_new_metadata_controller',
       ['gn_catalog_service']);
 
+
+  /**
+   * Constants
+   */
+   module.constant('TEMPLATES', {
+    'BLANK_TEMPLATE_NAME': 'Blank Template'
+   });
+
   /**
    * Controller to create new metadata record.
    */
@@ -13,15 +21,16 @@
     '$scope', '$routeParams', '$http', '$rootScope', '$translate', '$compile',
     'gnSearchManagerService',
     'gnUtilityService',
-    'gnMetadataManager',
+    'gnMetadataManager', 'TEMPLATES',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
             gnSearchManagerService, 
             gnUtilityService,
-            gnMetadataManager) {
+            gnMetadataManager, TEMPLATES) {
 
       $scope.isTemplate = false;
       $scope.hasTemplates = true;
       $scope.mdList = null;
+      $scope.blankTemplate = null;
 
       // Default group is Guest (-1)
       $scope.ownerGroup = -1;
@@ -116,6 +125,14 @@
         }
       };
 
+      $scope.isBlankTemplate = function(tpl) {
+        if (tpl && tpl.defaultTitle && tpl.defaultTitle === TEMPLATES.BLANK_TEMPLATE_NAME) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
       /**
        * Get all the templates for a given type.
        * Will put this list into $scope.tpls variable.
@@ -123,13 +140,19 @@
       $scope.getTemplateNamesByType = function(type) {
         var tpls = [];
         for (var i = 0; i < $scope.mdList.metadata.length; i++) {
-          var mdType = $scope.mdList.metadata[i].type || unknownType;
-          if (mdType instanceof Array) {
-            if (mdType.indexOf(type) >= 0) {
-              tpls.push($scope.mdList.metadata[i]);
+          var currentTpl = $scope.mdList.metadata[i];
+          var mdType = currentTpl.type || unknownType;
+          if ($scope.isBlankTemplate(currentTpl)) {
+            // Do not add blank template to tpls list. Instead save it in an independent variable.
+            $scope.blankTemplate = currentTpl;
+          } else {
+            if (mdType instanceof Array) {
+              if (mdType.indexOf(type) >= 0 ) {
+                tpls.push(currentTpl);
+              }
+            } else if (mdType == type) {
+              tpls.push(currentTpl);
             }
-          } else if (mdType == type) {
-            tpls.push($scope.mdList.metadata[i]);
           }
         }
 
@@ -157,6 +180,10 @@
         $scope.fromFile = fromFile;
       };
 
+      $scope.setBlankRecord = function() {
+        $scope.activeTpl = $scope.blankTemplate;
+      }
+
       $scope.useTemplate = function(tpl) {
         $scope.setFromFile(null);
         $scope.setActiveTpl(tpl);
@@ -166,6 +193,11 @@
         $scope.setActiveTpl(null);
         $scope.setFromFile(file)
       };
+
+      $scope.useBlankTemplate = function() {
+        $scope.setFromFile(null);
+        $scope.setBlankRecord();
+      }
 
 
       if ($routeParams.childOf) {

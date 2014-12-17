@@ -46,11 +46,26 @@
       </div>
     </div>
     <div class="col-sm-3">
+      <!-- Blank record -->
+      <div class="panel-default panel">
+        <div class="panel-heading">
+          <span data-translate="">newBlankRecord</span> ...
+        </div>
+        <div class="panel-body">
+          <div class="list-group">
+            <a href="" class="list-group-item"
+               data-ng-click="useBlankTemplate()"
+               data-ng-class="{'active': blankTemplate !== null && activeTpl === blankTemplate,
+                  'disabled': blankTemplate === null}">
+              {{ 'newBlankRecord' | translate}}
+            </a>
+          </div>
+        </div>
+      </div>
       <!-- From file -->
       <div class="panel-default panel">
         <div class="panel-heading">
-          <span data-translate="">fromFile</span>
-          <strong>{{(activeTpl.title || '...') | translate}}</strong>
+          <span data-translate="">fromFile</span> ...
         </div>
         <div class="panel-body">
           <div class="list-group">

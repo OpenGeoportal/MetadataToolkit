@@ -95,6 +95,7 @@
     "mefFile": "MEF",
     "metadataNotFound": "¡Aviso! El metadato solicitado con id {{id}} no se ha encontrado. <a href='#/create'>¿Crear uno nuevo?</a>",
     "metadataType": "Tipo de metadato",
+    "newBlankRecord": "Nuevo registro en blanco",
     "noLayersForThumbnail": "No se ha definido una capa en el registro para generar la miniatura",
     "noTemplatesAvailable": "¡Aviso! No hay plantillas disponibles en el catálogo. Deberías añadir o <a href='admin.console#/metadata'>importar</a> alguna.",
     "none": "Ninguno",
