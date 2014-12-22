@@ -210,13 +210,13 @@
 
       $scope.createNewMetadata = function(isPublic) {
         if ($scope.activeTpl) {
-        gnMetadataManager.create(
-            $scope.activeTpl['geonet:info'].id,
-            $scope.ownerGroup,
-            isPublic || false,
-            $scope.isTemplate,
-            $routeParams.childOf ? true : false
-        );
+         gnMetadataManager.create(
+              $scope.activeTpl['geonet:info'].id,
+              $scope.ownerGroup,
+              isPublic || false,
+              $scope.isTemplate,
+              $routeParams.childOf ? true : false
+          );
         } else if($scope.fromFile) {
           console.debug("Console");
 

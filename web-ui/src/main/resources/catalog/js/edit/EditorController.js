@@ -34,6 +34,7 @@
   goog.require('gn_fields');
   goog.require('gn_import_controller');
   goog.require('gn_new_metadata_controller');
+  goog.require('gn_new_metadata_from_file_controller');
   goog.require('gn_scroll_spy');
   goog.require('gn_share');
   goog.require('gn_thesaurus');
@@ -41,6 +42,7 @@
 
   var module = angular.module('gn_editor_controller',
       ['gn_fields', 'gn_new_metadata_controller',
+       'gn_new_metadata_from_file_controller',
        'gn_import_controller',
        'gn_editorboard_controller', 'gn_share',
        'gn_directory_controller', 'gn_utility_directive',
@@ -74,6 +76,9 @@
           when('/create/from/:id/in/:group/template/:template', {
             templateUrl: tplFolder + 'editor.html',
             controller: 'GnNewMetadataController'}).
+          when('/create/fromFile', {
+            templateUrl : tplFolder + "upload-form.html",
+            controller: 'GnNewMetadataFromFileController'}).
           when('/directory', {
             templateUrl: tplFolder + 'directory.html',
             controller: 'GnDirectoryController'}).
