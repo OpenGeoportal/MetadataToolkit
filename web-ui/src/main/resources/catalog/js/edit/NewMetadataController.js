@@ -21,11 +21,11 @@
     '$scope', '$routeParams', '$http', '$rootScope', '$translate', '$compile',
     'gnSearchManagerService',
     'gnUtilityService',
-    'gnMetadataManager', 'TEMPLATES',
+    'gnMetadataManager', '$location','TEMPLATES',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
             gnSearchManagerService, 
             gnUtilityService,
-            gnMetadataManager, TEMPLATES) {
+            gnMetadataManager, $location, TEMPLATES) {
 
       $scope.isTemplate = false;
       $scope.hasTemplates = true;
@@ -218,7 +218,7 @@
               $routeParams.childOf ? true : false
           );
         } else if($scope.fromFile) {
-          console.debug("Console");
+          $location.path('/create/fromFile');
 
         }
       };

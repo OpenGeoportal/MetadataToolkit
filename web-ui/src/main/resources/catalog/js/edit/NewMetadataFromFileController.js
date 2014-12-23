@@ -20,6 +20,8 @@
                   error: data.jqXHR.responseJSON,
                   timeout: 0,
                   type: 'danger'});
+        console.error("Error uploading XML register: " + e);
+        console.error("Data: " + data);
     };
 
     $scope.xmlRecordUploadOptions = {
