@@ -3,6 +3,7 @@
 
   goog.require('gn_catalog_service');
 
+
   var module = angular.module('gn_new_metadata_controller',
       ['gn_catalog_service']);
 
@@ -11,7 +12,8 @@
    * Constants
    */
    module.constant('TEMPLATES', {
-    'BLANK_TEMPLATE_NAME': 'Blank Template'
+    'BLANK_TEMPLATE_NAME': 'Blank Template',
+    'EDITOR_PROFILE': 'Editor'
    });
 
   /**
@@ -21,11 +23,13 @@
     '$scope', '$routeParams', '$http', '$rootScope', '$translate', '$compile',
     'gnSearchManagerService',
     'gnUtilityService',
-    'gnMetadataManager', '$location','TEMPLATES',
+    'gnMetadataManager', '$location', 'gnGroupService',
+    '$filter', 'TEMPLATES',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
             gnSearchManagerService, 
             gnUtilityService,
-            gnMetadataManager, $location, TEMPLATES) {
+            gnMetadataManager, $location, gnGroupService,
+            $filter, TEMPLATES) {
 
       $scope.isTemplate = false;
       $scope.hasTemplates = true;
@@ -34,6 +38,7 @@
 
       // Default group is Guest (-1)
       $scope.ownerGroup = -1;
+
 
 
       // A map of icon to use for each types
