@@ -26,7 +26,14 @@
                         <span id="gn-file-name"  data-ng-show="fileName != null">{{fileName}}</span>
                     </div>
                 </div>
-                <div class="col-sm-offset-2 fade" data-ng-class="{in: active()}">
+                <div data-ng-show="errorText" class="alert alert-danger col-sm-offset-2" role="alert">
+                    <p>
+                        <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>&nbsp;<span data-translate="">uploadXmlError</span>
+                    </p>
+                    <span class="sr-only">Error:</span>
+                    <span>{{errorText}}</span>
+                </div>
+                <div class="col-sm-offset-2 fade" data-ng-class="{in: active()}" data-ng-show="uploading">
                     <!-- The global progress bar -->
                     <div class="progress progress-striped active" data-file-upload-progress="progress()"
                          data-file-upload-done="">
@@ -34,6 +41,7 @@
                     </div>
                     <div class="progress-extended">&nbsp;</div>
                 </div>
+
                 <p class="col-sm-offset-2 help-block" data-translate="">uploadXmlHelp</p>
 
             </form>
@@ -46,4 +54,6 @@
             </div>
         </div>
     </div>
+
+    <div data-ng-include="'../../catalog/templates/info.html'"></div>
 </div>

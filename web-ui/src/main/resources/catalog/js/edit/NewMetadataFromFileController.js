@@ -55,20 +55,31 @@
         $scope.metadataId = mdId;
     };
 
-    var uploadXmlRecordError = function(e, data) {
-        $rootScope.$broadcast('StatusUpdated', {
+    var uploadXmlRecordError = function(evt, data) {
+       /* $rootScope.$broadcast('StatusUpdated', {
                   title: $translate('xmlRecordUploadError'),
                   error: data.jqXHR.responseJSON,
                   timeout: 0,
-                  type: 'danger'});
-        console.error("Error uploading XML register: " + e);
-        console.error("Data: " + data);
+                  type: 'danger'});*/
+        $scope.errorText = data.response().jqXHR.responseText;
+    };
+
+    var uploadXmlStart = function(evt, data) {
+        $scope.errorText = false;
+        $scope.uploading = true;
+    };
+
+    /* Callback for completed (success, abort or error) upload requests. */
+    var uploadXmlAlways = function(event, data) {
+        $scope.uploading = false;
     };
 
     $scope.xmlRecordUploadOptions = {
         autoUpload: true,
+        send: uploadXmlStart,
         done: uploadXmlRecordDone,
-        fail: uploadXmlRecordError
+        fail: uploadXmlRecordError,
+        always: uploadXmlAlways
     };
 
     $scope.fileNameChanged = function(fileElement) {
