@@ -16,7 +16,6 @@ input[type=text], input[type=number], select {
   padding-top: 7px;
 }
 
-
 .gn-drawmap-panel {
   table .form-group {
     width: 150px;
@@ -62,7 +61,7 @@ input[type=text], input[type=number], select {
 
 
 .gn-editor-container {
-  padding: 10px;
+  padding: 20px 5px 20px 20px;
   margin-top: 45px;
 }
 
@@ -86,7 +85,7 @@ form.gn-editor {
    */
   fieldset > div.form-group.gn-field,
   fieldset > div.row.gn-field {
-    border-top: 1px solid #EEE;
+//    border-top: 1px solid #EEE;
 //    padding-left:  (@grid-gutter-width / 2);
     padding-top: 5px;
   }
@@ -108,9 +107,39 @@ form.gn-editor {
   fieldset fieldset {
     padding-left: @editor-fieldset-padding-left;
   }
+    /** Max start
+    */
+    fieldset {
+        padding: 5px;
+        border: 1px solid #ebebeb;
+        border-radius: 3px;
+    }
+    .gn-field {
+        border-radius: 3px;
+        margin: 0px;
+        padding: 5px;
+    }
+    .field-bg {
+        background-color: #f7f7f7;
+    }
+    .gn-move {
+        border: none;
+    }
+    legend {
+        border: none;
+    }
+    i.btn.fa-times.text-danger {
+        visibility: hidden;
+        padding: 5px;
+    }
+    .show {
+        visibility: visible;
+    } 
+    /** Max end
+    */
   
   .form-group {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
   }
   
   legend {
@@ -141,15 +170,29 @@ form.gn-editor {
   }
   
   .control-label {
-    color: #858585;
+    color: #999999;
+      font-weight: 200;
+      padding-top: 0px;
+      line-height: 1em;
   }
   
   .gn-required > label {
-    color: #333333;
+    //color: #333333;
   }
-  
+  .gn-required > label:after {
+    content: "*";
+    font-size: 2.5em;
+    margin: 7px 0 0 7px;
+      position: absolute;
+      color: #a94442;
+      font-weight: normal;
+}
+.form-horizontal .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
   .gn-move {
-    .pull-right();
+    //.pull-right();
   }
   
   legend > div.gn-move {
@@ -311,7 +354,7 @@ ul.nav ~ fieldset fieldset {
   /*margin-bottom: 20px;*/
 }
 ul.nav ~ fieldset fieldset fieldset > legend {
-  color: green;
+  //color: green;
   padding-left: 10px;
   font-size: 16px;
 }
