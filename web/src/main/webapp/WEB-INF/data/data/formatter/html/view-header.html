@@ -1,0 +1,75 @@
+<div class="container gn-metadata-view">
+    <script type="application/javascript" fmt-if="isHTML">
+        //<![CDATA[
+        document.title="{{pageTitle}}";
+        var headEl = $("head");
+        var iconLink = headEl.children("link[rel='shortcut icon']");
+        if (iconLink.length > 0) {
+            iconLink.attr("href", "{{logo}}");
+        } else {
+            headEl.append("<link rel='shortcut icon' type='image/x-icon' href='{{logo}}'></link>");
+        }
+        //]]>
+    </script>
+    <h1>
+        <img fmt-if="logo" class="logo" src="{{logo}}"></img>
+        <i fmt-if="!logo" class="fa fa-arrow-circle-down"></i>
+        <span class="title">{{title}}</span>
+        <div fmt-include="html/drop-down-list.html" class="pull-right" />
+    </h1>
+    <ul fmt-if="!isPDF" class="view-outline nav nav-pills">
+        <li fmt-if="addOverviewNavItem"><a href="" rel=".overview" fmt-translate="">{{overview}}</a></li>
+        <li fmt-if="addCompleteNavItem"><a fmt-translate="" href="" rel=".container > .entry:not(.overview)">complete</a></li>
+        <li fmt-repeat="item in navBar" title="{{item.name}}"><a href="" rel="{{item.rel}}">{{item.abbrName}}</a></li>
+        <li fmt-if="showNavOverflow" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="" title="More information"><i class="fa fa-ellipsis-h"></i><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li fmt-repeat="item in navBarOverflow"><a href="" rel="{{item.rel}}" title="{{item.name}}">{{item.abbrName}}</a></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="entry overview">
+        <h3 class="view-header">
+            <button type="button" class="btn btn-default toggler">
+                <i class="fa fa-arrow-circle-down"></i>
+            </button>
+            <span fmt-translate="">overview</span>
+        </h3>
+
+        <div class="entry target">
+            <img fmt-if="{{thumbnail}}" class="thumbnail" src="{{thumbnail}}"></img>
+            <div fmt-if="abstract" class="entry abstract">
+                <h3>
+                    <button type="button" class="btn btn-default toggler">
+                        <i class="fa fa-arrow-circle-down"></i>
+                    </button>
+                    <span fmt-translate="">abstract</span>
+                </h3>
+
+                <dd class="target">
+                    {{abstract}}
+                </dd>
+            </div>
+            {{keywords}}
+            {{formats}}
+            {{extents}}
+
+            <div fmt-repeat="linkBlock in links" class="summary-links summary-links-{{linkBlock.name | escapeXmlAttrs}}" >
+                <h3>
+                    <button type="button" class="btn btn-default toggler">
+                        <i class="fa fa-arrow-circle-down"></i>
+                    </button>
+                    <span fmt-translate="">{{linkBlock.name | escapeXmlContent}}</span>
+                </h3>
+                <div class="row target" >
+                    <div fmt-repeat="link in linkBlock.links" class="row">
+                        <div fmt-translate="" class="link-block-title col-xs-12">{{link.type.name}}-link</div>
+                        <div fmt-repeat="link in link.links" class="col-xs-6 col-md-4"><a href="{{link.href | escapeXmlAttrs}}">{{link.text | escapeXmlContent}}</a></div>
+                    </div>
+                    <span fmt-if="linkBlock.html">{{linkBlock.html}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        {{content}}
+</div>

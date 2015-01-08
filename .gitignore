@@ -58,7 +58,10 @@ e2e-tests/node
 e2e-tests/node_modules
 web-ui-docs/node
 web-ui-docs/node_modules
+out/
 web/src/main/webapp/WEB-INF/data/config/schema_plugins/schemaplugin-uri-catalog.xml
+target/
+web/src/main/webapp/WEB-INF/data/data/upload/
 
 web-editor2/src/main/webapp/WEB-INF/data/config/schema_plugins/*/schematron/schematron*.xsl
 web-editor2/src/main/webapp/WEB-INF/data/config/schemaplugin-uri-catalog.xml
@@ -85,4 +88,4 @@ web-editor2/.springBeans
 web-editor2/src/main/webapp/WEB-INF/data/0*
 web-editor2/src/main/webapp/WEB-INF/data_*
 web-editor2/src/main/webapp/WEB-INF/data/config/schema_plugins/schemaplugin-uri-catalog.xml
-target/
+web/geonetwork.trace.db.old

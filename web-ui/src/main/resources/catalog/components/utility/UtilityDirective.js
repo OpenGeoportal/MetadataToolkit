@@ -75,11 +75,11 @@
           * Load list on init to fill the dropdown
           */
           gnRegionService.loadList().then(function(data) {
-            scope.region = data[0];
+            scope.regionType = data[0];
           });
 
-          scope.setRegion = function(region) {
-            scope.region = region;
+          scope.setRegion = function(regionType) {
+            scope.regionType = regionType;
           };
         }
       };
@@ -101,18 +101,19 @@
       return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-          if (attrs['gnRegion']) {
+
+          if (attrs['gnRegionType']) {
             gnRegionService.loadList().then(function(data) {
               for (i = 0; i < data.length; ++i) {
-                if (attrs['gnRegion'] == data[i].name) {
-                  scope.region = data[i];
+                if (attrs['gnRegionType'] == data[i].name) {
+                  scope.regionType = data[i];
                 }
               }
             });
           }
-          scope.$watch('region', function(val) {
-            if (scope.region) {
-              gnRegionService.loadRegion(scope.region, scope.lang).then(
+          scope.$watch('regionType', function(val) {
+            if (scope.regionType) {
+              gnRegionService.loadRegion(scope.regionType, scope.lang).then(
                   function(data) {
                     $(element).typeahead('destroy');
                     var source = new Bloodhound({
@@ -196,6 +197,39 @@
         }
       };
     }]);
+
+   module.directive('gnHumanizeTime', [
+    function () {
+      return {
+        restrict: 'A',
+        replace: true,
+        template: '<span title="{{title}}">{{value}}</span>',
+        scope: {
+          date: '@gnHumanizeTime',
+          format: '@',
+          fromNow: '@'
+        },
+        link: function linkFn(scope, element, attr) {
+          scope.$watch('date', function (originalDate) {
+            if (originalDate) {
+              // Moment will properly parse YYYY, YYYY-MM,
+              // YYYY-MM-DDTHH:mm:ssZ which are the formats
+              // used in the common metadata standards.
+              var date = moment(originalDate);
+              if (date.isValid()) {
+                var fromNow = date.fromNow();
+                var formattedDate = scope.format ?
+                  date.format(scope.format) :
+                  date.toString();
+                scope.value = scope.fromNow !== undefined ? fromNow : formattedDate;
+                scope.title = scope.fromNow  !== undefined ? formattedDate : fromNow;
+              }
+            }
+          });
+        }
+      };
+    }
+  ]);
 
   /**
    * @ngdoc directive
@@ -314,6 +348,99 @@
     };
   });
 
+  /**
+   * Use to initialize bootstrap datepicker
+   */
+  module.directive('gnBootstrapDatepicker', [
+    function() {
+
+      var getMaxInProp = function(obj) {
+        var year = {
+          min: 3000,
+          max: -1
+        };
+        var month = {
+          min: 12,
+          max: -1
+        };
+        var day = {
+          min: 32,
+          max: -1
+        };
+
+        for (var k in obj) {
+          if (k < year.min) year.min = k;
+          if (k > year.max) year.max = k;
+        }
+        for (k in obj[year.min]) {
+          if (k < month.min) month.min = k;
+        }
+        for (k in obj[year.max]) {
+          if (k > month.max) month.max = k;
+        }
+        for (k in obj[year.min][month.min]) {
+          if (obj[year.min][month.min][k] < day.min) day.min =
+                obj[year.min][month.min][k];
+        }
+        for (k in obj[year.max][month.max]) {
+          if (obj[year.min][month.min][k] > day.max) day.max =
+                obj[year.min][month.min][k];
+        }
+
+        return {
+          min: month.min + 1 + '/' + day.min + '/' + year.min,
+          max: month.max + 1 + '/' + day.max + '/' + year.max
+        };
+      };
+
+      return {
+        restrict: 'A',
+        scope: {
+          date: '=gnBootstrapDatepicker',
+          dates: '=dateAvailable'
+        },
+        link: function(scope, element, attrs, ngModelCtrl) {
+
+          var available = function(date) {
+            if (scope.dates[date.getFullYear()] &&
+                scope.dates[date.getFullYear()][date.getMonth()] &&
+                $.inArray(date.getDate(),
+                    scope.dates[date.getFullYear()][date.getMonth()]) != -1) {
+              return true;
+            } else {
+              return false;
+            }
+          };
+
+          var limits;
+          if (scope.dates) {
+            limits = getMaxInProp(scope.dates);
+
+          }
+
+          $(element).datepicker(angular.isDefined(scope.dates) ? {
+            beforeShowDay: function(dt, a, b) {
+              return available(dt);
+            },
+            startDate: limits.min,
+            endDate: limits.max
+          } : {}).on('changeDate', function(ev) {
+            // view -> model
+            scope.$apply(function() {
+              scope.date = $(element).find('input')[0].value;
+            });
+          });
+
+          // model -> view
+          scope.$watch('date', function(v) {
+            if (angular.isUndefined(v)) {
+              v = '';
+            }
+            $(element).find('input')[0].value = v;
+          });
+        }
+      };
+    }]);
 
   /**
    * @ngdoc directive
@@ -402,7 +529,7 @@
               // Function that returns the reduced items list,
               // to use in ng-repeat
               scope.$parent.pageItems = function() {
-                if (scope.items()) {
+                if (angular.isArray(scope.items())) {
                   var start = scope.paginator.currentPage *
                       scope.paginator.pageSize;
                   var limit = scope.paginator.pageSize;
@@ -416,4 +543,54 @@
         }
       };
     }]);
+
+  module.directive('ddTextCollapse', ['$compile', function($compile) {
+    return {
+      restrict: 'A',
+      scope: true,
+      link: function(scope, element, attrs) {
+        // start collapsed
+        scope.collapsed = false;
+        // create the function to toggle the collapse
+        scope.toggle = function() {
+          scope.collapsed = !scope.collapsed;
+        };
+        // wait for changes on the text
+        attrs.$observe('ddTextCollapseText', function(text) {
+          // get the length from the attributes
+          var maxLength = scope.$eval(attrs.ddTextCollapseMaxLength);
+          if (text.length > maxLength) {
+            // split the text in two parts, the first always showing
+            var firstPart = String(text).substring(0, maxLength);
+            var secondPart = String(text).substring(maxLength, text.length);
+            // create some new html elements to hold the separate info
+            var firstSpan = $compile('<span>' + firstPart + '</span>')(scope);
+            var secondSpan = $compile('<span ng-if="collapsed">' +
+                secondPart + '</span>')(scope);
+            var moreIndicatorSpan = $compile(
+                '<span ng-if="!collapsed">... </span>')(scope);
+            var lineBreak = $compile('<br ng-if="collapsed">')(scope);
+            var toggleButton = $compile(
+                '<span class="collapse-text-toggle" ng-click="toggle()">' +
+                '  <span ng-show="collapsed" translate>less</span>' +
+                '  <span ng-show="!collapsed" translate>more</span>' +
+                '</span>'
+                )(scope);
+            // remove the current contents of the element
+            // and add the new ones we created
+            element.empty();
+            element.append(firstSpan);
+            element.append(secondSpan);
+            element.append(moreIndicatorSpan);
+            element.append(lineBreak);
+            element.append(toggleButton);
+          }
+          else {
+            element.empty();
+            element.append(text);
+          }
+        });
+      }
+    };
+  }]);
 })();

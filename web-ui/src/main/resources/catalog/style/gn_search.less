@@ -1,14 +1,33 @@
-@import "gn.less";
+// GN Styles
+@import "../lib/style/font-awesome/less/font-awesome.less";
+@import "gn_bootstrap.less";
 
-.top-buffer { margin-top:30px; }
+@import "../lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.less";
+// import the css files as less files so they are included in the final output of wro4j
+@import (less) "../lib/bootstrap.ext/datepicker/datepicker.css";
+@import (less) "../lib/style/datetimepicker.css";
+
+@import "gn.less";
+@import "gn_viewer.less";
+
+@fa-version: '4.1.0';
+@fa-font-path: '../catalog/lib/style/font-awesome/fonts';
+
+@panel-heading-height: 3.8em;
+
 
 .gn-facet {
   .list-group-item {
-    border: none;
-    padding: 3px 15px;
+    border-width: 0;
+    border-radius: 0;
+    padding: .35em 15px;
+    border-top: 1px dotted lightgrey;
   }
   .list-group-item:hover {
     color: #428bca;
+  }
+  h4 {
+    padding-left: .8em;
   }
 }
 .gn-facet-breadcrumb {
@@ -16,6 +35,366 @@
   li > a:hover {
     color: darkred;
     text-decoration: line-through;
+  }
+}
+
+.gn-pager {
+  .pager {
+    margin: 0;
+    text-align: left;
+    display: inline-block;
+    li > a {
+      padding: 2px 5px;
+      border-radius: 6px;
+      font-size: 120%;
+    }
+    em {
+      font-style: normal;
+    }
+  }
+}
+
+.gn-select ul.dropdown-menu > li > a:first-letter,
+.gn-sort-by ul.dropdown-menu > li > a:first-letter {
+  text-transform: uppercase;
+}
+
+/* TODO: Deprecate due to change in gn-pager and gn-sort-by */
+[sortby-combo], [hitsperpage-combo] {
+  display: inline-block;
+  vertical-align: top;
+  select {
+    .input-sm;
+  }
+}
+
+.top-buffer {
+  margin-top: 2em;
+}
+
+[data-gn-facet-list] {
+  h4 {
+    font-size: 14px;
+  }
+}
+
+/* typeahead styles */
+.twitter-typeahead {
+  width: 100%;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999;
+  pointer-events: none;
+}
+
+.tt-dropdown-menu {
+  margin-top: 4px;
+  margin-left: -8px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  max-height: 350px;
+  overflow-y: auto;
+  width: inherit;
+}
+
+.tt-suggestion {
+  padding: 3px 10px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion p {
+  margin: 0;
+  margin-top:2px;
+  line-height: normal;
+
+}
+.tt-hint {
+  color: #999;
+  width: 100% !important;
+  border: none !important;
+}
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+  cursor: pointer;
+}
+.bootstrap-tagsinput .tt-input {
+  width: 100% !important;
+  border: none !important;
+}
+/** Enf of typeahead styles */
+.bootstrap-tagsinput {
+  width: 100%;
+  .tag-content {
+    display: inline-block;
+    max-width: 10em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.tagsinput-clear,
+.tagsinput-trigger {
+  position: absolute;
+  top: 4px;
+  right: 26px;
+}
+.tagsinput-trigger {
+  top: .575em;
+  right: 20px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+[gn-bootstrap-datepicker].input-group[class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.gn-searchform {
+  .backtonormal {
+    margin-bottom: -20px;
+  }
+  font-size: 90%;
+  label {
+    font-weight: normal;
+  }
+  input[type='text'], select {
+    .input-sm;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .bootstrap-tagsinput {
+    padding: 0;
+  }
+  .advanced .bootstrap-tagsinput {
+    margin-bottom: 0;
+  }
+  .tt-dropdown-menu {
+    left: 6px !important;
+    width: 100%;
+  }
+  legend {
+    font-size: 1em;
+    font-style: italic;
+    padding-top: .4em;
+    margin-bottom: 12px;
+  }
+  .bootstrap-tagsinput {
+    .label {
+      .label-primary;
+      font-size: 12px;
+      font-weight: normal;
+      margin: 2px;
+    }
+  }
+}
+
+[gn-selection-widget] {
+  display: inline-block;
+  position: relative;
+  .md-checkbox {
+    position: absolute;
+    z-index: 10;
+    top: 0.7em;
+    left: 0.9em;
+  }
+  .btn-group [type=checkbox] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+[ngeo-map] {
+  width: 100%;
+  height: 200px;
+}
+
+.collapse-text-toggle {
+  color: grey;
+}
+
+
+[search-results] {
+  h4 {
+    font-size: 15px;
+  }
+  .list-group {
+    margin-bottom: 0;
+  }
+  .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    &:first-of-type {
+      border-top-width: 0;
+    }
+    &:last-of-type {
+      border-bottom-width: 0;
+    }
+  }
+}
+
+.gn-resultview {
+  .gn-md-links {
+    background: rgba(0,0,0,.02);
+    line-height: 3em;
+    font-size: 90%;
+    margin: 0;
+    margin-left: 6em;
+    i {
+        .label;
+        .label-info;
+        font-weight: normal;
+        font-size: 14px;
+        margin-right: .5em;
+        padding: .3em .4em .3em .6em;
+    }
+    .dropdown-menu {
+      max-width: 500px;
+      li a {
+        padding-top: 1px;
+        padding-bottom: 1px;
+        line-height: normal;
+        .text-overflow();
+      }
+    }
 
   }
+  h4 {
+    font-size: 14px;
+  }
+  p {
+    font-size: .9em;
+  }
+  blockquote {
+    padding: 6px 20px;
+    margin:0;
+    font-size: 90%;
+    color: #666;
+  }
+  li:hover {
+    background: lighten(spin(@state-info-bg, -10), 7%);
+    cursor: pointer;
+    background-color:  #428bca;
+  }
+
+  .gn-md-edit-btn {
+    .btn();
+    .btn-primary();
+    .btn-circle();
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    margin: 2px;
+    z-index: 10;
+  }
+}
+
+[data-ng-search-form],
+[ng-search-form] {
+  .whidden,
+  [class*=col-md] {
+    transition: width ease .25s;
+    transition-property: width, margin;
+  }
+  .whidden {
+    width: 0;
+    overflow-x: hidden;
+  }
+
+  .filter {
+    .pull-right();
+    margin: .8em -.3em 0 .8em;
+  }
+
+  .panel-heading {
+    padding: 0 15px;
+    height: @panel-heading-height;
+    line-height: @panel-heading-height;
+    [sortby-combo], [hitsperpage-combo] {
+      vertical-align: middle;
+    }
+  }
+
+  [gn-map-field] {
+    border: 1px solid @btn-default-border;
+    border-radius: 3px;
+    position: relative;
+    [gn-draw-bbox-btn],
+    .btn-group-vertical {
+      position: absolute;
+      top: 4px;
+      z-index: 10;
+    }
+    .btn-group-vertical {
+      right: 4px;
+    }
+    [gn-draw-bbox-btn] {
+      left: 4px;
+    }
+  }
+
+}
+
+.dropdown-submenu {
+  position:relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top:0;
+  left:100%;
+  margin-top:-6px;
+  margin-left:-1px;
+  -webkit-border-radius:0 6px 6px 6px;
+  -moz-border-radius:0 6px 6px 6px;
+  border-radius:0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display:block;
+}
+.dropdown-submenu>a:after {
+  display:block;
+  content:" ";
+  float:right;
+  width:0;
+  height:0;
+  border-color:transparent;
+  border-style:solid;
+  border-width:5px 0 5px 5px;
+  border-left-color:#cccccc;
+  margin-top:5px;
+  margin-right:-10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color:#ffffff;
+}
+.dropdown-submenu.pull-left {
+  float:none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left:-100%;
+  margin-left:10px;
+  -webkit-border-radius:6px 0 6px 6px;
+  -moz-border-radius:6px 0 6px 6px;
+  border-radius:6px 0 6px 6px;
 }

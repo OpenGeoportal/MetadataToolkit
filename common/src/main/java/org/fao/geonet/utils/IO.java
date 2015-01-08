@@ -157,7 +157,7 @@ public final class IO {
             } else {
                 Files.walkFileTree(from, new CopyAcceptedFiles(from, actualTo, filter));
             }
-        } else {
+        } else if (Files.exists(from)) {
             if (filter == null || filter.accept(from)) {
                 final Path parent = actualTo.getParent();
                 if (parent != null && !Files.exists(parent)) {
@@ -180,11 +180,13 @@ public final class IO {
             actualTo = to;
         }
 
-        final Path parent = actualTo.getParent();
-        if (!Files.exists(parent)) {
-            Files.createDirectories(parent);
+        if (Files.exists(from)) {
+            final Path parent = actualTo.getParent();
+            if (!Files.exists(parent)) {
+                Files.createDirectories(parent);
+            }
+            Files.move(from, actualTo);
         }
-        Files.move(from, actualTo);
     }
     public static boolean isEmptyDir(Path dir) throws IOException {
         try (DirectoryStream<Path> children = Files.newDirectoryStream(dir)) {
@@ -194,23 +196,44 @@ public final class IO {
     }
 
     public static void deleteFileOrDirectory(Path path) throws IOException {
+        deleteFileOrDirectory(path, false);
+    }
+    public static void deleteFileOrDirectory(Path path, final boolean ignoreErrors) throws IOException {
         if (Files.isDirectory(path)) {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.delete(file);
+                    try {
+                        Files.delete(file);
+                    } catch (final Throwable t) {
+                        if (!ignoreErrors) {
+                            throw t;
+                        }
+                    }
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    Files.delete(dir);
+                    try {
+                        Files.delete(dir);
+                    } catch (final Throwable t) {
+                        if (!ignoreErrors) {
+                            throw t;
+                        }
+                    }
                     return FileVisitResult.CONTINUE;
                 }
 
             });
         } else if (Files.isRegularFile(path)) {
-            Files.delete(path);
+            try {
+                Files.delete(path);
+            } catch (final Throwable t) {
+                if (!ignoreErrors) {
+                    throw t;
+                }
+            }
         }
     }
     public static void touch(Path file) throws IOException{

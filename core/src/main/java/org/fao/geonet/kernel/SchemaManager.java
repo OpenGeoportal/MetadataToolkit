@@ -48,6 +48,8 @@ import org.fao.geonet.repository.SchematronCriteriaGroupRepository;
 import org.fao.geonet.repository.SchematronRepository;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
+import org.fao.geonet.utils.NioPathAwareCatalogResolver;
+import org.fao.geonet.utils.PrefixUrlRewrite;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Attribute;
 import org.jdom.Content;
@@ -143,6 +145,8 @@ public class SchemaManager {
         this.defaultSchema = schemaManager.defaultSchema;
         this.createOrUpdateSchemaCatalog = schemaManager.createOrUpdateSchemaCatalog;
 
+        addResolverRewriteDirectives(dataDir);
+
         this.hmSchemas.clear();
         this.hmSchemas.putAll(schemaManager.hmSchemas);
 
@@ -152,7 +156,13 @@ public class SchemaManager {
         numberOfCoreSchemasAdded = schemaManager.numberOfCoreSchemasAdded;
 
     }
-	/**
+
+    private void addResolverRewriteDirectives(GeonetworkDataDirectory dataDir) {
+        NioPathAwareCatalogResolver.addRewriteDirective(new PrefixUrlRewrite("sharedFormatterDir/",
+                dataDir.getFormatterDir().toAbsolutePath().toUri() + "/"));
+    }
+
+    /**
      * initialize and configure schema manager. should only be on startup.
 		*
 		* @param basePath the web app base path
@@ -175,6 +185,8 @@ public class SchemaManager {
         this.createOrUpdateSchemaCatalog = createOrUpdateSchemaCatalog;
 		
 		Element schemaPluginCatRoot = getSchemaPluginCatalogTemplate();
+
+        addResolverRewriteDirectives(applicationContext.getBean(GeonetworkDataDirectory.class));
 
 		// -- check the plugin directory and add any schemas already in there
         try (DirectoryStream<Path> saSchemas = Files.newDirectoryStream(this.schemaPluginsDir)) {
@@ -679,7 +691,7 @@ public class SchemaManager {
 
 		beforeRead();
 		try {
-			String schema = null;
+			String schema;
 
 			// -- check the autodetect elements for all schemas with the most
 			// -- specific test first, then in order of increasing generality, 
@@ -941,7 +953,7 @@ public class SchemaManager {
             if (Files.exists(filePath)) {
                 Element config = new Element("xml");
                 config.setAttribute("name", schemaName);
-                config.setAttribute("base", locBase.toString());
+                config.setAttribute("base", locBase.toUri().toString());
                 config.setAttribute("file", fname);
                 if (Log.isDebugEnabled(Geonet.SCHEMA_MANAGER))
                     Log.debug(Geonet.SCHEMA_MANAGER, "Adding XmlFile " + Xml.getString(config));
@@ -1517,9 +1529,9 @@ public class SchemaManager {
      * @throws org.fao.geonet.exceptions.SchemaMatchConflictException
  	 */
 	private String compareElementsAndAttributes(Element md, int mode) throws SchemaMatchConflictException {
-		String returnVal = null;	
+		String returnVal = null;
 		Set<String> allSchemas = getSchemas();
-		List<String> matches = new ArrayList<String>();
+		List<String> matches = new ArrayList<>();
 
         if(Log.isDebugEnabled(Geonet.SCHEMA_MANAGER))
             Log.debug(Geonet.SCHEMA_MANAGER, "Schema autodetection starting on "+md.getName()+" (Namespace: "+md.getNamespace()+") using mode: "+mode+"...");
@@ -1557,7 +1569,7 @@ public class SchemaManager {
 					}
 
 				// --- try and find the namespace in md 
-				} else if (mode==MODE_NAMESPACE && elem.getName() == "namespaces") {
+				} else if (mode==MODE_NAMESPACE && elem.getName().equals("namespaces")) {
 					@SuppressWarnings("unchecked")
                     List<Namespace> nss = elem.getAdditionalNamespaces();
 					for (Namespace ns : nss) {
@@ -1776,8 +1788,10 @@ public class SchemaManager {
         Files.createDirectories(schemasDir);
 
 		Path webAppDirSchemaXSD = schemasDir.resolve(name);
-		IO.deleteFileOrDirectory(webAppDirSchemaXSD);
-        Files.createDirectories(webAppDirSchemaXSD);
+		IO.deleteFileOrDirectory(webAppDirSchemaXSD, true);
+        if (!Files.exists(webAppDirSchemaXSD)) {
+            Files.createDirectories(webAppDirSchemaXSD);
+        }
 
 		// copy all XSDs from schema plugin dir to webapp schema dir
 

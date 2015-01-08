@@ -5,6 +5,12 @@
 
   var module = angular.module('gn_cat_controller', ['gn_search_manager']);
 
+
+  module.constant('gnGlobalSettings', {
+    proxyUrl: '../../proxy?url=',
+    locale: {}
+  });
+
   /**
    * The catalogue controller takes care of
    * loading site information, check user login state
@@ -17,9 +23,8 @@
   module.controller('GnCatController', [
     '$scope', '$http', '$q', '$rootScope', '$translate',
     'gnSearchManagerService', 'gnConfigService',
-    'gnMap',
     function($scope, $http, $q, $rootScope, $translate,
-            gnSearchManagerService, gnConfigService, gnMap) {
+            gnSearchManagerService, gnConfigService) {
       $scope.version = '0.0.1';
       // TODO : add language
       var tokens = location.href.split('/');
@@ -57,9 +62,16 @@
       $scope.authenticated = false;
       $scope.initialized = false;
 
+      /**
+       * Keep a reference on main cat scope
+       * @return {*}
+       */
+      $scope.getCatScope = function() {return $scope};
+
       gnConfigService.load().then(function(c) {
         // Config loaded
-        gnMap.importProj4js();
+        //gnMap.importProj4js();
+        // TODO: make map proj load in mapService.config instead of here
       });
 
       /**
@@ -84,7 +96,7 @@
         // Retrieve site information
         // TODO: Add INSPIRE, harvester, ... information
         var catInfo = promiseStart.then(function(value) {
-          url = $scope.url + 'info@json?type=site&type=auth';
+          url = $scope.url + 'info?_content_type=json&type=site&type=auth';
           return $http.get(url).
               success(function(data, status) {
                 $scope.info = data;
@@ -108,7 +120,7 @@
 
         // Retrieve user information if catalog is online
         var userLogin = catInfo.then(function(value) {
-          url = $scope.url + 'info@json?type=me';
+          url = $scope.url + 'info?_content_type=json&type=me';
           return $http.get(url).
               success(function(data, status) {
                 $scope.user = data.me;
@@ -130,7 +142,7 @@
 
         // Retrieve main search information
         var searchInfo = userLogin.then(function(value) {
-          url = 'qi@json?summaryOnly=true';
+          url = 'qi?_content_type=json&summaryOnly=true';
           return gnSearchManagerService.search(url).
               then(function(data) {
                 $scope.searchInfo = data;

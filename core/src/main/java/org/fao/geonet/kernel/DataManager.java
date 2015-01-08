@@ -27,6 +27,7 @@
 
 package org.fao.geonet.kernel;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -36,14 +37,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
-import jeeves.transaction.TransactionManager;
-import jeeves.transaction.TransactionTask;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+import jeeves.transaction.TransactionManager;
+import jeeves.transaction.TransactionTask;
 import jeeves.xlink.Processor;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.fao.geonet.GeonetContext;
+import org.fao.geonet.NodeInfo;
 import org.fao.geonet.constants.Edit;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Geonet.Namespaces;
@@ -118,6 +120,7 @@ import org.fao.geonet.repository.specification.OperationAllowedSpecs;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
 import org.fao.geonet.repository.specification.UserSpecs;
 import org.fao.geonet.repository.statistic.PathSpec;
+import org.fao.geonet.resources.Resources;
 import org.fao.geonet.util.ThreadUtils;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
@@ -139,6 +142,7 @@ import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,6 +159,7 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.CheckForNull;
@@ -424,6 +429,7 @@ public class DataManager {
             Log.debug(Geonet.INDEX_ENGINE, "Indexing " + metadataIds.size() + " records.");
             Log.debug(Geonet.INDEX_ENGINE, metadataIds.toString());
         }
+        AtomicInteger numIndexedTracker = new AtomicInteger();
         while(index < metadataIds.size()) {
             int start = index;
             int count = Math.min(perThread, metadataIds.size() - start);
@@ -440,9 +446,8 @@ public class DataManager {
             }
 
             // create threads to process this chunk of ids
-            Runnable worker = new IndexMetadataTask(context,
-                    subList,
-                    batchIndex, transactionStatus);
+            Runnable worker = new IndexMetadataTask(context, subList,
+                    batchIndex, transactionStatus, numIndexedTracker);
             executor.execute(worker);
             index += count;
         }
@@ -505,18 +510,18 @@ public class DataManager {
             if (xmlSerializer.resolveXLinks()) {
                 List<Attribute> xlinks = Processor.getXLinks(md);
                 if (xlinks.size() > 0) {
-                    moreFields.add(SearchManager.makeField("_hasxlinks", "1", true, true));
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.HASXLINKS, "1", true, true));
                     StringBuilder sb = new StringBuilder();
                     for (Attribute xlink : xlinks) {
                         sb.append(xlink.getValue()); sb.append(" ");
                     }
-                    moreFields.add(SearchManager.makeField("_xlink", sb.toString(), true, true));
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.XLINK, sb.toString(), true, true));
                     Processor.detachXLink(md, servContext);
                 } else {
-                    moreFields.add(SearchManager.makeField("_hasxlinks", "0", true, true));
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.HASXLINKS, "0", true, true));
                 }
             } else {
-                moreFields.add(SearchManager.makeField("_hasxlinks", "0", true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.HASXLINKS, "0", true, true));
             }
 
             final Metadata fullMd = _metadataRepository.findOne(id$);
@@ -531,7 +536,7 @@ public class DataManager {
             final String  extra       = fullMd.getDataInfo().getExtra();
             final String  isHarvested = String.valueOf(Constants.toYN_EnabledChar(fullMd.getHarvestInfo().isHarvested()));
             final String  owner      = String.valueOf(fullMd.getSourceInfo().getOwner());
-            final String  groupOwner = String.valueOf(fullMd.getSourceInfo().getGroupOwner());
+            final Integer groupOwner = fullMd.getSourceInfo().getGroupOwner();
             final String  popularity = String.valueOf(fullMd.getDataInfo().getPopularity());
             final String  rating     = String.valueOf(fullMd.getDataInfo().getRating());
             final String  displayOrder = fullMd.getDataInfo().getDisplayOrder() == null ? null : String.valueOf(fullMd.getDataInfo().getDisplayOrder());
@@ -541,35 +546,67 @@ public class DataManager {
                 Log.debug(Geonet.DATA_MANAGER, "record createDate (" + createDate + ")"); //DEBUG
             }
 
-            moreFields.add(SearchManager.makeField("_root",        root,        true, true));
-            moreFields.add(SearchManager.makeField("_schema",      schema,      true, true));
-            moreFields.add(SearchManager.makeField("_createDate",  createDate,  true, true));
-            moreFields.add(SearchManager.makeField("_changeDate",  changeDate,  true, true));
-            moreFields.add(SearchManager.makeField("_source",      source,      true, true));
-            moreFields.add(SearchManager.makeField("_isTemplate",  metadataType.codeString,  true, true));
-            moreFields.add(SearchManager.makeField("_uuid",        uuid,        true, true));
-            moreFields.add(SearchManager.makeField("_isHarvested", isHarvested, true, true));
-            moreFields.add(SearchManager.makeField("_owner",       owner,       true, true));
-            moreFields.add(SearchManager.makeField("_dummy",       "0",        false, true));
-            moreFields.add(SearchManager.makeField("_popularity",  popularity,  true, true));
-            moreFields.add(SearchManager.makeField("_rating",      rating,      true, true));
-            moreFields.add(SearchManager.makeField("_displayOrder",displayOrder, true, false));
-            moreFields.add(SearchManager.makeField("_extra",       extra,       true, false));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.ROOT,        root,        true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.SCHEMA,      schema,      true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.CREATE_DATE,  createDate,  true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.CHANGE_DATE,  changeDate,  true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.SOURCE,      source,      true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.IS_TEMPLATE,  metadataType.codeString,  true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.UUID,        uuid,        true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.IS_HARVESTED, isHarvested, true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.OWNER,       owner,       true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.DUMMY,       "0",        false, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.POPULARITY,  popularity,  true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.RATING,      rating,      true, true));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.DISPLAY_ORDER,displayOrder, true, false));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.EXTRA,       extra,       true, false));
 
             if (owner != null) {
                 User user = _applicationContext.getBean(UserRepository.class).findOne(fullMd.getSourceInfo().getOwner());
                 if (user != null) {
-                    moreFields.add(SearchManager.makeField("_userinfo", user.getUsername() + "|" + user.getSurname() + "|" + user
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.USERINFO, user.getUsername() + "|" + user.getSurname() + "|" + user
                             .getName() + "|" + user.getProfile(), true, false));
                 }
             }
+
+            OperationAllowedRepository operationAllowedRepository = _applicationContext.getBean(OperationAllowedRepository.class);
+            GroupRepository groupRepository = _applicationContext.getBean(GroupRepository.class);
+
+            String logoUUID = null;
             if (groupOwner != null) {
-                moreFields.add(SearchManager.makeField("_groupOwner", groupOwner, true, true));
+                final Group group = groupRepository.findOne(groupOwner);
+                if (group != null) {
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.GROUP_OWNER, String.valueOf(groupOwner), true, true));
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.GROUP_WEBSITE, group.getWebsite(), true, false));
+                    if (group.getLogo() != null) {
+                        logoUUID = group.getLogo();
+                    }
+                }
+            }
+            if (logoUUID == null) {
+                logoUUID = source;
+            }
+
+            if (logoUUID != null) {
+                final Path logosDir = Resources.locateLogosDir(servContext);
+                final String[] logosExt = {"png", "PNG", "gif", "GIF", "jpg", "JPG", "jpeg", "JPEG", "bmp", "BMP",
+                        "tif", "TIF", "tiff", "TIFF"};
+                boolean added = false;
+                for (String ext : logosExt) {
+                    final Path logoPath = logosDir.resolve(logoUUID + "." + ext);
+                    if (Files.exists(logoPath)) {
+                        added = true;
+                        moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.LOGO, "/images/logos/" + logoPath.getFileName(), true, false));
+                        break;
+                    }
+                }
+
+                if (!added) {
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.LOGO, "/images/logos/" + logoUUID + ".gif", true, false));
+                }
             }
 
             // get privileges
-            OperationAllowedRepository operationAllowedRepository = _applicationContext.getBean(OperationAllowedRepository.class);
-            GroupRepository groupRepository = _applicationContext.getBean(GroupRepository.class);
             List<OperationAllowed> operationsAllowed = operationAllowedRepository.findAllById_MetadataId(id$);
 
             for (OperationAllowed operationAllowed : operationsAllowed) {
@@ -577,17 +614,17 @@ public class DataManager {
                 int groupId = operationAllowedId.getGroupId();
                 int operationId = operationAllowedId.getOperationId();
 
-                moreFields.add(SearchManager.makeField("_op" + operationId, String.valueOf(groupId), true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.OP_PREFIX + operationId, String.valueOf(groupId), true, true));
                 if(operationId == ReservedOperation.view.getId()) {
                     Group g = groupRepository.findOne(groupId);
                     if (g != null) {
-                        moreFields.add(SearchManager.makeField("_groupPublished", g.getName(), true, true));
+                        moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.GROUP_PUBLISHED, g.getName(), true, true));
                     }
                 }
             }
 
             for (MetadataCategory category : fullMd.getCategories()) {
-                moreFields.add(SearchManager.makeField("_cat", category.getName(), true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.CAT, category.getName(), true, true));
             }
 
             final MetadataStatusRepository statusRepository = _applicationContext.getBean(MetadataStatusRepository.class);
@@ -598,9 +635,9 @@ public class DataManager {
             if (!statuses.isEmpty()) {
                 MetadataStatus stat = statuses.get(0);
                 String status = String.valueOf(stat.getId().getStatusId());
-                moreFields.add(SearchManager.makeField("_status", status, true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.STATUS, status, true, true));
                 String statusChangeDate = stat.getId().getChangeDate().getDateAndTime();
-                moreFields.add(SearchManager.makeField("_statusChangeDate", statusChangeDate, true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.STATUS_CHANGE_DATE, statusChangeDate, true, true));
             }
 
             // getValidationInfo
@@ -610,18 +647,18 @@ public class DataManager {
             MetadataValidationRepository metadataValidationRepository = _applicationContext.getBean(MetadataValidationRepository.class);
             List<MetadataValidation> validationInfo = metadataValidationRepository.findAllById_MetadataId(id$);
             if (validationInfo.isEmpty()) {
-                moreFields.add(SearchManager.makeField("_valid", "-1", true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.VALID, "-1", true, true));
             } else {
                 String isValid = "1";
                 for (MetadataValidation vi : validationInfo) {
                     String type = vi.getId().getValidationType();
                     MetadataValidationStatus status = vi.getStatus();
-                    if (status == MetadataValidationStatus.INVALID) {
+                    if (status == MetadataValidationStatus.INVALID && vi.isRequired()) {
                         isValid = "0";
                     }
-                    moreFields.add(SearchManager.makeField("_valid_" + type, status.getCode(), true, true));
+                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.VALID + "_" + type, status.getCode(), true, true));
                 }
-                moreFields.add(SearchManager.makeField("_valid", isValid, true, true));
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.VALID, isValid, true, true));
             }
             searchMan.index(schemaMan.getSchemaDir(schema), md, metadataId, moreFields, metadataType, root, forceRefreshReaders);
         } catch (Exception x) {
@@ -1391,8 +1428,7 @@ public class DataManager {
      */
     public void increasePopularity(ServiceContext srvContext, String id) throws Exception {
         // READONLYMODE
-        GeonetContext gc = (GeonetContext) srvContext.getHandlerContext(Geonet.CONTEXT_NAME);
-        if (!gc.isReadOnly()) {
+        if (!srvContext.getBean(NodeInfo.class).isReadOnly()) {
             // Update the popularity in database
             Integer iId = Integer.valueOf(id);
             _metadataRepository.update(iId, new Updater<Metadata>() {
@@ -1863,7 +1899,8 @@ public class DataManager {
      * @return
      */
     public boolean doValidate(String schema, String metadataId, Document doc, String lang) {
-        HashMap <String, Integer[]> valTypeAndStatus = new HashMap<>();
+        Integer intMetadataId = Integer.valueOf(metadataId);
+        List<MetadataValidation> validations = new ArrayList<>();
         boolean valid = true;
 
         if (doc.getDocType() != null) {
@@ -1874,17 +1911,25 @@ public class DataManager {
             // dtd is either mapped locally or will be cached after first validate)
             try {
                 Xml.validate(doc);
-                Integer[] results = {1, 0, 0};
-                valTypeAndStatus.put("dtd", results);
+                validations.add(new MetadataValidation().
+                        setId(new MetadataValidationId(intMetadataId, "dtd")).
+                        setStatus(MetadataValidationStatus.VALID).
+                        setRequired(true).
+                        setNumTests(1).
+                        setNumFailures(0));
                 if(Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
                     Log.debug(Geonet.DATA_MANAGER, "Valid.");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                Integer[] results = {0, 0, 0};
-                valTypeAndStatus.put("dtd", results);
+                validations.add(new MetadataValidation().
+                        setId(new MetadataValidationId(intMetadataId, "dtd")).
+                        setStatus(MetadataValidationStatus.INVALID).
+                        setRequired(true).
+                        setNumTests(1).
+                        setNumFailures(1));
+
                 if(Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
-                    Log.debug(Geonet.DATA_MANAGER, "Invalid.");
+                    Log.debug(Geonet.DATA_MANAGER, "Invalid.", e);
                 }
                 valid = false;
             }
@@ -1895,22 +1940,35 @@ public class DataManager {
             // do XSD validation
             Element md = doc.getRootElement();
             Element xsdErrors = getXSDXmlReport(schema, md);
+
+            int xsdErrorCount = 0;
             if (xsdErrors != null && xsdErrors.getContent().size() > 0) {
-                Integer[] results = {0, 0, 0};
-                valTypeAndStatus.put("xsd", results);
+                xsdErrorCount = xsdErrors.getContent().size();
+            }
+            if (xsdErrorCount > 0) {
+                validations.add(new MetadataValidation().
+                        setId(new MetadataValidationId(intMetadataId, "xsd")).
+                        setStatus(MetadataValidationStatus.INVALID).
+                        setRequired(true).
+                        setNumTests(xsdErrorCount).
+                        setNumFailures(xsdErrorCount));
                 if (Log.isDebugEnabled(Geonet.DATA_MANAGER))
                     Log.debug(Geonet.DATA_MANAGER, "Invalid.");
                 valid = false;
             } else {
-                Integer[] results = {1, 0, 0};
-                valTypeAndStatus.put("xsd", results);
+                validations.add(new MetadataValidation().
+                        setId(new MetadataValidationId(intMetadataId, "xsd")).
+                        setStatus(MetadataValidationStatus.VALID).
+                        setRequired(true).
+                        setNumTests(1).
+                        setNumFailures(0));
                 if (Log.isDebugEnabled(Geonet.DATA_MANAGER))
                     Log.debug(Geonet.DATA_MANAGER, "Valid.");
             }
             try {
                 editLib.enumerateTree(md);
                 //Apply custom schematron rules
-                Element errors = applyCustomSchematronRules(schema, Integer.parseInt(metadataId), doc.getRootElement(), lang, valTypeAndStatus);
+                Element errors = applyCustomSchematronRules(schema, Integer.parseInt(metadataId), doc.getRootElement(), lang, validations);
                 valid = valid && errors == null;
                 editLib.removeEditingInfo(md);
             } catch (Exception e) {
@@ -1922,7 +1980,7 @@ public class DataManager {
 
         // now save the validation status
         try {
-            saveValidationStatus(metadataId, valTypeAndStatus, new ISODate().toString());
+            saveValidationStatus(intMetadataId, validations);
         } catch (Exception e) {
             e.printStackTrace();
             Log.error(Geonet.DATA_MANAGER, "Could not save validation status on metadata "+metadataId+": "+e.getMessage());
@@ -1944,6 +2002,7 @@ public class DataManager {
      * @throws Exception
      */
     public Pair <Element, String> doValidate(UserSession session, String schema, String metadataId, Element md, String lang, boolean forEditing) throws Exception {
+        int intMetadataId = Integer.parseInt(metadataId);
         String version = null;
         if(Log.isDebugEnabled(Geonet.DATA_MANAGER))
             Log.debug(Geonet.DATA_MANAGER, "Creating validation report for record #" + metadataId + " [schema: " + schema + "].");
@@ -1956,23 +2015,36 @@ public class DataManager {
             return Pair.read(sessionReport, version);
         }
 
-        Map<String, Integer[]> valTypeAndStatus = new HashMap<String, Integer[]>();
+        List<MetadataValidation> validations = new ArrayList<>();
         Element errorReport = new Element("report", Edit.NAMESPACE);
         errorReport.setAttribute("id", metadataId, Edit.NAMESPACE);
 
         //-- get an XSD validation report and add results to the metadata
         //-- as geonet:xsderror attributes on the affected elements
         Element xsdErrors = getXSDXmlReport(schema, md);
-        if (xsdErrors != null && xsdErrors.getContent().size() > 0) {
+        int xsdErrorCount = 0;
+        if (xsdErrors != null) {
+            xsdErrorCount = xsdErrors.getContent().size();
+        }
+        if (xsdErrorCount > 0) {
             errorReport.addContent(xsdErrors);
-            Integer[] results = {0, 0, 0};
-            valTypeAndStatus.put("xsd", results);
+            validations.add(new MetadataValidation().
+                    setId(new MetadataValidationId(intMetadataId, "xsd")).
+                    setStatus(MetadataValidationStatus.INVALID).
+                    setRequired(true).
+                    setNumTests(xsdErrorCount).
+                    setNumFailures(xsdErrorCount));
+
             if (Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
                 Log.debug(Geonet.DATA_MANAGER, "  - XSD error: " + Xml.getString(xsdErrors));
             }
         } else {
-            Integer[] results = {1, 0, 0};
-            valTypeAndStatus.put("xsd", results);
+            validations.add(new MetadataValidation().
+                    setId(new MetadataValidationId(intMetadataId, "xsd")).
+                    setStatus(MetadataValidationStatus.VALID).
+                    setRequired(true).
+                    setNumTests(1).
+                    setNumFailures(0));
 
             if (Log.isTraceEnabled(Geonet.DATA_MANAGER)) {
                 Log.trace(Geonet.DATA_MANAGER, "Valid.");
@@ -1980,8 +2052,6 @@ public class DataManager {
         }
 
         // ...then schematrons
-        Element schematronError = null;
-
         // edit mode
         Element error = null;
         if (forEditing) {
@@ -1992,7 +2062,7 @@ public class DataManager {
             version = editLib.getVersionForEditing(schema, metadataId, md);
 
             //Apply custom schematron rules
-            error = applyCustomSchematronRules(schema, Integer.parseInt(metadataId), md, lang, valTypeAndStatus);
+            error = applyCustomSchematronRules(schema, Integer.parseInt(metadataId), md, lang, validations);
         } else {
             try {
                 // enumerate the metadata xml so that we can report any problems found
@@ -2000,7 +2070,7 @@ public class DataManager {
                 editLib.enumerateTree(md);
 
                 //Apply custom schematron rules
-                error = applyCustomSchematronRules(schema, Integer.parseInt(metadataId), md, lang, valTypeAndStatus);
+                error = applyCustomSchematronRules(schema, Integer.parseInt(metadataId), md, lang, validations);
 
                 // remove editing info added by enumerateTree
                 editLib.removeEditingInfo(md);
@@ -2017,10 +2087,9 @@ public class DataManager {
 
         // Save report in session (invalidate by next update) and db
         try {
-            saveValidationStatus(metadataId, valTypeAndStatus, new ISODate().toString());
+            saveValidationStatus(intMetadataId, validations);
         } catch (Exception e) {
-            e.printStackTrace();
-            Log.error(Geonet.DATA_MANAGER, "Could not save validation status on metadata " + metadataId + ": " + e.getMessage());
+            Log.error(Geonet.DATA_MANAGER, "Could not save validation status on metadata " + metadataId + ": " + e.getMessage(), e);
         }
 
         return Pair.read(errorReport, version);
@@ -2038,12 +2107,14 @@ public class DataManager {
      *
      * @param schema
      * @param metadataId
-     *@param md
+     * @param md
      * @param lang
-     * @param valTypeAndStatus    @return errors
+     * @param validations
+     *
+     * @return errors
      */
     public Element applyCustomSchematronRules(String schema, int metadataId, Element md,
-                                              String lang, Map<String, Integer[]> valTypeAndStatus) {
+                                              String lang, List<MetadataValidation> validations) {
         MetadataSchema metadataSchema = getSchema(schema);
         final Path schemaDir = this.schemaMan.getSchemaDir(schema);
 
@@ -2097,9 +2168,6 @@ public class DataManager {
                         Log.debug(Geonet.DATA_MANAGER, " - rule:" + rule);
                     }
 
-
-                    Integer ifNotValid = (requirement == SchematronRequirement.REQUIRED ? 0 : 2);
-
                     String ruleId = schematron.getRuleName();
 
                     Element report = new Element("report", Edit.NAMESPACE);
@@ -2135,9 +2203,15 @@ public class DataManager {
                                 i.next();
                                 invalidRules ++;
                             }
-                            Integer[] results = {invalidRules!=0?ifNotValid:1, firedRules, invalidRules};
-                            if (valTypeAndStatus != null) {
-                                valTypeAndStatus.put(ruleId, results);
+
+                            if (validations != null) {
+                                validations.add(new MetadataValidation().
+                                        setId(new MetadataValidationId(metadataId, ruleId)).
+                                        setStatus(invalidRules!=0 ? MetadataValidationStatus.INVALID : MetadataValidationStatus.VALID).
+                                        setRequired(requirement == SchematronRequirement.REQUIRED).
+                                        setNumTests(firedRules).
+                                        setNumFailures(invalidRules));
+
                             }
                         }
                     } catch (Exception e) {
@@ -2175,39 +2249,14 @@ public class DataManager {
      * Saves validation status information into the database for the current record.
      *
      * @param id   the metadata record internal identifier
-     * @param valTypeAndStatus  the validation type could be xsd or schematron rules set identifier
-     * @param date the validation date time
+     * @param validations  the validation reports for each type of validation and schematron validation
      */
-    private void saveValidationStatus (String id, Map<String, Integer[]> valTypeAndStatus, String date) throws Exception {
-        clearValidationStatus(id);
-
+    private void saveValidationStatus(int id, List<MetadataValidation> validations) throws Exception {
         final MetadataValidationRepository validationRepository = _applicationContext.getBean(MetadataValidationRepository.class);
-
-        for (Map.Entry<String, Integer[]> entry : valTypeAndStatus.entrySet()) {
-            String type = entry.getKey();
-            Integer[] results = entry.getValue();
-
-            MetadataValidation metadataValidation = new MetadataValidation()
-                .setStatus(MetadataValidationStatus.values()[results[0]])
-                .setTested(results[1])
-                .setFailed(results[2])
-                .setValidationDate(new ISODate(date));
-            MetadataValidationId validationId = new MetadataValidationId(Integer.valueOf(id), type);
-            metadataValidation.setId(validationId);
-            validationRepository.save(metadataValidation);
-        }
+        validationRepository.deleteAllById_MetadataId(id);
+        validationRepository.save(validations);
     }
 
-    /**
-     * Removes validation status information for a metadata record.
-     *
-     * @param id   the metadata record internal identifier
-     */
-    private void clearValidationStatus (String id) throws Exception {
-        final MetadataValidationRepository validationRepository = _applicationContext.getBean(MetadataValidationRepository.class);
-
-        validationRepository.deleteAllById_MetadataId(Integer.valueOf(id));
-    }
 
     //--------------------------------------------------------------------------
     //---
@@ -3183,12 +3232,13 @@ public class DataManager {
                 if (!vi.isValid()) {
                     isValid = "0";
                 }
-                String ratio = "xsd".equals(type) ? "" : vi.getFailed() + "/" + vi.getTested();
+
+                String ratio = "xsd".equals(type) ? "" : vi.getNumFailures() + "/" + vi.getNumTests();
 
                 info.addContent(new Element(Edit.Info.Elem.VALID + "_details").
                         addContent(new Element("type").setText(type)).
-                        addContent(new Element("status").setText(vi.isValid() ? "1" : "0")).
-                        addContent(new Element("ratio").setText(ratio))
+                        addContent(new Element("status").setText(vi.isValid() ? "1" : "0").
+                        addContent(new Element("ratio").setText(ratio)))
                 );
             }
             addElement(info, Edit.Info.Elem.VALID, isValid);
@@ -3218,7 +3268,8 @@ public class DataManager {
      * @param mdIdToInfoMap a map from the metadata Id -> the info element to which the privilege information should be added.
      * @throws Exception
      */
-    public void buildPrivilegesMetadataInfo(ServiceContext context, Map<String,Element> mdIdToInfoMap) throws Exception {
+    @VisibleForTesting
+    void buildPrivilegesMetadataInfo(ServiceContext context, Map<String,Element> mdIdToInfoMap) throws Exception {
         Collection<Integer> metadataIds = Collections2.transform(mdIdToInfoMap.keySet(), new Function<String, Integer>() {
             @Nullable
             @Override

@@ -36,7 +36,6 @@ import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.utils.IO;
 import org.springframework.security.access.AccessDeniedException;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Set;
 
@@ -66,14 +65,21 @@ public class ResourceLib {
      * @return The data directory
 	 */
 	public Path getDir(ServiceContext context, String access, int id) {
-        Path mdDir = getMetadataDir(context, id);
+        Path mdDir = getMetadataDir(context.getBean(GeonetworkDataDirectory.class), id);
 		String subDir = (access != null && access.equals(Params.Access.PUBLIC)) ? Params.Access.PUBLIC
 				: Params.Access.PRIVATE;
 		return mdDir.resolve(subDir);
 	}
 
-    private Path getMetadataDir(ServiceContext context, int id) {
-        return getMetadataDir(context, id+"");
+    public Path getDir(GeonetworkDataDirectory dataDirectory, String access, int id) {
+        Path mdDir = getMetadataDir(dataDirectory, id);
+		String subDir = (access != null && access.equals(Params.Access.PUBLIC)) ? Params.Access.PUBLIC
+				: Params.Access.PRIVATE;
+		return mdDir.resolve(subDir);
+	}
+
+    private Path getMetadataDir(GeonetworkDataDirectory dataDirectory, int id) {
+        return getMetadataDir(dataDirectory, id+"");
     }
 
     /**
@@ -83,8 +89,8 @@ public class ResourceLib {
 	 *            The metadata identifier
 	 * @return The metadata data directory
 	 */
-	public Path getMetadataDir(ServiceContext context, String id) {
-        Path dataDir = context.getBean(GeonetworkDataDirectory.class).getMetadataDataDir();
+	public Path getMetadataDir(GeonetworkDataDirectory dataDirectory, String id) {
+        Path dataDir = dataDirectory.getMetadataDataDir();
         return getMetadataDir(dataDir, id);
 	}
 
@@ -113,10 +119,7 @@ public class ResourceLib {
 	 */
     public void checkPrivilege(ServiceContext context, String id,
             ReservedOperation operation) throws Exception {
-        GeonetContext gc = (GeonetContext) context
-                .getHandlerContext(Geonet.CONTEXT_NAME);
-
-        AccessManager accessMan = gc.getBean(AccessManager.class);
+        AccessManager accessMan = context.getBean(AccessManager.class);
 
         Set<Operation> hsOper = accessMan.getOperations(context, id, context.getIpAddress());
         

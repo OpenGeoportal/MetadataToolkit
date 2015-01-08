@@ -30,12 +30,23 @@
 
 
 
-  goog.require('gn');
+
+
+
+
+
+
+
+
+
+
+
   goog.require('gn_batch_service');
   goog.require('gn_draggable_directive');
   goog.require('gn_editor_controller');
   goog.require('gn_editor_directive');
   goog.require('gn_geopublisher');
+  goog.require('gn_module');
   goog.require('gn_onlinesrc');
   goog.require('gn_ows');
   goog.require('gn_popup');
@@ -43,7 +54,7 @@
   goog.require('gn_validation');
 
   var module = angular.module('gn_editor', [
-    'gn',
+    'gn_module',
     'gn_popup',
     'gn_onlinesrc',
     'gn_suggestion',

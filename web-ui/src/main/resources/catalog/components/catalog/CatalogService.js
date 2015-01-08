@@ -120,6 +120,24 @@
         },
 
         /**
+         * @ngdoc method
+         * @name gnMetadataManager#importFromXml
+         * @methodOf gnMetadataManager
+         *
+         * @description
+         * Import records from a xml string.
+         *
+         * @param {Object} data Params to send to md.insert service
+         * @return {HttpPromise} Future object
+         */
+        importFromXml: function(data) {
+          return $http.post('md.insert?_content_type=json', data, {
+            headers: {'Content-Type':
+                  'application/x-www-form-urlencoded'}
+          });
+        },
+
+        /**
            * @ngdoc method
            * @name gnMetadataManager#create
            * @methodOf gnMetadataManager
@@ -139,10 +157,10 @@
             isTemplate, isChild, tab) {
           this.copy(id, groupId, withFullPrivileges,
               isTemplate, isChild).success(function(data) {
-              var path = '/metadata/' + data.id;
-              if (tab) {
-                path += '/tab/' + tab;
-              }
+            var path = '/metadata/' + data.id;
+            if (tab) {
+              path += '/tab/' + tab;
+            }
             $location.path(path);
           });
           // TODO : handle creation error
@@ -214,9 +232,9 @@
   module.value('gnHttpServices', {
     mdCreate: 'md.create@json',
     mdView: 'md.view@json',
-    mdCreate: 'md.create@json',
     mdInsert: 'md.insert@json',
     mdDelete: 'md.delete@json',
+    mdDeleteBatch: 'md.delete.batch',
     mdEdit: 'md.edit@json',
     mdEditSave: 'md.edit.save@json',
     mdEditSaveonly: 'md.edit.saveonly@json',
@@ -225,6 +243,17 @@
     getRelations: 'md.relations@json',
     suggestionsList: 'md.suggestion@json',
     getValidation: 'md.validate@json',
+    mdSelect: 'metadata.select@json', // TODO: CHANGE
+
+    mdGetPDF: 'pdf',
+    mdGetPDFSelection: 'pdf.selection.search', // TODO: CHANGE
+    mdGetRDF: 'rdf.metadata.get',
+    mdGetMEF: 'mef.export',
+    mdGetXML19139: 'xml_iso19139',
+    csv: 'csv.search',
+
+    mdPrivileges: 'md.privileges.update',
+    mdPrivilegesBatch: 'md.privileges.batch.update',
 
     processMd: 'md.processing',
     processAll: 'md.processing.batch',
@@ -238,14 +267,17 @@
     regionsList: 'regions.category.list@json',
     region: 'regions.list@json',
 
+    suggest: 'suggest',
 
     edit: 'md.edit',
-    search: 'qi@json',
+    search: 'q',
+    internalSearch: 'qi',
     subtemplate: 'subtemplate',
     lang: 'lang@json',
     removeThumbnail: 'md.thumbnail.remove@json',
     removeOnlinesrc: 'resource.del.and.detach', // TODO: CHANGE
-    geoserverNodes: 'geoserver.publisher@json' // TODO: CHANGE
+    geoserverNodes: 'geoserver.publisher@json', // TODO: CHANGE
+    suggest: 'suggest'
 
   });
 
@@ -316,6 +348,15 @@
             };
             angular.extend(config, httpConfig);
             return $http(config);
+          },
+
+          /**
+           * Return service url for a given key
+           * @param {string} serviceKey
+           * @return {*}
+           */
+          getService: function(serviceKey) {
+            return gnHttpServices[serviceKey];
           }
         };
       }];
@@ -438,15 +479,19 @@
    */
   module.factory('Metadata', function() {
     function Metadata(k) {
-      this.props = $.extend(true, {}, k);
+      $.extend(true, this, k);
+      if (angular.isDefined(this.category) &&
+          !angular.isArray(this.category)) {
+        this.category = [this.category];
+      }
     };
 
     function formatLink(sLink) {
       var linkInfos = sLink.split('|');
       return {
-        name: linkInfos[1],
+        name: linkInfos[0],
         url: linkInfos[2],
-        desc: linkInfos[0],
+        desc: linkInfos[1],
         protocol: linkInfos[3],
         contentType: linkInfos[4]
       };
@@ -457,20 +502,88 @@
 
     Metadata.prototype = {
       getUuid: function() {
-        return this.props['geonet:info'].uuid;
+        return this['geonet:info'].uuid;
+      },
+      getId: function() {
+        return this['geonet:info'].id;
+      },
+      isPublished: function() {
+        return this['geonet:info'].isPublishedToAll === 'true';
+      },
+      publish: function() {
+        this['geonet:info'].isPublishedToAll = this.isPublished() ?
+            'false' : 'true';
       },
       getLinks: function() {
-        return this.props.link;
+        return this.link;
       },
-      getLinksByType: function(type) {
+      getLinksByType: function() {
         var ret = [];
-        angular.forEach(this.props.link, function(link) {
+        var types = Array.prototype.splice.call(arguments, 0);
+        angular.forEach(this.link, function(link) {
           var linkInfo = formatLink(link);
-          if (linkInfo.protocol.indexOf(type) >= 0) {
-            ret.push(linkInfo);
-          }
+          types.forEach(function(type) {
+            if (type.substr(0, 1) == '#') {
+              if (linkInfo.protocol == type.substr(1, type.length - 1)) {
+                ret.push(linkInfo);
+              }
+            }
+            else {
+              if (linkInfo.protocol.indexOf(type) >= 0) {
+                ret.push(linkInfo);
+              }
+            }
+          });
         });
         return ret;
+      },
+      getThumbnails: function() {
+        if (angular.isArray(this.image)) {
+          var images = {list: []};
+          for (var i = 0; i < this.image.length; i++) {
+            var s = this.image[i].split('|');
+            if (s[0] === 'thumbnail') {
+              images.small = s[1];
+            } else if (s[0] === 'overview') {
+              images.big = s[1];
+            }
+            images.list.push({url: s[1], label: s[2]});
+          }
+        }
+        return images;
+      },
+      getContacts: function() {
+        if (angular.isArray(this.responsibleParty)) {
+          var ret = {};
+          for (var i = 0; i < this.responsibleParty.length; i++) {
+            var s = this.responsibleParty[i].split('|');
+            if (s[1] === 'resource') {
+              ret.resource = s[2];
+            } else if (s[1] === 'metadata') {
+              ret.metadata = s[2];
+            }
+          }
+        }
+        return ret;
+      },
+      getBoxAsPolygon: function() {
+        // Polygon((4.6810%2045.9170,5.0670%2045.9170,5.0670%2045.5500,4.6810%2045.5500,4.6810%2045.9170))
+        if (this.geoBox) {
+          var coords = this.geoBox.split('|');
+          return 'Polygon((' +
+              coords[0] + ' ' +
+              coords[1] + ',' +
+              coords[2] + ' ' +
+              coords[1] + ',' +
+              coords[2] + ' ' +
+              coords[3] + ',' +
+              coords[0] + ' ' +
+              coords[3] + ',' +
+              coords[0] + ' ' +
+              coords[1] + '))';
+        } else {
+          return null;
+        }
       }
     };
     return Metadata;

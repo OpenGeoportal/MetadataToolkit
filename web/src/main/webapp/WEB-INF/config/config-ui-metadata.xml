@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <geonet>
   <services package="org.fao.geonet">
-    <service name="catalog.edit">
-      <documentation>Metadata editor</documentation>
-      <output sheet="../xslt/ui-metadata/editor.xsl">
-        <xml name="i18n" file="xml/i18n.xml"/>
-      </output>
-    </service>
+      <service name="catalog.edit">
+          <documentation>Metadata editor</documentation>
+          <output sheet="../xslt/ui-metadata/editor.xsl">
+              <xml name="i18n" file="xml/i18n.xml"/>
+          </output>
+      </service>
+
+      <service name="catalog.viewer">
+          <documentation>Map viewer</documentation>
+          <output sheet="../xslt/ui-metadata/viewer.xsl">
+              <xml name="i18n" file="xml/i18n.xml"/>
+          </output>
+      </service>
 
     <service name="md.view">
       <documentation>View a metadata record</documentation>
@@ -86,20 +93,6 @@
       <error sheet="../xslt/common/error.xsl"/>
     </service>
 
-    <service name="md.insert">
-      <documentation><![CDATA[
-        Insert a metadata sending an XML document.
-        
-        Parameters are:
-        * insert_mode: 0
-        * template: The type of record (y or n or s)
-        * data: The XML to insert
-        * group:
-        
-        ]]></documentation>
-      <class name=".services.metadata.Insert" />
-    </service>
-    
     <service name="md.delete">
       <documentation><![CDATA[
         Delete a new metadata 
@@ -180,6 +173,21 @@
       </class>
       <error sheet="../xslt/common/error.xsl"/>
     </service>
+
+      <service name="md.edit.commit">
+          <documentation>
+              <![CDATA[
+        Save a metadata record and return the new form.
+         This version will update the session with the new begin metadata so
+         that a cancel will rollback to this point.
+        ]]>
+          </documentation>
+          <class name=".services.metadata.Update">
+              <param name="starteditingsession" value="yes" />
+          </class>
+          <output forward="md.edit"/>
+          <error sheet="../xslt/common/error.xsl"/>
+      </service>
 
     <service name="md.element.add">
       <documentation><![CDATA[

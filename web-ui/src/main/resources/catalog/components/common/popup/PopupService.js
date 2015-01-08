@@ -7,15 +7,17 @@
     'gn_draggable_directive'
   ]);
 
-  module.provider('gnPopup', function() {
-
-    this.$get = function($compile, $rootScope) {
+  module.factory('gnPopup', [
+    '$compile',
+    '$rootScope',
+    '$sce',
+    function($compile, $rootScope, $sce) {
 
       var Popup = function(options, scope) {
 
         // Create the popup element with its content to the HTML page
         var element = angular.element(
-            '<div gn-popup ' +
+            '<div gn-popup="toggle" ' +
             'gn-popup-options="options" ' +
             'gn-draggable=".gn-popup-title">' +
             options.content +
@@ -35,11 +37,17 @@
         // Create scope, compile and link
         this.scope = (scope || $rootScope).$new();
         this.scope.options = options;
+        this.scope.toggle = true;
+
+        if (options.url) {
+          this.scope.options.url = $sce.trustAsResourceUrl(options.url);
+        }
         this.element = $compile(element)(this.scope);
         this.destroyed = false;
 
         // Attach popup to body element
-        $(document.body).append(this.element);
+        var target = options.target || document.body;
+        $(target).append(this.element);
       };
 
       Popup.prototype.open = function(scope) {
@@ -69,10 +77,9 @@
       };
 
       return {
-        create: function(options) {
-          return new Popup(options);
+        create: function(options, scope) {
+          return new Popup(options, scope);
         }
       };
-    };
-  });
+    }]);
 })();
