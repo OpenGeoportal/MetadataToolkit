@@ -238,7 +238,7 @@
     <fieldset id="{concat('gn-el-', $editInfo/@ref)}" 
       class="{if ($hasXlink) then 'gn-has-xlink' else ''} gn-{substring-after(name(), ':')}">
 
-      <legend class="{$cls}" data-gn-field-tooltip="{$schema}|{name()}|{name(..)}|">
+      <legend class="{$cls}" data-gn-field-tooltip="{$schema}|{name()}|{name(..)}|" data-toggle="tooltip" data-placement="top" title="Toggle expand / collapse">
         <xsl:if test="$xpath and $withXPath">
           <xsl:attribute name="data-gn-xpath" select="$xpath"/>
         </xsl:if>

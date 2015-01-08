@@ -61,7 +61,7 @@ input[type=text], input[type=number], select {
 
 
 .gn-editor-container {
-  padding: 20px 5px 20px 20px;
+  padding: 20px 5px 20px 5px;
   margin-top: 45px;
 }
 
@@ -126,7 +126,24 @@ form.gn-editor {
         border: none;
     }
     legend {
+        padding-left: 20px;
         border: none;
+        cursor: pointer;
+        color: #333333;
+    }
+    legend:before {
+        content: "\f0d7";
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        position: absolute;
+        margin-top: 3px;
+        margin-left: -14px;
+        font-size: 16px;
+    }
+    legend.collapsed:before {
+        content: "\f0da"
     }
     i.btn.fa-times.text-danger {
         visibility: hidden;
@@ -135,6 +152,14 @@ form.gn-editor {
     .show {
         visibility: visible;
     } 
+    .gn-value .col-xs-8 {
+        padding-left: 0px;
+    }
+    .gn-value .col-xs-4 {
+        padding-right: 0px;
+    }
+    
+    
     /** Max end
     */
   
@@ -208,7 +233,7 @@ form.gn-editor {
   
   .gn-has-xlink {
     label, fieldset > legend {
-      opacity: .7;
+      //opacity: .7;
     }
   }
   
@@ -346,7 +371,7 @@ ul.nav ~ fieldset > legend {
 }
 
 ul.nav ~ fieldset fieldset > legend {
-  padding-left: 10px;
+  padding-left: 20px;
   font-size: 18px;
 }
 
@@ -355,7 +380,7 @@ ul.nav ~ fieldset fieldset {
 }
 ul.nav ~ fieldset fieldset fieldset > legend {
   //color: green;
-  padding-left: 10px;
+  padding-left: 20px;
   font-size: 16px;
 }
 

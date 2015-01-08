@@ -315,20 +315,25 @@
            /** Max
        * Toggle collapse-expand fieldsets
        */
+          $("legend").click(function () {
 
-           $("legend").click(function () {
+            var legend = $(this);
+            //getting the next element
+            var content = legend.nextAll();
+            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+            content.slideToggle(500, function () {
+                //execute this after slideToggle is done
+                //change text of header based on visibility of content div
+                if (content.is(":visible")) {
+                    legend.removeClass("collapsed");
 
-                $legend = $(this);
-                //getting the next element
-                $content = $legend.nextAll();
-                //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-                $content.slideToggle(500, function () {
-                    //execute this after slideToggle is done
-                    //change text of header based on visibility of content div
-
-                });
+                }
+                else { legend.addClass("collapsed");}
 
             });
+
+        });
+        
           /** Max
        * initialize tooltip
        */
