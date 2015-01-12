@@ -35,6 +35,10 @@ public class ISO19115_3SchemaPlugin
                 .build();
     }
 
+    public ISO19115_3SchemaPlugin() {
+        super(IDENTIFIER);
+    }
+
 
     public Set<AssociatedResource> getAssociatedResourcesUUIDs(Element metadata) {
         String XPATH_FOR_AGGRGATIONINFO = "*//mri:associatedResource/*" +
