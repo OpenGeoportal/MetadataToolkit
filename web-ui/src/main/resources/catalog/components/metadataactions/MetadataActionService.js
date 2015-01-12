@@ -8,11 +8,12 @@
   ]);
 
   module.service('gnMetadataActions', [
+    '$rootScope',
     'gnHttp',
     'gnMetadataManager',
     'gnAlertService',
     'gnPopup',
-    function(gnHttp, gnMetadataManager, gnAlertService, gnPopup) {
+    function($rootScope, gnHttp, gnMetadataManager, gnAlertService, gnPopup) {
 
       var windowName = 'geonetwork';
       var windowOption = '';
@@ -32,7 +33,7 @@
       };
 
       var callBatch = function(service) {
-        gnHttp.callService(service).then(function(data) {
+        return gnHttp.callService(service).then(function(data) {
           alertResult(data.data);
         });
       };
@@ -109,14 +110,15 @@
 
       this.deleteMd = function(md) {
         if (md) {
-          gnMetadataManager.remove(md.getId());
+          gnMetadataManager.remove(md.getId()).then(function() {
+            $rootScope.$broadcast('mdSelectNone');
+            $rootScope.$broadcast('resetSearch');
+          });
         }
         else {
-          // TODO: see how to manage the refresh
           callBatch('mdDeleteBatch').then(function() {
-            gnHttp.callService('mdSelect', {
-              selected: 'remove-all'
-            });
+            $rootScope.$broadcast('mdSelectNone');
+            $rootScope.$broadcast('resetSearch');
           });
         }
       };
@@ -140,7 +142,7 @@
        * @param {string} md
        */
       this.duplicate = function(md) {
-        duplicateMetadata(md.getId(),false);
+        duplicateMetadata(md.getId(), false);
       };
 
       /**
@@ -148,7 +150,7 @@
        * @param {string} md
        */
       this.createChild = function(md) {
-        duplicateMetadata(md.getId(),true);
+        duplicateMetadata(md.getId(), true);
       };
 
       /**

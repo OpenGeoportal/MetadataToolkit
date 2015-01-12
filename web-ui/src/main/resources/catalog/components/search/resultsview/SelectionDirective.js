@@ -4,9 +4,11 @@
 
   var module = angular.module('gn_selection_directive', []);
 
-  module.directive('gnSelectionWidget', ['gnHttp', 'gnMetadataActions',
-
-    function(gnHttp, gnMetadataActions) {
+  module.directive('gnSelectionWidget', [
+    '$translate', 'hotkeys',
+    'gnHttp', 'gnMetadataActions',
+    function($translate, hotkeys,
+             gnHttp, gnMetadataActions) {
 
       return {
         restrict: 'A',
@@ -73,7 +75,9 @@
               record['geonet:info'].selected = selected;
             });
 
-            gnHttp.callService('mdSelect', params).success(function(res) {
+            gnHttp.callService('mdSelect', params, {
+              method: 'POST'
+            }).success(function(res) {
               scope.searchResults.selectedCount = parseInt(res[0], 10);
             });
           };
@@ -99,6 +103,25 @@
               });
             });
           };
+          hotkeys.bindTo(scope)
+            .add({
+                combo: 'a',
+                description: $translate('hotkeySelectAll'),
+                callback: scope.selectAll
+              }).add({
+                combo: 'p',
+                description: $translate('hotkeySelectAllInPage'),
+                callback: function() {
+                  scope.selectAllInPage(true);
+                }
+              }).add({
+                combo: 'n',
+                description: $translate('hotkeyUnSelectAll'),
+                callback: scope.unSelectAll
+              });
+
+          scope.$on('mdSelectAll', scope.selectAll);
+          scope.$on('mdSelectNone', scope.unSelectAll);
 
         }
       };
