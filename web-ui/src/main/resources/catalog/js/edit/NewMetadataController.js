@@ -222,9 +222,10 @@
               $scope.isTemplate,
               $routeParams.childOf ? true : false
           );
-        } else if($scope.fromFile) {
+        } else if($scope.fromFile === 'xmlFile') {
           $location.path('/create/fromFile');
-
+        } else if ($scope.fromFile === 'ogpSearch') {
+          $location.path('/ogpSearch/search');
         }
       };
 

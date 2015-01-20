@@ -30,6 +30,7 @@
     </xsl:when>
     <xsl:otherwise>
       <link href="{/root/gui/url}/static/{$angularApp}.css{$minimizedParam}" rel="stylesheet" media="screen" />
+      <link></link>
     </xsl:otherwise>
     </xsl:choose>
 
@@ -105,6 +106,8 @@
         <script src="{$uiResourcesPath}lib/bootstrap.ext/typeahead.js/handlebars-v2.0.0.js"></script>
         <script src="{$uiResourcesPath}lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.js"></script>
         <script src="{$uiResourcesPath}lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"></script>
+        <script src="{$uiResourcesPath}/lib/angular-ui/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="{$uiResourcesPath}lib/angular-ui/ui-select/select.js"></script>
         <!--</xsl:if>-->
 
       </xsl:when>
