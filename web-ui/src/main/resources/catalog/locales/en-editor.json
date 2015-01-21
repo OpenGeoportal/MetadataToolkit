@@ -128,6 +128,7 @@
     "ogpSearchButton": "Search",
     "ogpSelectATopic": "Select a topic",
     "ogpSelectADataType": "Select a data type",
+    "ogpSelectARepository": "Select a repository",
     "ogpSolrQuery": "Custom Solr Query",
     "ogpSolrQueryTooltip": "Custom Solr Query tooltip",
     "ogpSolrTimestamp": "Filter records by Solr timestamp",

@@ -90,3 +90,5 @@ web-editor2/src/main/webapp/WEB-INF/data/0*
 web-editor2/src/main/webapp/WEB-INF/data_*
 web-editor2/src/main/webapp/WEB-INF/data/config/schema_plugins/schemaplugin-uri-catalog.xml
 
+*.old
+target/

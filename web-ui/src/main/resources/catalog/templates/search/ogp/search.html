@@ -40,7 +40,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="topic" data-translate="">ogpTopic</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpTopicTooltip' | translate}}"></span>
+                        <label data-translate="">ogpTopic</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpTopicTooltip' | translate}}"></span>
                         <ui-select id="topic" multiple ng-model="searchForm.topic" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
                             <ui-select-match placeholder="{{'ogpSelectATopic'| translate}}">{{$item.label}}</ui-select-match>
                             <ui-select-choices repeat="topic in topicList | filter: {label: $select.search}">
@@ -52,11 +52,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="dataType" data-translate="">ogpDataType</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataTypeTooltip' | translate}}"></span>
-                        <select class="form-control" id="dataType" data-ng-model="searchForm.dataType"
-                                data-ng-options="item.id as item.label for item in dataTypeList">
-                            <option data-translate="">ogpSelectADataType</option>
-                        </select>
+                        <label data-translate="">ogpDataType</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataTypeTooltip' | translate}}"></span>
+                        <ui-select id="dataType" multiple ng-model="searchForm.dataType" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
+                            <ui-select-match placeholder="{{'ogpSelectADataType' | translate}}">{{$item.label}}</ui-select-match>
+                            <ui-select-choices repeat="item in dataTypeList | filter: {label: $select.search}">
+                                <div ng-bind-html="item.label | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
             </div>
@@ -78,11 +80,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="dataRepository" data-translate="">ogpDataRepository</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataRepository' | translate}}"></span>
-                        <select class="form-control" id="dataRepository" data-ng-model="searchForm.dataRepository"
-                                data-ng-options="item.id as item.label for item in dataRepositoryList">
-                            <option data-translate="">ogpSelectADataType</option>
-                        </select>
+                        <label data-translate="">ogpDataRepository</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataRepository' | translate}}"></span>
+                        <ui-select id="dataType" multiple ng-model="searchForm.dataRepository" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
+                            <ui-select-match placeholder="{{'ogpSelectARepository' | translate}}">{{$item.label}}</ui-select-match>
+                            <ui-select-choices repeat="item in dataRepositoryList | filter: {label: $select.search}">
+                                <div ng-bind-html="item.label | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
             </div>
