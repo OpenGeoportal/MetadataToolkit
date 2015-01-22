@@ -1,0 +1,20 @@
+<div class="dropdown">
+    <a class="dropdown-toggle" id="{{id}}" role="button" data-toggle="dropdown" data-target="#"
+       href="" aria-haspopup="true" aria-expanded="false">
+        <div class="input-group" ng-class="{ 'has-error': ngModel.$invalid }">
+            <input type="text" class="form-control" name="{{id}}"
+                   data-ng-model="inputString"
+                   placeholder="{{gnDateFormat}}"/>
+            <span class="input-group-btn" >
+                <button class="btn btn-default" ng-class="{ 'btn-danger': ngModel.$invalid }">
+                    <span class="fa fa-calendar"></span>
+                </button>
+            </span>
+        </div>
+    </a>
+    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="{{id}}Toggle">
+        <datetimepicker data-ng-model="dateFromDropdown"
+                        data-on-set-time="formatFromDatePicker"
+                        data-datetimepicker-config="{minView: 'day', dropdownSelector: '#{{id}}' }"/>
+    </ul>
+</div>
