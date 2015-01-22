@@ -27,7 +27,8 @@
     'gnMap',
     'gnSearchSettings',
     '$window',
-    function($scope, $timeout, gnMap, gnSearchSettings, $window) {
+    'gnMdView',
+    function($scope, $timeout, gnMap, gnSearchSettings, $window, gnMdView) {
 
       var localStorage = $window.localStorage || {};
 
@@ -82,7 +83,7 @@
       $scope.$parent.$parent.langs = {'fre': 'fr', 'eng': 'en',
         'ger': 'ge', 'ita': 'it'};
 
-
+      gnMdView.initFormatter('.gn-resultview');
       $('#anySearchField').focus();
     }]);
 
@@ -98,7 +99,8 @@
           sortBy: sortBy,
           fast: 'index',
           from: 1,
-          to: to
+          to: to,
+          _content_type: 'json'
         });
       };
 
@@ -123,18 +125,20 @@
     'gnSearchManagerService',
     'ngeoDecorateInteraction',
     '$q',
+    '$location',
     'gnMap',
 
     function($scope, gnHttp, gnHttpServices, gnRegionService,
         $timeout, suggestService, $http, gnSearchSettings,
-             gnSearchManagerService, ngeoDecorateInteraction, $q, gnMap) {
+             gnSearchManagerService, ngeoDecorateInteraction, $q,
+             $location, gnMap) {
 
 
       // Will store regions input values
       $scope.regions = {};
 
       // data store for types field
-      $scope.types = ['any',
+      $scope.types = [
         'dataset',
         'basicgeodata',
         'basicgeodata-federal',
@@ -213,7 +217,8 @@
                   for (var i = 0; i < a.length; i++) {
                     res.push({
                       id: a[i]['@id'],
-                      name: a[i].name
+                      name: (a[i].label && a[i].label[$scope.lang]) ?
+                          a[i].label[$scope.lang] : a[i].name
                     });
                   }
                 };
@@ -225,6 +230,18 @@
           return defer.promise;
         })()
       };
+
+      // config for format suggestion multiselect
+      $scope.formatsOptions = {
+        mode: 'remote',
+        remote: {
+          url: suggestService.getUrl('QUERY', 'formatWithVersion',
+              'STARTSWITHFIRST'),
+          filter: suggestService.bhFilter,
+          wildcard: 'QUERY'
+        }
+      };
+
 
       $scope.gnMap = gnMap;
       var map = $scope.searchObj.searchMap;
@@ -431,7 +448,7 @@
         gnSearchManagerService.search(url).then(function(data) {
           $scope.searchResults.facet = data.facet;
         });
-      } else {
+      } else if ($location.path().indexOf('/metadata/') != 0) {
         $scope.triggerSearch(true);
       }
     }]);

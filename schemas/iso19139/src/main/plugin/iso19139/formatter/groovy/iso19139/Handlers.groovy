@@ -1,6 +1,5 @@
 package iso19139
 
-import groovy.util.slurpersupport.GPathResult
 import org.fao.geonet.services.metadata.format.FormatType
 import org.fao.geonet.services.metadata.format.groovy.Environment
 import org.fao.geonet.services.metadata.format.groovy.MapConfig
@@ -30,8 +29,9 @@ public class Handlers {
 
     def addDefaultHandlers() {
         handlers.add name: 'Text Elements', select: matchers.isTextEl, isoTextEl
+        handlers.add name: 'Simple Text Elements', select: matchers.isSimpleTextEl, isoSimpleTextEl
         handlers.add name: 'URL Elements', select: matchers.isUrlEl, isoUrlEl
-        handlers.add name: 'Simple Elements', select: matchers.isSimpleEl, isoSimpleEl
+        handlers.add name: 'Simple Elements', select: matchers.isBasicType, isoBasicType
         handlers.add name: 'Boolean Elements', select: matchers.isBooleanEl, isoBooleanEl
         handlers.add name: 'CodeList Elements', select: matchers.isCodeListEl, isoCodeListEl
         handlers.add name: 'Date Elements', select: matchers.isDateEl, dateEl
@@ -39,11 +39,13 @@ public class Handlers {
         handlers.add name: 'Keyword Elements', select: 'gmd:descriptiveKeywords', group:true, keywordsEl
         handlers.add name: 'ResponsibleParty Elements', select: matchers.isRespParty, pointOfContactEl
         handlers.add name: 'Graphic Overview', select: 'gmd:graphicOverview', group: true, graphicOverviewEl
+        handlers.add select: 'gmd:language', group: false, isoLanguageEl
         handlers.add select: 'gmd:onLine', group: true, onlineResourceEls
+        handlers.add name: 'gmd:topicCategory', select: 'gmd:topicCategory', group: true, isoSimpleTextElGrouped
 
-        handlers.skip matchers.hasDateChild, {it.children()}
-        handlers.skip matchers.hasCodeListChild, {it.children()}
-        handlers.skip matchers.isSkippedContainer, {it.children()}
+        handlers.skip name: "skip date parent element", select: matchers.hasDateChild, {it.children()}
+        handlers.skip name: "skip codelist parent element", select: matchers.hasCodeListChild, {it.children()}
+        handlers.skip name: "skip containers: " + matchers.skipContainers, select: matchers.isSkippedContainer, {it.children()}
 
         handlers.add select: 'gmd:locale', group: true, localeEls
         handlers.add 'gmd:CI_Date', ciDateEl
@@ -77,7 +79,12 @@ public class Handlers {
     def isoTextEl = { isofunc.isoTextEl(it, isofunc.isoText(it))}
     def isoUrlEl = { isofunc.isoTextEl(it, isofunc.isoUrlText(it))}
     def isoCodeListEl = {isofunc.isoTextEl(it, f.codelistValueLabel(it))}
-    def isoSimpleEl = {isofunc.isoTextEl(it, it.'*'.text())}
+    def isoBasicType = {isofunc.isoTextEl(it, it.'*'.text())}
+    def isoSimpleTextEl = { isofunc.isoTextEl(it, it.text()) }
+    def isoSimpleTextElGrouped = { elems ->
+        def listItems = elems.findAll{!it.text().isEmpty()}.collect {it.text()};
+        handlers.fileResult("html/list-entry.html", [label:f.nodeLabel(elems[0]), listItems: listItems])
+    }
     def parseBool(text) {
         switch (text.trim().toLowerCase()){
             case "1":
@@ -115,7 +122,16 @@ public class Handlers {
                 locales: locales
         ])
     }
+    def isoLanguageEl = { language ->
+        def lang;
+        if (!language.'gmd:LanguageCode'.isEmpty()) {
+            lang = f.codelistValueLabel(language.'gmd:LanguageCode')
+        } else {
+            lang = f.translateLanguageCode(language.text());
+        }
 
+        commonHandlers.func.textEl(f.nodeLabel(language), lang);
+    }
     def onlineResourceEls = { els ->
         def links = []
 
@@ -290,18 +306,11 @@ public class Handlers {
             def background = mapConfig.background
             def width = thumbnail? mapConfig.thumbnailWidth : mapConfig.width
             def mdId = env.getMetadataId();
-            def gmlId = null;
-            def depthFirstIter = el.depthFirst();
-            while (gmlId == null && depthFirstIter.hasNext()) {
-                GPathResult next = depthFirstIter.next();
-                def nextGmlId = next['@gml:id'].text()
-                if (!nextGmlId.isEmpty()) {
-                    gmlId = nextGmlId;
-                }
-            }
+            def xpath = f.getXPathFrom(el);
 
-            if (gmlId != null) {
-                def image = "<img src=\"region.getmap.png?mapsrs=$mapproj&amp;width=$width&amp;background=$background&amp;id=metadata:@id$mdId:@gml$gmlId\"\n" +
+
+            if (xpath != null) {
+                def image = "<img src=\"region.getmap.png?mapsrs=$mapproj&amp;width=$width&amp;background=$background&amp;id=metadata:@id$mdId:@xpath$xpath\"\n" +
                         "         style=\"width:${width/4}; min-height:${width/4};\" />"
                 handlers.fileResult('html/2-level-entry.html', [label: f.nodeLabel(el), childData: image])
             }

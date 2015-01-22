@@ -11,13 +11,13 @@
 
 
   goog.require('gn_catalog_service');
-  goog.require('gn_facets_directive');
+  goog.require('gn_facets');
   goog.require('gn_search_form_results_directive');
   goog.require('gn_selection_directive');
 
   var module = angular.module('gn_search_form_controller', [
     'gn_catalog_service',
-    'gn_facets_directive',
+    'gn_facets',
     'gn_selection_directive',
     'gn_search_form_results_directive'
   ]);
@@ -40,7 +40,7 @@
     /** Object were are stored result search information */
     $scope.searchResults = {
       records: [],
-      count: 0
+      count: -1
     };
 
     $scope.searching = 0;
@@ -182,10 +182,13 @@
           triggerSearchFn(false);
         } else {
           $location.search(params);
+          $location.path('/search');
         }
       };
 
       $scope.$on('$locationChangeSuccess', function() {
+        if ($location.path() != '/search') return;
+        console.log('$locationChangeSuccess');
         var params = angular.copy($location.search());
         for (var o in facetsParams) {
           delete params[o];
@@ -279,7 +282,7 @@
             }
           };
 
-          if (attrs.runsearch) {
+          if (attrs.runsearch && $location.path().indexOf('/metadata/') != 0) {
 
             // get permalink params on page load
             if (scope.searchObj.permalink) {

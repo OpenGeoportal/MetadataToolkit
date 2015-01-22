@@ -19,6 +19,8 @@
 
           var watchers = [];
           scope.checkAll = true;
+          scope.withoutActionMenu =
+              angular.isDefined(attrs.withoutActionMenu) ? true : false;
           scope.mdService = gnMetadataActions;
 
           // initial state
@@ -145,8 +147,14 @@
 
       }
     };
-
   }]);
 
+  module.directive('gnContributeWidget', [function() {
 
+    return {
+      restrict: 'A',
+      templateUrl: '../../catalog/components/search/resultsview/partials/' +
+          'contribute-widget.html'
+    };
+  }]);
 })();

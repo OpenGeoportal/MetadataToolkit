@@ -239,12 +239,13 @@
        */
       $scope.onFormLoad = function() {
         gnEditor.onFormLoad();
+
         $scope.$watch('tocIndex', function(newValue, oldValue) {
-          $timeout(function() {
-            if (angular.isDefined($scope.tocIndex) && $scope.tocIndex != '') {
+          if (angular.isDefined($scope.tocIndex) && $scope.tocIndex !== null) {
+            $timeout(function() {
               $scope.switchToTab(gnCurrentEdit.tab);
-            }
-          });
+            });
+          }
         });
       };
 
@@ -288,60 +289,48 @@
           gnCurrentEdit.displayAttributes =
               gnCurrentEdit.displayAttributes === false;
         }
-           /** Max
-       * Hover grey over fieldsets
-       */
-          $(function() {
-                $('fieldset').on('mouseover', function(e){
-                    e.stopPropagation();
-                    $(this).addClass('field-bg');
-                    $(this).find('i.btn.fa-times.text-danger').css('visibility', 'visible');
-                }).on('mouseout', function(e){
-                    $(this).removeClass('field-bg');
-                    $(this).find('i.btn.fa-times.text-danger').css('visibility', 'hidden');
-                })
-            });
-             /** Max
-       * Hover grey over fields
-       */
-          $(function() {
-                $('.gn-field').on('mouseover', function(e){
-                    e.stopPropagation();
-                    $(this).addClass('field-bg');
-                    $(this).find('i.btn.fa-times.text-danger').css('visibility', 'visible');
-                }).on('mouseout', function(e){
-                    $(this).removeClass('field-bg');
-                    $(this).find('i.btn.fa-times.text-danger').css('visibility', 'hidden');
-                })
-            });
-           /** Max
-       * Toggle collapse-expand fieldsets
-       */
-          $("legend").click(function () {
+        $(function() {
+          $('fieldset, .gn-field').on('mouseover', function(e) {
+            e.stopPropagation();
+            $(this).addClass('field-bg');
+            $(this).find('i.btn.fa-times.text-danger')
+              .css('visibility', 'visible');
+          }).on('mouseout', function(e) {
+            $(this).removeClass('field-bg');
+            $(this).find('i.btn.fa-times.text-danger')
+              .css('visibility', 'hidden');
+          });
+        });
 
+        $timeout(function() {
+          /**
+          * Toggle collapse-expand fieldsets
+          */
+          $('legend').click(function() {
             var legend = $(this);
             //getting the next element
             var content = legend.nextAll();
-            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-            content.slideToggle(500, function () {
-                //execute this after slideToggle is done
-                //change text of header based on visibility of content div
-                if (content.is(":visible")) {
-                    legend.removeClass("collapsed");
-
-                }
-                else { legend.addClass("collapsed");}
-
+            //open up the content needed - toggle the slide-
+            //if visible, slide up, if not slidedown.
+            content.slideToggle(500, function() {
+              //execute this after slideToggle is done
+              //change the icon of the legend based on
+              // visibility of content div
+              if (content.is(':visible')) {
+                legend.removeClass('collapsed');
+              }
+              else { legend.addClass('collapsed'); }
             });
 
+          });
+          /**
+          * initialize tooltip
+          */
+          $(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+          });
         });
-        
-          /** Max
-       * initialize tooltip
-       */
-            $(function () {
-                  $('[data-toggle="tooltip"]').tooltip()
-            })
+
         // Update the form to propagate info when saved
         // or tab switch - Needs to be propagated in Update service
         $('#displayAttributes')[0].value = gnCurrentEdit.displayAttributes;
@@ -398,6 +387,10 @@
       $scope.removeAttribute = function(ref) {
         gnEditor.removeAttribute(gnCurrentEdit.id, ref);
         return false;
+      };
+      $scope.switchTypeAndSave = function(refreshForm) {
+        $scope.setTemplate(!$scope.isTemplate());
+        $scope.save(refreshForm);
       };
       $scope.save = function(refreshForm) {
         $scope.saveError = false;

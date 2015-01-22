@@ -2,6 +2,7 @@
 @import "../lib/style/font-awesome/less/font-awesome.less";
 @import "gn_bootstrap.less";
 
+@import (less) "../lib/ol.css";
 @import (less) "../lib/angular.ext/hotkeys/hotkeys.min.css";
 @import "../lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.less";
 // import the css files as less files so they are included in the final output of wro4j
@@ -13,6 +14,21 @@
 @fa-font-path: '../catalog/lib/style/font-awesome/fonts';
 
 
+.gn-pager {
+  .pager {
+    margin: 0;
+    text-align: left;
+    display: inline-block;
+    li > a {
+      padding: 2px 5px;
+      border-radius: 6px;
+      font-size: 120%;
+    }
+    em {
+      font-style: normal;
+    }
+  }
+}
 
 .btn-circle {
   width: 30px;
@@ -52,7 +68,7 @@
     border-radius: 0px;
     padding: 0 20px;
     .navbar-collapse {
-        //padding-right: 5px;
+ //       padding-right: 5px;
     }
   .visible-lg {
     display: none !important;
@@ -62,7 +78,6 @@
       display: inline !important;
     }
   }
-
   @media (max-width: 767px) {
     .hidden-xs {
       display: none !important;
@@ -172,7 +187,7 @@ div.gn-scroll-spy {
     li.active > a {
       font-weight: bold;
       color: @brand-primary;
-      background-color: @navbar-default-brand-hover-bg; 
+      background-color: @navbar-default-brand-hover-bg;
     }
   }
 }
@@ -388,4 +403,15 @@ span.twitter-typeahead {
 }
 input[type=file] {
   display: block;
+}
+
+/* alerts */
+.gn-alerts {
+  position: absolute;
+  top: 1em;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+  text-align: center;
+  z-index: 1000;
 }
