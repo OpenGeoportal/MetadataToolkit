@@ -1141,6 +1141,7 @@
     <module>healthmonitor</module>
     <module>services</module>
     <module>wro4j</module>
+      <module>ogp-search</module>
   </modules>
 
   <profiles>

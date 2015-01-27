@@ -1,141 +1,188 @@
 <div class="gn-search-page"
      data-ng-controller="OgpSearchController">
-    <form role="form" name="ogpSearchForm">
+
+    <div class="gn-search-page" data-ng-show="step === 'searchForm'">
+        <form role="form" name="ogpSearchForm">
+            <div class="container">
+                <h1>Import from OGP Cloud</h1>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="themeKeyword" data-translate="">ogpThemeKeyword</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpThemeKeywordTooltip' | translate}}"></span>
+                            <input type="text" class="form-control" id="themeKeyword" data-ng-model="searchForm.themeKeyword" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label data-translate="">ogpGeographicExtent</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpGeographicExtentTooltip' | translate}}"></span>
+                            <div class="form-control-static">
+                                <button class="btn btn-default ">
+                                    <span class="fa fa-globe"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="placeKeyword" data-translate="">ogpPlaceKeyword</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpPlaceKeywordTooltip' | translate}}"></span>
+                            <input type="text" class="form-control" id="placeKeyword" data-ng-model="searchForm.placeKeyword"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="originator" data-translate="">ogpOriginator</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpOriginatorTooltip' | translate}}"></span>
+                            <input type="text" class="form-control" id="originator" data-ng-model="searchForm.originator"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label data-translate="">ogpTopic</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpTopicTooltip' | translate}}"></span>
+                            <ui-select id="topic" multiple ng-model="searchForm.topic" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
+                                <ui-select-match placeholder="{{'ogpSelectATopic'| translate}}">{{$item.label}}</ui-select-match>
+                                <ui-select-choices repeat="topic in topicList | filter: {label: $select.search}">
+                                    <div ng-bind-html="topic.label | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label data-translate="">ogpDataType</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataTypeTooltip' | translate}}"></span>
+                            <ui-select id="dataType" multiple ng-model="searchForm.dataType" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
+                                <ui-select-match placeholder="{{'ogpSelectADataType' | translate}}">{{$item.label}}</ui-select-match>
+                                <ui-select-choices repeat="item in dataTypeList | filter: {label: $select.search}">
+                                    <div ng-bind-html="item.label | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" >
+                        <div class="form-group">
+                            <label data-translate="">ogpDateRangeOfContent</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDateRangeOfContentTooltip' | translate}}"></span>
+                            <div class="">
+                                <div class="col-md-6" data-gn-date-validator data-ng-model="searchForm.dateRangeContentFrom"
+                                     data-gn-id="'dateRangeContentFrom'">
+                                </div>
+
+                                <div class="col-md-6" data-gn-date-validator data-ng-model="searchForm.dateRangeContentTo"
+                                     data-gn-id="'dateRangeContentTo'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label data-translate="">ogpDataRepository</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataRepository' | translate}}"></span>
+                            <ui-select id="dataType" multiple ng-model="searchForm.dataRepository" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
+                                <ui-select-match placeholder="{{'ogpSelectARepository' | translate}}">{{$item.label}}</ui-select-match>
+                                <ui-select-choices repeat="item in dataRepositoryList | filter: {label: $select.search}">
+                                    <div ng-bind-html="item.label | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ogpLayerId" data-translate="">ogpLayerId</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpLayerIdTooltip' | translate}}"></span>
+                            <input type="text" class="form-control" id="ogpLayerId" data-ng-model="searchForm.ogpLayerId"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> <span data-translate="">ogpExcludeRestrictedData</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label data-translate="">ogpSolrTimestamp</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpSolrTimestampTooltip' | translate}}"></span>
+                            <div class="">
+                                <div class="col-md-5" data-gn-date-validator data-ng-model="searchForm.dateSolrTimestampFrom" data-gn-id="'dateSolrTimestampFrom'" test="'this is a test'">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <span data-translate="">ogrTo</span>
+                                </div>
+                                <div class="col-md-5" data-gn-date-validator data-ng-model="searchForm.dateSolrTimestampTo"
+                                     data-gn-id="'dateSolrTimestampTo'" test="'this is a test'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="solrQuery" data-translate="">ogpSolrQuery</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpSolrQueryTooltip' | translate}}"></span>
+                            <textarea id="solrQuery"class="form-control" data-ng-model="searchForm.solrQuery"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 pull-right">
+                        <button class="btn btn-primary" data-translate="" data-ng-click="triggerSearch()">ogpSearchButton</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div><!-- search form -->
+    <div data-ng-show="step === 'searchResults'" class="ogp-search-results">
         <div class="container">
-            <h1>Import from OGP Cloud</h1>
+            <h1 data-translate="">ogpSearchResultsHeading</h1>
+            <span class="loading fa fa-spinner fa-spin" ng-show="searching"></span>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th data-translate="">ogpResultType</th>
+                        <th data-translate="">ogpResultName</th>
+                        <th data-translate="">ogpResultRepo</th>
+                        <th data-translate="">ogpResultMeta</th>
+                        <th data-translate="">ogpResultSelect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="result in searchResults">
+                        <td>
+                            <span class="typeIcon" data-ng-class="{polygonIcon: result.DataType === 'Polygon',
+                                pointIcon: result.DataType === 'Point', lineIcon: result.DataType === 'Line',
+                                mapIcon: result.DataType === 'Paper Map'}"></span>
+                        </td>
+                        <td>{{result.LayerDisplayName}}</td>
+                        <td></td>
+                        <td><button type="button" class="btn btn-default btn-sm"><span class="fa fa-info"></span></button></td>
+                        <td><input type="radio" name="selectedMap"/></td>
+                    </tr>
+
+                </tbody>
+
+
+            </table>
 
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="themeKeyword" data-translate="">ogpThemeKeyword</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpThemeKeywordTooltip' | translate}}"></span>
-                        <input type="text" class="form-control" id="themeKeyword" data-ng-model="searchForm.themeKeyword" />
-                    </div>
-                    {{searchForm.themeKeyword}}
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label data-translate="">ogpGeographicExtent</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpGeographicExtentTooltip' | translate}}"></span>
-                        <div class="form-control-static">
-                            <button class="btn btn-default ">
-                                <span class="fa fa-globe"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="placeKeyword" data-translate="">ogpPlaceKeyword</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpPlaceKeywordTooltip' | translate}}"></span>
-                        <input type="text" class="form-control" id="placeKeyword" data-ng-model="searchForm.placeKeyword"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="originator" data-translate="">ogpOriginator</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpOriginatorTooltip' | translate}}"></span>
-                        <input type="text" class="form-control" id="originator" data-ng-model="searchForm.originator"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label data-translate="">ogpTopic</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpTopicTooltip' | translate}}"></span>
-                        <ui-select id="topic" multiple ng-model="searchForm.topic" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
-                            <ui-select-match placeholder="{{'ogpSelectATopic'| translate}}">{{$item.label}}</ui-select-match>
-                            <ui-select-choices repeat="topic in topicList | filter: {label: $select.search}">
-                                <div ng-bind-html="topic.label | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
+                <div class="col-md-12 text-right">
+                    <button type="button" class="btn btn-default" data-translate="" data-ng-click="reviseSearch()">ogpReviseSearch</button>
+                    <button type="button" class="btn btn-default" data-translate="" data-ng-click="newSearch()">ogpNewSearch</button>
+                    <button type="button" class="btn btn-primary" data-translate="" data-ng-click="">ogpImport</button>
 
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label data-translate="">ogpDataType</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataTypeTooltip' | translate}}"></span>
-                        <ui-select id="dataType" multiple ng-model="searchForm.dataType" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
-                            <ui-select-match placeholder="{{'ogpSelectADataType' | translate}}">{{$item.label}}</ui-select-match>
-                            <ui-select-choices repeat="item in dataTypeList | filter: {label: $select.search}">
-                                <div ng-bind-html="item.label | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6" >
-                    <div class="form-group">
-                        <label data-translate="">ogpDateRangeOfContent</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDateRangeOfContentTooltip' | translate}}"></span>
-                        <div class="">
-                            <div class="col-md-6" data-gn-date-validator data-ng-model="searchForm.dateRangeContentFrom"
-                                 data-gn-id="'dateRangeContentFrom'">
-                            </div>
-
-                            <div class="col-md-6" data-gn-date-validator data-ng-model="searchForm.dateRangeContentTo"
-                                 data-gn-id="'dateRangeContentTo'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label data-translate="">ogpDataRepository</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpDataRepository' | translate}}"></span>
-                        <ui-select id="dataType" multiple ng-model="searchForm.dataRepository" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
-                            <ui-select-match placeholder="{{'ogpSelectARepository' | translate}}">{{$item.label}}</ui-select-match>
-                            <ui-select-choices repeat="item in dataRepositoryList | filter: {label: $select.search}">
-                                <div ng-bind-html="item.label | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="ogpLayerId" data-translate="">ogpLayerId</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpLayerIdTooltip' | translate}}"></span>
-                        <input type="text" class="form-control" id="ogpLayerId" data-ng-model="searchForm.ogpLayerId"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> <span data-translate="">ogpExcludeRestrictedData</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label data-translate="">ogpSolrTimestamp</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpSolrTimestampTooltip' | translate}}"></span>
-                        <div class="">
-                            <div class="col-md-5" data-gn-date-validator data-ng-model="searchForm.dateSolrTimestampFrom" data-gn-id="'dateSolrTimestampFrom'" test="'this is a test'">
-                            </div>
-
-                            <div class="col-md-2">
-                                <span data-translate="">ogrTo</span>
-                            </div>
-                            <div class="col-md-5" data-gn-date-validator data-ng-model="searchForm.dateSolrTimestampTo"
-                                 data-gn-id="'dateSolrTimestampTo'" test="'this is a test'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="solrQuery" data-translate="">ogpSolrQuery</label><span class="label-help fa fa-question-circle" tooltip="{{'ogpSolrQueryTooltip' | translate}}"></span>
-                        <textarea id="solrQuery"class="form-control" data-ng-model="searchForm.solrQuery"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-1 pull-right">
-                    <button class="btn btn-primary" data-translate="">ogpSearchButton</button>
-                </div>
-            </div>
         </div>
-    </form>
+
+
+    </div><!-- search results -->
 </div>

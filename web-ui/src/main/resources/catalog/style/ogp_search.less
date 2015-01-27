@@ -1,5 +1,44 @@
-@import "gn.less";
 
-.ogp-search-page {
 
+@ogpImages: "../images";
+@ogpSearchSprite: "ogp-sprite.png";
+@ogpSearchIconSize: 17px;
+
+.ogp-search-results {
+  .columnType {
+    vertical-align: middle;
+  }
+
+  .typeIcon {
+    margin: auto;
+    height: @ogpSearchIconSize;
+    width: @ogpSearchIconSize;
+    display: inline-block;
+  }
+
+  .polygonIcon {
+    background: url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -101px -36px transparent;
+  		width: @ogpSearchIconSize;
+  		height: @ogpSearchIconSize;
+  }
+  .pointIcon {
+    background: url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -80px -36px transparent;
+  	width: @ogpSearchIconSize;
+  	height: @ogpSearchIconSize;
+  }
+  .lineIcon {
+    background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -10px -36px transparent;
+  	width: @ogpSearchIconSize;
+  	height: @ogpSearchIconSize;
+  }
+  .rasterIcon {
+    background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -35px -36px transparent;
+  	width: @ogpSearchIconSize;
+  	height: @ogpSearchIconSize;
+  }
+  .mapIcon {
+    background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -58px -36px transparent;
+    width: @ogpSearchIconSize;
+    height:@ogpSearchIconSize;
+  }
 }
