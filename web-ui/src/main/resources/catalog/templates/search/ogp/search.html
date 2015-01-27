@@ -144,33 +144,53 @@
         <div class="container">
             <h1 data-translate="">ogpSearchResultsHeading</h1>
             <span class="loading fa fa-spinner fa-spin" ng-show="searching"></span>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th data-translate="">ogpResultType</th>
-                        <th data-translate="">ogpResultName</th>
-                        <th data-translate="">ogpResultRepo</th>
-                        <th data-translate="">ogpResultMeta</th>
-                        <th data-translate="">ogpResultSelect</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr data-ng-repeat="result in searchResults">
-                        <td>
-                            <span class="typeIcon" data-ng-class="{polygonIcon: result.DataType === 'Polygon',
-                                pointIcon: result.DataType === 'Point', lineIcon: result.DataType === 'Line',
-                                mapIcon: result.DataType === 'Paper Map'}"></span>
-                        </td>
-                        <td>{{result.LayerDisplayName}}</td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-default btn-sm"><span class="fa fa-info"></span></button></td>
-                        <td><input type="radio" name="selectedMap"/></td>
-                    </tr>
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
 
-                </tbody>
+                    <table class="table table-hover results-table">
+                        <thead>
+                            <tr>
+                                <th data-translate="">ogpResultType</th>
+                                <th data-translate="">ogpResultName</th>
+                                <th data-translate="">ogpResultRepo</th>
+                                <th data-translate="">ogpResultMeta</th>
+                                <th data-translate="">ogpResultSelect</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="result in searchResults">
+                                <td>
+                                    <span class="typeIcon" data-ng-class="{polygonIcon: result.DataType === 'Polygon',
+                                        pointIcon: result.DataType === 'Point', lineIcon: result.DataType === 'Line',
+                                        mapIcon: result.DataType === 'Paper Map'}"></span>
+                                </td>
+                                <td>{{result.LayerDisplayName}}</td>
+                                <td>
+                                    <span class="repositoryIcon" data-ng-class="{tuftsIcon: result.Institution === 'Tufts',
+                                    mitIcon: result.Institution === 'MIT',
+                                    harvardIcon: result.Institution === 'Harvard',
+                                    berkeleyIcon: result.Institution === 'Bberkeley',
+                                    marylandIcon: result.Institution === 'Maryland',
+                                    unIcon: result.Institution === 'UN',
+                                    massgisIcon: result.Institution ==='MassGIS',
+                                    princetonIcon: result.Institution === 'Princeton',
+                                    columbiaIcon: result.Institution === 'Columbia'
 
 
-            </table>
+
+                                    }"></span>
+
+                                </td>
+                                <td><button type="button" class="btn btn-default btn-sm"><span class="fa fa-info"></span></button></td>
+                                <td><input type="radio" name="selectedMap"/></td>
+                            </tr>
+
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12 text-right">

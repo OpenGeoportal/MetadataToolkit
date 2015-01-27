@@ -2,7 +2,9 @@
 
 @ogpImages: "../images";
 @ogpSearchSprite: "ogp-sprite.png";
+@ogpInstitutionsSprite: "ogp-institutions.png";
 @ogpSearchIconSize: 17px;
+@ogpRepositoryIcon: 17px;
 
 .ogp-search-results {
   .columnType {
@@ -40,5 +42,48 @@
     background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -58px -36px transparent;
     width: @ogpSearchIconSize;
     height:@ogpSearchIconSize;
+  }
+
+  /* Institution icons */
+  .repositoryIcon {
+    margin: auto;
+    height: @ogpRepositoryIcon;
+    width: @ogpRepositoryIcon;
+    display: inline-block;
+  }
+
+  .tuftsIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -33px -10px transparent;
+  }
+  .mitIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -129px -10px transparent;
+  }
+  .harvardIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -79px -10px transparent;
+  }
+  .berkeleyIcon{
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -35px -35px transparent;
+  }
+  .marylandIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -12px -35px transparent;
+  }
+  .unIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -10px -10px transparent;
+  }
+  .massgisIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -102px -10px transparent;
+  }
+  .princetonIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -56px -10px transparent;
+  }
+  .columbiaIcon {
+    background: url("@{ogpImages}/src_columbia.png") no-repeat transparent;
+  }
+
+
+  .results-table {
+    display: block;
+    max-height: 500px;
+    overflow-y: scroll;
   }
 }
