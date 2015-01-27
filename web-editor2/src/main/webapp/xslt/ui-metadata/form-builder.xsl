@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:gn="http://www.fao.org/geonetwork"
-                xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
-                xmlns:java-xsl-util="java:org.fao.geonet.util.XslUtil"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/"
-                extension-element-prefixes="saxon" exclude-result-prefixes="#all"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:schemaLocation="http://www.fao.org/geonetwork ">
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:gn="http://www.fao.org/geonetwork"
+  xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
+  xmlns:java-xsl-util="java:org.fao.geonet.util.XslUtil"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/"
+  extension-element-prefixes="saxon" exclude-result-prefixes="#all">
   <!-- Build the form for creating HTML elements. -->
 
   <xsl:import href="../common/base-variables-metadata.xsl"/>
@@ -46,25 +44,25 @@
     <xsl:param name="hidden" required="no" as="xs:boolean" select="false()"/>
     <xsl:param name="editInfo" required="no"/>
     <xsl:param name="parentEditInfo" required="no"/>
-
+    
     <!-- The fields matching all element attributes.
     Rendered hidden in a block below the input. -->
     <xsl:param name="attributesSnippet" required="no"/>
-
+    
     <!-- Force displaying attributes even if $isDisplayingAttributes
     global variable is not set to true. This could be useful when the attributes
     are important for the element. eg. gmx:FileName -->
     <xsl:param name="forceDisplayAttributes" required="no" as="xs:boolean" select="false()"/>
-
+    
     <!-- A list of values - could be an helper list for example. -->
     <xsl:param name="listOfValues" select="''"/>
-
+    
     <!-- Disable all form fields included in a section based on an XLink.
     It could be relevant to investigate if this check should be done on
     only element potentially using XLink and not all of them. 
     This may have performance inpact? -->
     <xsl:param name="isDisabled" select="ancestor-or-self::node()[@xlink:href]"/>
-
+    
     <!-- Define if the language fields should be displayed 
     with the selector or below each other. -->
     <xsl:param name="toggleLang" required="no" as="xs:boolean" select="false()"/>
@@ -84,7 +82,7 @@
     <xsl:variable name="isRequired" as="xs:boolean">
       <xsl:choose>
         <xsl:when
-                test="($parentEditInfo and $parentEditInfo/@min = 1 and $parentEditInfo/@max = 1) or
+          test="($parentEditInfo and $parentEditInfo/@min = 1 and $parentEditInfo/@max = 1) or 
           (not($parentEditInfo) and $editInfo and $editInfo/@min = 1 and $editInfo/@max = 1)">
           <xsl:value-of select="true()"/>
         </xsl:when>
@@ -118,10 +116,10 @@
       </xsl:when>
       <xsl:otherwise>
         <div class="form-group gn-field gn-{substring-after(name(), ':')} {if ($isRequired) then 'gn-required' else ''} {if ($isFirst) then '' else 'gn-extra-field'}"
-             id="gn-el-{$editInfo/@ref}">
+            id="gn-el-{$editInfo/@ref}">
           <label
-                  for="gn-field-{$editInfo/@ref}"
-                  class="col-sm-2 control-label">
+              for="gn-field-{$editInfo/@ref}"
+              class="col-sm-2 control-label">
             <xsl:value-of select="$label"/>
           </label>
 
@@ -131,12 +129,12 @@
               <xsl:attribute name="data-main-language" select="$metadataLanguage"/>
               <xsl:attribute name="data-expanded" select="$toggleLang"/>
             </xsl:if>
-
+            
             <xsl:choose>
               <xsl:when test="$isMultilingual">
                 <xsl:for-each select="$value/values/value">
                   <xsl:sort select="@lang"/>
-
+                  
                   <xsl:call-template name="render-form-field">
                     <xsl:with-param name="name" select="@ref"/>
                     <xsl:with-param name="lang" select="@lang"/>
@@ -165,14 +163,15 @@
                 </xsl:call-template>
               </xsl:otherwise>
             </xsl:choose>
-
-
+            
+            
+            
             <xsl:call-template name="render-form-field-control-move">
               <xsl:with-param name="elementEditInfo" select="$parentEditInfo"/>
               <xsl:with-param name="domeElementToMoveRef" select="$editInfo/@ref"/>
             </xsl:call-template>
-
-
+            
+            
             <xsl:if test="$attributesSnippet">
               <xsl:variable name="cssDefaultClass" select="'well well-sm'"/>
               <div class="{$cssDefaultClass} 
@@ -181,12 +180,10 @@
                 <xsl:copy-of select="$attributesSnippet"/>
               </div>
             </xsl:if>
-
+            
             <xsl:if test="$errors">
               <xsl:for-each select="$errors/errors/error">
-                <span class="help-block text-danger">
-                  <xsl:value-of select="."/>
-                </span>
+                <span class="help-block text-danger"><xsl:value-of select="."/></span>
               </xsl:for-each>
             </xsl:if>
           </div>
@@ -232,19 +229,16 @@
     <!-- XPath is added as data attribute for client side references 
     to get help or inline editing ? -->
     <xsl:param name="xpath" required="no"/>
-    <xsl:param name="attributesSnippet" required="no">
-      <null/>
-    </xsl:param>
+    <xsl:param name="attributesSnippet" required="no"><null/></xsl:param>
     <xsl:param name="isDisabled" select="ancestor::node()[@xlink:href]"/>
 
 
     <xsl:variable name="hasXlink" select="@xlink:href"/>
 
-    <fieldset id="{concat('gn-el-', $editInfo/@ref)}"
-              class="{if ($hasXlink) then 'gn-has-xlink' else ''} gn-{substring-after(name(), ':')}">
+    <fieldset id="{concat('gn-el-', $editInfo/@ref)}" 
+      class="{if ($hasXlink) then 'gn-has-xlink' else ''} gn-{substring-after(name(), ':')}">
 
-      <legend class="{$cls}" data-gn-field-tooltip="{$schema}|{name()}|{name(..)}|" data-toggle="tooltip"
-              data-placement="top" title="Toggle expand / collapse">
+      <legend class="{$cls}" data-gn-field-tooltip="{$schema}|{name()}|{name(..)}|" data-toggle="tooltip" data-placement="top" title="Toggle expand / collapse">
         <xsl:if test="$xpath and $withXPath">
           <xsl:attribute name="data-gn-xpath" select="$xpath"/>
         </xsl:if>
@@ -256,8 +250,8 @@
             <xsl:with-param name="editInfo" select="$editInfo"/>
           </xsl:call-template>
         </xsl:if>
-
-
+        
+        
         <xsl:call-template name="render-form-field-control-move">
           <xsl:with-param name="elementEditInfo" select="$editInfo"/>
           <xsl:with-param name="domeElementToMoveRef" select="$editInfo/@ref"/>
@@ -288,14 +282,15 @@
     <xsl:param name="editInfo"/>
 
     <i class="btn fa fa-times text-danger pull-right"
-       data-ng-click="remove({$editInfo/@ref}, {$editInfo/@parent})"
-       data-ng-mouseenter="highlightRemove({$editInfo/@ref})"
-       data-ng-mouseleave="unhighlightRemove({$editInfo/@ref})"
-       data-toggle="tooltip" data-placement="top" title="Delete"/>
+      data-ng-click="remove({$editInfo/@ref}, {$editInfo/@parent})"
+      data-ng-mouseenter="highlightRemove({$editInfo/@ref})"
+      data-ng-mouseleave="unhighlightRemove({$editInfo/@ref})"
+      data-toggle="tooltip" data-placement="top" title="{{{{'deleteFieldSet' | translate}}}}"/>
 
   </xsl:template>
-
-
+  
+  
+  
   <!-- Render element based on a template defined in config-editor.xml
   -->
   <xsl:template name="render-element-template-field">
@@ -321,7 +316,7 @@
 
     <xsl:variable name="tagId" select="generate-id()"/>
 
-    <!-- <xsl:message>!render-element-template-field <xsl:copy-of select="$keyValues"/>
+  <!-- <xsl:message>!render-element-template-field <xsl:copy-of select="$keyValues"/>
       <xsl:value-of select="$name"/>/tpl:
       <xsl:copy-of select="$template"/>/
       <xsl:value-of select="$id"/>/
@@ -353,7 +348,7 @@
             <label>
               <input type="checkbox"
                      id="gn-template-unset-{$tagId}"
-                     checked="checked"/>
+                      checked="checked"/>
               <xsl:value-of select="$isMissingLabel"/>
             </label>
           </div>
@@ -398,12 +393,9 @@
               The directive takes care of setting values. -->
               <xsl:for-each select="$template/values/key">
                 <xsl:variable name="valueLabelKey" select="@label"/>
-                <xsl:variable name="helper"
-                              select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/helper else ''"/>
-                <xsl:variable name="codelist"
-                              select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/codelist else ''"/>
-                <xsl:variable name="readonly"
-                              select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/readonly else ''"/>
+                <xsl:variable name="helper" select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/helper else ''"/>
+                <xsl:variable name="codelist" select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/codelist else ''"/>
+                <xsl:variable name="readonly" select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/readonly else ''"/>
 
                 <!-- Only display label if more than one key to match -->
                 <xsl:if test="count($template/values/key) > 1">
@@ -439,16 +431,14 @@
                     </select>
                   </xsl:when>
                   <xsl:when test="@use = 'checkbox'">
-                    <span class="pull-left">
+                    <span class="pull-left" >
                       <input type="checkbox"
                              data-gn-field-tooltip="{$schema}|{@tooltip}"
                              id="{$id}_{@label}">
                         <xsl:if test="$readonly = 'true'">
                           <xsl:attribute name="disabled"/>
                         </xsl:if>
-                      </input>
-                      &#160;
-                    </span>
+                       </input>&#160;</span>
                   </xsl:when>
                   <xsl:when test="@use = 'gn-date-picker'">
                     <input class="form-control"
@@ -587,9 +577,9 @@
       <div class="form-group gn-field {if ($isRequired) then 'gn-required' else ''} {if ($isFirst) then '' else 'gn-extra-field'} gn-add-field"
            id="gn-el-{$id}">
         <label class="col-sm-2 control-label"
-               data-gn-field-tooltip="{$schema}|{$qualifiedName}|{name(..)}|">
+          data-gn-field-tooltip="{$schema}|{$qualifiedName}|{name(..)}|">
           <xsl:if test="normalize-space($label) != ''">
-            <xsl:value-of select="$label"/>
+                  <xsl:value-of select="$label"/>
           </xsl:if>
         </label>
         <div class="col-sm-9">
@@ -604,30 +594,30 @@
                   If only one choice, make a simple button
             -->
             <xsl:when test="count($childEditInfo/gn:choose) = 1">
-              <xsl:for-each select="$childEditInfo/gn:choose">
-                <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
-
-                <i type="button" class="btn btn-default fa fa-plus gn-add"
-                   title="{$label/description}"
-                   data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'replaceWith');">
-                </i>
-              </xsl:for-each>
+                  <xsl:for-each select="$childEditInfo/gn:choose">
+                    <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
+                    
+                    <i type="button" class="btn btn-default fa fa-plus gn-add" 
+                    title="{$label/description}"
+                    data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'replaceWith');">
+                    </i>
+                  </xsl:for-each>
             </xsl:when>
             <!-- 
                   If many choices, make a dropdown button -->
             <xsl:when test="count($childEditInfo/gn:choose) > 1">
               <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown">
-                  <span class="space"/>
+                  <span/>
                   <span class="caret"/>
                 </button>
                 <ul class="dropdown-menu">
                   <xsl:for-each select="$childEditInfo/gn:choose">
                     <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
-
+                    
                     <li title="{$label/description}">
                       <a
-                              data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
+                        data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
                         <xsl:value-of select="$label/label"/>
                       </a>
                     </li>
@@ -656,8 +646,8 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <i class="btn btn-default fa fa-plus gn-add"
-                     data-ng-click="add({$parentEditInfo/@ref}, '{concat(@prefix, ':', @name)}', '{$id}', 'before');"
-                          />
+                    data-ng-click="add({$parentEditInfo/@ref}, '{concat(@prefix, ':', @name)}', '{$id}', 'before');"
+                  />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -690,7 +680,7 @@
 
     <!-- Get variable from attribute (eg. codelist) or node (eg. gco:CharacterString).-->
     <xsl:variable name="valueToEdit"
-                  select="if ($value/*) then $value/text() else $value"/>
+      select="if ($value/*) then $value/text() else $value"/>
 
     <!-- If a form field has suggestion list in helper 
     then the element is hidden and the helper directive is added.
@@ -702,8 +692,8 @@
     <xsl:choose>
       <xsl:when test="$type = 'textarea'">
         <textarea class="form-control {if ($lang) then 'hidden' else ''}"
-                  id="gn-field-{$editInfo/@ref}" name="_{$name}"
-                  data-gn-autogrow="">
+          id="gn-field-{$editInfo/@ref}" name="_{$name}"
+          data-gn-autogrow="">
           <xsl:if test="$isRequired">
             <xsl:attribute name="required" select="'required'"/>
           </xsl:if>
@@ -814,14 +804,14 @@
         -->
         <xsl:variable name="elementId" select="concat('gn-field-', $editInfo/@ref)"/>
         <input
-                id="{$elementId}"
-                name="_{$name}"
-                type="hidden"
-                value="{$valueToEdit}"/>
+          id="{$elementId}" 
+          name="_{$name}"
+          type="hidden"
+          value="{$valueToEdit}"/>
         <!-- FIXME : some JS here. Move to a directive ?-->
-        <input class=""
-               onclick="$('#{$elementId}').val(this.checked)"
-               type="checkbox">
+        <input class="" 
+          onclick="$('#{$elementId}').val(this.checked)"
+          type="checkbox">
           <xsl:if test="$valueToEdit = 'true'">
             <xsl:attribute name="checked">checked</xsl:attribute>
           </xsl:if>
@@ -831,14 +821,14 @@
         </input>
       </xsl:when>
       <xsl:otherwise>
-
+        
         <xsl:variable name="isDirective" select="starts-with($type, 'data-')"/>
-
+        
         <xsl:variable name="input">
-          <input class="form-control {if ($lang) then 'hidden' else ''}"
-                 id="gn-field-{$editInfo/@ref}"
-                 name="_{$name}"
-                 value="{normalize-space($valueToEdit)}">
+          <input class="form-control {if ($lang) then 'hidden' else ''}" 
+            id="gn-field-{$editInfo/@ref}" 
+            name="_{$name}" 
+            value="{normalize-space($valueToEdit)}">
             <!-- If type is a directive -->
             <xsl:if test="$isDirective">
               <xsl:attribute name="{$type}"/>
@@ -906,23 +896,22 @@
     <xsl:param name="dataType" as="xs:string" required="no" select="'text'"/>
     <xsl:param name="listOfValues" as="node()"/>
     <xsl:param name="tooltip" as="xs:string" required="no" select="''"/>
-
+    
     <!-- 
     The helper config to pass to the directive in JSON format
     -->
     <textarea id="{$elementRef}_config" class="hidden">
       <xsl:copy-of select="java-xsl-util:xmlToJson(
-        saxon:serialize($listOfValues, 'default-serialize-mode'))"/>
-    </textarea>
+        saxon:serialize($listOfValues, 'default-serialize-mode'))"/></textarea>
     <div
-            data-gn-editor-helper="{$listOfValues/@editorMode}"
-            data-ref="{$elementRef}"
-            data-type="{$dataType}"
-            data-related-element="{if ($listOfValues/@rel != '')
+      data-gn-editor-helper="{$listOfValues/@editorMode}"
+      data-ref="{$elementRef}"
+      data-type="{$dataType}"
+      data-related-element="{if ($listOfValues/@rel != '')
       then $relatedElement else ''}"
-            data-related-attr="{if ($listOfValues/@relAtt)
+      data-related-attr="{if ($listOfValues/@relAtt) 
       then $relatedElementRef else ''}"
-            data-tooltip="{$tooltip}">
+      data-tooltip="{$tooltip}">
     </div>
   </xsl:template>
 
@@ -934,7 +923,7 @@
     <xsl:param name="editInfo"/>
     <xsl:param name="parentEditInfo" required="no"/>
     <xsl:if
-            test="($parentEditInfo and
+      test="($parentEditInfo and 
                      ($parentEditInfo/@del = 'true' or 
                      $parentEditInfo/@min != 1)
                    ) or 
@@ -942,15 +931,15 @@
                    ($editInfo/@del = 'true' or 
                    $editInfo/@min != 1)
                    ))">
-
+      
       <xsl:variable name="elementToRemove" select="if ($parentEditInfo) then 
         $parentEditInfo else $editInfo"/>
-
+      
       <i class="btn fa fa-times text-danger gn-control pull-right"
-         data-ng-click="remove({$elementToRemove/@ref}, {$elementToRemove/@parent}, {$editInfo/@ref})"
-         data-ng-mouseenter="highlightRemove({$editInfo/@ref})"
-         data-ng-mouseleave="unhighlightRemove({$editInfo/@ref})"
-         data-toggle="tooltip" data-placement="top" title="Delete"/>
+        data-ng-click="remove({$elementToRemove/@ref}, {$elementToRemove/@parent}, {$editInfo/@ref})"
+        data-ng-mouseenter="highlightRemove({$editInfo/@ref})"
+        data-ng-mouseleave="unhighlightRemove({$editInfo/@ref})"
+        data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}"/>
     </xsl:if>
   </xsl:template>
 
@@ -965,27 +954,29 @@
     <!-- Add icon for last element of its kind -->
     <xsl:if test="$parentEditInfo and $parentEditInfo/@add = 'true' and not($parentEditInfo/@down)">
       <i class="btn btn-default fa fa-plus gn-add"
-         data-ng-click="add({$parentEditInfo/@parent}, '{$name}', {$editInfo/@ref})"/>
+        data-ng-click="add({$parentEditInfo/@parent}, '{$name}', {$editInfo/@ref})"/>
     </xsl:if>
   </xsl:template>
+
+
 
 
   <!-- Template to render up and down control. -->
   <xsl:template name="render-form-field-control-move">
     <xsl:param name="elementEditInfo"/>
     <xsl:param name="domeElementToMoveRef" required="no" select="''"/>
-
+    
     <xsl:if test="not($viewConfig/@upAndDownControlHidden)">
       <div class="gn-move">
         <xsl:variable name="elementToMoveRef" select="if ($elementEditInfo) then $elementEditInfo/@ref else ''"/>
-        <a class="fa fa-angle-up {if ($elementEditInfo and $elementEditInfo/@up = 'true') then '' else 'invisible'}"
-           data-gn-editor-control-move="{$elementToMoveRef}"
-           data-domelement-to-move="{$domeElementToMoveRef}"
-           data-direction="up" href=""></a>
-        <a class="fa fa-angle-down {if ($elementEditInfo and $elementEditInfo/@down = 'true') then '' else 'invisible'}"
-           data-gn-editor-control-move="{$elementToMoveRef}"
-           data-domelement-to-move="{$domeElementToMoveRef}"
-           data-direction="down" href=""></a>
+        <a class="fa fa-angle-up {if ($elementEditInfo and $elementEditInfo/@up = 'true') then '' else 'invisible'}" 
+          data-gn-editor-control-move="{$elementToMoveRef}"
+          data-domelement-to-move="{$domeElementToMoveRef}"
+          data-direction="up" href=""></a>
+        <a class="fa fa-angle-down {if ($elementEditInfo and $elementEditInfo/@down = 'true') then '' else 'invisible'}" 
+          data-gn-editor-control-move="{$elementToMoveRef}"
+          data-domelement-to-move="{$domeElementToMoveRef}"
+          data-direction="down" href=""></a>
       </div>
     </xsl:if>
   </xsl:template>
@@ -996,19 +987,19 @@
   -->
   <xsl:template mode="render-for-field-for-attribute" match="@*">
     <xsl:param name="ref"/>
-
+    
     <xsl:variable name="attributeName" select="name()"/>
     <xsl:variable name="attributeValue" select="."/>
     <xsl:variable name="attributeSpec" select="../gn:attribute[@name = $attributeName]"/>
-
+    
     <xsl:variable name="directive"
-                  select="gn-fn-metadata:getFieldType($editorConfig, name(),
+      select="gn-fn-metadata:getFieldType($editorConfig, name(), 
       name(..))"/>
-
+    
     <!-- Form field name escaping ":" which will be invalid character for
     Jeeves request parameters. -->
     <xsl:variable name="fieldName" select="concat('_', $ref, '_', replace($attributeName, ':', 'COLON'))"/>
-
+    
     <div class="form-group" id="gn-attr-{$fieldName}">
       <label class="col-sm-4">
         <xsl:value-of select="gn-fn-metadata:getLabel($schema, $attributeName, $labels)/label"/>
@@ -1017,20 +1008,19 @@
         <xsl:if test="$directive">
           <xsl:attribute name="{$directive}"/>
         </xsl:if>
-
+        
         <xsl:choose>
           <xsl:when test="$attributeSpec/gn:text">
-            <xsl:variable name="attributeCodeList"
-                          select="gn-fn-metadata:getCodeListValues($schema, $attributeName, $codelists)"/>
+            <xsl:variable name="attributeCodeList" select="gn-fn-metadata:getCodeListValues($schema, $attributeName, $codelists)"/>
 
             <select class="" name="{$fieldName}">
               <xsl:for-each select="$attributeSpec/gn:text">
                 <xsl:variable name="optionValue" select="@value"/>
-
+                
                 <!-- Check if a translation is available for the attribute value -->
-                <xsl:variable name="label"
-                              select="$attributeCodeList/entry[code = $optionValue]/label"/>
-
+                <xsl:variable name="label" 
+                  select="$attributeCodeList/entry[code = $optionValue]/label"/>
+                
                 <option value="{$optionValue}">
                   <xsl:if test="$optionValue = $attributeValue">
                     <xsl:attribute name="selected"/>
@@ -1047,22 +1037,21 @@
         </xsl:choose>
       </div>
       <div class="col-sm-1">
-        <i class="btn pull-right fa fa-times text-danger" data-ng-click="removeAttribute('{$fieldName}')"
-           data-toggle="tooltip" data-placement="top" title="Delete"/>
+          <i class="btn pull-right fa fa-times text-danger" data-ng-click="removeAttribute('{$fieldName}')" data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}"/>
       </div>
     </div>
   </xsl:template>
-
-
+  
+  
   <!-- 
   Ignore some internal attributes and do not allow to apply this mode
   to a node (only for gn:attribute, see next template).
   -->
-  <xsl:template mode="render-for-field-for-attribute"
-                match="@gn:xsderror|@gn:addedObj|
+  <xsl:template mode="render-for-field-for-attribute" 
+    match="@gn:xsderror|@gn:addedObj|
           @min|@max|@name|@del|@add|@id|@uuid|@ref|@parent|@up|@down" priority="2"/>
-
-
+  
+  
   <!-- 
     Add attribute control
   <geonet:attribute 
@@ -1075,34 +1064,34 @@
                   
    TODO: externalize exception ?
   -->
-  <xsl:template mode="render-for-field-for-attribute"
-                match="gn:attribute[not(@name = ('ref', 'parent', 'id', 'uuid', 'type', 'uuidref',
+  <xsl:template mode="render-for-field-for-attribute" 
+    match="gn:attribute[not(@name = ('ref', 'parent', 'id', 'uuid', 'type', 'uuidref', 
     'xlink:show', 'xlink:actuate', 'xlink:arcrole', 'xlink:role', 'xlink:title', 'xlink:href'))]" priority="4">
     <xsl:param name="ref"/>
     <xsl:param name="insertRef" select="''"/>
 
     <xsl:variable name="attributeLabel" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
     <button type="button" class="btn btn-link btn-xs"
-            data-ng-click="add('{$ref}', '{@name}', '{$insertRef}', null, true)"
-            title="{$attributeLabel/description}">
+      data-ng-click="add('{$ref}', '{@name}', '{$insertRef}', null, true)"
+      title="{$attributeLabel/description}">
       <i class="fa fa-plus"/>
       <xsl:value-of select="$attributeLabel/label"/>
     </button>
   </xsl:template>
-
+  
 
   <!-- Render batch process directive action -->
   <xsl:template name="render-batch-process-button">
     <xsl:param name="process-name"/>
     <xsl:param name="process-params"/>
     <!-- TODO: Could be relevant to only apply process to the current thesaurus -->
-
+    
     <div class="row form-group gn-field gn-extra-field">
       <div class="col-xs-10 col-xs-offset-2">
         <span data-gn-batch-process-button="{$process-name}"
-              data-params="{$process-params}"
-              data-name="{$strings/*[name() = $process-name]}"
-              data-help="{$strings/*[name() = concat($process-name, 'Help')]}"/>
+          data-params="{$process-params}"
+          data-name="{$strings/*[name() = $process-name]}"
+          data-help="{$strings/*[name() = concat($process-name, 'Help')]}"/>
       </div>
     </div>
   </xsl:template>

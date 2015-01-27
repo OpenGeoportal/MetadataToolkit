@@ -51,6 +51,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.add.form!?.*" access="hasRole('Editor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/xml.metadata.admin.form!?.*" access="hasRole('Editor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/xml.metadata.batch.update.privileges!?.*" access="hasRole('Editor')"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.publish!?.*" access="hasRole('Editor')"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.unpublish!?.*" access="hasRole('Editor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.batch.admin.form!?.*" access="hasRole('Editor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.version!?.*" access="hasRole('Editor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.batch.version!?.*" access="hasRole('Editor')"></sec:intercept-url>
@@ -188,13 +190,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.service.extract!?.*" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/robots.txt" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/robots.txt" access="permitAll"></sec:intercept-url>
-
-                <!-- Formatter services -->
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.formatter.html!?.*" access="permitAll"></sec:intercept-url>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.formatter.xml!?.*" access="permitAll"></sec:intercept-url>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.formatter.pdf!?.*" access="permitAll"></sec:intercept-url>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.formatter.resource!?.*" access="permitAll"></sec:intercept-url>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.formatter.list!?.*" access="permitAll"></sec:intercept-url>
 
                 <!-- Region services -->
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/xml.region.get!?.*" access="permitAll"></sec:intercept-url>

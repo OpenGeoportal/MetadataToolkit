@@ -162,27 +162,13 @@
     <filter-mapping>
         <filter-name>resources</filter-name>
         <url-pattern>/images/logos/*</url-pattern>
+        <url-pattern>/images/harvesting/*</url-pattern>
+        <url-pattern>/xml/schemas/*</url-pattern>
+        <url-pattern>/images/statTmp/*</url-pattern>
+        <url-pattern>/htmlcache/*</url-pattern>
+        <url-pattern>/images/css/*</url-pattern>
     </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>resources</filter-name>
-        <url-pattern>/images/harvesting/*</url-pattern>
-    </filter-mapping>
-    
-    <filter-mapping>
-        <filter-name>resources</filter-name>
-        <url-pattern>/xml/schemas/*</url-pattern>
-    </filter-mapping>
-    
-    <filter-mapping>
-        <filter-name>resources</filter-name>
-        <url-pattern>/images/statTmp/*</url-pattern>
-    </filter-mapping>
-    
-    <filter-mapping>
-        <filter-name>resources</filter-name>
-        <url-pattern>/htmlcache/*</url-pattern>
-    </filter-mapping>
 
     <!-- Print servlet -->
     <servlet>
