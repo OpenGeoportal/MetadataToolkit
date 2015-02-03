@@ -42,6 +42,7 @@ public class OgpQuery {
                 searchParameters.getDateSolrTimestampTo());
         buildSimpleFilterQuery(nvps, OgpRecord.LAYER_ID, searchParameters.getOgpLayerId());
         buildSimpleFilterQuery(nvps, OgpRecord.ORIGINATOR, searchParameters.getOriginator());
+        buildSimpleFilterQuery(nvps, OgpRecord.PLACE_KEYWORDS, searchParameters.getPlaceKeyword());
 
         if (StringUtils.isNotBlank(searchParameters.getThemeKeyword())) {
             nvps.add(new BasicNameValuePair(Q, searchParameters.getThemeKeyword()));
