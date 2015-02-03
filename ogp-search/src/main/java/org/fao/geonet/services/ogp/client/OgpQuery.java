@@ -46,7 +46,7 @@ public class OgpQuery {
         if (StringUtils.isNotBlank(searchParameters.getThemeKeyword())) {
             nvps.add(new BasicNameValuePair(Q, searchParameters.getThemeKeyword()));
         } else {
-            nvps.add(new BasicNameValuePair(Q, searchParameters.getThemeKeyword()));
+            nvps.add(new BasicNameValuePair(Q, "*"));
         }
         nvps.add(new BasicNameValuePair(QF, "LayerDisplayNameSynonyms^0.2 ThemeKeywordsSynonymsLcsh^0.1 PlaceKeywordsSynonyms^0.1"));
         buildSimpleFilterQueryFromArray(nvps, OgpRecord.INSTITUTION , searchParameters.getDataRepository());
