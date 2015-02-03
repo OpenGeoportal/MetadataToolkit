@@ -147,12 +147,12 @@
 
     <!--  Spring logging configuration -->
     <logger name="org.springframework">
-        <level value="WARN" />
+        <level value="DEBUG" />
         <appender-ref ref="consoleAppender" />
         <appender-ref ref="fileAppender" />
     </logger>
     <logger name="org.springframework.beans">
-        <level value="WARN" />
+        <level value="INFO" />
         <appender-ref ref="fileAppender" />
     </logger>
     <logger name="org.springframework.security">

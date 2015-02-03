@@ -22,8 +22,8 @@
             scope: {
               gnDateFormat: '@',
               model: '=ngModel',
-              id : '=gnId',
-              test: '='
+              id: '=gnId',
+              gnUseParsedDateInModel: '='
             },
             templateUrl: '../../catalog/components/edit/datevalidator/partials/' +
                         'datevalidator.html',
@@ -33,14 +33,12 @@
               var inputEl   = elem[0].querySelector("[name]");
               // convert the native text box element to an angular element
               var inputNgEl = angular.element(inputEl);
-;
+
               // only apply the has-error class after the user leaves the text box
               inputNgEl.bind('blur', function() {
                 elem.toggleClass('has-error', formCtrl[scope.id].$invalid);
               });
 
-
-              console.log(elem);
 
               if (!scope.gnDateFormat) {
                 scope.gnDateFormat = 'YYYY-MM-DD';
@@ -65,8 +63,6 @@
                 var format = scope.gnDateFormat;
                 var dateTime = moment(date);
                 scope.inputString = dateTime.format(format);
-                console.log("Date returned by datepicker: " + date);
-                console.log("Formatted dated for input: " + scope.inputString);
               };
 
 
@@ -79,7 +75,12 @@
                 var parsedDate = moment(scope.inputString, scope.gnDateFormat)
                 if (parsedDate.isValid()) {
                   scope.dateFromDropdown = parsedDate.toDate();
-                  scope.model = scope.inputString;
+                  if (scope.gnUseParsedDateInModel) {
+                    scope.model = JSON.stringify(parsedDate);
+
+                  } else {
+                    scope.model = scope.inputString;
+                  }
                 } else {
                   scope.model = null;
                 }

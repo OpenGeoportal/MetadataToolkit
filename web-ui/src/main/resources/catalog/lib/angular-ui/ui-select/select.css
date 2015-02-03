@@ -137,10 +137,13 @@
 }
 
 .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+  display: inline;
   background-color: transparent !important; /* To prevent double background when disabled */
   border: none;
   outline: none;
   height: 1.666666em;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {

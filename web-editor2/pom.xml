@@ -39,11 +39,6 @@
           <version>3.2.0</version>
       </dependency>
 
-      <dependency>
-          <groupId>org.antlr</groupId>
-          <artifactId>antlr-runtime</artifactId>
-          <version>3.5.2</version>
-      </dependency>
     <dependency>
           <groupId>org.antlr</groupId>
           <artifactId>antlr-runtime</artifactId>
@@ -483,6 +478,12 @@
     <dependency>
       <groupId>org.geonetwork-opensource</groupId>
       <artifactId>schema-iso19115-3</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ogp-search</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

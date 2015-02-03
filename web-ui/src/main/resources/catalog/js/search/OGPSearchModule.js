@@ -5,6 +5,7 @@ goog.provide('ogp_search');
 goog.require('gn');
 goog.require('ogp_search_controller');
 
+
 var module = angular.module('ogp_search',
       ['gn', 'ngRoute',
       'ogp_search_controller']);

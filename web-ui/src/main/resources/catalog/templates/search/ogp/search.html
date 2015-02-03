@@ -42,22 +42,23 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label data-translate="">ogpTopic</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpTopicTooltip' | translate}}"></span>
-                            <ui-select id="topic" multiple ng-model="searchForm.topic" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
-                                <ui-select-match placeholder="{{'ogpSelectATopic'| translate}}">{{$item.label}}</ui-select-match>
-                                <ui-select-choices repeat="topic in topicList | filter: {label: $select.search}">
-                                    <div data-ng-bind-html="topic.label | highlight: $select.search"></div>
+                            <ui-select id="topic" multiple data-ng-model="searchForm.topic" data-theme="bootstrap"
+                                       data-ng-disabled="disabled" data-reset-search-input="true">
+                                <ui-select-match placeholder="{{'ogpSelectATopic'| translate}}">{{$item.label | translate}}</ui-select-match>
+                                <ui-select-choices repeat="topic in topicList | filter: {label: $select.search} track by topic.id">
+                                    <div data-ng-bind-html="topic.label | translate | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
-
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label data-translate="">ogpDataType</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpDataTypeTooltip' | translate}}"></span>
-                            <ui-select id="dataType" multiple ng-model="searchForm.dataType" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
-                                <ui-select-match placeholder="{{'ogpSelectADataType' | translate}}">{{$item.label}}</ui-select-match>
-                                <ui-select-choices repeat="item in dataTypeList | filter: {label: $select.search}">
-                                    <div data-ng-bind-html="item.label | highlight: $select.search"></div>
+                            <ui-select id="dataType" multiple data-ng-model="searchForm.dataType" data-theme="bootstrap"
+                                       data-ng-disabled="disabled" data-reset-search-input="true">
+                                <ui-select-match placeholder="{{'ogpSelectADataType' | translate}}">{{$item.label | translate}}</ui-select-match>
+                                <ui-select-choices repeat="item in dataTypeList | filter: {label: $select.search} track by item.id">
+                                    <div data-ng-bind-html="item.label  | translate | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
                         </div>
@@ -69,12 +70,12 @@
                         <div class="form-group">
                             <label data-translate="">ogpDateRangeOfContent</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpDateRangeOfContentTooltip' | translate}}"></span>
                             <div class="">
-                                <div class="col-md-6" data-gn-date-validator data-ng-model="searchForm.dateRangeContentFrom"
-                                     data-gn-id="'dateRangeContentFrom'">
+                                <div class="col-md-6" data-gn-date-validator data-gn-use-parsed-date-in-model="true"
+                                     data-ng-model="searchForm.dateRangeContentFrom" data-gn-id="'dateRangeContentFrom'">
                                 </div>
 
-                                <div class="col-md-6" data-gn-date-validator data-ng-model="searchForm.dateRangeContentTo"
-                                     data-gn-id="'dateRangeContentTo'">
+                                <div class="col-md-6" data-gn-date-validator data-gn-use-parsed-date-in-model="true"
+                                     data-ng-model="searchForm.dateRangeContentTo" data-gn-use-parsed-date-in-model="true" data-gn-id="'dateRangeContentTo'">
                                 </div>
                             </div>
                         </div>
@@ -82,9 +83,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label data-translate="">ogpDataRepository</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpDataRepository' | translate}}"></span>
-                            <ui-select id="dataType" multiple ng-model="searchForm.dataRepository" theme="select2" ng-disabled="disabled" class="form-control col-md-12">
+                            <ui-select id="dataType" multiple data-ng-model="searchForm.dataRepository" data-theme="bootstrap"
+                                       data-ng-disabled="disabled" data-reset-search-input="true">
                                 <ui-select-match placeholder="{{'ogpSelectARepository' | translate}}">{{$item.label}}</ui-select-match>
-                                <ui-select-choices repeat="item in dataRepositoryList | filter: {label: $select.search}">
+                                <ui-select-choices repeat="item in dataRepositoryList | filter: {label: $select.search} track by item.id">
                                     <div data-ng-bind-html="item.label | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
@@ -103,7 +105,7 @@
                             <div class="">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox"> <span data-translate="">ogpExcludeRestrictedData</span>
+                                        <input type="checkbox" data-ng-model="searchForm.excludeRestrictedData"> <span data-translate="">ogpExcludeRestrictedData</span>
                                     </label>
                                 </div>
                             </div>
@@ -111,15 +113,17 @@
                         <div class="row">
                             <label data-translate="">ogpSolrTimestamp</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpSolrTimestampTooltip' | translate}}"></span>
                             <div class="">
-                                <div class="col-md-5" data-gn-date-validator data-ng-model="searchForm.dateSolrTimestampFrom" data-gn-id="'dateSolrTimestampFrom'">
+                                <div class="col-md-5" data-gn-date-validator data-gn-use-parsed-date-in-model="true"
+                                     data-ng-model="searchForm.dateSolrTimestampFrom" data-gn-id="'dateSolrTimestampFrom'">
                                 </div>
 
                                 <div class="col-md-2">
                                     <span data-translate="">ogrTo</span>
                                 </div>
-                                <div class="col-md-5" data-gn-date-validator data-ng-model="searchForm.dateSolrTimestampTo"
-                                     data-gn-id="'dateSolrTimestampTo'">
+                                <div class="col-md-5" data-gn-date-validator data-gn-use-parsed-date-in-model="true"
+                                     data-ng-model="searchForm.dateSolrTimestampTo" data-gn-id="'dateSolrTimestampTo'">
                                 </div>
+                                {{searchForm.dateSolrTimestampTo.toJSON()}}
                             </div>
                         </div>
                     </div>
@@ -143,8 +147,14 @@
     <div data-ng-show="step === 'searchResults'" class="ogp-search-results">
         <div class="container">
             <h1 data-translate="">ogpSearchResultsHeading</h1>
-            <span class="loading fa fa-spinner fa-spin" data-ng-show="searching"></span>
-            <div class="row">
+            <div class="row" data-ng-show="searching">
+                <div class="col-md-offset-2 col-md-8">
+                    <span data-translate="">ogpSearching</span>
+                    <span class="loading fa fa-spinner fa-spin"></span>
+                </div>
+            </div>
+
+            <div class="row" data-ng-show="!searching">
                 <div class="col-md-offset-2 col-md-8">
 
                     <table class="table table-hover results-table">
