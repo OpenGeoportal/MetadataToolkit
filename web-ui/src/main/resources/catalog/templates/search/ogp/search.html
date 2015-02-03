@@ -154,7 +154,19 @@
                 </div>
             </div>
 
-            <div class="row" data-ng-show="!searching">
+            <div class="alert alert-warning" role="alert" data-ng-show="noResultsFound">
+                <strong data-translate="">ogpNoResultsFound</strong> <span data-translate="">ogpSearchAgain</span>
+            </div>
+            <div class="row" data-ng-show="!searching" data-ng-hide="noResultsFound">
+                <div class="col-md-offset-2 col-md-8">
+                    <h3>
+                        {{response.numFound}} <span data-translate="">ogpNumResultsFound</span>
+                    </h3>
+                </div>
+
+            </div>
+            <div class="row" data-ng-show="!searching" data-ng-hide="noResultsFound">
+
                 <div class="col-md-offset-2 col-md-8">
 
                     <table class="table table-hover results-table">

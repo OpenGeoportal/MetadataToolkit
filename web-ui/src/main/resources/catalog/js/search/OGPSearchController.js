@@ -17,6 +17,7 @@ module.controller('OgpSearchController', [
     function($scope, $filter, $http) {
       $scope.step = 'searchForm';
       $scope.searching = false;
+      $scope.noResultsFound = false;
       $scope.searchForm = {};
       $scope.topicList =[
         {"id": "farming", "label": "ogpTopicFarming"},
@@ -66,8 +67,14 @@ module.controller('OgpSearchController', [
 
         $http.post("ogp.dataTypes.search", formBean).
           success(function(data, status, headers, config){
+            if (data && data.response) {
+              $scope.response = data.response;
+            }
             if (data && data.response && data.response.docs) {
               $scope.searchResults = data.response.docs;
+            }
+            if (data && data.response && data.response.numFound == 0) {
+              $scope.noResultsFound = true;
             }
             console.log(data);
             $scope.searching = false;
@@ -83,13 +90,17 @@ module.controller('OgpSearchController', [
         $scope.searchResults = [];
         $scope.searching = false;
         $scope.step ="searchForm";
+        $scope.noResultsFound = false;
+        $scope.response = null;
       };
 
       $scope.newSearch = function() {
         $scope.searchResults = [];
         $scope.searching = false;
+        $scope.noResultsFound = false;
         $scope.searchForm = {};
         $scope.step ="searchForm";
+        $scope.response = null;
       };
 
       $scope.processSearchForm = function() {
