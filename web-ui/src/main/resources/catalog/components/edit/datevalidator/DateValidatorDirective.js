@@ -54,7 +54,19 @@
                   ngModel.$setValidity('validDate', true);
                 }
                 scope.buildDate();
+              });
 
+              scope.$watch('model', function(newVal){
+                if (newVal) {
+                  var dateTime = moment(newVal);
+                  var format = scope.gnDateFormat;
+                  var formattedDate = dateTime.format(format);
+                  if (formattedDate !== scope.inputString) {
+                    scope.inputString = formattedDate;
+                  }
+                } else {
+                  scope.inputString = null;
+                }
               });
 
               // Format date when datetimepicker is used.
