@@ -173,23 +173,23 @@
                     <table class="table table-hover results-table">
                         <thead>
                             <tr>
-                                <th class="col-md-1" data-translate="">ogpResultType</th>
+                                <th class="text-center col-md-1" data-translate="">ogpResultType</th>
                                 <th class="col-md-8" data-translate="">ogpResultName</th>
-                                <th class="col-md-1" data-translate="">ogpResultRepo</th>
-                                <th class="col-md-1" data-translate="">ogpResultMeta</th>
-                                <th class="col-md-1" data-translate="">ogpResultSelect</th>
+                                <th class="text-center col-md-1" data-translate="">ogpResultRepo</th>
+                                <th class="text-center col-md-1" data-translate="">ogpResultMeta</th>
+                                <th class="text-center col-md-1" data-translate="">ogpResultSelect</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr data-ng-repeat="result in searchResults">
-                                <td>
+                                <td class="text-center">
                                     <span class="typeIcon" data-ng-class="{polygonIcon: result.DataType === 'Polygon',
                                         pointIcon: result.DataType === 'Point', lineIcon: result.DataType === 'Line',
                                         rasterIcon: result.DataType === 'Raster', mapIcon: result.DataType === 'Paper Map'}" data-tooltip="{{result.DataType}}"
                                           aria-label="{{result.DataType}}"></span>
                                 </td>
                                 <td>{{result.LayerDisplayName}}</td>
-                                <td>
+                                <td class="text-center">
                                     <span class="repositoryIcon" data-ng-class="{tuftsIcon: result.Institution === 'Tufts',
                                     mitIcon: result.Institution === 'MIT',
                                     harvardIcon: result.Institution === 'Harvard',
@@ -202,8 +202,8 @@
                                     }" data-tooltip="{{result.Institution}}" aria-label="{{result.DataType}}"></span>
 
                                 </td>
-                                <td><button type="button" class="btn btn-default btn-sm"><span class="fa fa-info"></span></button></td>
-                                <td><input type="radio" name="selectedMap"/></td>
+                                <td class="text-center"><button type="button" class="btn btn-default btn-sm"><span class="fa fa-info"></span></button></td>
+                                <td class="text-center"><input type="radio" name="selectedMap"/></td>
                             </tr>
                         </tbody>
                     </table>
