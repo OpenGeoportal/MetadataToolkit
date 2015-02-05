@@ -6,15 +6,15 @@ goog.require('gn_date_picker_directive');
 goog.require('gn_date_validator_directive');
 
 var module = angular.module('ogp_search_controller',
-      ['ui.bootstrap.datetimepicker', 'gn_date_validator_directive',
+      ['gn_date_validator_directive',
       'ui.bootstrap', 'ui.select', 'ngSanitize']);
 
 /**
  * Controller for OpenGeoPortal search.
  */
 module.controller('OgpSearchController', [
-    '$scope', '$filter', '$http',
-    function($scope, $filter, $http) {
+    '$scope', '$filter', '$http', '$modal',
+    function($scope, $filter, $http, $modal) {
       $scope.step = 'searchForm';
       $scope.searching = false;
       $scope.noResultsFound = false;
@@ -129,6 +129,48 @@ module.controller('OgpSearchController', [
         return out;
       };
 
+      $scope.openMetadata = function(item) {
+        console.log(item);
+        var modalInstance = $modal.open({
+          templateUrl: '../../catalog/js/search/'
+            + 'partials/ogpMetadataPopup.html',
+          controller: 'OgpMetadataPopupController',
+          size: 'lg',
+          windowClass: 'modal-large',
+          resolve: {
+            document: function() {
+              return item;
+            }
+          }
+
+        });
+      };
+
 
     }]);
+
+module.controller('OgpMetadataPopupController', ['$scope', '$http', '$sce','$modalInstance', 'document',
+function($scope, $http, $sce, $modalInstance, document) {
+    $scope.document = document;
+
+    $scope.ok = function () {
+      $modalInstance.close();
+    };
+    $scope.layerId = $scope.document.LayerId;
+    $scope.metadataUrl = $sce.trustAsResourceUrl("ogp.dataTypes.getMetadata?layerId="+  $scope.layerId);
+
+
+    // retrieve the medatata from the server
+   /* $http.get("ogp.dataTypes.getMetadata", {
+      params: {layerId: $scope.document.LayerId}
+    }).success(function(data, status, headers, config) {
+        $scope.response = data;
+    }).
+    error(function(data, status, headers, config) {
+      console.log("Error retrieving metadata")
+    });
+*/
+
+}]);
+
 })();

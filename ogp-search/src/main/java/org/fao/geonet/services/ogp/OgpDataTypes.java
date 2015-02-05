@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
@@ -39,13 +40,17 @@ public class OgpDataTypes {
     }
     @RequestMapping(value = "/{lang}/ogp.dataTypes.search", produces = {
             MediaType.APPLICATION_JSON_VALUE})
-
     public @ResponseBody String processForm(@RequestBody OgpSearchFormBean formBean) throws IOException {
         OgpClient client = new OgpClient("http", "geodata.tufts.edu", 80, requestFactory);
         OgpQuery query = new OgpQuery(formBean);
         return client.executeQuery(query);
+    }
 
-
+    @RequestMapping(value = "/{lang}/ogp.dataTypes.getMetadata", produces = {
+            MediaType.TEXT_HTML_VALUE})
+    public @ResponseBody String getMetadata(@RequestParam(value = "layerId") String layerId) throws IOException {
+        OgpClient client = new OgpClient("http", "geodata.tufts.edu", 80, requestFactory);
+        return client.getMetadataAsHtml(layerId);
     }
 
 

@@ -24,11 +24,32 @@
  content: "\f054";
 }
 
+/*
+ Angular UI:
+   Original Bootstrap's CSS depends on empty href attributes to style cursors for several components
+   (pagination, tabs etc.). But in AngularJS adding empty href attributes to link tags will cause unwanted route
+   changes.This is why we need to remove empty href attributes from directive templates and as a result styling is not
+   applied correctly. The remedy is simple, just add the following styling to your application:
+
+      .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+*/
+.nav, .pagination, .carousel, .panel-title a {
+  cursor: pointer;
+}
+
+
 .bottom-buffer-md {
   margin-bottom: 20px;
 }
 
+   .modal-large {
+      max-height: 420px;
+      //overflow-y: auto;
+   }
+
 .ogp-search-results {
+
+  /** Add a max height for the modal body to show scroll bar */
 
 
   .columnType {

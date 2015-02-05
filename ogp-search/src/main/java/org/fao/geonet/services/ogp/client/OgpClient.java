@@ -38,6 +38,19 @@ public class OgpClient extends AbstractHttpRequest{
 
     }
 
+    /**
+     * Request remote OGP server a concrete metadata identifier and return its response as text.
+     * @param layerId
+     * @return the returned html from upstream OGP server
+     */
+    public String getMetadataAsHtml(String layerId) throws IOException {
+        addParam("id", layerId);
+        setAddress("/getMetadata");
+        HttpRequestBase httpMethod = setupHttpMethod();
+        httpMethod.addHeader(HttpHeaders.ACCEPT, ContentType.WILDCARD.getMimeType());
+
+        return executeAndReadResponse(httpMethod);
+    }
     private void addParameters(List<NameValuePair> parameters) {
         for (NameValuePair nvp : parameters) {
             super.addParam(nvp.getName(), nvp.getValue());
@@ -66,4 +79,6 @@ public class OgpClient extends AbstractHttpRequest{
             sentData     = getSentData(httpMethod);
         }
     }
+
+
 }
