@@ -20,9 +20,16 @@
              hrightRef: '@',
              dcRef: '@',
              lang: '=',
-             location: '@'
+             location: '@',
+             showRegionSelector: '@',
+             bbox: '='
            },
            link: function(scope, element, attrs) {
+             scope.bbox = scope.bbox || {};
+             scope.showRegion = scope.$eval(attrs.showRegionSelector);
+             if (scope.showRegion === undefined) {
+              scope.showRegion = true;
+             }
              scope.drawing = false;
              var mapRef = scope.htopRef || scope.dcRef;
              scope.mapId = 'map-drawbbox-' +
@@ -230,6 +237,17 @@
                  map.getView().fitExtent(scope.extent.map, map.getSize());
                });
              };
+
+
+             scope.$watch("extent.md", function(newValue) {
+              if (newValue) {
+                scope.bbox.minx = newValue[0];
+                scope.bbox.miny = newValue[1];
+                scope.bbox.maxx = newValue[2];
+                scope.bbox.maxy = newValue[3];
+              }
+             });
+
            }
          };
        }]);

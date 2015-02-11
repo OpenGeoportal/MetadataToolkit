@@ -4,7 +4,9 @@
     
       <!-- Header with projection selection, draw button and area list -->
       <form class="form-horizontal" role="form">
-        <div data-gn-region-picker=""></div>
+          <div data-ng-show="showRegion">
+              <div data-gn-region-picker=""></div>
+          </div>
       </form>
 
       <!-- Hidden field that match xml metadata schema -->

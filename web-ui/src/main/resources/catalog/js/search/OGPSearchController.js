@@ -4,10 +4,11 @@ goog.provide('ogp_search_controller');
 
 goog.require('gn_date_picker_directive');
 goog.require('gn_date_validator_directive');
+goog.require('gn_map');
 
 var module = angular.module('ogp_search_controller',
       ['gn_date_validator_directive',
-      'ui.bootstrap', 'ui.select', 'ngSanitize']);
+      'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive']);
 
 /**
  * Controller for OpenGeoPortal search.
@@ -15,10 +16,18 @@ var module = angular.module('ogp_search_controller',
 module.controller('OgpSearchController', [
     '$scope', '$filter', '$http', '$modal',
     function($scope, $filter, $http, $modal) {
+
+      $scope.searchForm = {};
+      $scope.initBbox = function() {
+        $scope.searchForm.minx = -180;
+        $scope.searchForm.miny = -90;
+        $scope.searchForm.maxx = 180;
+        $scope.searchForm.maxy = 90;
+     };
       $scope.step = 'searchForm';
       $scope.searching = false;
       $scope.noResultsFound = false;
-      $scope.searchForm = {};
+      $scope.initBbox();
       $scope.topicList =[
         {"id": "farming", "label": "ogpTopicFarming"},
         {"id": "biota", "label": "ogpTopicBiota"},
@@ -40,6 +49,8 @@ module.controller('OgpSearchController', [
         {"id": "transportation", "label": "ogpTopicTransportation"},
         {"id": "utilitiesCommunication", "label": "ogpTopicUtilitiesCommunication"}
        ];
+
+
 
       $scope.dataTypeList = [
         {"id": "POINT", "label": "ogpDataTypePOINT"},
@@ -99,6 +110,7 @@ module.controller('OgpSearchController', [
         $scope.searching = false;
         $scope.noResultsFound = false;
         $scope.searchForm = {};
+        $scope.initBbox();
         $scope.step ="searchForm";
         $scope.response = null;
       };
@@ -142,7 +154,31 @@ module.controller('OgpSearchController', [
               return item;
             }
           }
+        });
+      };
 
+      $scope.openMap = function() {
+        var modalInstance = $modal.open({
+          templateUrl: '../../catalog/js/search/'
+            + 'partials/ogpMapPopup.html',
+            controller: 'OgpMapController',
+            size: 'lg',
+            windowClass: 'map-popup',
+            resolve: {
+              minx: function() { return $scope.searchForm.minx},
+              miny: function() { return $scope.searchForm.miny},
+              maxx: function() { return $scope.searchForm.maxx},
+              maxy: function() { return $scope.searchForm.maxy}
+            }
+        });
+        modalInstance.result.then(function(bbox) {
+          console.log("Bbox returned to form: " + bbox);
+          if (bbox) {
+            $scope.searchForm.minx = bbox.minx;
+            $scope.searchForm.miny = bbox.miny;
+            $scope.searchForm.maxx = bbox.maxx;
+            $scope.searchForm.maxy = bbox.maxy;
+          }
         });
       };
 
@@ -187,5 +223,19 @@ module.directive('iframeSetDimentionsOnload', [function(){
                })
            }
        }}])
+
+
+module.controller('OgpMapController', ['$scope','$modalInstance', 'minx', 'miny', 'maxx', 'maxy',
+  function($scope, $modalInstance, minx, miny, maxx, maxy) {
+    $scope.bbox = {};
+    $scope.bbox.minx = minx;
+    $scope.bbox.miny = miny;
+    $scope.bbox.maxx = maxx;
+    $scope.bbox.maxy = maxy;
+    $scope.ok = function () {
+          $modalInstance.close($scope.bbox);
+        };
+}]);
+
 
 })();

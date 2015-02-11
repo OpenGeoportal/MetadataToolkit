@@ -17,10 +17,14 @@
                         <div class="form-group">
                             <label data-translate="">ogpGeographicExtent</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpGeographicExtentTooltip' | translate}}"></span>
                             <div class="form-control-static">
-                                <button class="btn btn-default ">
+                                <button class="btn btn-default" data-ng-click="openMap()">
                                     <span class="fa fa-globe"></span>
                                 </button>
                             </div>
+                            <span data-translate="">ogpEast</span>: {{searchForm.minx}}
+                            <span data-translate="">ogpNorth</span>: {{searchForm.maxy}}
+                            <span data-translate="">ogpWest</span>: {{searchForm.maxx}}
+                            <span data-translate="">ogpSouth</span>: {{searchForm.miny}}
                         </div>
                     </div>
                 </div>

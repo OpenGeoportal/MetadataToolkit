@@ -169,7 +169,8 @@
           data-hright-ref="_{gmd:eastBoundLongitude/gco:Decimal/gn:element/@ref}"
           data-hbottom-ref="_{gmd:southBoundLatitude/gco:Decimal/gn:element/@ref}"
           data-htop-ref="_{gmd:northBoundLatitude/gco:Decimal/gn:element/@ref}"
-          data-lang="lang"></div>
+          data-lang="lang"
+          data-bbox="bbox"></div>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>

@@ -21,6 +21,12 @@ public class OgpSearchFormBean {
     private String dateSolrTimestampFrom;
     private String dateSolrTimestampTo;
     private String solrQuery;
+    private Float minx;
+    private Float miny;
+    private Float maxx;
+    private Float maxy;
+
+
 
     public OgpSearchFormBean() {
         topic = new String[]{};
@@ -138,5 +144,37 @@ public class OgpSearchFormBean {
 
     public void setSolrQuery(String solrQuery) {
         this.solrQuery = solrQuery;
+    }
+
+    public Float getMinx() {
+        return minx;
+    }
+
+    public void setMinx(Float minx) {
+        this.minx = minx;
+    }
+
+    public Float getMiny() {
+        return miny;
+    }
+
+    public void setMiny(Float miny) {
+        this.miny = miny;
+    }
+
+    public Float getMaxx() {
+        return maxx;
+    }
+
+    public void setMaxx(Float maxx) {
+        this.maxx = maxx;
+    }
+
+    public Float getMaxy() {
+        return maxy;
+    }
+
+    public void setMaxy(Float maxy) {
+        this.maxy = maxy;
     }
 }
