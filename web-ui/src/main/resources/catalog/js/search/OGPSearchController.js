@@ -23,6 +23,7 @@ module.controller('OgpSearchController', [
         $scope.searchForm.miny = -90;
         $scope.searchForm.maxx = 180;
         $scope.searchForm.maxy = 90;
+        $scope.searchForm.useExtent = false;
      };
       $scope.step = 'searchForm';
       $scope.searching = false;
@@ -172,12 +173,13 @@ module.controller('OgpSearchController', [
             }
         });
         modalInstance.result.then(function(bbox) {
-          console.log("Bbox returned to form: " + bbox);
+
           if (bbox) {
             $scope.searchForm.minx = bbox.minx;
             $scope.searchForm.miny = bbox.miny;
             $scope.searchForm.maxx = bbox.maxx;
             $scope.searchForm.maxy = bbox.maxy;
+            $scope.searchForm.useExtent = true;
           }
         });
       };

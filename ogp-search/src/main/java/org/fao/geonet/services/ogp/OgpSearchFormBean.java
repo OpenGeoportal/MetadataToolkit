@@ -25,6 +25,7 @@ public class OgpSearchFormBean {
     private Float miny;
     private Float maxx;
     private Float maxy;
+    private boolean useExtent;
 
 
 
@@ -176,5 +177,13 @@ public class OgpSearchFormBean {
 
     public void setMaxy(Float maxy) {
         this.maxy = maxy;
+    }
+
+    public boolean isUseExtent() {
+        return useExtent;
+    }
+
+    public void setUseExtent(boolean useExtent) {
+        this.useExtent = useExtent;
     }
 }
