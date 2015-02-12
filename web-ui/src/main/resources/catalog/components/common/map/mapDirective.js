@@ -120,7 +120,7 @@
                style: boxStyle
              });
 
-             var map = new ol.Map({
+             scope.map = new ol.Map({
                layers: [
                  gnMap.getLayersFromConfig(),
                  bboxLayer
@@ -155,7 +155,7 @@
                });
              });
 
-             map.addInteraction(dragbox);
+             scope.map.addInteraction(dragbox);
 
              /**
               * Draw the map extent as a bbox onto the map.
@@ -190,10 +190,10 @@
               * - fit map extent
               */
              scope.$watch('gnCurrentEdit.version', function(newValue) {
-               map.setTarget(scope.mapId);
+               scope.map.setTarget(scope.mapId);
                drawBbox();
                if (gnMap.isValidExtent(scope.extent.map)) {
-                 map.getView().fitExtent(scope.extent.map, map.getSize());
+                 scope.map.getView().fitExtent(scope.extent.map, scope.map.getSize());
                }
              });
 
@@ -215,7 +215,7 @@
                reprojExtent('form', 'md');
                setDcOutput();
                drawBbox();
-               map.getView().fitExtent(scope.extent.map, map.getSize());
+               scope.map.getView().fitExtent(scope.extent.map, scope.map.getSize());
              };
 
              /**
@@ -234,7 +234,7 @@
                  reprojExtent('md', 'form');
                  setDcOutput();
                  drawBbox();
-                 map.getView().fitExtent(scope.extent.map, map.getSize());
+                 scope.map.getView().fitExtent(scope.extent.map, scope.map.getSize());
                });
              };
 
@@ -248,7 +248,11 @@
               }
              });
 
-           }
-         };
-       }]);
+             // To update size on first maps render
+             scope.$on('renderMap', function() {
+              scope.map.updateSize();
+
+              });
+         }
+       }}]);
 })();

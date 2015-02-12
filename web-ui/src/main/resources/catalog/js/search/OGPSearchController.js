@@ -14,8 +14,8 @@ var module = angular.module('ogp_search_controller',
  * Controller for OpenGeoPortal search.
  */
 module.controller('OgpSearchController', [
-    '$scope', '$filter', '$http', '$modal',
-    function($scope, $filter, $http, $modal) {
+    '$scope', '$filter', '$http', '$modal', '$rootScope', '$timeout',
+    function($scope, $filter, $http, $modal, $rootScope, $timeout) {
 
       $scope.searchForm = {};
       $scope.initBbox = function() {
@@ -182,6 +182,13 @@ module.controller('OgpSearchController', [
             $scope.searchForm.useExtent = true;
           }
         });
+
+        modalInstance.opened.then(function(){
+          $timeout(function() {
+            $rootScope.$broadcast('renderMap');
+            }, 500);
+        });
+
       };
 
 
@@ -234,9 +241,13 @@ module.controller('OgpMapController', ['$scope','$modalInstance', 'minx', 'miny'
     $scope.bbox.miny = miny;
     $scope.bbox.maxx = maxx;
     $scope.bbox.maxy = maxy;
+
+    $scope.mapId = Math.floor((Math.random()*100000) + 1);
+
     $scope.ok = function () {
-          $modalInstance.close($scope.bbox);
-        };
+      $modalInstance.close($scope.bbox);
+    };
+
 }]);
 
 
