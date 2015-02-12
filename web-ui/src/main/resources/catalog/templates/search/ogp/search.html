@@ -16,15 +16,18 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label data-translate="">ogpGeographicExtent</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpGeographicExtentTooltip' | translate}}"></span>
-                            <div class="form-control-static">
-                                <button class="btn btn-default" data-ng-click="openMap()">
-                                    <span class="fa fa-globe"></span>
-                                </button>
+                            <div>
+
+                                <div class="form-control-static" style="float:left;">
+                                    <button class="btn btn-default" data-ng-click="openMap()">
+                                        <span class="fa fa-globe"></span>
+                                    </button>
+                                </div>
+                                <span class="coords"><span class="fa fa-caret-up"></span><span data-translate="">ogpNorth</span>: {{searchForm.maxy | number: 4}}</span>
+                                <span class="coords"><span class="fa fa-caret-right"></span><span data-translate="">ogpEast</span>: {{searchForm.minx | number: 4}}</span>
+                                <span class="coords"><span class="fa fa-caret-down"></span><span data-translate="">ogpSouth</span>: {{searchForm.miny | number: 4}}</span>
+                                <span class="coords"><span class="fa fa-caret-left"></span><span data-translate="">ogpWest</span>: {{searchForm.maxx | number: 4}}</span>
                             </div>
-                            <span data-translate="">ogpEast</span>: {{searchForm.minx}}
-                            <span data-translate="">ogpNorth</span>: {{searchForm.maxy}}
-                            <span data-translate="">ogpWest</span>: {{searchForm.maxx}}
-                            <span data-translate="">ogpSouth</span>: {{searchForm.miny}}
                         </div>
                     </div>
                 </div>
@@ -105,15 +108,6 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" data-ng-model="searchForm.excludeRestrictedData"> <span data-translate="">ogpExcludeRestrictedData</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <label data-translate="">ogpSolrTimestamp</label><span class="label-help fa fa-question-circle" data-tooltip="{{'ogpSolrTimestampTooltip' | translate}}"></span>
                             <div class="">
@@ -141,7 +135,16 @@
                 </div>
 
                 <div class="row bottom-buffer-md">
-                    <div class="col-md-12 text-right">
+                    <div class="col-md-5">
+                        <div class="">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" data-ng-model="searchForm.excludeRestrictedData"> <span data-translate="">ogpExcludeRestrictedData</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 text-right">
                         <button class="btn btn-default" data-translate="" data-ng-click="newSearch()">ogpResetFormButton</button>
                         <button class="btn btn-primary" data-translate="" data-ng-click="triggerSearch()">ogpSearchButton</button>
                     </div>
