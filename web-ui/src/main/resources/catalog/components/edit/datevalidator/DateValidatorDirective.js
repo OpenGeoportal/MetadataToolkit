@@ -22,11 +22,13 @@
               gnDateFormat: '@',
               model: '=ngModel',
               id: '=gnId',
-              gnUseParsedDateInModel: '='
+              gnUseParsedDateInModel: '=',
+              ngDisabled: "=?"
             },
             templateUrl: '../../catalog/components/edit/datevalidator/partials/' +
                         'datevalidator.html',
             link: function(scope, elem, attr, required) {
+              scope.aElem = "#" + scope.id;
               var ngModel = required[0];
               var formCtrl = required[1];
               var inputEl   = elem[0].querySelector("[name]");
@@ -46,6 +48,14 @@
                 var isValid = moment(dateString, format).isValid();
                  return isValid;
               };
+
+             scope.$watch('ngDisabled', function watchDisabled(newVal) {
+                if (newVal) {
+                  elem.find(scope.aElem).removeAttr('data-toggle');
+                } else {
+                  elem.find(scope.aElem).attr('data-toggle', 'dropdown');
+                }
+              });
 
               scope.$watch('inputString', function(newVal) {
                 if (newVal && newVal.trim() !== "") {

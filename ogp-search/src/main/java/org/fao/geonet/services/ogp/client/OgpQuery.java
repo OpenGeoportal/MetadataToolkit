@@ -2,10 +2,13 @@ package org.fao.geonet.services.ogp.client;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.fao.geonet.services.ogp.OgpSearchFormBean;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +53,8 @@ public class OgpQuery {
         } else {
             nvps.add(new BasicNameValuePair(Q, "*"));
         }
+
+        // TODO add include restricted data to query
         nvps.add(new BasicNameValuePair(QF, "LayerDisplayNameSynonyms^0.2 ThemeKeywordsSynonymsLcsh^0.1 PlaceKeywordsSynonyms^0.1"));
         buildSimpleFilterQueryFromArray(nvps, OgpRecord.INSTITUTION , searchParameters.getDataRepository());
         buildSimpleFilterQueryFromArray(nvps, OgpRecord.DATA_TYPE, searchParameters.getDataType());
@@ -70,12 +75,32 @@ public class OgpQuery {
             buildGeographicQuery(nvps, searchParameters.getMinx(), searchParameters.getMiny(),
                     searchParameters.getMaxx(), searchParameters.getMaxy());
         }
+    }
 
 
 
+    public List<NameValuePair> getParametersUsingQueryString() {
+        List<NameValuePair> nvps = URLEncodedUtils.parse(searchParameters.getSolrQuery(), Charset.defaultCharset());
+        // remove "dangerous" parameters
+        for(Iterator<NameValuePair> iterator = nvps.iterator(); iterator.hasNext();) {
+            NameValuePair nvp = iterator.next();
+            String name = nvp.getName();
+            if ("wt".equals(name) || "fl".equals(name) || "start".equals(name) || "rows".equals(name)
+                    || "sort".equals(name)) {
+                iterator.remove();
+            }
+        }
 
+        // System parameters
+        nvps.add(new BasicNameValuePair("wt", "json")); // JSON output
+        nvps.add(new BasicNameValuePair("fl", "Name,Institution,Access,DataType,LayerDisplayName,Publisher,GeoReferenced,"
+                + "Originator,Location,MinX,MaxX,MinY,MaxY,ContentDate,LayerId,score,WorkspaceName,"
+                + "CollectionId,Availability")); // field list to be returned
+        nvps.add(new BasicNameValuePair("sort", "score desc")); // sort results by score descendant
+        nvps.add(new BasicNameValuePair("start", "0")); // start retrieving results at index 0
+        nvps.add(new BasicNameValuePair("rows", "50")); // retrieve 50 rows
 
-
+        return nvps;
     }
 
     private void buildGeographicQuery(List<NameValuePair> nvps, Float minx, Float miny, Float maxx, Float maxy) {
@@ -283,6 +308,5 @@ public class OgpQuery {
 
         return sb.toString();
     }
-
 
 }

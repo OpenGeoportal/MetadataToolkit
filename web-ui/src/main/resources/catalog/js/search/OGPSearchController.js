@@ -188,7 +188,20 @@ module.controller('OgpSearchController', [
             $rootScope.$broadcast('renderMap');
             }, 500);
         });
+      }; // end openMap
 
+      $scope.haveSolrParams = function() {
+        if(typeof String.prototype.trim !== 'function') {
+          String.prototype.trim = function() {
+            return this.replace(/^\s+|\s+$/g, '');
+          }
+        }
+        var solrParams = false;
+        if ($scope.searchForm.solrQuery !== undefined && $scope.searchForm.solrQuery != null && $scope.searchForm.solrQuery.trim() !== "") {
+          solrParams = true;
+        }
+
+        return solrParams;
       };
 
 

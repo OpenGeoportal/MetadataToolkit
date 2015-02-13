@@ -81,4 +81,12 @@ public class OgpClient extends AbstractHttpRequest{
     }
 
 
+    public String executeRawQuery(OgpQuery query) throws IOException {
+        addParameters(query.getParametersUsingQueryString());
+        setAddress("/solr/select");
+        HttpRequestBase httpMethod = setupHttpMethod();
+        httpMethod.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.getMimeType());
+        return executeAndReadResponse(httpMethod);
+
+    }
 }

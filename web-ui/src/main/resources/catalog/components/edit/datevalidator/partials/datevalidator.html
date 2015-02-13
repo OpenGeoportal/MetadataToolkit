@@ -4,9 +4,11 @@
         <div class="input-group" ng-class="{ 'has-error': ngModel.$invalid }">
             <input type="text" class="form-control" name="{{id}}"
                    data-ng-model="inputString"
-                   placeholder="{{gnDateFormat}}"/>
+                   placeholder="{{gnDateFormat}}"
+                   data-ng-disabled="ngDisabled"/>
             <span class="input-group-btn" >
-                <button class="btn btn-default" ng-class="{ 'btn-danger': ngModel.$invalid }">
+                <button class="btn btn-default" data-ng-class="{ 'btn-danger': ngModel.$invalid }"
+                        data-ng-disabled="ngDisabled">
                     <span class="fa fa-calendar"></span>
                 </button>
             </span>

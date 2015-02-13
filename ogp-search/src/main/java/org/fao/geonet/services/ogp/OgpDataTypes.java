@@ -1,5 +1,6 @@
 package org.fao.geonet.services.ogp;
 
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.Logger;
 import org.fao.geonet.services.ogp.client.OgpClient;
 import org.fao.geonet.services.ogp.client.OgpQuery;
@@ -42,8 +43,13 @@ public class OgpDataTypes {
             MediaType.APPLICATION_JSON_VALUE})
     public @ResponseBody String processForm(@RequestBody OgpSearchFormBean formBean) throws IOException {
         OgpClient client = new OgpClient("http", "geodata.tufts.edu", 80, requestFactory);
-        OgpQuery query = new OgpQuery(formBean);
-        return client.executeQuery(query);
+        if (StringUtils.isBlank(formBean.getSolrQuery())) {
+            OgpQuery query = new OgpQuery(formBean);
+            return client.executeQuery(query);
+        } else {
+            OgpQuery query = new OgpQuery(formBean);;
+            return client.executeRawQuery(query);
+        }
     }
 
     @RequestMapping(value = "/{lang}/ogp.dataTypes.getMetadata", produces = {
