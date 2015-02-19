@@ -127,7 +127,7 @@ public class OgpDataTypes {
 
             int userId = context.getUserSession().getUserIdAsInt();
             String docType = null, category = null;
-            boolean ufo = false, indexImmediate = false;
+            boolean ufo = false, indexImmediate = true;
             createdId = dataManager.insertMetadata(context, "iso19115-3" , transformedMd, uuid,
                     userId, group, settingManager.getSiteId(), MetadataType.METADATA.codeString, docType, category, date, date, ufo, indexImmediate);
 
