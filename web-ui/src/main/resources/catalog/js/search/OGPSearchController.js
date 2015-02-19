@@ -5,19 +5,28 @@ goog.provide('ogp_search_controller');
 goog.require('gn_date_picker_directive');
 goog.require('gn_date_validator_directive');
 goog.require('gn_map');
+goog.require('gn_group_service');
 
 var module = angular.module('ogp_search_controller',
       ['gn_date_validator_directive',
-      'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive']);
+      'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive', 'gn_group_service']);
+
+/**
+ * Constants
+ */
+module.constant('CONSTANTS', {
+   'EDITOR_PROFILE': 'Editor'
+});
 
 /**
  * Controller for OpenGeoPortal search.
  */
 module.controller('OgpSearchController', [
-    '$scope', '$filter', '$http', '$modal', '$rootScope', '$timeout',
-    function($scope, $filter, $http, $modal, $rootScope, $timeout) {
+    '$scope', '$filter', '$http', '$modal', '$rootScope', '$timeout', '$location', 'gnGroupService', 'CONSTANTS',
+    function($scope, $filter, $http, $modal, $rootScope, $timeout, $location, gnGroupService, CONSTANTS) {
 
       $scope.searchForm = {};
+      $scope.resultBean = {};
       $scope.initBbox = function() {
         $scope.searchForm.minx = -180;
         $scope.searchForm.miny = -90;
@@ -29,6 +38,32 @@ module.controller('OgpSearchController', [
       $scope.searching = false;
       $scope.noResultsFound = false;
       $scope.initBbox();
+
+     gnGroupService.list(CONSTANTS.EDITOR_PROFILE).then(
+          function(groups) {
+                $scope.groups = groups;
+                var first = $scope.getFirstGroupNonSpecial(groups) ;
+                $scope.firstGroupNonSpecial = first != null ? first['@id']: '-1'
+              }, function(reason) {
+
+          }
+      );
+
+      $scope.getFirstGroupNonSpecial = function(groups) {
+          var sortedGroups = $filter('orderBy')(groups, function(obj) {
+              return parseInt(obj["@id"]);
+          });
+          var i = 0;
+          var first = null;
+          while(i < sortedGroups.length && !first) {
+              if (parseInt(groups[i]["@id"]) > 1) {
+                  first = groups[i];
+              }
+              i++;
+          }
+          return first;
+      };
+
       $scope.topicList =[
         {"id": "farming", "label": "ogpTopicFarming"},
         {"id": "biota", "label": "ogpTopicBiota"},
@@ -104,6 +139,7 @@ module.controller('OgpSearchController', [
         $scope.step ="searchForm";
         $scope.noResultsFound = false;
         $scope.response = null;
+        $scope.resultBean = {};
       };
 
       $scope.newSearch = function() {
@@ -114,6 +150,7 @@ module.controller('OgpSearchController', [
         $scope.initBbox();
         $scope.step ="searchForm";
         $scope.response = null;
+        $scope.resultBean = {};
       };
 
       $scope.processSearchForm = function() {
@@ -203,6 +240,39 @@ module.controller('OgpSearchController', [
 
         return solrParams;
       };
+
+      // Import metadata
+      $scope.importMetadata = function() {
+        if (!$scope.resultBean && !$scope.resultBean.selectedMetadata && !$scope.resultBean.selectedMetadata.LayerId) {
+          return;
+        }
+        console.log($scope.resultBean.selectedMetadata.LayerId);
+
+        $http.post("ogp.dataTypes.import", {},
+          {"params": {
+            "layerId": $scope.resultBean.selectedMetadata.LayerId,
+            "group": $scope.firstGroupNonSpecial
+            }
+          }).
+          success(function(data, status, headers, config){
+            if (data && data.response) {
+              $scope.response = data.response;
+            }
+            console.log(data);
+            $scope.metadataId = data;
+            $scope.goToEditor();
+
+          }).
+          error(function(data, status, headers, config){
+            console.log(data);
+          });
+        };
+
+        $scope.goToEditor = function() {
+          var path = '/metadata/' + $scope.metadataId;
+          $location.path(path);
+        };
+
 
 
     }]);

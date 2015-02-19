@@ -207,7 +207,8 @@
                                         }" data-tooltip="{{result.Institution}}" aria-label="{{result.DataType}}"></span>
                             </td>
                             <td class="text-center"><button type="button" class="btn btn-default btn-sm" data-ng-click="openMetadata(result)"><span class="fa fa-info"></span></button></td>
-                            <td class="text-center"><input type="radio" name="selectedMap"/></td>
+                            <td class="text-center"><input type="radio" name="selectedMap" data-ng-model="resultBean.selectedMetadata"
+                                                           data-ng-value="result" id="mdRadio{{result.LayerId}}"/></td>
                         </tr>
                         </tbody>
                     </table>
@@ -217,7 +218,7 @@
                 <div class="col-md-12 text-right">
                     <button type="button" class="btn btn-default" data-translate="" data-ng-click="reviseSearch()">ogpReviseSearch</button>
                     <button type="button" class="btn btn-default" data-translate="" data-ng-click="newSearch()">ogpNewSearch</button>
-                    <button type="button" class="btn btn-primary" data-translate="" data-ng-click="">ogpImport</button>
+                    <button type="button" class="btn btn-primary" data-translate="" data-ng-click="importMetadata()" data-ng-disabled="!resultBean.selectedMetadata && ownerGroup">ogpImport</button>
                 </div>
             </div>
         </div>
