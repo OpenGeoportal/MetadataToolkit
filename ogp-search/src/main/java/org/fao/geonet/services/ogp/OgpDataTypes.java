@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Retrieves the data types available in the OGP server.
  * Created by JuanLuis on 28/01/2015.
@@ -119,8 +120,8 @@ public class OgpDataTypes {
             }
             String uuid = UUID.randomUUID().toString();
             String date = new ISODate().toString();
-            final List<String> id = new ArrayList<String>();
-            final List<Element> md = new ArrayList<Element>();
+            final List<String> id = new ArrayList<>();
+            final List<Element> md = new ArrayList<>();
             md.add(transformedMd);
 
             // Import record

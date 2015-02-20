@@ -68,7 +68,8 @@ public class OgpQuery {
                 + "CollectionId,Availability")); // field list to be returned
         nvps.add(new BasicNameValuePair("sort", "score desc")); // sort results by score descendant
         // nvps.add(new BasicNameValuePair("fq"), "{!frange l=0 incl=false cache=false}$intx"));
-        nvps.add(new BasicNameValuePair("start", "0")); // start retrieving results at index 0
+
+        nvps.add(new BasicNameValuePair("start", searchParameters.getPage().toString())); // start retrieving results at index 0
         nvps.add(new BasicNameValuePair("rows", "50")); // retrieve 50 rows
 
         if (searchParameters.isUseExtent()) {
@@ -97,7 +98,7 @@ public class OgpQuery {
                 + "Originator,Location,MinX,MaxX,MinY,MaxY,ContentDate,LayerId,score,WorkspaceName,"
                 + "CollectionId,Availability")); // field list to be returned
         nvps.add(new BasicNameValuePair("sort", "score desc")); // sort results by score descendant
-        nvps.add(new BasicNameValuePair("start", "0")); // start retrieving results at index 0
+        nvps.add(new BasicNameValuePair("start", searchParameters.getPage().toString())); // start retrieving results at index 0
         nvps.add(new BasicNameValuePair("rows", "50")); // retrieve 50 rows
 
         return nvps;

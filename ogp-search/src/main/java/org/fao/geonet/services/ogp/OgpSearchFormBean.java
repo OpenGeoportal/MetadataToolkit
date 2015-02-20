@@ -26,6 +26,7 @@ public class OgpSearchFormBean {
     private Float maxx;
     private Float maxy;
     private boolean useExtent;
+    private Integer page;
 
 
 
@@ -33,6 +34,7 @@ public class OgpSearchFormBean {
         topic = new String[]{};
         dataType = new String[]{};
         dataRepository = new String[]{};
+        page = 0;
     }
 
     public String getPlaceKeyword() {
@@ -185,5 +187,14 @@ public class OgpSearchFormBean {
 
     public void setUseExtent(boolean useExtent) {
         this.useExtent = useExtent;
+    }
+
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 }
