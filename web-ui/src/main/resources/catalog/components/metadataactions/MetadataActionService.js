@@ -10,15 +10,17 @@
   module.service('gnMetadataActions', [
     '$rootScope',
     '$timeout',
+    '$location',
     'gnHttp',
     'gnMetadataManager',
     'gnAlertService',
     'gnPopup',
-    'gnSearchSettings',
     '$translate',
-    function($rootScope, $timeout, gnHttp,
+    '$q',
+    '$http',
+    function($rootScope, $timeout, $location, gnHttp,
              gnMetadataManager, gnAlertService, gnPopup,
-             gnSearchSettings, $translate) {
+             $translate, $q, $http) {
 
       var windowName = 'geonetwork';
       var windowOption = '';
@@ -124,17 +126,17 @@
         window.open(gnHttp.getService('csv'), windowName, windowOption);
       };
 
-      this.deleteMd = function(md) {
+      this.deleteMd = function(md, searchParams) {
         if (md) {
           return gnMetadataManager.remove(md.getId()).then(function() {
             $rootScope.$broadcast('mdSelectNone');
-            $rootScope.$broadcast('resetSearch');
+            $rootScope.$broadcast('resetSearch', searchParams);
           });
         }
         else {
           return callBatch('mdDeleteBatch').then(function() {
             $rootScope.$broadcast('mdSelectNone');
-            $rootScope.$broadcast('resetSearch');
+            $rootScope.$broadcast('resetSearch', searchParams);
           });
         }
       };
@@ -144,6 +146,35 @@
           title: 'privileges',
           content: '<div gn-share="' + md.getId() + '"></div>'
         }, scope, 'PrivilegesUpdated');
+      };
+
+      this.openUpdateStatusPanel = function(md, scope) {
+        openModal({
+          title: 'updateStatus',
+          content: '<div data-gn-metadata-status-updater="' +
+              md.getId() + '"></div>'
+        }, scope, 'metadataStatusUpdated');
+      };
+
+      this.startWorkflow = function(md, scope) {
+        return $http.get('md.status.update?' +
+            '_content_type=json&id=' + md.getId() +
+            '&changeMessage=Enable workflow' +
+            '&status=1').then(
+            function(data) {
+              scope.$emit('metadataStatusUpdated', true);
+              scope.$emit('StatusUpdated', {
+                msg: $translate('metadataStatusUpdatedWithNoErrors'),
+                timeout: 2,
+                type: 'success'});
+            }, function(data) {
+              scope.$emit('metadataStatusUpdated', false);
+              scope.$emit('StatusUpdated', {
+                title: $translate('metadataStatusUpdatedErrors'),
+                error: data,
+                timeout: 0,
+                type: 'danger'});
+            });
       };
 
       this.openPrivilegesBatchPanel = function(scope) {
@@ -227,15 +258,57 @@
         }
       };
 
+      this.assignGroup = function(metadataId, groupId) {
+        var defer = $q.defer();
+        $http.get('md.group.update?id=' + metadataId +
+            '&groupid=' + groupId)
+          .success(function(data) {
+              defer.resolve(data);
+            })
+          .error(function(data) {
+              defer.reject(data);
+            });
+        return defer.promise;
+      };
+
+      this.assignCategories = function(metadataId, categories) {
+        var defer = $q.defer(), ids = '';
+        angular.forEach(categories, function(value) {
+          ids += '&_' + value + '=on';
+        });
+        $http.get('md.category.update?id=' + metadataId + ids)
+          .success(function(data) {
+              defer.resolve(data);
+            })
+          .error(function(data) {
+              defer.reject(data);
+            });
+        return defer.promise;
+      };
+
+      this.startVersioning = function(metadataId) {
+        var defer = $q.defer();
+        $http.get('md.versioning.start?id=' + metadataId)
+          .success(function(data) {
+              defer.resolve(data);
+            })
+          .error(function(data) {
+              defer.reject(data);
+            });
+        return defer.promise;
+      };
+
       /**
        * Get html formatter link for the given md
        * @param {Object} md
        */
       this.getPermalink = function(md) {
-        var url = gnSearchSettings.formatter.defaultUrl + md.getId();
+
+        var url = $location.absUrl().split('#')[0] + '#/metadata/' +
+            md.getUuid();
         gnPopup.createModal({
           title: 'permalink',
-          content: '<a href="' + url + '" target="_blank">' + url + '</a>'
+          content: '<div gn-permalink-input="' + url + '"></div>'
         });
       };
     }]);

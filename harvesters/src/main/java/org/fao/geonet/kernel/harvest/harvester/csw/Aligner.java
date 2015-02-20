@@ -59,6 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.fao.geonet.utils.AbstractHttpRequest.Method.GET;
 import static org.fao.geonet.utils.AbstractHttpRequest.Method.POST;
@@ -73,8 +74,8 @@ public class Aligner extends BaseAligner
 	//---
 	//--------------------------------------------------------------------------
 
-	public Aligner(Logger log, ServiceContext sc, CswServer server, CswParams params) throws OperationAbortedEx
-	{
+	public Aligner(AtomicBoolean cancelMonitor, Logger log, ServiceContext sc, CswServer server, CswParams params) throws OperationAbortedEx
+	{   super(cancelMonitor);
 		this.log        = log;
 		this.context    = sc;
 		this.params     = params;
@@ -92,17 +93,17 @@ public class Aligner extends BaseAligner
 
 		// Use the preferred HTTP method and check one exist.
 		if (oper.getGetUrl() != null && Harvester.PREFERRED_HTTP_METHOD.equals("GET")) {
-			request.setUrl(oper.getGetUrl());
+			request.setUrl(context, oper.getGetUrl());
 			request.setMethod(GET);
 		} else if (oper.getPostUrl() != null && Harvester.PREFERRED_HTTP_METHOD.equals("POST")) {
-			request.setUrl(oper.getPostUrl());
+			request.setUrl(context, oper.getPostUrl());
 			request.setMethod(POST);
 		} else {
 			if (oper.getGetUrl() != null) {
-				request.setUrl(oper.getGetUrl());
+				request.setUrl(context, oper.getGetUrl());
 				request.setMethod(GET);
 			} else if (oper.getPostUrl() != null) {
-				request.setUrl(oper.getPostUrl());
+				request.setUrl(context, oper.getPostUrl());
 				request.setMethod(POST);
 			} else {
 				throw new OperationAbortedEx("No GET or POST DCP available in this service.");
@@ -119,8 +120,8 @@ public class Aligner extends BaseAligner
 			request.setServerVersion(oper.getPreferredServerVersion());
 		}
 
-		if (params.useAccount) {
-			request.setCredentials(params.username, params.password);
+		if (params.isUseAccount()) {
+			request.setCredentials(params.getUsername(), params.getPassword());
 		}	
 		
 	}
@@ -133,7 +134,11 @@ public class Aligner extends BaseAligner
 
 	public HarvestResult align(Set<RecordInfo> records, List<HarvestError> errors) throws Exception
 	{
-		log.info("Start of alignment for : "+ params.name);
+        if (cancelMonitor.get()) {
+            return result;
+        }
+
+        log.info("Start of alignment for : "+ params.getName());
 
 		//-----------------------------------------------------------------------
 		//--- retrieve all local categories and groups
@@ -141,7 +146,7 @@ public class Aligner extends BaseAligner
 
 		localCateg = new CategoryMapper(context);
 		localGroups= new GroupMapper(context);
-		localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.uuid);
+		localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.getUuid());
 
         dataMan.flush();
 
@@ -153,26 +158,33 @@ public class Aligner extends BaseAligner
         //-----------------------------------------------------------------------
 		//--- remove old metadata
 
-		for (String uuid : localUuids.getUUIDs())
-			if (!exists(records, uuid))
-			{
-				String id = localUuids.getID(uuid);
+		for (String uuid : localUuids.getUUIDs()) {
+            if (cancelMonitor.get()) {
+                return result;
+            }
 
-                if(log.isDebugEnabled())
-                    log.debug("  - Removing old metadata with local id:"+ id);
-				dataMan.deleteMetadata(context, id);
+            if (!exists(records, uuid)) {
+                String id = localUuids.getID(uuid);
+
+                if (log.isDebugEnabled())
+                    log.debug("  - Removing old metadata with local id:" + id);
+                dataMan.deleteMetadata(context, id);
 
                 dataMan.flush();
 
                 result.locallyRemoved++;
-			}
+            }
+        }
 
 		//-----------------------------------------------------------------------
 		//--- insert/update new metadata
 
-		for(RecordInfo ri : records)
-		{
-		    try{
+		for(RecordInfo ri : records) {
+            if (cancelMonitor.get()) {
+                return result;
+            }
+
+            try{
     
     			String id = dataMan.getMetadataId(ri.uuid);
     
@@ -181,14 +193,14 @@ public class Aligner extends BaseAligner
                 result.totalMetadata++;
 		    }catch(Throwable t) {
 		        errors.add(new HarvestError(t, log));
-                log.error("Unable to process record from csw (" + this.params.name + ")");
+                log.error("Unable to process record from csw (" + this.params.getName() + ")");
                 log.error("   Record failed: " + ri.uuid + ". Error is: " + t.getMessage());
 		    } finally {
 		        result.originalMetadata++;
 		    }
 		}
 
-		log.info("End of alignment for : "+ params.name);
+		log.info("End of alignment for : "+ params.getName());
 
 		return result;
 	}
@@ -201,7 +213,11 @@ public class Aligner extends BaseAligner
 
 	private void addMetadata(RecordInfo ri) throws Exception
 	{
-		Element md = retrieveMetadata(ri.uuid);
+        if (cancelMonitor.get()) {
+            return;
+        }
+
+        Element md = retrieveMetadata(ri.uuid);
 
 		if (md == null) {
             return;
@@ -230,14 +246,14 @@ public class Aligner extends BaseAligner
         // insert metadata
         //
         final int ownerId;
-        if (params.ownerId == null) {
+        if (params.getOwnerId() == null) {
             if (context.getUserSession() != null) {
                 ownerId = context.getUserSession().getUserIdAsInt();
             } else {
                 ownerId = 1;
             }
         } else {
-            ownerId = Integer.parseInt(params.ownerId);
+            ownerId = Integer.parseInt(params.getOwnerId());
         }
         Metadata metadata = new Metadata().setUuid(ri.uuid);
         metadata.getDataInfo().
@@ -247,11 +263,11 @@ public class Aligner extends BaseAligner
                 setChangeDate(new ISODate(ri.changeDate)).
                 setCreateDate(new ISODate(ri.changeDate));
         metadata.getSourceInfo().
-                setSourceId(params.uuid).
+                setSourceId(params.getUuid()).
                 setOwner(ownerId);
         metadata.getHarvestInfo().
                 setHarvested(true).
-                setUuid(params.uuid);
+                setUuid(params.getUuid());
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
@@ -261,7 +277,7 @@ public class Aligner extends BaseAligner
 
         addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
 
-        dataMan.indexMetadata(id, false);
+        dataMan.indexMetadata(id, true);
 		result.addedMetadata++;
 	}
 
@@ -276,7 +292,7 @@ public class Aligner extends BaseAligner
 
 		if (date == null) {
             if(log.isDebugEnabled()) {
-                log.debug("  - Skipped metadata managed by another harvesting node. uuid:"+ ri.uuid +", name:"+ params.name);
+                log.debug("  - Skipped metadata managed by another harvesting node. uuid:"+ ri.uuid +", name:"+ params.getName());
             }
 		} else {
 			if (!ri.isMoreRecentThan(date)) {
@@ -318,7 +334,7 @@ public class Aligner extends BaseAligner
 
                 dataMan.flush();
 
-                dataMan.indexMetadata(id, false);
+                dataMan.indexMetadata(id, true);
 				result.updatedMetadata++;
 			}
 		}
@@ -384,7 +400,7 @@ public class Aligner extends BaseAligner
 
 
             try {
-                params.validate.validate(dataMan, context, response);
+                params.getValidate().validate(dataMan, context, response);
             } catch (Exception e) {
                 log.info("Ignoring invalid metadata with uuid " + uuid);
                 result.doesNotValidate++;

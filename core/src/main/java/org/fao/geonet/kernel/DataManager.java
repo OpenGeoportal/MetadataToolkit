@@ -86,6 +86,7 @@ import org.fao.geonet.domain.SchematronRequirement;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.domain.UserGroup;
 import org.fao.geonet.domain.UserGroupId;
+import org.fao.geonet.domain.InspireAtomFeed;
 import org.fao.geonet.exceptions.JeevesException;
 import org.fao.geonet.exceptions.NoSchemaMatchesException;
 import org.fao.geonet.exceptions.SchemaMatchConflictException;
@@ -113,6 +114,7 @@ import org.fao.geonet.repository.StatusValueRepository;
 import org.fao.geonet.repository.Updater;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.repository.InspireAtomFeedRepository;
 import org.fao.geonet.repository.specification.MetadataFileUploadSpecs;
 import org.fao.geonet.repository.specification.MetadataSpecs;
 import org.fao.geonet.repository.specification.MetadataStatusSpecs;
@@ -409,7 +411,7 @@ public class DataManager {
      * @param context context object
      * @param metadataIds the metadata ids to index
      */
-    public void batchIndexInThreadPool(ServiceContext context, List<String> metadataIds) {
+    public void batchIndexInThreadPool(ServiceContext context, List<?> metadataIds) {
 
         TransactionStatus transactionStatus = null;
         try {
@@ -439,7 +441,7 @@ public class DataManager {
                 Log.debug(Geonet.INDEX_ENGINE, "Indexing records from " + start + " to " + nbRecords);
             }
 
-            List<String> subList = metadataIds.subList(start, nbRecords);
+            List subList = metadataIds.subList(start, nbRecords);
 
             if (Log.isDebugEnabled(Geonet.INDEX_ENGINE)) {
                 Log.debug(Geonet.INDEX_ENGINE, subList.toString());
@@ -473,6 +475,8 @@ public class DataManager {
         for (String metadataId : metadataIds) {
             indexMetadata(metadataId, false);
         }
+
+        searchMan.forceIndexChanges();
     }
     /**
      * TODO javadoc.
@@ -559,7 +563,16 @@ public class DataManager {
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.POPULARITY,  popularity,  true, true));
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.RATING,      rating,      true, true));
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.DISPLAY_ORDER,displayOrder, true, false));
-            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.EXTRA,       extra,       true, false));
+            moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.EXTRA,       extra,       false, true));
+
+            // If the metadata has an atom document, index related information
+            InspireAtomFeedRepository inspireAtomFeedRepository = _applicationContext.getBean(InspireAtomFeedRepository.class);
+            InspireAtomFeed feed = inspireAtomFeedRepository.findByMetadataId(id$);
+
+            if ((feed != null) && StringUtils.isNotEmpty(feed.getAtom())) {
+                moreFields.add(SearchManager.makeField("has_atom", "y", true, true));
+                moreFields.add(SearchManager.makeField("any", feed.getAtom(), false, true));
+            }
 
             if (owner != null) {
                 User user = _applicationContext.getBean(UserRepository.class).findOne(fullMd.getSourceInfo().getOwner());
@@ -577,8 +590,11 @@ public class DataManager {
                 final Group group = groupRepository.findOne(groupOwner);
                 if (group != null) {
                     moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.GROUP_OWNER, String.valueOf(groupOwner), true, true));
-                    moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.GROUP_WEBSITE, group.getWebsite(), true, false));
-                    if (group.getLogo() != null) {
+                    final boolean preferGroup = settingMan.getValueAsBool(SettingManager.SYSTEM_PREFER_GROUP_LOGO, true);
+                    if (group.getWebsite() != null && !group.getWebsite().isEmpty() && preferGroup) {
+                        moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.GROUP_WEBSITE, group.getWebsite(), true, false));
+                    }
+                    if (group.getLogo() != null && preferGroup) {
                         logoUUID = group.getLogo();
                     }
                 }
@@ -1335,7 +1351,7 @@ public class DataManager {
      */
     public void setHarvested(int id, String harvestUuid) throws Exception {
         setHarvestedExt(id, harvestUuid);
-        indexMetadata(Integer.toString(id), false);
+        indexMetadata(Integer.toString(id), true);
     }
 
     /**
@@ -1483,7 +1499,7 @@ public class DataManager {
             }
         });
 
-        indexMetadata(Integer.toString(metadataId), false);
+        indexMetadata(Integer.toString(metadataId), true);
 
         return rating;
     }
@@ -1861,7 +1877,7 @@ public class DataManager {
         } finally {
             if(index) {
                 //--- update search criteria
-                indexMetadata(metadataId, false);
+                indexMetadata(metadataId, true);
             }
         }
         // Return an up to date metadata record
@@ -3041,9 +3057,10 @@ public class DataManager {
             // Settings were defined as an XML starting with root named config
             // Only second level elements are defined (under system).
             List config = settingMan.getAllAsXML(true).cloneContent();
-            Element settings = (Element) config.get(0);
-            settings.setName("config");
-            env.addContent(settings);
+            for (Object c : config) {
+                Element settings = (Element) c;
+                env.addContent(settings);
+            }
 
             result.addContent(env);
             // apply update-fixed-info.xsl

@@ -69,8 +69,9 @@
            */
         copy: function(id, groupId, withFullPrivileges, 
             isTemplate, isChild) {
-          var url = gnUrlUtils.append('md.create@json',
+          var url = gnUrlUtils.append('md.create',
               gnUrlUtils.toKeyValue({
+                _content_type: 'json',
                 group: groupId,
                 id: id,
                 template: isTemplate ? (isTemplate === 's' ? 's' : 'y') : 'n',
@@ -155,7 +156,7 @@
            */
         create: function(id, groupId, withFullPrivileges, 
             isTemplate, isChild, tab) {
-          this.copy(id, groupId, withFullPrivileges,
+          return this.copy(id, groupId, withFullPrivileges,
               isTemplate, isChild).success(function(data) {
             var path = '/metadata/' + data.id;
             if (tab) {
@@ -260,7 +261,7 @@
     processMd: 'md.processing',
     processAll: 'md.processing.batch',
     processReport: 'md.processing.batch.report',
-    processXml: 'xml.metadata.processing@json', // TODO: CHANGE
+    processXml: 'xml.metadata.processing',
 
     info: 'info@json',
 
@@ -279,8 +280,8 @@
     removeThumbnail: 'md.thumbnail.remove@json',
     removeOnlinesrc: 'resource.del.and.detach', // TODO: CHANGE
     geoserverNodes: 'geoserver.publisher@json', // TODO: CHANGE
-    suggest: 'suggest'
-
+    suggest: 'suggest',
+    facetConfig: 'search/facet/config'
   });
 
   /**
@@ -483,10 +484,15 @@
   module.factory('Metadata', function() {
     function Metadata(k) {
       $.extend(true, this, k);
-      if (angular.isDefined(this.category) &&
-          !angular.isArray(this.category)) {
-        this.category = [this.category];
-      }
+      var listOfArrayFields = ['topicCat', 'category'];
+      var record = this;
+      $.each(listOfArrayFields, function (idx) {
+        var field = listOfArrayFields[idx];
+        if (angular.isDefined(record[field]) &&
+            !angular.isArray(record[field])) {
+          record[field] = [record[field]];
+        }
+      });
     };
 
     function formatLink(sLink) {
@@ -545,12 +551,14 @@
           var images = {list: []};
           for (var i = 0; i < this.image.length; i++) {
             var s = this.image[i].split('|');
+            var insertFn = 'push';
             if (s[0] === 'thumbnail') {
               images.small = s[1];
+              var insertFn = 'unshift';
             } else if (s[0] === 'overview') {
               images.big = s[1];
             }
-            images.list.push({url: s[1], label: s[2]});
+            images.list[insertFn]({url: s[1], label: s[2]});
           }
         }
         return images;

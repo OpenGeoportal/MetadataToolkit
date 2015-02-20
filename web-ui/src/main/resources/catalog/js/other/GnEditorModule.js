@@ -1,51 +1,11 @@
 (function() {
   goog.provide('gn_editor');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   goog.require('gn_batch_service');
   goog.require('gn_draggable_directive');
   goog.require('gn_editor_controller');
-  goog.require('gn_editor_directive');
   goog.require('gn_geopublisher');
+  goog.require('gn_mdactions_directive');
   goog.require('gn_module');
   goog.require('gn_onlinesrc');
   goog.require('gn_ows');
@@ -64,11 +24,13 @@
     'gn_ows',
     'gn_geopublisher',
     'gn_batch_service',
-    'gn_editor_directive'
+    'gn_mdactions_directive'
   ]);
 
   // Define the translation files to load
-  module.constant('$LOCALES', ['core', 'editor']);
+  module.constant('$LOCALES', ['core', 'search', 'editor']);
+
+  module.constant('gnViewerSettings', {});
 
   module.config(['$translateProvider', '$LOCALES',
                  function($translateProvider, $LOCALES) {

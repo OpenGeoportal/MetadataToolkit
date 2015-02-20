@@ -182,7 +182,7 @@ form.gn-editor {
   
   .gn-autocomplete-list {
     position: absolute;
-    margin-top: 4px;
+    margin-top: 35px;
     width: inherit;
     z-index: 999;
 
@@ -198,7 +198,7 @@ form.gn-editor {
   }
   
   .control-label {
-      color: #999999;
+      color: #6a6a6a;
       font-weight: 200;
       padding-top: 0px;
       line-height: 1em;
@@ -342,26 +342,6 @@ form.gn-editor {
   .gn-move {
       border: none;
   }
-  legend {
-      padding-left: 20px;
-      border: none;
-      cursor: pointer;
-      color: #333333;
-  }
-  legend:before {
-      content: "\f0d7";
-      font-family: FontAwesome;
-      font-style: normal;
-      font-weight: normal;
-      text-decoration: inherit;
-      position: absolute;
-      margin-top: 3px;
-      margin-left: -14px;
-      font-size: 16px;
-  }
-  legend.collapsed:before {
-      content: "\f0da"
-  }
   i.btn.fa-times.text-danger {
       visibility: hidden;
       padding: 5px;
@@ -412,7 +392,10 @@ form.gn-tab-inspire {
     overflow: auto;
   }
   .list-group.fixed {
-    height: 400px;
+    min-height: 100px;
+    li.active {
+        background-color: #428bca;
+    }
   }
 }
 

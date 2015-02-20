@@ -129,7 +129,7 @@
 
         <filter-name>WebResourceOptimizer</filter-name>
         <filter-class>
-            ro.isdc.wro.http.WroFilter
+            org.fao.geonet.wro4j.GeonetWro4jFilter
         </filter-class>
     </filter>
     <filter-mapping>
@@ -182,6 +182,11 @@
     <filter-mapping>
         <filter-name>resources</filter-name>
         <url-pattern>/htmlcache/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>resources</filter-name>
+        <url-pattern>/map/*</url-pattern>
     </filter-mapping>
 
     <!-- Print servlet -->

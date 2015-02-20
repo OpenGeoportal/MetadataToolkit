@@ -185,6 +185,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/contacts.getselected!?.*" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/contacts.getRole!?.*" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/isolanguages!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/search/facet/config" access="permitAll"></sec:intercept-url>
 
                 <sec:intercept-url pattern="/wmc/load.wmc" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.service.extract!?.*" access="permitAll"></sec:intercept-url>
@@ -224,6 +225,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.user!?.*" access="hasRole('UserAdmin')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.user.list!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.user.update!?.*" access="hasRole('UserAdmin')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.user.resetpassword\?.*" access="hasRole('UserAdmin')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.user.remove!?.*" access="hasRole('UserAdmin')"/>
 
 
@@ -287,16 +289,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.harvester.log!?.*" access="hasRole('UserAdmin')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.harvester.notifier.save!?.*" access="hasRole('UserAdmin')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.harvester.notifier.get!?.*" access="hasRole('UserAdmin')"/>
-
-
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.ownership.editors!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.ownership.groups!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.ownership.transfer!?.*" access="hasRole('Administrator')"/>
                 
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.languages.get!?.*" access="permitAll"/>
-                
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.console!?.*" access="hasRole('RegisteredUser')"/>
-
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/statistics-search-ip?.*" access="hasRole('Administrator')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/statistics-search-by-service-type?.*" access="hasRole('Administrator')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/statistics-search-by-date?.*" access="hasRole('Administrator')"/>
@@ -347,7 +340,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.thumbnail.upload!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.thumbnail.remove!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.validate!?.*" access="hasRole('Editor')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.status.list!?.*" access="hasRole('Editor')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.status.update!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.group.update!?.*" access="hasRole('Editor')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.category.update!?.*" access="hasRole('Editor')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.category.batch.update!?.*" access="hasRole('Editor')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.versioning.start!?.*" access="hasRole('Editor')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.versioning.batch.start!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.privileges!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.privileges.update!?.*" access="hasRole('Editor')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.privileges.batch!?.*" access="hasRole('Editor')"/>
@@ -374,8 +373,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/region.get!?.*" access="permitAll"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/regions.list!?.*" access="permitAll"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/regions.category.list!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/region.getmap.\w\w\w!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/region\.geom\.\w\w\w!?.*" access="permitAll"/>
                 
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/lang!?.*" access="permitAll"/>
                 
@@ -396,34 +393,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.console!?.*" access="hasRole('RegisteredUser')"/>
 
-
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/keywords!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.upload!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.download!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.add.from.register!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.clear!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.update!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.remove!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.enable!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.keyword!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.keyword.links!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.keyword.add!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.keyword.update!?.*" access="hasRole('Administrator')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thesaurus.keyword.remove!?.*" access="hasRole('Administrator')"/>
-
-
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.save.and.close!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.saveonly!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.save!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.add!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.remove!?.*" access="hasRole('Editor')"/>
-
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.view!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.processing.batch!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.processing.batch.report!?.*" access="hasRole('Editor')"/>
-
                 <!-- Formatter services -->
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/xml.format.xml!?.*" access="permitAll"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.format.html!?.*" access="permitAll"/>
@@ -439,17 +408,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.formatter.files!?.*" access="hasRole('UserAdmin')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.formatter.edit!?.*" access="hasRole('UserAdmin')"/>
 
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/csw-publication!?.*" access="hasRole('Editor')"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/csw-.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/csw!?.*" access="permitAll"/>
-
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/crs.search!?.*" access="permitAll"/>
-
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/portal.sru!?.*" access="permitAll"/>
-
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/catalog.search!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/catalog.search.nojs!?.*" access="permitAll"/>
-                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/catalog.signin!?.*" access="permitAll"/>
 
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/new.account!?.*" access="permitAll"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/create.account!?.*" access="permitAll"/>
@@ -481,6 +440,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.schematroncriteriagroup.update!?.*" access="hasRole('Administrator')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/admin.schematroncriteriagroup.delete!?.*" access="hasRole('Administrator')"/>
 
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/systeminfo/.+" access="hasRole('Administrator')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/source/.+" access="hasRole('Administrator')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thread/status" access="hasRole('Administrator')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thread/trace/.+" access="hasRole('Administrator')"/>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/thread/debugging/.+" access="hasRole('Administrator')"/>
+
                 <!-- Massive update metadata services -->
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/metadata.batch.replace.new!?.*" access="hasRole('Editor')"/>
 
@@ -491,7 +456,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/datauploads.csv!?.*" access="hasRole('UserAdmin')"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/datadownloads.csv!?.*" access="hasRole('UserAdmin')"/>
 
-              <sec:intercept-url pattern="/error" access="permitAll"/>
+              <!-- INSPIRE Atom -->
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/atomharvester!?.*" access="hasRole('Administrator')"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/atom.get!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/atom.description!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/opensearch/[a-z]{2,3}/!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/atom.describe!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/atom.download!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/atom.search!?.*" access="permitAll"></sec:intercept-url>
+
+                <sec:intercept-url pattern="/error" access="permitAll"/>
                 <sec:intercept-url pattern="/home\?.*" access="permitAll"/>
                 <sec:intercept-url pattern="/home" access="permitAll"/>
                 <sec:intercept-url pattern="/rewritestatus" access="permitAll"/>

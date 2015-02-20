@@ -74,6 +74,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nullable;
 
 
@@ -153,15 +154,18 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
 	/** 
      * Constructor
      *  
-     * @param log		
-     * @param context		Jeeves context
-     * @param params	Information about harvesting configuration for the node
-     * 
+     *
+     * @param cancelMonitor
+     * @param log
+     * @param context        Jeeves context
+     * @param params    Information about harvesting configuration for the node
+     *
      * @return null
      */
-	public Harvester(Logger log, 
-						ServiceContext context, 
-						OgcWxSParams params) {
+	public Harvester(AtomicBoolean cancelMonitor, Logger log,
+                     ServiceContext context,
+                     OgcWxSParams params) {
+        super(cancelMonitor);
 		this.log    = log;
 		this.context= context;
 		this.params = params;
@@ -186,13 +190,13 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
         
         this.log = log;
 
-        log.info("Retrieving remote metadata information for : " + params.name);
+        log.info("Retrieving remote metadata information for : " + params.getName());
         
 		// Clean all before harvest : Remove/Add mechanism
         // If harvest failed (ie. if node unreachable), metadata will be removed, and
         // the node will not be referenced in the catalogue until next harvesting.
         // TODO : define a rule for UUID in order to be able to do an update operation ? 
-        UUIDMapper localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.uuid);
+        UUIDMapper localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.getUuid());
 
 
         // Try to load capabilities document
@@ -211,17 +215,20 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
         req.setMethod(XmlRequest.Method.GET);
         Lib.net.setupProxy(context, req);
 
-        if (params.useAccount) {
-            req.setCredentials(params.username, params.password);
+        if (params.isUseAccount()) {
+            req.setCredentials(params.getUsername(), params.getPassword());
         }
 
         xml = req.execute();
 
 		//-----------------------------------------------------------------------
 		//--- remove old metadata
-		for (String uuid : localUuids.getUUIDs())
-		{
-			String id = localUuids.getID (uuid);
+		for (String uuid : localUuids.getUUIDs()) {
+            if (cancelMonitor.get()) {
+                return this.result;
+            }
+
+            String id = localUuids.getID (uuid);
 
             if(log.isDebugEnabled()) log.debug ("  - Removing old metadata before update with id: " + id);
 
@@ -344,11 +351,11 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
                  setRoot(md.getQualifiedName()).
                  setType(MetadataType.METADATA);
          metadata.getSourceInfo().
-                 setSourceId(params.uuid).
-                 setOwner(Integer.parseInt(params.ownerId));
+                 setSourceId(params.getUuid()).
+                 setOwner(Integer.parseInt(params.getOwnerId()));
          metadata.getHarvestInfo().
                  setHarvested(true).
-                 setUuid(params.uuid).
+                 setUuid(params.getUuid()).
                  setUri(params.url);
 
          addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
@@ -361,9 +368,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
 
          dataMan.flush();
 
-         //dataMan.indexMetadata(dbms, id); setTemplate update the index
-		
-		result.addedMetadata++;
+         dataMan.indexMetadata(id, true);
+         result.addedMetadata++;
 		
 		// Add Thumbnails only after metadata insertion to avoid concurrent transaction
 		// and loaded thumbnails could eventually failed anyway.
@@ -654,11 +660,11 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
                     setRoot(xml.getQualifiedName()).
                     setType(MetadataType.METADATA);
             metadata.getSourceInfo().
-                    setSourceId(params.uuid).
-                    setOwner(Integer.parseInt(params.ownerId));
+                    setSourceId(params.getUuid()).
+                    setOwner(Integer.parseInt(params.getOwnerId()));
             metadata.getHarvestInfo().
                     setHarvested(true).
-                    setUuid(params.uuid).
+                    setUuid(params.getUuid()).
                     setUri(params.url);
             if (params.datasetCategory!=null && !params.datasetCategory.equals("")) {
                 MetadataCategory metadataCategory = context.getBean(MetadataCategoryRepository.class).findOneByName(params.datasetCategory);
@@ -681,7 +687,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
 
             dataMan.flush();
 
-            dataMan.indexMetadata(reg.id, false);
+            dataMan.indexMetadata(reg.id, true);
 			
 			try {
     			// Load bbox info for later use (eg. WMS thumbnails creation)
@@ -845,12 +851,13 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
 		try {
 		    // Connect
             final GeonetHttpRequestFactory requestFactory = context.getBean(GeonetHttpRequestFactory.class);
+            final String requestHost = req.getURI().getHost();
             final ClientHttpResponse httpResponse = requestFactory.execute(req, new Function<HttpClientBuilder, Void>() {
                 @Nullable
                 @Override
                 public Void apply(@Nullable HttpClientBuilder input) {
                     // set proxy from settings manager
-                    Lib.net.setupProxy(context, input);
+                    Lib.net.setupProxy(context, input, requestHost);
                     return null;  //To change body of implemented methods use File | Settings | File Templates.
                 }
             });

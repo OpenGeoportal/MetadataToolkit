@@ -1,6 +1,7 @@
 package org.fao.geonet;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import jeeves.constants.ConfigFile;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
@@ -28,6 +29,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.io.File;
@@ -212,7 +216,30 @@ import static org.junit.Assert.assertTrue;
         return admin;
     }
 
-    public static Element getSampleMetadataXml() throws IOException, JDOMException {
+    public MockHttpSession loginAsAdmin() {
+        final User user = _userRepo.findAllByProfile(Profile.Administrator)
+                .get(0);
+        MockHttpSession session = new MockHttpSession();
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                user, null, user.getAuthorities());
+        auth.setDetails(user);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+          
+        return session;
+    }
+
+    public MockHttpSession loginAs(User user) {
+        MockHttpSession session = new MockHttpSession();
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                user, null, user.getAuthorities());
+        auth.setDetails(user);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+          
+        return session;
+    }
+    public Element getSampleMetadataXml() throws IOException, JDOMException {
         final URL resource = AbstractCoreIntegrationTest.class.getResource("kernel/valid-metadata.iso19139.xml");
         return Xml.loadStream(resource.openStream());
     }
@@ -241,7 +268,7 @@ import static org.junit.Assert.assertTrue;
         String createDate = new ISODate().getDateAndTime();
         Importer.importRecord(uuid,
                 uuidAction, Lists.newArrayList(metadata), schema, 0,
-                source.getUuid(), source.getName(), context,
+                source.getUuid(), source.getName(), Maps.<String, String>newHashMap(), context,
                 id, createDate, createDate,
                 "" + groupId, metadataType);
 

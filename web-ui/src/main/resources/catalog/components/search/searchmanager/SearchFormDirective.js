@@ -27,7 +27,7 @@
    */
   var searchFormController =
       function($scope, $location, gnSearchManagerService,
-               gnFacetService, Metadata) {
+               gnFacetService, Metadata, gnSearchLocation) {
     var defaultParams = {
       fast: 'index',
       _content_type: 'json'
@@ -65,10 +65,10 @@
      * Reset pagination 'from' and 'to' params and merge them
      * to $scope.params
      */
-    this.resetPagination = function() {
+    this.resetPagination = function(customPagination) {
       if ($scope.hasPagination) {
         $scope.paginationInfo.currentPage = 1;
-        this.updateSearchParams(this.getPaginationParams());
+        this.updateSearchParams(this.getPaginationParams(customPagination));
       }
     };
 
@@ -166,8 +166,7 @@
       var triggerSearchFn = self.triggerSearchFn;
       var facetsParams;
 
-      self.triggerSearch = function(keepPagination, initial) {
-        $scope.initial = !!initial;
+      self.triggerSearch = function(keepPagination) {
         if (!keepPagination) {
           self.resetPagination();
         }
@@ -181,14 +180,17 @@
         if (angular.equals(params, $location.search())) {
           triggerSearchFn(false);
         } else {
-          $location.search(params);
-          $location.path('/search');
+          gnSearchLocation.setSearch(params);
         }
       };
 
       $scope.$on('$locationChangeSuccess', function() {
-        if ($location.path() != '/search') return;
-        console.log('$locationChangeSuccess');
+        // We are not in a url search so leave
+        if (!gnSearchLocation.isSearch()) return;
+
+        // We are getting back to the search, no need to reload it
+        if ($location.absUrl() == gnSearchLocation.lastSearchUrl) return;
+
         var params = angular.copy($location.search());
         for (var o in facetsParams) {
           delete params[o];
@@ -236,7 +238,9 @@
         angular.extend($scope.searchObj.params, $scope.searchObj.sortbyDefault);
       }
 
-      self.resetPagination();
+      var customPagination = searchParams;
+
+      self.resetPagination(customPagination);
       $scope.currentFacets = [];
       $scope.triggerSearch();
       $scope.$broadcast('resetSelection');
@@ -260,12 +264,13 @@
     '$location',
     'gnSearchManagerService',
     'gnFacetService',
-    'Metadata'
+    'Metadata',
+    'gnSearchLocation'
   ];
 
   module.directive('ngSearchForm', [
-    '$location',
-    function($location) {
+    'gnSearchLocation',
+    function(gnSearchLocation) {
       return {
         restrict: 'A',
         scope: true,
@@ -273,6 +278,7 @@
         controllerAs: 'controller',
         link: function(scope, element, attrs) {
 
+          console.log('link searchFormDirective');
           scope.resetSearch = function(htmlQuery) {
             scope.controller.resetSearch();
             //TODO: remove geocat ref
@@ -282,25 +288,28 @@
             }
           };
 
-          if (attrs.runsearch && $location.path().indexOf('/metadata/') != 0) {
+          // Run a first search on directive rendering if attr is specified
+          // Don't run it on page load if the permalink is 'on' and the
+          // $location is not set to 'search'
+          if (attrs.runsearch &&
+              (!scope.searchObj.permalink || gnSearchLocation.isSearch())) {
 
             // get permalink params on page load
             if (scope.searchObj.permalink) {
-              angular.extend(scope.searchObj.params, $location.search());
+              angular.extend(scope.searchObj.params,
+                  gnSearchLocation.getParams());
             }
-
-            var initial = jQuery.isEmptyObject(scope.searchObj.params);
 
             // wait for pagination to be set before triggering search
             if (element.find('[data-gn-pagination]').length > 0) {
               var unregisterFn = scope.$watch('hasPagination', function() {
                 if (scope.hasPagination) {
-                  scope.triggerSearch(true, initial);
+                  scope.triggerSearch(true);
                   unregisterFn();
                 }
               });
             } else {
-              scope.triggerSearch(false, initial);
+              scope.triggerSearch(false);
             }
           }
         }

@@ -3,12 +3,14 @@
 
   goog.require('gn_search_manager');
 
-  var module = angular.module('gn_cat_controller', ['gn_search_manager']);
+  var module = angular.module('gn_cat_controller',
+      ['gn_search_manager']);
 
 
   module.constant('gnGlobalSettings', {
     proxyUrl: '../../proxy?url=',
-    locale: {}
+    locale: {},
+    isMapViewerEnabled: false
   });
 
   /**
@@ -22,9 +24,11 @@
    */
   module.controller('GnCatController', [
     '$scope', '$http', '$q', '$rootScope', '$translate',
-    'gnSearchManagerService', 'gnConfigService',
+    'gnSearchManagerService', 'gnConfigService', 'gnConfig',
+    'gnGlobalSettings', '$location',
     function($scope, $http, $q, $rootScope, $translate,
-            gnSearchManagerService, gnConfigService) {
+            gnSearchManagerService, gnConfigService, gnConfig,
+            gnGlobalSettings, $location) {
       $scope.version = '0.0.1';
       // TODO : add language
       var tokens = location.href.split('/');
@@ -34,13 +38,16 @@
       $scope.langs = {'fre': 'fr', 'eng': 'en', 'spa': 'sp'};
       $scope.url = '';
       $scope.base = '../../catalog/';
-      $scope.proxyUrl = '../../proxy?url=';
+      $scope.proxyUrl = gnGlobalSettings.proxyUrl;
       $scope.logoPath = '../../images/harvesting/';
+      $scope.isMapViewerEnabled = gnGlobalSettings.isMapViewerEnabled;
+      $scope.isDebug = window.location.search.indexOf('debug') !== -1;
+
       $scope.pages = {
         home: 'home',
-        admin: 'admin.console',
         signin: 'catalog.signin'
       };
+
       $scope.layout = {
         hideTopToolBar: false
       };
@@ -118,18 +125,59 @@
 
 
 
+        // Utility functions for user
+        var userFn = {
+          isAnonymous: function() {
+            return this['@authenticated'] === 'false';
+          },
+          isConnected: function() {
+            return !this.isAnonymous();
+          },
+          canEditRecord: function(md) {
+            if (md === null) {
+              return false;
+            }
+
+            // The md provide the information about
+            // if the current user can edit records or not.
+            var editable = md['geonet:info'].edit == 'true';
+
+
+            // A second filter is for harvested record
+            // if the catalogue admin defined that those
+            // records could be harvested.
+            if (md.isHarvested === 'y') {
+              return gnConfig['system.harvester.enableEditing'] === true &&
+                  editable;
+            }
+            return editable;
+          }
+        };
+        // Build is<ProfileName> and is<ProfileName>OrMore functions
+        angular.forEach($scope.profiles, function(profile) {
+          userFn['is' + profile] = function() {
+            return profile === this.profile;
+          };
+          userFn['is' + profile + 'OrMore'] = function() {
+            var profileIndex = $scope.profiles.indexOf(profile),
+                allowedProfiles = [];
+            angular.copy($scope.profiles, allowedProfiles);
+            allowedProfiles.splice(0, profileIndex);
+            return allowedProfiles.indexOf(this.profile) !== -1;
+          };
+        }
+        );
+
+
         // Retrieve user information if catalog is online
         var userLogin = catInfo.then(function(value) {
           url = $scope.url + 'info?_content_type=json&type=me';
           return $http.get(url).
               success(function(data, status) {
                 $scope.user = data.me;
+                angular.extend($scope.user, userFn);
+
                 $scope.authenticated = data.me['@authenticated'] !== 'false';
-                // TODO : should not be here, redirect to home
-                //                  if ($scope.authenticated) {
-                //                  // User is logged in
-                //                  } else {
-                //                  }
               }).
               error(function(data, status, headers, config) {
                 // TODO : translate

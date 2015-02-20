@@ -46,6 +46,10 @@
             internalGroupsProfiles: gnShareConstants.internalGroupsProfiles
           });
 
+          if (angular.isUndefined(scope.id)) {
+            scope.alertMsg = true;
+          }
+
           var loadPrivileges;
           var fillGrid = function(data) {
             scope.groups = data.groups;
@@ -71,7 +75,7 @@
           scope.checkAll = function(group) {
             angular.forEach(group.privileges, function(p) {
               if (!p.disabled) {
-                p.value = group.isCheckedAll === false;
+                p.value = group.isCheckedAll === true;
               }
             });
           };

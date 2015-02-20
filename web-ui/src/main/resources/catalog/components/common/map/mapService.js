@@ -15,7 +15,10 @@
       'gnOwsCapabilities',
       'gnConfig',
       '$log',
-      function(ngeoDecorateLayer, gnOwsCapabilities, gnConfig, $log) {
+      'gnSearchLocation',
+      '$rootScope',
+      function(ngeoDecorateLayer, gnOwsCapabilities, gnConfig, $log, 
+          gnSearchLocation, $rootScope) {
 
         var defaultMapConfig = {
           'useOSM': 'true',
@@ -202,7 +205,37 @@
             }
           },
 
-          addWmsToMap: function(map, layerParams, layerOptions, index) {
+          addKmlToMap: function(name, url, map) {
+            if (!url || url == '') {
+              return;
+            }
+
+            var proxyUrl = '../../proxy?url=' + encodeURIComponent(url);
+            var kmlSource = new ol.source.KML({
+              projection: map.getView().getProjection(),
+              url: proxyUrl
+            });
+
+            var vector = new ol.layer.Vector({
+              source: kmlSource,
+              label: name
+            });
+
+            ngeoDecorateLayer(vector);
+            vector.displayInLayerManager = true;
+            map.getLayers().push(vector);
+          },
+
+          // Given only the url, it will show a dialog to select
+          // what layers do we want to add to the map
+          addOwsServiceToMap: function(url, type) {
+            // move to map
+            gnSearchLocation.setMap();
+            // open dialog for WMS
+            $rootScope.$broadcast('requestCapLoad' + type.toUpperCase(), url);
+          },
+
+          createOlWMS: function(map, layerParams, layerOptions, index) {
 
             var options = layerOptions || {};
 
@@ -228,11 +261,6 @@
             ngeoDecorateLayer(olLayer);
             olLayer.displayInLayerManager = true;
 
-            if (index) {
-              map.getLayers().insertAt(index, olLayer);
-            } else {
-              map.addLayer(olLayer);
-            }
             return olLayer;
           },
 
@@ -246,7 +274,7 @@
            * @param {Object} getCapLayer
            * @return {*}
            */
-          addWmsToMapFromCap: function(map, getCapLayer) {
+          createOlWMSFromCap: function(map, getCapLayer) {
 
             var legend, attribution, metadata;
             if (getCapLayer) {
@@ -277,7 +305,7 @@
                 }
               }
 
-              return this.addWmsToMap(map, {
+              return this.createOlWMS(map, {
                 LAYERS: layer.Name
               }, {
                 url: layer.url,
@@ -293,44 +321,14 @@
             }
           },
 
-          /**
-           * Add a WMTS layer to the map.
-           *
-           * @param {ol.map} map
-           * @param {Object} srcParams
-           * @param {Object} layerParams
-           * @return {ol.layer.Tile}
-           */
-          addWMTSToMap: function(map, srcParams, layerParams) {
+          addWmsToMapFromCap: function(map, getCapLayer) {
+            var layer = this.createOlWMSFromCap(map, getCapLayer);
+            map.addLayer(layer);
+            return layer;
+          },
 
-            var source = new ol.source.WMTS({
-              url: srcParams.url,
-              layer: srcParams.layerId,
-              matrixSet: srcParams.matrixId,
-              format: srcParams.format || 'image/png',
-              projection: srcParams.projection,
-              tileGrid: new ol.tilegrid.WMTS({
-                origin: ol.extent.getTopLeft(srcParams.projection.getExtent()),
-                resolutions: srcParams.resolutions,
-                matrixIds: srcParams.matrixIds
-              }),
-              style: srcParams.style || 'default'
-            });
-
-            var olLayer = new ol.layer.Tile({
-              extent: srcParams.projection.getExtent(),
-              label: layerParams.title,
-              opacity: layerParams.opacity,
-              visible: layerParams.visible,
-              source: source,
-              title: srcParams.layerId,
-              url: srcParams.url
-            });
-            ngeoDecorateLayer(olLayer);
-            olLayer.displayInLayerManager = true;
-
-            map.addLayer(olLayer);
-            return olLayer;
+          addWmtsToMapFromCap: function(map, getCapLayer) {
+            map.addLayer(this.createOlWMTSFromCap(map, getCapLayer));
           },
 
           /**
@@ -343,14 +341,27 @@
            * @param {Object} getCapLayer
            * @return {*}
            */
-          addWmtsToMapFromCap: function(map, getCapLayer, capabilities) {
+          createOlWMTSFromCap: function(map, getCapLayer, capabilities) {
 
             var legend, attribution, metadata;
             if (getCapLayer) {
               var layer = getCapLayer;
 
-              var url = capabilities.operationsMetadata.GetTile.
-                  dcp.http.get[0].url;
+              var url, urls = capabilities.operationsMetadata.GetTile.
+                  DCP.HTTP.Get;
+
+              for (var i = 0; i < urls.length; i++) {
+                if (urls[i].Constraint[0].AllowedValues.Value[0].
+                    toLowerCase() == 'kvp') {
+                  url = urls[i].href;
+                  break;
+                }
+              }
+
+              var urlCap = capabilities.operationsMetadata.GetCapabilities.
+                  DCP.HTTP.Get[0].href;
+
+              var style = layer.Style[0].Identifier;
 
               var projection = map.getView().getProjection();
 
@@ -387,19 +398,39 @@
                 matrixIds[z] = matrix.Identifier;
               }
 
-              return this.addWMTSToMap(map, {
+              var source = new ol.source.WMTS({
                 url: url,
-                layerId: layer.Identifier,
-                matrixId: matrixSet.Identifier,
+                layer: layer.Identifier,
+                matrixSet: matrixSet.Identifier,
+                format: layer.Format[0] || 'image/png',
                 projection: projection,
-                matrixIds: matrixIds,
-                resolutions: resolutions,
-                style: 'default',
-                format: layer.Format[0]
-              }, {
-                title: layer.Title
+                tileGrid: new ol.tilegrid.WMTS({
+                  origin: ol.extent.getTopLeft(projection.getExtent()),
+                  resolutions: resolutions,
+                  matrixIds: matrixIds
+                }),
+                style: style
               });
+
+              var olLayer = new ol.layer.Tile({
+                extent: projection.getExtent(),
+                name: layer.Identifier,
+                title: layer.Title,
+                label: layer.Title,
+                source: source,
+                url: url,
+                urlCap: urlCap
+              });
+              ngeoDecorateLayer(olLayer);
+              olLayer.displayInLayerManager = true;
+
+              return olLayer;
             }
+          },
+
+          addWmtsToMapFromCap: function(map, getCapLayer, capabilities) {
+            map.addLayer(this.createOlWMTSFromCap(map,
+                getCapLayer, capabilities));
           },
 
           /**
@@ -423,11 +454,26 @@
           },
 
           /**
+           * Zoom map to the layer extent if defined. The layer extent
+           * is gotten from capabilities and store in cextent property
+           * of the layer.
+           * @param {ol.Layer} layer
+           * @param {ol.map} map
+           */
+          zoomLayerToExtent: function(layer, map) {
+            if (layer.get('cextent')) {
+              map.getView().fitExtent(layer.get('cextent'), map.getSize());
+            }
+          },
+
+
+          /**
            * Creates an ol.layer for a given type. Useful for contexts
            * @param {string} type
+           * @param {Object} opt for url or layer name
            * @return {ol.layer}
            */
-          createLayerForType: function(type) {
+          createLayerForType: function(type, opt) {
             switch (type) {
               case 'mapquest':
                 return new ol.layer.Tile({
@@ -451,36 +497,24 @@
                   title: 'Bing Aerial'
                 });
               case 'wmts':
-                var projection = ol.proj.get('EPSG:3857');
-                var projectionExtent = projection.getExtent();
-                var size = ol.extent.getWidth(projectionExtent) / 256;
-                var resolutions = new Array(16);
-                var matrixIds = new Array(16);
-                for (var z = 0; z < 16; ++z) {
-                  // generate resolutions and matrixIds arrays for this WMTS
-                  resolutions[z] = size / Math.pow(2, z);
-                  matrixIds[z] = 'EPSG:3857:' + z;
+                var that = this;
+                if (opt.name && opt.url) {
+                  gnOwsCapabilities.getWMTSCapabilities(opt.url).
+                      then(function(capObj) {
+                        var info = gnOwsCapabilities.getLayerInfoFromCap(
+                            opt.name, capObj);
+                        //info.group = layer.group;
+                        return that.addWmtsToMapFromCap(undefined, info,
+                            capObj);
+                        /*
+                          l.setOpacity(layer.opacity);
+                          l.setVisible(!layer.hidden);
+                        */
+                      });
                 }
-
-                return new ol.layer.Tile({
-                  opacity: 0.7,
-                  extent: projectionExtent,
-                  title: 'Sextant',
-                  source: new ol.source.WMTS({
-                    url: 'http://visi-sextant.ifremer.fr:8080/' +
-                        'geowebcache/service/wmts?',
-                    layer: 'Sextant',
-                    matrixSet: 'EPSG:3857',
-                    format: 'image/png',
-                    projection: projection,
-                    tileGrid: new ol.tilegrid.WMTS({
-                      origin: ol.extent.getTopLeft(projectionExtent),
-                      resolutions: resolutions,
-                      matrixIds: matrixIds
-                    }),
-                    style: 'default'
-                  })
-                });
+                else {
+                  console.warn('cant load wmts, url or name not provided');
+                }
             }
             $log.warn('Unsupported layer type: ', type);
           }

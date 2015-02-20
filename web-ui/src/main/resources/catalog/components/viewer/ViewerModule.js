@@ -15,8 +15,24 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   goog.require('gn_baselayerswitcher_directive');
   goog.require('gn_draw_directive');
+  goog.require('gn_graticule');
   goog.require('gn_layermanager_directive');
   goog.require('gn_localisation');
   goog.require('gn_measure_directive');
@@ -44,7 +60,8 @@
     'gn_localisation',
     'gn_popup',
     'gn_print',
-    'gn_module'
+    'gn_module',
+    'gn_graticule'
   ]);
 
   module.controller('gnViewerController', [

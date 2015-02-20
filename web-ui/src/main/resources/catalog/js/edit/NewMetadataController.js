@@ -187,7 +187,7 @@
 
       $scope.setBlankRecord = function() {
         $scope.activeTpl = $scope.blankTemplate;
-      }
+      };
 
       $scope.useTemplate = function(tpl) {
         $scope.setFromFile(null);
@@ -202,7 +202,7 @@
       $scope.useBlankTemplate = function() {
         $scope.setFromFile(null);
         $scope.setBlankRecord();
-      }
+      };
 
 
       if ($routeParams.childOf) {
@@ -215,7 +215,7 @@
 
       $scope.createNewMetadata = function(isPublic) {
         if ($scope.activeTpl) {
-         gnMetadataManager.create(
+            return gnMetadataManager.create(
               $scope.activeTpl['geonet:info'].id,
               $scope.ownerGroup,
               isPublic || false,

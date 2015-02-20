@@ -12,7 +12,7 @@
     }
   });
 
-    module.service('gnMdView', [
+  module.service('gnMdView', [
     'gnSearchLocation',
     '$rootScope',
     'gnMdFormatter',
@@ -20,7 +20,7 @@
     'gnMdViewObj',
     'gnSearchManagerService',
     'gnSearchSettings',
-    function($location, $rootScope, gnMdFormatter, Metadata,
+    function(gnSearchLocation, $rootScope, gnMdFormatter, Metadata,
              gnMdViewObj, gnSearchManagerService, gnSearchSettings) {
 
       var lastSearchParams = {};
@@ -37,7 +37,7 @@
           layers: md.getLinksByType('OGC', 'kml'),
           contacts: md.getContacts(),
           overviews: md.getThumbnails() ? md.getThumbnails().list : undefined,
-          encodedUrl: encodeURIComponent($location.absUrl())
+          encodedUrl: encodeURIComponent(gnSearchLocation.absUrl())
         });
 
         gnMdViewObj.current.record = md;
@@ -56,57 +56,81 @@
        * @param {string} uuid
        */
       this.setLocationUuid = function(uuid) {
-        if ($location.isSearch()) {
-          lastSearchParams = angular.copy($location.getParams());
-          $location.removeParams();
+        if (gnSearchLocation.isSearch()) {
+          lastSearchParams = angular.copy(gnSearchLocation.getParams());
+          gnSearchLocation.saveLastUrl();
+          gnSearchLocation.removeParams();
         }
-        $location.setUuid(uuid);
+        gnSearchLocation.setUuid(uuid);
       };
 
+      /**
+       * Called when you want to pass from mdview uuid url back to search.
+       * It change path back to search and inject the last parameters saved
+       * at last search.
+       */
       this.removeLocationUuid = function() {
-        if (!$location.isSearch()) {
-          $location.setSearch(lastSearchParams);
+        if (!gnSearchLocation.isSearch()) {
+          gnSearchLocation.setSearch(lastSearchParams);
         }
       };
 
-      this.openMdView = function(index, md, records) {
-        if(md && index) {
-          this.feedMd(index, md, records);
-        }
-        this.setUuid(md.getUuid());
-      };
-
-      this.initMdView = function(scope) {
+      /**
+       * Init the mdview behavior linked on $location.
+       * At start and $location change, the uuid is extracted
+       * from the url and the md is loaded. If the md was already loaded
+       * by a previous search, we use this object, otherwise we launch
+       * a new search to retrieve this md.
+       */
+      this.initMdView = function() {
         var that = this;
-        var loadMdView = function() {
-          var uuid = $location.getUuid();
-          if(uuid) {
-            if(!gnMdViewObj.current.record ||
+        var loadMdView = function(oldUrl, newUrl) {
+          var uuid = gnSearchLocation.getUuid();
+          if (uuid) {
+            if (!gnMdViewObj.current.record ||
                 gnMdViewObj.current.record.getUuid() != uuid) {
 
+              // Check if the md is in current search
+              if (angular.isArray(gnMdViewObj.records)) {
+                for (var i = 0; i < gnMdViewObj.records.length; i++) {
+                  var md = gnMdViewObj.records[i];
+                  if (md.getUuid() == uuid) {
+                    that.feedMd(i, md, gnMdViewObj.records);
+                    return;
+                  }
+                }
+              }
+
+              // get a new search to pick the md
               gnSearchManagerService.gnSearch({
-                uuid:uuid,
-                fast:'index',
-                _content_type:'json'
+                uuid: uuid,
+                fast: 'index',
+                _content_type: 'json'
               }).then(function(data) {
-                if(data.metadata.length == 1) {
+                if (data.metadata.length == 1) {
                   data.metadata[0] = new Metadata(data.metadata[0]);
-                  that.feedMd(0,undefined, data.metadata);
+                  that.feedMd(0, undefined, data.metadata);
                 }
               });
             }
           }
+          else {
+            gnMdViewObj.current.record = null;
+          }
         };
+        loadMdView(); // To manage uuid on page loading
         $rootScope.$on('$locationChangeSuccess', loadMdView);
       };
 
       this.initFormatter = function(selector) {
         var loadFormatter = function() {
-          var url = $location.path();
-          if ($location.isMdView()) {
-            var uuid = url.substring(10, url.length);
+          var uuid = gnSearchLocation.getUuid();
+          if (uuid) {
             gnMdFormatter.load(gnSearchSettings.formatter.defaultUrl + uuid,
                 selector);
+          }
+          else {
+            $rootScope.$broadcast('closeMdView');
           }
         };
         loadFormatter();

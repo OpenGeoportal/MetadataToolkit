@@ -78,6 +78,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 //=============================================================================
 
@@ -89,9 +90,10 @@ public class Aligner extends BaseAligner
 	//---
 	//--------------------------------------------------------------------------
 
-	public Aligner(Logger log, ServiceContext context, XmlRequest req,
-						GeonetParams params, Element remoteInfo)
+	public Aligner(AtomicBoolean cancelMonitor, Logger log, ServiceContext context, XmlRequest req,
+                   GeonetParams params, Element remoteInfo)
 	{
+        super(cancelMonitor);
 		this.log     = log;
 		this.context = context;
 		this.request = req;
@@ -143,7 +145,7 @@ public class Aligner extends BaseAligner
 
 	public HarvestResult align(Set<RecordInfo> records, List<HarvestError> errors) throws Exception
 	{
-		log.info("Start of alignment for : "+ params.name);
+		log.info("Start of alignment for : "+ params.getName());
 
         //-----------------------------------------------------------------------
 		//--- retrieve all local categories and groups
@@ -151,7 +153,7 @@ public class Aligner extends BaseAligner
 
 		localCateg = new CategoryMapper(context);
 		localGroups= new GroupMapper(context);
-		localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.uuid);
+		localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.getUuid());
 
         dataMan.flush();
 
@@ -163,19 +165,22 @@ public class Aligner extends BaseAligner
 		//-----------------------------------------------------------------------
 		//--- remove old metadata
 
-		for (String uuid : localUuids.getUUIDs())
-			if (!exists(records, uuid))
-			{
-				String id = localUuids.getID(uuid);
+		for (String uuid : localUuids.getUUIDs()) {
+            if (cancelMonitor.get()) {
+                return this.result;
+            }
 
-                if(log.isDebugEnabled()) log.debug("  - Removing old metadata with id:"+ id);
-				dataMan.deleteMetadata(context, id);
+            if (!exists(records, uuid)) {
+                String id = localUuids.getID(uuid);
+
+                if (log.isDebugEnabled()) log.debug("  - Removing old metadata with id:" + id);
+                dataMan.deleteMetadata(context, id);
 
                 dataMan.flush();
 
                 result.locallyRemoved++;
-			}
-
+            }
+        }
 		//-----------------------------------------------------------------------
 		//--- insert/update new metadata
 // Load preferred schema and set to iso19139 by default
@@ -184,23 +189,22 @@ public class Aligner extends BaseAligner
             preferredSchema = "iso19139";
         }
 
-        for(RecordInfo ri : records)
-		{
-			result.totalMetadata++;
+        for(RecordInfo ri : records) {
+            if (cancelMonitor.get()) {
+                return this.result;
+            }
+
+            result.totalMetadata++;
 
             // Mef full format provides ISO19139 records in both the profile
             // and ISO19139 so we could be able to import them as far as
             // ISO19139 schema is installed by default.
-			if (!dataMan.existsSchema(ri.schema) &&
-                !ri.schema.startsWith("iso19139."))
-			{
+			if (!dataMan.existsSchema(ri.schema) && !ri.schema.startsWith("iso19139.")) {
                 if(log.isDebugEnabled())
                     log.debug("  - Metadata skipped due to unknown schema. uuid:"+ ri.uuid
 						 	+", schema:"+ ri.schema);
 				result.unknownSchema++;
-			}
-			else
-			{
+			} else {
 				String id = dataMan.getMetadataId(ri.uuid);
 
 				// look up value of localrating/enable
@@ -208,16 +212,15 @@ public class Aligner extends BaseAligner
 				SettingManager settingManager = gc.getBean(SettingManager.class);
 				boolean localRating = settingManager.getValueAsBool("system/localrating/enable", false);
 				
-				if (id == null)	{
-					addMetadata(ri, localRating);
-				}
-				else {
+				if (id == null) {
+                    addMetadata(ri, localRating);
+                } else {
 					updateMetadata(ri, id, localRating);
 				}
 			}
 		}
 
-		log.info("End of alignment for : "+ params.name);
+		log.info("End of alignment for : "+ params.getName());
 
 		return result;
 	}
@@ -434,7 +437,7 @@ public class Aligner extends BaseAligner
         if(log.isDebugEnabled()) log.debug("  - Adding metadata with remote uuid:"+ ri.uuid);
 
         try {
-            params.validate.validate(dataMan, context, md);
+            params.getValidate().validate(dataMan, context, md);
         } catch (Exception e) {
             log.info("Ignoring invalid metadata uuid: " + ri.uuid);
             result.doesNotValidate++;
@@ -457,10 +460,10 @@ public class Aligner extends BaseAligner
                 setChangeDate(new ISODate(changeDate));
         metadata.getSourceInfo().
                 setSourceId(siteId).
-                setOwner(Integer.parseInt(params.ownerId));
+                setOwner(Integer.parseInt(params.getOwnerId()));
         metadata.getHarvestInfo().
                 setHarvested(true).
-                setUuid(params.uuid);
+                setUuid(params.getUuid());
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
@@ -499,7 +502,7 @@ public class Aligner extends BaseAligner
         }
         context.getBean(MetadataRepository.class).save(metadata);
 
-        dataMan.indexMetadata(id, false);
+        dataMan.indexMetadata(id, true);
 		result.addedMetadata++;
 
 		return id;
@@ -641,7 +644,7 @@ public class Aligner extends BaseAligner
 
 		if (localUuids.getID(ri.uuid) == null) {
             if(log.isDebugEnabled())
-                log.debug("  - Skipped metadata managed by another harvesting node. uuid:"+ ri.uuid +", name:"+ params.name);
+                log.debug("  - Skipped metadata managed by another harvesting node. uuid:"+ ri.uuid +", name:"+ params.getName());
         } else {
 			Path mefFile = retrieveMEF(ri.uuid);
 
@@ -726,7 +729,7 @@ public class Aligner extends BaseAligner
 
 
         try {
-            params.validate.validate(dataMan, context, md);
+            params.getValidate().validate(dataMan, context, md);
         } catch (Exception e) {
             log.info("Ignoring invalid metadata uuid: " + ri.uuid);
             result.doesNotValidate++;
@@ -800,7 +803,7 @@ public class Aligner extends BaseAligner
         metadataRepository.save(metadata);
 //        dataMan.flush();
 
-        dataMan.indexMetadata(id, false);
+        dataMan.indexMetadata(id, true);
 	}
 
 

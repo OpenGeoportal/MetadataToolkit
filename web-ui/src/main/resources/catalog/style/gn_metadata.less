@@ -6,6 +6,10 @@
 
 .gn-metadata-view {
 
+  .nav li:hover {
+    background-color: @nav-open-link-hover-color;
+  }
+
   h1 {
     font-size: 18px;
   }
@@ -81,9 +85,11 @@
       width: 14px;
       transition: transform .4s;
       transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
     }
     .closed i {
       transform: rotate(90deg);
+      -ms-transform: rotate(270deg);
     }
   }
 
@@ -177,6 +183,18 @@
   }
   .dropdown-menu {
     font-size: 90%;
+  }
+}
+
+.gn-related-resources {
+  .gn-related-item {
+    button.btn-block {
+      text-align: left;
+      padding-left: 15px;
+    }
+    h4 {
+      word-break: break-all;
+    }
   }
 }
 

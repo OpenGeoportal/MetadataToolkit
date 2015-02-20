@@ -48,6 +48,7 @@ import org.jdom.Element;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -55,15 +56,16 @@ import javax.annotation.Nullable;
 
 public class Aligner
 {
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 	//---
 	//--- Constructor
 	//---
 	//--------------------------------------------------------------------------
 
-	public Aligner(Logger log, XmlRequest req, GeonetParams params, DataManager dm,
+	public Aligner(AtomicBoolean cancelMonitor, Logger log, XmlRequest req, GeonetParams params, DataManager dm,
                    ServiceContext sc, CategoryMapper cm)
 	{
+        this.cancelMonitor = cancelMonitor;
 		this.log        = log;
 		this.req        = req;
 		this.params     = params;
@@ -96,22 +98,29 @@ public class Aligner
         //-----------------------------------------------------------------------
         //--- remove old metadata
 
-        for (String uuid : localUuids.getUUIDs())
-			if (!exists(mdList, uuid))
-			{
+        for (String uuid : localUuids.getUUIDs()) {
+            if (cancelMonitor.get()) {
+                return this.result;
+            }
+
+            if (!exists(mdList, uuid)) {
                 String id = localUuids.getID(uuid);
 
-                if(log.isDebugEnabled()) log.debug("  - Removing old metadata with id="+ id);
+                if (log.isDebugEnabled()) log.debug("  - Removing old metadata with id=" + id);
                 dataMan.deleteMetadata(context, id);
 
                 dataMan.flush();
-				this.result.locallyRemoved++;
-			}
-
+                this.result.locallyRemoved++;
+            }
+        }
 		//-----------------------------------------------------------------------
 		//--- insert/update new metadata
 
         for (Element aMdList : mdList) {
+            if (cancelMonitor.get()) {
+                return this.result;
+            }
+
             Element info = aMdList.getChild("info", Edit.NAMESPACE);
 
             String remoteId = info.getChildText("id");
@@ -142,7 +151,7 @@ public class Aligner
                 //--- maybe the metadata was unretrievable
 
                 if (id != null) {
-                    dataMan.indexMetadata(id, false);
+                    dataMan.indexMetadata(id, true);
                 }
             }
         }
@@ -186,11 +195,11 @@ public class Aligner
                 setChangeDate(new ISODate(changeDate)).
                 setCreateDate(new ISODate(createDate));
         metadata.getSourceInfo().
-                setSourceId(params.uuid).
-                setOwner(Integer.parseInt(params.ownerId));
+                setSourceId(params.getUuid()).
+                setOwner(Integer.parseInt(params.getOwnerId()));
         metadata.getHarvestInfo().
                 setHarvested(true).
-                setUuid(params.uuid);
+                setUuid(params.getUuid());
 
         @SuppressWarnings("unchecked")
         List<Element> categories = info.getChildren("category");
@@ -392,7 +401,7 @@ public class Aligner
 				info.detach();
 
             try {
-                params.validate.validate(dataMan, context, md);
+                params.getValidate().validate(dataMan, context, md);
                 return (Element) md.detach();
             } catch (Exception e) {
                 log.info("Ignoring invalid metadata: " + id);
@@ -452,4 +461,5 @@ public class Aligner
 	private CategoryMapper localCateg;
     private UUIDMapper     localUuids;
 	private HarvestResult result;
+    private final AtomicBoolean cancelMonitor;
 }

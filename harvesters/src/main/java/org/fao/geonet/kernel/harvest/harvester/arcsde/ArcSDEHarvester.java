@@ -23,6 +23,7 @@
 package org.fao.geonet.kernel.harvest.harvester.arcsde;
 
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.Logger;
 import org.fao.geonet.arcgis.ArcSDEMetadataAdapter;
 import org.fao.geonet.constants.Geonet;
@@ -42,16 +43,20 @@ import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
 import org.fao.geonet.repository.SourceRepository;
+import org.fao.geonet.repository.specification.MetadataSpecs;
 import org.fao.geonet.resources.Resources;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
+
+import com.google.common.collect.Sets;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -67,8 +72,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
 	private ArcSDEParams params;
     //FIXME use custom class?
-    private BaseAligner aligner = new BaseAligner() {};
-	
+
 	static final String ARCSDE_LOG_MODULE_NAME = Geonet.HARVESTER + ".arcsde";
 	private static final String ARC_TO_ISO19115_TRANSFORMER = "ArcCatalog8_to_ISO19115.xsl";
 	private static final String ISO19115_TO_ISO19139_TRANSFORMER = "ISO19115-to-ISO19139.xsl";
@@ -82,8 +86,8 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 		settingMan.add("id:"+siteId, "icon", as.icon);
 		settingMan.add("id:"+siteId, "server", as.server);
 		settingMan.add("id:"+siteId, "port", as.port);
-		settingMan.add("id:"+siteId, "username", as.username);
-		settingMan.add("id:"+siteId, "password", as.password);
+		settingMan.add("id:"+siteId, "username", as.getUsername());
+		settingMan.add("id:"+siteId, "password", as.getPassword());
 		settingMan.add("id:"+siteId, "database", as.database);
 	}
 	
@@ -108,14 +112,14 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 			params.create(node);
 		
 			//--- force the creation of a new uuid
-			params.uuid = UUID.randomUUID().toString();
+			params.setUuid(UUID.randomUUID().toString());
 		
 			String id = settingMan.add("harvesting", "node", getType());
 			storeNode(params, "id:"+id);
 
-        Source source = new Source(params.uuid, params.name, true);
+        Source source = new Source(params.getUuid(), params.getName(), params.getTranslations(), true);
         context.getBean(SourceRepository.class).save(source);
-        Resources.copyLogo(context, "images" + File.separator + "harvesting" + File.separator + params.icon, params.uuid);
+        Resources.copyLogo(context, "images" + File.separator + "harvesting" + File.separator + params.icon, params.getUuid());
 			
 			return id;
 	//	}
@@ -143,14 +147,14 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 	@Override
     public void doHarvest(Logger l) throws Exception {
 	    Log.info(ARCSDE_LOG_MODULE_NAME, "ArcSDE harvest starting");
-		ArcSDEMetadataAdapter adapter = new ArcSDEMetadataAdapter(params.server, params.port, params.database, params.username, params.password);
-		List<String> metadataList = adapter.retrieveMetadata();
+		ArcSDEMetadataAdapter adapter = new ArcSDEMetadataAdapter(params.server, params.port, params.database, params.getUsername(), params.getPassword());
+		List<String> metadataList = adapter.retrieveMetadata(cancelMonitor);
 		align(metadataList);
 		Log.info(ARCSDE_LOG_MODULE_NAME, "ArcSDE harvest finished");
 	}
 	
 	private void align(List<String> metadataList) throws Exception {
-	    Log.info(ARCSDE_LOG_MODULE_NAME, "Start of alignment for : "+ params.name);
+	    Log.info(ARCSDE_LOG_MODULE_NAME, "Start of alignment for : "+ params.getName());
 		result = new HarvestResult();
 		//----------------------------------------------------------------
 		//--- retrieve all local categories and groups
@@ -160,10 +164,13 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         dataMan.flush();
 
-        List<String> idsForHarvestingResult = new ArrayList<String>();
+        List<Integer> idsForHarvestingResult = new ArrayList<Integer>();
 		//-----------------------------------------------------------------------
 		//--- insert/update metadata		
 		for(String metadata : metadataList) {
+            if (cancelMonitor.get()) {
+                return;
+            }
 			result.totalMetadata++;
 			// create JDOM element from String-XML
 			Element metadataElement = Xml.loadString(metadata, false);
@@ -185,45 +192,51 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 				} else {
 
                     try {
-                        params.validate.validate(dataMan, context, iso19139);
+                        params.getValidate().validate(dataMan, context, iso19139);
                     } catch (Exception e) {
                         Log.info(ARCSDE_LOG_MODULE_NAME, "Ignoring invalid metadata with uuid " + uuid);
                         result.doesNotValidate++;
                         continue;
                     }
 
+                    BaseAligner aligner = new BaseAligner(cancelMonitor){};
 					//
 					// add / update the metadata from this harvesting result
 					//
 					String id = dataMan.getMetadataId(uuid);
 					if (id == null)	{
 					    Log.info(ARCSDE_LOG_MODULE_NAME, "adding new metadata");
-						id = addMetadata(iso19139, uuid, schema, localGroups, localCateg);
+						id = addMetadata(iso19139, uuid, schema, localGroups, localCateg, aligner);
 						result.addedMetadata++;
 					} else {
 					    Log.info(ARCSDE_LOG_MODULE_NAME, "updating existing metadata, id is: " + id);
-						updateMetadata(iso19139, id, localGroups, localCateg);
+						updateMetadata(iso19139, id, localGroups, localCateg, aligner);
 						result.updatedMetadata++;
 					}
-					idsForHarvestingResult.add(id);
+					idsForHarvestingResult.add(Integer.valueOf(id));
 				}
 			}
 		}
 		//
 		// delete locally existing metadata from the same source if they were
 		// not in this harvesting result
-		//	
-        List<Metadata> existingMetadata = context.getBean(MetadataRepository.class).findAllByHarvestInfo_Uuid(params.uuid);
-        for(Metadata existingId : existingMetadata) {
-            String ex$ = String.valueOf(existingId.getId());
-			if(!idsForHarvestingResult.contains(ex$)) {
-				dataMan.deleteMetadataGroup(context, ex$);
-				result.locallyRemoved++;
-			}
-		}			
+		//
+	    Set<Integer> idsResultHs = Sets.newHashSet(idsForHarvestingResult);
+        List<Integer> existingMetadata = context.getBean(MetadataRepository.class).findAllIdsBy(MetadataSpecs.hasHarvesterUuid(params.getUuid()));
+        for (Integer existingId : existingMetadata) {
+
+            if (cancelMonitor.get()) {
+                return;
+            }
+            if (!idsResultHs.contains(existingId)) {
+                log.debug("  Removing: " + existingId);
+                dataMan.deleteMetadata(context, existingId.toString());
+                result.locallyRemoved++;
+            }
+        }
 	}
 
-	private void updateMetadata(Element xml, String id, GroupMapper localGroups, final CategoryMapper localCateg) throws Exception {
+	private void updateMetadata(Element xml, String id, GroupMapper localGroups, final CategoryMapper localCateg, BaseAligner aligner) throws Exception {
 	    Log.info(ARCSDE_LOG_MODULE_NAME, "  - Updating metadata with id: "+ id);
         //
         // update metadata
@@ -255,7 +268,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         dataMan.flush();
 
-        dataMan.indexMetadata(id, false);
+        dataMan.indexMetadata(id, true);
 	}
 	/**
 	 * Inserts a metadata into the database. Lucene index is updated after insertion.
@@ -264,9 +277,11 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 	 * @param schema
 	 * @param localGroups
 	 * @param localCateg
-	 * @throws Exception
+	 * @param aligner
+     * @throws Exception
 	 */
-	private String addMetadata(Element xml, String uuid, String schema, GroupMapper localGroups, final CategoryMapper localCateg) throws Exception {
+	private String addMetadata(Element xml, String uuid, String schema, GroupMapper localGroups, final CategoryMapper localCateg,
+                               BaseAligner aligner) throws Exception {
 	    Log.info(ARCSDE_LOG_MODULE_NAME, "  - Adding metadata with remote uuid: "+ uuid);
 
         //
@@ -289,11 +304,11 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
                 setCreateDate(createDate).
                 setChangeDate(createDate);
         metadata.getSourceInfo().
-                setSourceId(params.uuid).
-                setOwner(Integer.parseInt(params.ownerId));
+                setSourceId(params.getUuid()).
+                setOwner(Integer.parseInt(params.getOwnerId()));
         metadata.getHarvestInfo().
                 setHarvested(true).
-                setUuid(params.uuid);
+                setUuid(params.getUuid());
 
         aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
@@ -303,7 +318,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         aligner.addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
 
-        dataMan.indexMetadata(id, false);
+        dataMan.indexMetadata(id, true);
 
         return id;
     }
@@ -338,9 +353,9 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 		//--- we update a copy first because if there is an exception ArcSDEParams
 		//--- could be half updated and so it could be in an inconsistent state
 
-        Source source = new Source(copy.uuid, copy.name, true);
+        Source source = new Source(copy.getUuid(), copy.getName(), copy.getTranslations(), true);
         context.getBean(SourceRepository.class).save(source);
-        Resources.copyLogo(context, "images" + File.separator + "harvesting" + File.separator + params.icon, params.uuid);
+        Resources.copyLogo(context, "images" + File.separator + "harvesting" + File.separator + params.icon, params.getUuid());
 		
 		params = copy;
         super.setParams(params);

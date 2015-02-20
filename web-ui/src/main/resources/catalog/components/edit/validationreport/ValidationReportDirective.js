@@ -44,7 +44,8 @@
 
                     scope.hasErrors = scope.hasErrors || ruleType.error > 0;
                     angular.forEach(ruleType.patterns, function(pat) {
-                      scope.numberOfRules += pat.rules.length;
+                      scope.numberOfRules +=
+                          pat.rules ? pat.rules.length : 0;
                     });
                   });
 
@@ -79,7 +80,7 @@
                   return scope.hasErrors ? 'panel-danger' : 'panel-success';
                 }
                 if (type === 'icon') {
-                  return 'fa-fw';
+                  return 'fa-check';
                 } else {
                   return '';
                 }

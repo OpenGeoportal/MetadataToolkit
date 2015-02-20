@@ -59,6 +59,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 //=============================================================================
 
@@ -74,7 +75,8 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
 	// ---
 	// --------------------------------------------------------------------------
 
-	public Harvester(Logger log, ServiceContext context, Z3950Params params) {
+	public Harvester(AtomicBoolean cancelMonitor, Logger log, ServiceContext context, Z3950Params params) {
+        super(cancelMonitor);
 		GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 		this.context = context;
 		this.log = log;
@@ -97,16 +99,20 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
 		int groupSize = 10;
 
 		this.log = log;
-		log.info("Retrieving remote metadata information:" + params.uuid);
+		log.info("Retrieving remote metadata information:" + params.getUuid());
 
 		Z3950ServerResults serverResults = new Z3950ServerResults();
 
 		// --- Clean all before harvest : Remove/Add mechanism
-		localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.uuid);
+		localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.getUuid());
 
 		// --- remove old metadata
 		for (String uuid : localUuids.getUUIDs()) {
-			String id = localUuids.getID(uuid);
+            if (cancelMonitor.get()) {
+                return serverResults;
+            }
+
+            String id = localUuids.getID(uuid);
             if(this.log.isDebugEnabled()) log.debug("  - Removing old metadata before update with id: " + id);
 			dataMan.deleteMetadataGroup(context, id);
 			serverResults.locallyRemoved++;
@@ -176,7 +182,11 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
         // -- add new category for each repository
 		boolean addcateg = false;
 		for (String repo : params.getRepositories()) {
-			Element repoElem = Xml.selectElement(repositories, "record[id='"+repo+"']");
+            if (cancelMonitor.get()) {
+                return serverResults;
+            }
+
+            Element repoElem = Xml.selectElement(repositories, "record[id='"+repo+"']");
 			if (repoElem != null) {
 				Element repoId  = repoElem.getChild("id");
 				String repoName = repoElem.getChildText("name");
@@ -205,7 +215,11 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
 		// --- return only maximum hits as directed by the harvest params
 		int nrGroups = (numberOfHits / groupSize) + 1;
 		for (int i = 1; i <= nrGroups; i++) {
-			int lower = ((i-1)*groupSize)+1;	
+            if (cancelMonitor.get()) {
+                return serverResults;
+            }
+
+            int lower = ((i-1)*groupSize)+1;
 			int upper = Math.min((i*groupSize),numberOfHits);
 			request.getChild("from").setText(""+lower);  
 			request.getChild("to").setText(""+upper);  
@@ -222,14 +236,18 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
 
 			boolean transformIt = false;
 			Path thisXslt = context.getAppPath().resolve(Geonet.Path.IMPORT_STYLESHEETS);
-			if (!params.importXslt.equals("none")) {
-				thisXslt = thisXslt.resolve(params.importXslt);
+			if (!params.getImportXslt().equals("none")) {
+				thisXslt = thisXslt.resolve(params.getImportXslt());
 				transformIt = true;
 			}
 
 			// --- For each record....
 			for (Document doc : list) {
-				Element md = doc.getRootElement();
+                if (cancelMonitor.get()) {
+                    return serverResults;
+                }
+
+                Element md = doc.getRootElement();
 				String eName = md.getQualifiedName();
 				if (eName.equals("summary")) continue;
 
@@ -323,9 +341,9 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
                 //
                 try {
                     int owner = 1;
-                    if (params.ownerId != null && !params.ownerId.isEmpty()) {
+                    if (params.getOwnerId() != null && !params.getOwnerId().isEmpty()) {
                         try {
-                            owner = Integer.parseInt(params.ownerId);
+                            owner = Integer.parseInt(params.getOwnerId());
                         } catch (NumberFormatException e) {
                             // skip
                         }
@@ -337,13 +355,13 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
                             setRoot(md.getQualifiedName()).
                             setType(MetadataType.METADATA).setDoctype(docType);
                     metadata.getSourceInfo().
-                            setSourceId(params.uuid).
+                            setSourceId(params.getUuid()).
                             setOwner(owner).
                             setGroupOwner(1);
                     metadata.getHarvestInfo().
                             setHarvested(true).
-                            setUuid(params.uuid).
-                            setUri(params.name);
+                            setUuid(params.getUuid()).
+                            setUri(params.getName());
 
                     addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
                     metadata = dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
@@ -362,7 +380,7 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
                 addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
 
 				// validate it here if requested
-				if (params.validate != HarvestValidationEnum.NOVALIDATION) {
+				if (params.getValidate() != HarvestValidationEnum.NOVALIDATION) {
 					Document docVal;
 					if (!transformIt && (doc.getDocType() != null)) {
 						docVal = new Document(md, (DocType)doc.getDocType().detach());
@@ -382,6 +400,8 @@ class Harvester extends BaseAligner implements IHarvester<Z3950ServerResults> {
                 result.addedMetadata++;
             }
         }
+
+        context.getBean(SearchManager.class).forceIndexChanges();
 
 		return serverResults;
 	}
