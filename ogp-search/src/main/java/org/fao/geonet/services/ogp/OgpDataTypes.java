@@ -73,7 +73,7 @@ public class OgpDataTypes {
             OgpQuery query = new OgpQuery(formBean);
             return client.executeQuery(query);
         } else {
-            OgpQuery query = new OgpQuery(formBean);;
+            OgpQuery query = new OgpQuery(formBean);
             return client.executeRawQuery(query);
         }
     }
@@ -118,14 +118,9 @@ public class OgpDataTypes {
             } else {
                 transformedMd = originalMd;
             }
+            // Import record
             String uuid = UUID.randomUUID().toString();
             String date = new ISODate().toString();
-            final List<String> id = new ArrayList<>();
-            final List<Element> md = new ArrayList<>();
-            md.add(transformedMd);
-
-            // Import record
-
             int userId = context.getUserSession().getUserIdAsInt();
             String docType = null, category = null;
             boolean ufo = false, indexImmediate = true;

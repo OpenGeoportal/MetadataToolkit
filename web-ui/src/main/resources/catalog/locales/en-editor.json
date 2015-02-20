@@ -126,6 +126,7 @@
     "ogpGeographicExtent": "Geographic Extent",
     "ogpGeographicExtentTooltip": "Geographic Extent tooltip",
     "ogpImport": "Import",
+    "ogpImporting": "Importing",
     "ogpLayerId": "OGP Layer ID",
     "ogpLayerIdTooltip": "OGP Layer ID tooltip",
     "ogpNewSearch": "New Search",

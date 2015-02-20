@@ -219,16 +219,23 @@
                         </div>
                     </div>
                     <div>
-                        <pagination total-items="totalItems" ng-model="page" items-per-page="50" ng-change="setPage()"
-                                    max-size="paginatorMaxSize" boundary-links="true"></pagination>
+                        <div data-pagination data-total-items="totalItems" data-ng-model="page" data-items-per-page="itemsPerPage"
+                             data-ng-change="setPage()" data-max-size="paginatorMaxSize" data-boundary-links="true"></div>
                     </div>
                 </div>
             </div>
             <div class="row bottom-buffer-md">
-                <div class="col-md-12 text-right">
-                    <button type="button" class="btn btn-default" data-translate="" data-ng-click="reviseSearch()">ogpReviseSearch</button>
-                    <button type="button" class="btn btn-default" data-translate="" data-ng-click="newSearch()">ogpNewSearch</button>
-                    <button type="button" class="btn btn-primary" data-translate="" data-ng-click="importMetadata()" data-ng-disabled="!resultBean.selectedMetadata && ownerGroup">ogpImport</button>
+                <div class="col-md-offset-2 col-md-8 text-right">
+                    <button type="button" class="btn btn-default" data-translate="" data-ng-click="reviseSearch()"
+                            data-ng-disabled="busy || performingImport">ogpReviseSearch</button>
+                    <button type="button" class="btn btn-default" data-translate="" data-ng-click="newSearch()"
+                            data-ng-disabled="busy || performingImport">ogpNewSearch</button>
+                    <button type="button" class="btn btn-primary" data-ng-click="importMetadata()"
+                            data-ng-disabled="!resultBean.selectedMetadata || busy || performingImport">
+                        <span class="loading fa fa-spinner fa-spin" data-ng-show="performingImport"></span>
+                        <span data-translate="" data-ng-show="performingImport">ogpImporting</span>
+                        <span data-translate="" data-ng-hide="performingImport">ogpImport</span>
+                    </button>
                 </div>
             </div>
         </div>

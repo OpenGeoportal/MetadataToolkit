@@ -8,8 +8,7 @@
     goog.require('gn_group_service');
 
     var module = angular.module('ogp_search_controller',
-        ['gn_date_validator_directive', 'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive', 'gn_group_service',
-            'infinite-scroll']);
+        ['gn_date_validator_directive', 'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive', 'gn_group_service']);
 
     /**
      * Constants
@@ -42,6 +41,8 @@
             $scope.page = 1;
             $scope.totalItems = 0;
             $scope.paginatorMaxSize = 8;
+            $scope.itemsPerPage = 50;
+            $scope.performingImport = false;
 
             gnGroupService.list(CONSTANTS.EDITOR_PROFILE).then(
                 function (groups) {
@@ -125,7 +126,9 @@
                             $scope.response = data.response;
                         }
                         if (data && data.response && data.response.docs) {
+                            $scope.resultBean = {};
                             $scope.totalItems =  data.response.numFound;
+                            $scope.itemsPerPage = data.responseHeader.params.rows;
                             $scope.searchResults = data.response.docs;
                             //for (var i=0; i < data.response.docs.length; i++) {
                             //    $scope.searchResults.push(data.response.docs[i]);
@@ -272,6 +275,7 @@
                 }
                 console.log($scope.resultBean.selectedMetadata.LayerId);
 
+                $scope.performingImport = true;
                 $http.post("ogp.dataTypes.import", {},
                     {
                         "params": {
@@ -285,10 +289,11 @@
                         }
                         console.log(data);
                         $scope.metadataId = data;
-                        $scope.goToEditor();
+                        $timeout($scope.goToEditor, 4000);
 
                     }).
                     error(function (data, status, headers, config) {
+                        $scope.performingImport = false;
                         console.log(data);
                     });
             };
