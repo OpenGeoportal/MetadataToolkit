@@ -129,7 +129,7 @@
 
         <filter-name>WebResourceOptimizer</filter-name>
         <filter-class>
-            ro.isdc.wro.http.WroFilter
+            org.fao.geonet.wro4j.GeonetWro4jFilter
         </filter-class>
     </filter>
     <filter-mapping>
@@ -138,37 +138,56 @@
     </filter-mapping>
 
     <!-- Only allow administrators or localhost access to the monitoring metrics -->
-    <filter>
+    <!-- <filter>
         <filter-name>MetricsRegistryInitializerFilter</filter-name>
         <filter-class>org.fao.geonet.monitor.webapp.MetricsRegistryInitializerFilter</filter-class>
-    </filter>
+    </filter>-->
 
     <!--  Monitors the number of Active requests, request length and return codes -->
-    <filter>
+   <!-- <filter>
         <filter-name>webappMetricsFilter</filter-name>
         <filter-class>org.fao.geonet.monitor.webapp.DefaultWebappMetricsFilter</filter-class>
-    </filter>
+    </filter> -->
 
-    <filter-mapping>
+    <!--<filter-mapping>
         <filter-name>MetricsRegistryInitializerFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
+    </filter-mapping> -->
+    <!--<filter-mapping>
         <filter-name>webappMetricsFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping> -->
 
     <filter-mapping>
         <filter-name>resources</filter-name>
         <url-pattern>/images/logos/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>resources</filter-name>
         <url-pattern>/images/harvesting/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>resources</filter-name>
         <url-pattern>/xml/schemas/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>resources</filter-name>
         <url-pattern>/images/statTmp/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>resources</filter-name>
         <url-pattern>/htmlcache/*</url-pattern>
         <url-pattern>/images/css/*</url-pattern>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>resources</filter-name>
+        <url-pattern>/map/*</url-pattern>
+    </filter-mapping>
 
     <!-- Print servlet -->
     <servlet>
@@ -199,7 +218,7 @@
             <param-value>true</param-value>
         </init-param>
     </servlet>
-    <servlet>
+    <!--<servlet>
         <servlet-name>criticalHealthChecks</servlet-name>
         <servlet-class>org.fao.geonet.monitor.webapp.GeonetworkHealthCheckServlet</servlet-class>
         <init-param>
@@ -222,13 +241,13 @@
             <param-name>REGISTRY_ATTRIBUTE_KEY</param-name>
             <param-value>com.yammer.metrics.reporting.HealthCheckServlet.registry.expensive</param-value>
         </init-param>
-    </servlet>
+    </servlet>-->
 
     <servlet-mapping>
         <servlet-name>monitor</servlet-name>
         <url-pattern>/monitor/*</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+   <!-- <servlet-mapping>
         <servlet-name>criticalHealthChecks</servlet-name>
         <url-pattern>/criticalhealthcheck</url-pattern>
     </servlet-mapping>
@@ -239,7 +258,7 @@
     <servlet-mapping>
         <servlet-name>expensiveHealthChecks</servlet-name>
         <url-pattern>/expensivehealthcheck</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
     <servlet>
         <servlet-name>gn-servlet</servlet-name>

@@ -3,7 +3,9 @@
   The main entry point for all user interface generated
   from XSLT. 
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                exclude-result-prefixes="#all">
 
   <xsl:output omit-xml-declaration="yes" method="html" doctype-system="html" indent="yes"
     encoding="UTF-8"/>
@@ -29,9 +31,9 @@
 
         <link rel="icon" type="image/gif" href="../../images/logos/favicon.gif"/>
         <link href="rss.search?sortBy=changeDate" rel="alternate" type="application/rss+xml"
-          title="{{concat($env/system/site/name, ' - ', $env/system/site/organization)}}"/>
+          title="{concat($env/system/site/name, ' - ', $env/system/site/organization)}"/>
         <link href="portal.opensearch" rel="search" type="application/opensearchdescription+xml"
-          title="concat($env/system/site/name, ' - ', $env/system/site/organization)"/>
+          title="{concat($env/system/site/name, ' - ', $env/system/site/organization)}"/>
 
         <xsl:call-template name="css-load"/>
       </head>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!-- 
  Define here all GUI specific parameters to be used in XSL stylesheet.
  Each parameter could be retrieved using /root/gui/config/your-parameter-key xpath.
  Updating a parameter don't need a restart (but need an XSL cache refresh if XSL caching is on).
 -->
 <config>
-
- <!-- Client configuration in order to redirect to default UI
+ 
+ <!-- Client configuration in order to redirect to default UI 
   (ie. main.home service) or to another custom client.
-
+  
   For widget mode:
   * parameters attribute is appended to URL. Use it to define a default map extent for example or change default language.
   * createParameter attribute is appended to URL when the application is called from the administration > New metadata menu.

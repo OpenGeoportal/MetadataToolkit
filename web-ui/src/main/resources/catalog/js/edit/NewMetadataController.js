@@ -24,12 +24,12 @@
     'gnSearchManagerService',
     'gnUtilityService',
     'gnMetadataManager', '$location', 'gnGroupService',
-    '$filter', 'TEMPLATES',
+    '$filter', '$q', '$timeout', 'TEMPLATES',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
             gnSearchManagerService, 
             gnUtilityService,
             gnMetadataManager, $location, gnGroupService,
-            $filter, TEMPLATES) {
+            $filter, $q, $timeout, TEMPLATES) {
 
       $scope.isTemplate = false;
       $scope.hasTemplates = true;
@@ -223,11 +223,16 @@
               $routeParams.childOf ? true : false
           );
         } else if($scope.fromFile === 'xmlFile') {
-          $location.path('/create/fromFile');
+            return $timeout(function(){
+                return  $location.path('/create/fromFile');
+            }, 200);
         } else if ($scope.fromFile === 'ogpSearch') {
-          $location.path('/ogpSearch/search');
+            return $timeout(function() {
+                $location.path('/ogpSearch/search');
+            }, 200);
         }
       };
+
 
       init();
     }

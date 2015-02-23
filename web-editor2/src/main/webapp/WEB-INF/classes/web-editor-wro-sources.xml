@@ -16,6 +16,8 @@
     <jsSource webappPath="catalog/js/search" />
     <jsSource webappPath="catalog/js/gn" />
 
+    <jsSource webappPath="catalog/views/default" />
+
     <!-- Moved to catalog/components/utility, jsSource doesn't accept file
     names and if added catalog/components all is added -->
     <!--<jsSource webappPath="catalog/components/UrlUtilsService.js" />-->
@@ -34,7 +36,9 @@
     <jsSource webappPath="catalog/components/utility" />
     <jsSource webappPath="catalog/components/vcs" />
     <jsSource webappPath="catalog/components/viewer" />
+    <jsSource webappPath="catalog/components/cookieWarning" />
 
+    <cssSource webappPath="catalog/views/default" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
     <cssSource webappPath="catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
   </require>
 
@@ -48,6 +52,7 @@
     <jsSource webappPath="catalog/lib/angular/angular-resource.min.js"/>
     <jsSource webappPath="catalog/lib/angular/angular-route.min.js"/>
     <jsSource webappPath="catalog/lib/angular/angular-sanitize.min.js"/>
+    <jsSource webappPath="catalog/lib/angular/angular-cookies.min.js"/>
     <jsSource webappPath="catalog/lib/angular-translate.min.js"/>
     <jsSource webappPath="catalog/lib/angular-md5.min.js"/>
     <jsSource webappPath="catalog/lib/angular.ext/hotkeys/hotkeys.min.js"/>

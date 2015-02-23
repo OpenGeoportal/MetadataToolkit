@@ -1,7 +1,9 @@
 --Inserts new data and modifies data
 
 ALTER TABLE operations DROP COLUMN reserved;
-ALTER TABLE services DROP COLUMN id;
+ALTER TABLE ServiceParameters DROP CONSTRAINT IF EXISTS serviceparameters_service_fkey;
+ALTER TABLE ServiceParameters DROP COLUMN IF EXISTS id;
+ALTER TABLE services DROP COLUMN IF EXISTS id;
 
 
 ALTER TABLE Settings ALTER name TYPE varchar(512);
@@ -170,7 +172,6 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/resourceIdentifierPrefix', 'http://localhost:8080/geonetwork/', 0, 10001, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/xlinkResolver/localXlinkEnable', 'true', 2, 2311, 'n');
 
-
 ALTER TABLE StatusValues ADD displayorder int;
 
 UPDATE StatusValues SET displayorder = 0 WHERE id = 0;
@@ -191,8 +192,7 @@ INSERT INTO UserAddress (SELECT id, id FROM Users);
 INSERT INTO Email (SELECT id, email FROM Users);
 
 
-CREATE SEQUENCE IF NOT EXISTS HIBERNATE_SEQUENCE START WITH 4000 INCREMENT BY 1;
-ALTER TABLE ServiceParameters DROP COLUMN id;
+CREATE SEQUENCE HIBERNATE_SEQUENCE START WITH 4000 INCREMENT BY 1;
 
 
 
@@ -212,3 +212,5 @@ ALTER TABLE Requests DROP COLUMN simple;
 ALTER TABLE Requests ADD COLUMN simple boolean;
 UPDATE Requests SET simpletemp = simple;
 ALTER TABLE Requests DROP COLUMN simpletemp;
+
+UPDATE HarvestHistory SET elapsedTime = 0 WHERE elapsedTime IS NULL;

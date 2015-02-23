@@ -90,7 +90,13 @@
          <artifactId>spring-web</artifactId>
          <version>${spring.version}</version>
       </dependency>
- 
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${spring.version}</version>
+          <scope>compile</scope>
+      </dependency>
+
  	<!-- This is to avoid 406 error with spring -->
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
@@ -157,6 +163,10 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-postgis</artifactId>
     </dependency>
 
     <dependency>
@@ -287,7 +297,7 @@
       <artifactId>print-lib</artifactId>
       <version>${print-lib.version}</version>
     </dependency>
-
+  
     <!-- ====================== -->
     <!-- Generated dependencies -->
     <dependency>
@@ -331,6 +341,12 @@
           <artifactId>health-monitor</artifactId>
           <version>${project.version}</version>
       </dependency> -->
+
+      <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>inspire-atom</artifactId>
+          <version>${project.version}</version>
+      </dependency>
 
       <!-- Handled locally by a temporarly repository -->
     <dependency>
@@ -412,8 +428,7 @@
 	    <artifactId>jsoup</artifactId>
 	    <version>0.2.2</version>
 	</dependency>
-
-		<dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>geonetwork-client</artifactId>
       <version>${project.version}</version>
@@ -425,10 +440,6 @@
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-test</artifactId>
-      </dependency>
       <dependency>
           <groupId>${project.groupId}</groupId>
           <artifactId>domain</artifactId>
@@ -472,15 +483,19 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>schema-iso19110</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>schema-dublin-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geonetwork-opensource</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>schema-iso19115-3</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ogp-search</artifactId>
@@ -567,10 +582,6 @@
                 </resource>
                 <resource>
                   <directory>${project.basedir}/../schemas/csw-record/src/main/plugin</directory>
-                  <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins</targetPath>
-                </resource>
-                <resource>
-                  <directory>${project.basedir}/../schemas/iso19115/src/main/plugin</directory>
                   <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins</targetPath>
                 </resource>
                 <resource>
