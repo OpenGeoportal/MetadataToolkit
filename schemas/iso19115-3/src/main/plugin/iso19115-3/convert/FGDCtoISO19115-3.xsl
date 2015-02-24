@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-                xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-                xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-                xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-                xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-                xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-                xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-07-11"
-                xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-                xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-                xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-07-11"
-                xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-07-11"
-                xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-07-11"
+                xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-12-25"
+                xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-12-25"
+                xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-12-25"
+                xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-12-25"
+                xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-12-25"
+                xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-12-25"
+                xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-12-25"
+                xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-12-25"
+                xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-12-25"
+                xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-12-25"
+                xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-12-25"
+                xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-12-25"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
                 xmlns:gml="http://www.opengis.net/gml/3.2">
 
@@ -20,21 +20,21 @@
   <xsl:template match="/">
 
     <mdb:MD_Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-                     xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-                     xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-                     xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-                     xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-                     xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-                     xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-07-11"
-                     xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-                     xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-                     xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-07-11"
-                     xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-07-11"
-                     xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-07-11"
+                     xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-12-25"
+                     xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-12-25"
+                     xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-12-25"
+                     xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-12-25"
+                     xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-12-25"
+                     xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-12-25"
+                     xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-12-25"
+                     xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-12-25"
+                     xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-12-25"
+                     xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-12-25"
+                     xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-12-25"
+                     xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-12-25"
                      xmlns:gco="http://www.isotc211.org/2005/gco"
                      xmlns:gml="http://www.opengis.net/gml/3.2"
-                     xsi:schemaLocation="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11 ../schema.xsd">
+                     xsi:schemaLocation="http://www.isotc211.org/namespace/mdb/1.0/2014-12-25 ../schema.xsd">
 
       <!-- Metadata identifier -->
       <xsl:choose>
@@ -510,7 +510,7 @@
         </xsl:for-each>
 
         <!-- Distributor -->
-        <mri:distributor>
+        <mrd:distributor>
           <mrd:MD_Distributor>
             <!-- Distributor contact -->
             <xsl:apply-templates select="distrib" />
@@ -528,7 +528,7 @@
             </mrd:distributionOrderProcess>
 
           </mrd:MD_Distributor>
-        </mri:distributor>
+        </mrd:distributor>
 
         <!-- Distribution transfer options -->
         <mrd:transferOptions>
@@ -842,7 +842,7 @@
 
 
   <xsl:template match="distrib">
-    <mri:distributorContact>
+    <mrd:distributorContact>
       <cit:CI_Responsibility>
         <cit:role>
           <cit:CI_RoleCode codeList="codeListLocation#CI_RoleCode" codeListValue="distributor">distributor</cit:CI_RoleCode>
@@ -850,7 +850,7 @@
 
         <xsl:apply-templates select="cntinfo" />
       </cit:CI_Responsibility>
-    </mri:distributorContact>
+    </mrd:distributorContact>
   </xsl:template>
 
   <xsl:template match="metc">
