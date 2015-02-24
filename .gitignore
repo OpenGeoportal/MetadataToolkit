@@ -85,9 +85,10 @@ web-editor2/src/main/webapp/WEB-INF/lucene/
 web-editor2/src/main/webapp/WEB-INF/metadata_subversion/
 web-editor2/src/main/webapp/WEB-INF/data/data/metadata_data
 web-editor2/src/main/webapp/WEB-INF/data/data/metadata_subversion
-web-editor2/src/main/webapp/WEB-INF/data/data/resources
+web-editor2/src/main/webapp/WEB-INF/data/data/resources/htmlcache
+web-editor2/src/main/webapp/WEB-INF/data/data/resources/xml
+web-editor2/src/main/webapp/WEB-INF/data/data/resources/images
 web-editor2/src/main/webapp/WEB-INF/data/index
-web-editor2/src/main/webapp/WEB-INF/data/removed/
 web-editor2/.springBeans
 web-editor2/src/main/webapp/WEB-INF/data/0*
 web-editor2/src/main/webapp/WEB-INF/data_*
