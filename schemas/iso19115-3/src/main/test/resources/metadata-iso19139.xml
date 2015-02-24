@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gmd:MD_Metadata xmlns:gco="http://www.isotc211.org/2005/gco"
-  xmlns:gmd="http://www.isotc211.org/namespace/gmd" xmlns:gml="http://www.opengis.net/gml"
+<gmd:MD_Metadata xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+  xmlns:gmd="http://standards.iso.org/19115/-3/gmd" xmlns:gml="http://www.opengis.net/gml"
   xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <gmd:fileIdentifier>
     <gco:CharacterString>da165110-88fd-11da-a88f-000d939bc5d8</gco:CharacterString>

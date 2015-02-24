@@ -12,19 +12,19 @@
   xmlns:dct="http://purl.org/dc/terms/"
   xmlns:dctype="http://purl.org/dc/dcmitype/" 
   xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-  xmlns:gco="http://www.isotc211.org/2005/gco" 
-  xmlns:mds="http://www.isotc211.org/namespace/mds/1.0/2014-07-11"
-  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-  xmlns:srv="http://www.isotc211.org/namespace/srv/2.0/2014-07-11"
-  xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-  xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-07-11"
-  xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-07-11"
-  xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-  xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-  xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-  xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-  xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-  xmlns:dqm="http://www.isotc211.org/namespace/dqm/1.0/2014-07-11"
+  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+  xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0/2014-12-25"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+  xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
+  xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+  xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0/2014-12-25"
+  xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
+  xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+  xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+  xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+  xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0/2014-12-25"
   xmlns:gml="http://www.opengis.net/gml/3.2" 
   xmlns:ogc="http://www.opengis.net/rdf#"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -46,7 +46,7 @@
   <xsl:template match="mds:MD_Metadata|*[contains(@gco:isoType,'MD_Metadata')]" mode="record-reference">
     <!-- TODO : a metadata record may contains aggregate. In that case create one dataset per aggregate member. -->
     <dcat:dataset rdf:resource="{$url}/resource/{iso19115-3:getResourceCode(.)}"/>
-    <dcat:record rdf:resource="{$url}/metadata/{mds:metadataIdentifier/mcc:MD_Identifier[mcc:codeSpace/gco:CharacterString='urn:uuid']/mcc:code/gco:CharacterString}"/>
+    <dcat:record rdf:resource="{$url}/metadata/{mds:metadataIdentifier[position() = 1]/mcc:MD_Identifier/mcc:code/gco:CharacterString}"/>
   </xsl:template>
   
   
@@ -61,7 +61,7 @@
       
       xpath: //mds:MD_Metadata|//*[contains(@gco:isoType,'MD_Metadata')]
     -->
-    <dcat:CatalogRecord rdf:about="{$url}/metadata/{mds:metadataIdentifier/mcc:MD_Identifier[mcc:codeSpace/gco:CharacterString='urn:uuid']/mcc:code/gco:CharacterString}">
+    <dcat:CatalogRecord rdf:about="{$url}/metadata/{mds:metadataIdentifier[position() = 1]/mcc:MD_Identifier/mcc:code/gco:CharacterString}">
       <!-- Link to a dcat:Dataset or a rdf:Description for services and feature catalogue. -->
       <foaf:primaryTopic rdf:resource="{$url}/resource/{iso19115-3:getResourceCode(.)}"/>
 
@@ -73,7 +73,7 @@
       <!-- xpath: mds:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='revision']cit:date/gco:DateTime -->
       
       <xsl:call-template name="add-reference-19115-1-2013">
-        <xsl:with-param name="uuid" select="mds:metadataIdentifier/mcc:MD_Identifier[mcc:codeSpace/gco:CharacterString='urn:uuid']/mcc:code/gco:CharacterString"/>
+        <xsl:with-param name="uuid" select="mds:metadataIdentifier[position() = 1]/mcc:MD_Identifier/mcc:code/gco:CharacterString"/>
       </xsl:call-template>
     </dcat:CatalogRecord>
     
@@ -447,7 +447,7 @@
     
     <xsl:value-of select="if ($metadata/mds:identificationInfo/*/mri:citation/*/cit:identifier/*/mcc:code/gco:CharacterString!='')
       then $metadata/mds:identificationInfo/*/mri:citation/*/cit:identifier/*/mcc:code/gco:CharacterString 
-      else $metadata/mds:metadataIdentifier/mcc:MD_Identifier[mcc:codeSpace/gco:CharacterString='urn:uuid']/mcc:code/gco:CharacterString"/>
+      else $metadata/mds:metadataIdentifier[position() = 1]/mcc:MD_Identifier/mcc:code/gco:CharacterString"/>
   </xsl:function>
   
   

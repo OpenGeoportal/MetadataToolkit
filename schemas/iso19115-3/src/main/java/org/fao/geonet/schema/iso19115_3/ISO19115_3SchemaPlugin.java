@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import org.fao.geonet.kernel.schema.AssociatedResource;
 import org.fao.geonet.kernel.schema.AssociatedResourcesSchemaPlugin;
+import org.fao.geonet.kernel.schema.ISOPlugin;
 import org.fao.geonet.kernel.schema.MultilingualSchemaPlugin;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
@@ -21,7 +22,10 @@ import org.jdom.xpath.XPath;
  */
 public class ISO19115_3SchemaPlugin
         extends org.fao.geonet.kernel.schema.SchemaPlugin
-        implements AssociatedResourcesSchemaPlugin, MultilingualSchemaPlugin {
+        implements
+                AssociatedResourcesSchemaPlugin,
+                MultilingualSchemaPlugin,
+                ISOPlugin {
     public static final String IDENTIFIER = "iso19115-3";
 
     private static ImmutableSet<Namespace> allNamespaces;
@@ -38,7 +42,6 @@ public class ISO19115_3SchemaPlugin
     public ISO19115_3SchemaPlugin() {
         super(IDENTIFIER);
     }
-
 
     public Set<AssociatedResource> getAssociatedResourcesUUIDs(Element metadata) {
         String XPATH_FOR_AGGRGATIONINFO = "*//mri:associatedResource/*" +
@@ -158,5 +161,15 @@ public class ISO19115_3SchemaPlugin
             element.addContent(freeTextElement);
         }
         freeTextElement.addContent(textGroupElement);
+    }
+
+    @Override
+    public String getBasicTypeCharacterStringName() {
+        return "gco:CharacterString";
+    }
+
+    @Override
+    public Element createBasicTypeCharacterString() {
+        return new Element("CharacterString", ISO19115_3Namespaces.GCO);
     }
 }

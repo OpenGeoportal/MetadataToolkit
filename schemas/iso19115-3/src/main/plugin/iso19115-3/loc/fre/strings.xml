@@ -11,22 +11,29 @@
   <resourceLineageTab>Lineage</resourceLineageTab>
 
   <!-- View and tabs -->
-  <advanced>Full</advanced>
+  <advanced>Complète</advanced>
   <default>Simple</default>
   <simple>Simple</simple>
   <inspire>INSPIRE</inspire>
-  <resource>Resource</resource>
+  <resource>Ressource</resource>
   <xml>XML</xml>
-  <metadata>Metadata</metadata>
+  <metadata>Métadonnées</metadata>
   <identificationInfo>Identification</identificationInfo>
   <distributionInfo>Distribution</distributionInfo>
-  <dataQualityInfo>Quality</dataQualityInfo>
-  <resourceLineage>Lineage</resourceLineage>
-  <spatialRepresentationInfo>Spatial rep.</spatialRepresentationInfo>
-  <referenceSystemInfo>Ref. system</referenceSystemInfo>
-  <contentInfo>Content</contentInfo>
-  <portrayalCatalogueInfo>Portrayal</portrayalCatalogueInfo>
-  <metadataConstraints>Md. constraints</metadataConstraints>
+  <dataQualityInfo>Qualité</dataQualityInfo>
+  <resourceLineage>Généalogie</resourceLineage>
+  <spatialRepresentationInfo>Rep. spatiale</spatialRepresentationInfo>
+  <referenceSystemInfo>Sys de référence</referenceSystemInfo>
+  <contentInfo>Contenu</contentInfo>
+  <portrayalCatalogueInfo>Représentation</portrayalCatalogueInfo>
+  <metadataConstraints>Md. constraintes</metadataConstraints>
   <metadataMaintenance>Md. maintenance</metadataMaintenance>
-  <applicationSchemaInfo>Schema info</applicationSchemaInfo>
+  <applicationSchemaInfo>Standard ext.</applicationSchemaInfo>
+  <acquisitionInformation>Acquisition</acquisitionInformation>
+
+
+  <add-resource-id>Générer un identifiant</add-resource-id>
+  <add-resource-idHelp>Construit un identifiant en utilisant l'URL du catalogue et l'identifiant de la fiche (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
+  <add-extent-from-geokeywords>Calculer les emprises à partir des mots clés</add-extent-from-geokeywords>
+  <add-extent-from-geokeywordsHelp>Analyse les mots clés de type géographique et ajoute les emprises correspondantes.</add-extent-from-geokeywordsHelp>
 </strings>

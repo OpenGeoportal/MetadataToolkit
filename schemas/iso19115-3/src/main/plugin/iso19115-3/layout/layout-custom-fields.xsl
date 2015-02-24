@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-  xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-  xmlns:gco="http://www.isotc211.org/2005/gco"
+  xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
   xmlns:gts="http://www.isotc211.org/2005/gts"
   xmlns:gml="http://www.opengis.net/gml/3.2"
   xmlns:gn="http://www.fao.org/geonetwork"
@@ -20,7 +21,9 @@
   <xsl:template mode="mode-iso19115-3"
                 match="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code|
                        mdb:metadataIdentifier/mcc:MD_Identifier/mcc:codeSpace|
-                       mdb:metadataIdentifier/mcc:MD_Identifier/mcc:description"
+                       mdb:metadataIdentifier/mcc:MD_Identifier/mcc:description|
+                       mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode = 'revision']/cit:date|
+                       mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode = 'revision']/cit:dateType"
                 priority="2000">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
@@ -39,26 +42,6 @@
 
   </xsl:template>
 
-  <!--<xsl:template mode="mode-iso19115-3"
-                match="mcc:code"
-                priority="2000">
-    <xsl:param name="schema" select="$schema" required="no"/>
-    <xsl:param name="labels" select="$labels" required="no"/>
-
-    <xsl:message>FILE IDENTIFIER 222222<xsl:value-of select="name(.)" /> - <xsl:value-of select="name(..)" /> - <xsl:value-of select="name(../..)" /></xsl:message>
-    <xsl:call-template name="render-element">
-      <xsl:with-param name="label" select="gn-fn-metadata:getLabel($schema, name(), $labels)/label"/>
-      <xsl:with-param name="value" select="*"/>
-      <xsl:with-param name="cls" select="local-name()"/>
-      <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-      <xsl:with-param name="type" select="gn-fn-metadata:getFieldType($editorConfig, name(), '')"/>
-      <xsl:with-param name="name" select="''"/>
-      <xsl:with-param name="editInfo" select="*/gn:element"/>
-      <xsl:with-param name="parentEditInfo" select="gn:element"/>
-      <xsl:with-param name="isDisabled" select="true()"/>
-    </xsl:call-template>
-
-  </xsl:template>-->
 
   <!-- Duration
 
@@ -168,8 +151,19 @@
           data-hbottom-ref="_{gex:southBoundLatitude/gco:Decimal/gn:element/@ref}"
           data-htop-ref="_{gex:northBoundLatitude/gco:Decimal/gn:element/@ref}"
           data-lang="lang"
-          data-bbox="bbox"></div>
+></div>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
+
+  <xsl:template mode="mode-iso19115-3"
+          match="gml:Polygon"
+          priority="2000">
+    Here is a polygon
+    <textarea>
+      <xsl:copy-of select="."/>
+    </textarea>
+  </xsl:template>
+
+
 </xsl:stylesheet>

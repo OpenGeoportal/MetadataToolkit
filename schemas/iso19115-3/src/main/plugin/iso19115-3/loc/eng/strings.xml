@@ -32,6 +32,8 @@
   <metadataConstraints>Md. constraints</metadataConstraints>
   <metadataMaintenance>Md. maintenance</metadataMaintenance>
   <applicationSchemaInfo>Schema info</applicationSchemaInfo>
+  <acquisitionInformation>Acquisition info</acquisitionInformation>
+
 
   <tufts-standard>Tufts standard</tufts-standard>
   <tufts-minimal>Tufts minimal</tufts-minimal>
@@ -43,5 +45,14 @@
   <organisationName>Organisation name</organisationName>
   <metadataContact>Point of Contact</metadataContact>
 
-  <publicationDate>Publication Date</publicationDate>
+  <publicationDate>Publication Date  </publicationDate>
+
+  <add-resource-id>
+Compute resource identifier</add-resource-id>
+  <add-resource-idHelp>
+Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
+  <add-extent-from-geokeywords>
+Compute extent from keyword</add-extent-from-geokeywords>
+  <add-extent-from-geokeywordsHelp>
+Analyze each keyword of type place and add matching extent.</add-extent-from-geokeywordsHelp>
 </strings>

@@ -7,17 +7,24 @@ import org.jdom.Namespace;
  */
 public class ISO19115_3Namespaces {
     public static final Namespace GCO =
-            Namespace.getNamespace("gco", "http://www.isotc211.org/2005/gco");
+            Namespace.getNamespace("gco",
+                    "http://standards.iso.org/19139/gco/1.0/2014-12-25");
     public static final Namespace MDB =
-            Namespace.getNamespace("mdb", "http://www.isotc211.org/namespace/mdb/1.0/2014-07-11");
+            Namespace.getNamespace("mdb",
+                    "http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25");
     public static final Namespace MRI =
-            Namespace.getNamespace("mri", "http://www.isotc211.org/namespace/mri/1.0/2014-07-11");
+            Namespace.getNamespace("mri",
+                    "http://standards.iso.org/19115/-3/mri/1.0/2014-12-25");
     public static final Namespace SRV =
-            Namespace.getNamespace("srv", "http://www.isotc211.org/namespace/srv/1.0/2014-07-11");
+            Namespace.getNamespace("srv",
+                    "http://standards.iso.org/19115/-3/srv/1.0/2014-12-25");
     public static final Namespace MRC =
-            Namespace.getNamespace("mrc", "http://www.isotc211.org/namespace/mrc/1.0/2014-07-11");
+            Namespace.getNamespace("mrc",
+                    "http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25");
     public static final Namespace MRL =
-            Namespace.getNamespace("mrl", "http://www.isotc211.org/namespace/mrl/1.0/2014-07-11");
+            Namespace.getNamespace("mrl",
+                    "http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25");
     public static final Namespace LAN =
-            Namespace.getNamespace("lan", "http://www.isotc211.org/namespace/lan/1.0/2014-07-11");
+            Namespace.getNamespace("lan",
+                    "http://standards.iso.org/19115/-3/lan/1.0/2014-12-25");
 }

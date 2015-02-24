@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:srv="http://www.isotc211.org/namespace/srv/2.0/2014-07-11"
-  xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-  xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-  xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-07-11"
-  xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-07-11"
-  xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-  xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-  xmlns:msr="http://www.isotc211.org/namespace/msr/1.0/2014-07-11"
-  xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-  xmlns:gcx="http://www.isotc211.org/namespace/gcx/1.0/2014-07-11"
-  xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-  xmlns:dqm="http://www.isotc211.org/namespace/dqm/1.0/2014-07-11"
-  xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-  xmlns:gmd="http://www.isotc211.org/namespace/gmd"
-  xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/namespace/gmx"
+  xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
+  xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+  xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+  xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
+  xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
+  xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+  xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+  xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
+  xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+  xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"
+  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+  xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0/2014-12-25"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+  xmlns:gmd="http://standards.iso.org/19115/-3/gmd"
+  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25" xmlns:gmx="http://standards.iso.org/19115/-3/gmx"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:geonet="http://www.fao.org/geonetwork" xmlns:exslt="http://exslt.org/common"
@@ -132,9 +132,8 @@
           <xsl:value-of select="/root/gui/strings/changeDate"/>&#160;<xsl:value-of 
             select="if (contains($modifiedDate, 'T')) then substring-before($modifiedDate, 'T') else $modifiedDate"/> | 
           <xsl:value-of select="/root/gui/strings/uuid"/>&#160;
-          <xsl:value-of select="mdb:metadataIdentifier/
-                                  mcc:MD_Identifier[mcc:codeSpace/gco:CharacterString = 'urn:uuid']/
-                                  mcc:code"/>
+          <xsl:value-of select="mdb:metadataIdentifier[position() = 1]/
+                                  mcc:MD_Identifie/mcc:code"/>
         </span>
 
       </xsl:with-param>
@@ -261,7 +260,7 @@
         </xsl:call-template>
       </xsl:with-param>
       <xsl:with-param name="content">
-        <xsl:for-each select="gmd:keyword">
+        <xsl:for-each select="mri:keyword">
           <xsl:if test="position() &gt; 1"><xsl:text>, </xsl:text></xsl:if>
           
           
@@ -285,7 +284,7 @@
         </xsl:for-each>
         
         
-        <xsl:variable name="type" select="gmd:type/mri:MD_KeywordTypeCode/@codeListValue"/>
+        <xsl:variable name="type" select="mri:type/mri:MD_KeywordTypeCode/@codeListValue"/>
         <xsl:if test="$type != ''">
           (<xsl:value-of
             select="/root/gui/schemas/*[name(.)='iso19115-3']/codelists/codelist[@name = 'mri:MD_KeywordTypeCode']/
