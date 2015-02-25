@@ -6,13 +6,13 @@
       + super-brief representation.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-  xmlns:gco="http://www.isotc211.org/2005/gco" 
-  xmlns:gmx="http://www.isotc211.org/namespace/gmx"
+  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+  xmlns:gmx="http://standards.iso.org/19115/-3/gmx"
   xmlns:gn="http://www.fao.org/geonetwork"
-  xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-  xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-  xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
+  xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+  xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
   xmlns:util="java:org.fao.geonet.util.XslUtil"
   exclude-result-prefixes="#all" >
   

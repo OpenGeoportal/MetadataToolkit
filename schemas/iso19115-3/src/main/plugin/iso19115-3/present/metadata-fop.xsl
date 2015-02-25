@@ -2,17 +2,17 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:gml="http://www.opengis.net/gml/3.2" 
-  xmlns:gco="http://www.isotc211.org/2005/gco" 
-  xmlns:mds="http://www.isotc211.org/namespace/mds/1.0/2014-07-11"
-  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-  xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-  xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-  xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-  xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-  xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-  xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-  xmlns:dqm="http://www.isotc211.org/namespace/dqm/1.0/2014-07-11"
-  xmlns:srv="http://www.isotc211.org/namespace/srv/1.0/2014-07-11"
+  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+  xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0/2014-12-25"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+  xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+  xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+  xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+  xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+  xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0/2014-12-25"
+  xmlns:srv="http://standards.iso.org/19115/-3/srv/1.0/2014-12-25"
   xmlns:geonet="http://www.fao.org/geonetwork"
   xmlns:date="http://exslt.org/dates-and-times" 
   xmlns:exslt="http://exslt.org/common"
@@ -343,7 +343,7 @@
 
     <!-- Identifier -->
     <xsl:variable name="identifier">
-      <xsl:apply-templates mode="elementFop" select="./mds:metadataIdentifier/mcc:MD_Identifier[string(mcc:codeSpace/*)='urn:uuid']/mcc:code/*">
+      <xsl:apply-templates mode="elementFop" select="./mds:metadataIdentifier[position() = 1]/mcc:MD_Identifier/mcc:code/*">
         <xsl:with-param name="schema" select="$schema"/>
       </xsl:apply-templates>
     </xsl:variable>

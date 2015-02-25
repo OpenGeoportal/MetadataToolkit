@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-  xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-  xmlns:gco="http://www.isotc211.org/2005/gco"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+  xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
   xmlns:gn="http://www.fao.org/geonetwork" exclude-result-prefixes="#all" version="2.0">
 
   <!-- 

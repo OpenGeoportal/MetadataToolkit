@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-                xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-                xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-                xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-                xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-                xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-                xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-07-11"
-                xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-                xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-                xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-07-11"
-                xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-07-11"
-                xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-07-11"
-                xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+                xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+                xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+                xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+                xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+                xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
+                xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0/2014-12-25"
+                xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+                xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+                xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
+                xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
+                xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+                xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
+                xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
                 xmlns:gml="http://www.opengis.net/gml/3.2">
 
   <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="no" version="1.0" indent="yes" />
   <xsl:template match="/">
 
     <mdb:MD_Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xmlns:cit="http://www.isotc211.org/namespace/cit/1.0/2014-07-11"
-                     xmlns:gex="http://www.isotc211.org/namespace/gex/1.0/2014-07-11"
-                     xmlns:lan="http://www.isotc211.org/namespace/lan/1.0/2014-07-11"
-                     xmlns:mcc="http://www.isotc211.org/namespace/mcc/1.0/2014-07-11"
-                     xmlns:mco="http://www.isotc211.org/namespace/mco/1.0/2014-07-11"
-                     xmlns:mdb="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11"
-                     xmlns:mmi="http://www.isotc211.org/namespace/mmi/1.0/2014-07-11"
-                     xmlns:mrd="http://www.isotc211.org/namespace/mrd/1.0/2014-07-11"
-                     xmlns:mri="http://www.isotc211.org/namespace/mri/1.0/2014-07-11"
-                     xmlns:mrl="http://www.isotc211.org/namespace/mrl/1.0/2014-07-11"
-                     xmlns:mrs="http://www.isotc211.org/namespace/mrs/1.0/2014-07-11"
-                     xmlns:mrc="http://www.isotc211.org/namespace/mrc/1.0/2014-07-11"
-                     xmlns:gco="http://www.isotc211.org/2005/gco"
+                     xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+                     xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+                     xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+                     xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+                     xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+                     xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
+                     xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0/2014-12-25"
+                     xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+                     xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+                     xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
+                     xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
+                     xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+                     xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
+                     xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
                      xmlns:gml="http://www.opengis.net/gml/3.2"
-                     xsi:schemaLocation="http://www.isotc211.org/namespace/mdb/1.0/2014-07-11 ../schema.xsd">
+                     xsi:schemaLocation="http://www.isotc211.org/namespace/mdb/1.0/2014-12-25 ../schema.xsd">
 
       <!-- Metadata identifier -->
       <xsl:choose>
@@ -124,6 +126,9 @@
       <xsl:apply-templates select="metadata/idinfo"/>
 
 
+      <!-- Feature catalogue attributes -->
+      <xsl:apply-templates select="metadata/eainfo"/>
+
       <!-- Distribution info -->
       <xsl:apply-templates select="metadata/distinfo"/>
 
@@ -133,9 +138,6 @@
 
       <!-- TODO -->
       <!--<mdb:resourceLineage />-->
-
-      <!-- Feature catalogue attributes -->
-      <xsl:apply-templates select="metadata/eainfo"/>
     </mdb:MD_Metadata>
   </xsl:template>
 
@@ -171,11 +173,18 @@
 -->
     <lan:LanguageCode codeList="codeListLocation#LanguageCode">
       <!-- TODO: Add more language mappings -->
-      <xsl:if test="@value=en">
-        <xsl:attribute name="codeListValue">
-          <xsl:text>eng</xsl:text>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="@value=en">
+          <xsl:attribute name="codeListValue">
+            <xsl:text>eng</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="codeListValue">
+            <xsl:text>eng</xsl:text>
+          </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
     </lan:LanguageCode>
   </xsl:template>
 
@@ -389,7 +398,7 @@
               <mri:descriptiveKeywords>
                 <mri:MD_Keywords>
                   <xsl:for-each select="themekey">
-                    <mri:keyword><xsl:apply-templates select="."/></mri:keyword>
+                    <mri:keyword><gco:CharacterString><xsl:apply-templates select="."/></gco:CharacterString></mri:keyword>
                   </xsl:for-each>
 
                   <mri:type>
@@ -413,7 +422,7 @@
               <mri:descriptiveKeywords>
                 <mri:MD_Keywords>
                   <xsl:for-each select="placekey">
-                    <mri:keyword><xsl:apply-templates select="."/></mri:keyword>
+                    <mri:keyword><gco:CharacterString><xsl:apply-templates select="."/></gco:CharacterString></mri:keyword>
                   </xsl:for-each>
 
                   <mri:type>
@@ -510,7 +519,7 @@
         </xsl:for-each>
 
         <!-- Distributor -->
-        <mri:distributor>
+        <mrd:distributor>
           <mrd:MD_Distributor>
             <!-- Distributor contact -->
             <xsl:apply-templates select="distrib" />
@@ -528,7 +537,7 @@
             </mrd:distributionOrderProcess>
 
           </mrd:MD_Distributor>
-        </mri:distributor>
+        </mrd:distributor>
 
         <!-- Distribution transfer options -->
         <mrd:transferOptions>
@@ -568,12 +577,12 @@
         <cit:date>
           <cit:CI_Date>
             <cit:date>
-              <gco:Date>
+              <gco:DateTime>
                 <xsl:call-template name="format-date">
                   <xsl:with-param name="dateval" select="citeinfo/pubdate" />
                   <xsl:with-param name="format" select="'date'" />
                 </xsl:call-template>
-              </gco:Date>
+              </gco:DateTime>
             </cit:date>
             <cit:dateType>
               <cit:CI_DateTypeCode codeList="codeListLocation#CI_DateTypeCode" codeListValue="publication"/>
@@ -704,26 +713,44 @@
     <mdb:contentInfo>
       <mrc:MD_FeatureCatalogue>
         <mrc:featureCatalogue>
-          <gfc:FC_FeatureCatalogue xmlns:gfc="http://www.isotc211.org/namespace/gfc/1.1/2014-07-11">
+          <gfc:FC_FeatureCatalogue>
             <gfc:producer>
               <cit:CI_Responsibility>
                 <cit:role>
                   <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
                                    codeListValue=""/>
                 </cit:role>
+                <cit:party>
+                  <cit:CI_Organisation>
+                    <cit:name gco:nilReason="missing">
+                      <gco:CharacterString />
+                    </cit:name>
+                    <cit:contactInfo>
+                      <cit:CI_Contact>
+                        <cit:address>
+                          <cit:CI_Address>
+                            <cit:electronicMailAddress gco:nilReason="missing">
+                              <gco:CharacterString/>
+                            </cit:electronicMailAddress>
+                          </cit:CI_Address>
+                        </cit:address>
+                      </cit:CI_Contact>
+                    </cit:contactInfo>
+                  </cit:CI_Organisation>
+                </cit:party>
               </cit:CI_Responsibility>
             </gfc:producer>
             <gfc:featureType>
               <gfc:FC_FeatureType>
 
                 <gfc:typeName>
-                  <gco:LocalName><xsl:value-of select="detailed/enttyp/enttypl" /></gco:LocalName>
+                  <xsl:value-of select="detailed/enttyp/enttypl" />
                 </gfc:typeName>
                 <gfc:definition>
                   <gco:CharacterString><xsl:value-of select="detailed/enttyp/enttypl" /></gco:CharacterString>
                 </gfc:definition>
                 <gfc:isAbstract>
-                  <gco:Boolean/>
+                  <gco:Boolean>false</gco:Boolean>
                 </gfc:isAbstract>
 
                 <!-- ADD FOR EACH ATTRIBUTE A SECTION LIKE THIS, REPLACING THE NAME AND TYPE -->
@@ -750,7 +777,7 @@
                         </gfc:FC_Constraint>
                       </gfc:constrainedBy>
                       <gfc:memberName>
-                        <gco:LocalName><xsl:value-of select="attrlabl" /></gco:LocalName>
+                        <xsl:value-of select="attrlabl" />
                       </gfc:memberName>
                       <gfc:cardinality gco:nilReason="missing">
                         <gco:CharacterString/>
@@ -812,7 +839,7 @@
         <gex:temporalElement>
           <gex:EX_TemporalExtent>
             <gex:extent>
-              <gml:TimeInstant>
+              <gml:TimeInstant gml:id="{generate-id()}">
                 <gml:timePosition>
                   <xsl:call-template name="format-date">
                     <xsl:with-param name="dateval" select="caldate" />
@@ -842,7 +869,7 @@
 
 
   <xsl:template match="distrib">
-    <mri:distributorContact>
+    <mrd:distributorContact>
       <cit:CI_Responsibility>
         <cit:role>
           <cit:CI_RoleCode codeList="codeListLocation#CI_RoleCode" codeListValue="distributor">distributor</cit:CI_RoleCode>
@@ -850,7 +877,7 @@
 
         <xsl:apply-templates select="cntinfo" />
       </cit:CI_Responsibility>
-    </mri:distributorContact>
+    </mrd:distributorContact>
   </xsl:template>
 
   <xsl:template match="metc">
@@ -1012,7 +1039,10 @@
     <xsl:choose>
       <xsl:when test="string-length($dateval) = 8">
         <xsl:value-of select="concat(substring($dateval, 1, 4), '-', substring($dateval, 5, 2), '-', substring($dateval, 7, 2))" /><xsl:if test="$format = 'datetime'">T00:00:00</xsl:if>
-        </xsl:when>
+      </xsl:when>
+      <xsl:when test="string-length($dateval) = 6">
+        <xsl:value-of select="concat(substring($dateval, 1, 4), '-', substring($dateval, 5, 2))" />
+      </xsl:when>
       <xsl:otherwise><xsl:value-of select="$dateval" /></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
