@@ -25,7 +25,7 @@
              lang: '=',
              location: '@',
              showRegionSelector: '@',
-             bbox: '='
+             bbox: '=?'
            },
            link: function(scope, element, attrs) {
              scope.bbox = scope.bbox || {};
