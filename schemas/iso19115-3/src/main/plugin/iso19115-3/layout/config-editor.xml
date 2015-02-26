@@ -325,24 +325,43 @@
           <!-- Temporal extent -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
 
-          <action type="add"
-                  name="temporalElement" or="temporalElement"
-                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
-            <template>
-              <snippet>
-                <gex:temporalElement>
-                  <gex:EX_TemporalExtent>
-                    <gex:extent>
-                      <gml:TimePeriod>
-                        <gml:beginPosition/>
-                        <gml:endPosition/>
-                      </gml:TimePeriod>
-                    </gex:extent>
-                  </gex:EX_TemporalExtent>
-                </gex:temporalElement>
-              </snippet>
-            </template>
-          </action>
+            <action type="add"
+                    name="temporalElement" or="temporalElement"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
+              <template>
+                <values>
+                  <!-- -Need a * for gml:TimePeriodTypeCHOICE_ELEMENT2 added by editor enumerated tree -->
+                  <key label="beginPosition"
+                       xpath="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:beginPosition"
+                       use="gn-date-picker"
+                       tooltip="gmd:extent|gmd:EX_TemporalExtent">
+                    <directiveAttributes data-tag-name="gml:beginPosition"/>
+                  </key>
+                  <key label="endPosition"
+                       xpath="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:endPosition"
+                       use="gn-date-picker"
+                       tooltip="gmd:extent|gmd:EX_TemporalExtent"
+                          >
+                    <directiveAttributes
+                            data-tag-name="gml:endPosition"
+                            data-indeterminate-position="eval#gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:endPosition/@indeterminatePosition"/>
+                  </key>
+                </values>
+                <snippet>
+                  <gex:temporalElement>
+                    <gex:EX_TemporalExtent>
+                      <gex:extent>
+                        <gml:TimePeriod gml:id="">
+                          {{beginPosition}}
+                          {{endPosition}}
+                        </gml:TimePeriod>
+                      </gex:extent>
+                    </gex:EX_TemporalExtent>
+                  </gex:temporalElement>
+                </snippet>
+              </template>
+            </action>
+
 
           <!-- Geographic extent -->
           <field
@@ -591,7 +610,41 @@
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
 
           <!-- Temporal extent -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement">
+            <template>
+              <values>
+                <!-- -Need a * for gml:TimePeriodTypeCHOICE_ELEMENT2 added by editor enumerated tree -->
+                <key label="beginPosition"
+                     xpath="gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:beginPosition"
+                     use="gn-date-picker"
+                     tooltip="gex:extent|gex:EX_TemporalExtent">
+                  <directiveAttributes data-tag-name="gml:beginPosition"/>
+                </key>
+                <key label="endPosition"
+                     xpath="gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:endPosition"
+                     use="gn-date-picker"
+                     tooltip="gex:extent|gex:EX_TemporalExtent"
+                        >
+                  <directiveAttributes
+                          data-tag-name="gml:endPosition"
+                          data-indeterminate-position="eval#gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:endPosition/@indeterminatePosition"/>
+                </key>
+              </values>
+              <snippet>
+                <gex:temporalElement>
+                  <gex:EX_TemporalExtent>
+                    <gex:extent>
+                      <gml:TimePeriod gml:id="">
+                        {{beginPosition}}
+                        {{endPosition}}
+                      </gml:TimePeriod>
+                    </gex:extent>
+                  </gex:EX_TemporalExtent>
+                </gex:temporalElement>
+              </snippet>
+            </template>
+
+          </field>
 
           <action type="add"
                   name="temporalElement" or="temporalElement"
