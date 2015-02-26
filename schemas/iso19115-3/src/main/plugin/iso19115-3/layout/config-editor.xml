@@ -647,6 +647,28 @@
           </field>
 
           <action type="add"
+                  name="extent" or="extent"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+                <mri:extent>
+                  <gex:EX_Extent>
+                    <gex:temporalElement>
+                      <gex:EX_TemporalExtent>
+                        <gex:extent>
+                          <gml:TimePeriod>
+                            <gml:beginPosition/>
+                            <gml:endPosition/>
+                          </gml:TimePeriod>
+                        </gex:extent>
+                      </gex:EX_TemporalExtent>
+                    </gex:temporalElement>
+                  </gex:EX_Extent>
+                </mri:extent>
+              </snippet>
+            </template>
+          </action>
+          <!--<action type="add"
                   name="temporalElement" or="temporalElement"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
             <template>
@@ -663,7 +685,8 @@
                 </gex:temporalElement>
               </snippet>
             </template>
-          </action>
+          </action>-->
+
 
           <!-- Geographic extent -->
           <field
