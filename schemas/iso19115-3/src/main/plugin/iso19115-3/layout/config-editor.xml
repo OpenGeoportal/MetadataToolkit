@@ -550,13 +550,15 @@
                   <cit:citedResponsibleParty>
                     <cit:CI_Responsibility>
                       <cit:role>
-                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator">originator</cit:CI_RoleCode>
+                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                         codeListValue="originator">originator</cit:CI_RoleCode>
                       </cit:role>
                       <cit:party>
                         <cit:CI_Organisation>
                           <cit:name>
                             <gco:CharacterString>{{organisationName}}</gco:CharacterString>
                           </cit:name>
+
                           <gn:copy select="cit:contactInfo"/>
                           <cit:individual>
                             <cit:CI_Individual>
@@ -574,8 +576,15 @@
             </field>
 
             <action type="add" name="metadataOriginator"
-                    addDirective="data-gn-directory-entry-selector" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+                    addDirective="data-gn-directory-entry-selector"
+                    or="citedResponsibleParty"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+                <directiveAttributes
+                        data-template-add-action="true"
+                        data-template-type="contact"
+                        data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
 
+            </action>
           </section>
 
           <!-- Metadata abstract -->
