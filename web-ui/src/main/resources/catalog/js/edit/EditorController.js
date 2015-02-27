@@ -152,7 +152,13 @@
           menu.empty();
           var button = $('#gn-view-menu-' + gnCurrentEdit.id);
           if (button) {
+            var originalParent = button.parent();  
             menu.append(button);
+            // empty original container so we can use the CSS :empty selector on it and set an invisible border to it
+            // when it doesn't have more content.
+            if (originalParent && originalParent.children().length == 0 && originalParent.text().trim() == "") {
+              originalParent.empty();
+            }  
           }
         }
       };

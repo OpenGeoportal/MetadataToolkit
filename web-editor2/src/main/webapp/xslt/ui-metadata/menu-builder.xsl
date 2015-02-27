@@ -21,8 +21,8 @@
       data-watch=""
       data-all-depth="{if ($isFlatMode) then 'true' else 'false'}"/>
 
-    <ul class="nav nav-tabs">
-      <!-- Make a drop down choice to swith to one view to another -->
+    <ul class="nav nav-tabs gn-metadata-tabs">
+      <!-- Make a drop down choice to switch to one view to another -->
       <li class="dropdown" id="gn-view-menu-{$metadataId}">
         <a class="dropdown-toggle" data-toggle="dropdown" href="" 
           title="{$i18n/selectView}">
