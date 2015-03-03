@@ -241,7 +241,7 @@
 
   <!-- View configuration -->
   <views>
-    <view name="tufts-standard">
+    <view name="tufts-standard" vertical-tabs="true">
 
       <tab id="tufts-standard2" default="true" mode="flat">
         <section name="tufts-identificationinfo">
@@ -516,6 +516,10 @@
           </section>
         </section>
       </tab>
+      <tab id="tufts-standard-tab2" ></tab>
+      <tab id="tufts-standard-tab3" ></tab>
+      <tab id="tufts-standard-tab4" ></tab>
+
 
       <!-- Elements that should not use the "flat" mode -->
       <flatModeExceptions>

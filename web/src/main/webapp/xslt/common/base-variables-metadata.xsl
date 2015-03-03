@@ -83,5 +83,8 @@
   <xsl:variable name="isFlatMode" select="if (/root/request/flat) then /root/request/flat = 'true'
     else $tabConfig/@mode = 'flat'"/>
   
-  
+  <xsl:variable name="viewVerticalTabs" select="$editorConfig/editor/views/view[tab/@id = $tab]/@vertical-tabs"/>
+
+
+
 </xsl:stylesheet>
