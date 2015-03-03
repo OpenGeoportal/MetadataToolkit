@@ -250,6 +250,14 @@
 ]]></xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attribute name="vertical-tabs"  type="xs:boolean" fixed="true">
+        <xs:annotation>
+          <xs:documentation><![CDATA[
+            Define if the tabs must be shown vertically or horizontally.
+          ]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
     <xs:unique name="uniqueTabName">
       <xs:selector xpath="tab"/>

@@ -10,7 +10,7 @@
     data-ng-include="'../../catalog/templates/editor/top-toolbar.html'">
   </div>
   <div class="row gn-editor-container">
-    <div class="col-md-8">
+    <div class="col-md-9">
       
       <div class="alert alert-danger" data-ng-if="unsupportedSchema" 
         data-translate=""
@@ -19,7 +19,7 @@
       <div data-ng-include="editorFormUrl"
         data-onload="onFormLoad()"></div>
     </div>
-    <div class="col-md-4" 
+    <div class="col-md-3"
       data-ng-if="gnSchemaConfig.related.display === true || gnSchemaConfig.validation.display === true || gnSchemaConfig.suggestion.display === true">
       <div class="gn-editor-tools-container">
 

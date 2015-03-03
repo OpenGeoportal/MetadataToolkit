@@ -3,6 +3,7 @@
 @import (less) "../lib/style/ol.css";
 @import (less) "../lib/style/datetimepicker.css";
 @import (less) "../lib/jquery.ext/jquery.fileupload-ui.css";
+@import (less) "../lib/style/bootstrap.vertical-tabs.css";
 @import "gn.less";
 @import (less) "../lib/angular-ui/ui-select/select.css";
 @import "ogp_search.less";
@@ -448,11 +449,17 @@ ul.nav ~ fieldset fieldset fieldset > legend {
 }
 
 ul.nav ~ fieldset fieldset fieldset {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 .navbar-collapse {
-  padding-right: 0px;
+  padding-right: 0;
 }
 .navbar-collapse {
-  padding-right: 0px;
+  padding-right: 0;
+}
+
+// Do not show the bottom border in nav tabs when the list is empty
+.gn-metadata-tabs:empty {
+  border: none;
+  
 }

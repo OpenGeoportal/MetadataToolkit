@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <editor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../config-editor.xsd"
-        xmlns:gn="http://www.fao.org/geonetwork"
-        xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
         xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
-        xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
-        xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
-        xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
-        xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
-        xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
-        xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
-        xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+        xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0/2014-12-25"
+        xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
         xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"
         xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
-        xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0/2014-12-25"
-        xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
-          xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
-        xmlns:gml="http://www.opengis.net/gml"
->
+        xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
+        xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
+        xmlns:mas="http://standards.iso.org/19115/-3/mas/1.0/2014-12-25"
+        xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
+        xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+        xmlns:mda="http://standards.iso.org/19115/-3/mda/1.0/2014-12-25"
+        xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0/2014-12-25"
+        xmlns:mdt="http://standards.iso.org/19115/-3/mdt/1.0/2014-12-25"
+        xmlns:mex="http://standards.iso.org/19115/-3/mex/1.0/2014-12-25"
+        xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0/2014-12-25"
+        xmlns:mpc="http://standards.iso.org/19115/-3/mpc/1.0/2014-12-25"
+        xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
+        xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
+        xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
+        xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
+        xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
+        xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
+        xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0/2014-12-25"
+        xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0/2014-12-25"
+        xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+        xmlns:gml="http://www.opengis.net/gml/3.2"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:geonet="http://www.fao.org/geonetwork" xmlns:gn="http://www.w3.org/1999/XSL/Transform">
 
   <!-- Form field type configuration. Default is text. -->
   <fields>
@@ -230,7 +241,7 @@
 
   <!-- View configuration -->
   <views>
-    <view name="tufts-standard">
+    <view name="tufts-standard" vertical-tabs="true">
 
       <tab id="tufts-standard2" default="true" mode="flat">
         <section name="tufts-identificationinfo">
@@ -325,24 +336,43 @@
           <!-- Temporal extent -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
 
-          <action type="add"
-                  name="temporalElement" or="temporalElement"
-                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
-            <template>
-              <snippet>
-                <gex:temporalElement>
-                  <gex:EX_TemporalExtent>
-                    <gex:extent>
-                      <gml:TimePeriod>
-                        <gml:beginPosition/>
-                        <gml:endPosition/>
-                      </gml:TimePeriod>
-                    </gex:extent>
-                  </gex:EX_TemporalExtent>
-                </gex:temporalElement>
-              </snippet>
-            </template>
-          </action>
+            <action type="add"
+                    name="temporalElement" or="temporalElement"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
+              <template>
+                <values>
+                  <!-- -Need a * for gml:TimePeriodTypeCHOICE_ELEMENT2 added by editor enumerated tree -->
+                  <key label="beginPosition"
+                       xpath="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:beginPosition"
+                       use="gn-date-picker"
+                       tooltip="gmd:extent|gmd:EX_TemporalExtent">
+                    <directiveAttributes data-tag-name="gml:beginPosition"/>
+                  </key>
+                  <key label="endPosition"
+                       xpath="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:endPosition"
+                       use="gn-date-picker"
+                       tooltip="gmd:extent|gmd:EX_TemporalExtent"
+                          >
+                    <directiveAttributes
+                            data-tag-name="gml:endPosition"
+                            data-indeterminate-position="eval#gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:endPosition/@indeterminatePosition"/>
+                  </key>
+                </values>
+                <snippet>
+                  <gex:temporalElement>
+                    <gex:EX_TemporalExtent>
+                      <gex:extent>
+                        <gml:TimePeriod gml:id="">
+                          {{beginPosition}}
+                          {{endPosition}}
+                        </gml:TimePeriod>
+                      </gex:extent>
+                    </gex:EX_TemporalExtent>
+                  </gex:temporalElement>
+                </snippet>
+              </template>
+            </action>
+
 
           <!-- Geographic extent -->
           <field
@@ -486,6 +516,10 @@
           </section>
         </section>
       </tab>
+      <tab id="tufts-standard-tab2" ></tab>
+      <tab id="tufts-standard-tab3" ></tab>
+      <tab id="tufts-standard-tab4" ></tab>
+
 
       <!-- Elements that should not use the "flat" mode -->
       <flatModeExceptions>
@@ -550,13 +584,15 @@
                   <cit:citedResponsibleParty>
                     <cit:CI_Responsibility>
                       <cit:role>
-                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator">originator</cit:CI_RoleCode>
+                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                         codeListValue="originator">originator</cit:CI_RoleCode>
                       </cit:role>
                       <cit:party>
                         <cit:CI_Organisation>
                           <cit:name>
                             <gco:CharacterString>{{organisationName}}</gco:CharacterString>
                           </cit:name>
+
                           <gn:copy select="cit:contactInfo"/>
                           <cit:individual>
                             <cit:CI_Individual>
@@ -574,17 +610,80 @@
             </field>
 
             <action type="add" name="metadataOriginator"
-                    addDirective="data-gn-directory-entry-selector" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+                    addDirective="data-gn-directory-entry-selector"
+                    or="citedResponsibleParty"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+                <directiveAttributes
+                        data-template-add-action="true"
+                        data-template-type="contact"
+                        data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
 
+            </action>
           </section>
 
           <!-- Metadata abstract -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
 
           <!-- Temporal extent -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement">
+            <template>
+              <values>
+                <!-- -Need a * for gml:TimePeriodTypeCHOICE_ELEMENT2 added by editor enumerated tree -->
+                <key label="beginPosition"
+                     xpath="gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:beginPosition"
+                     use="gn-date-picker"
+                     tooltip="gex:extent|gex:EX_TemporalExtent">
+                  <directiveAttributes data-tag-name="gml:beginPosition"/>
+                </key>
+                <key label="endPosition"
+                     xpath="gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:endPosition"
+                     use="gn-date-picker"
+                     tooltip="gex:extent|gex:EX_TemporalExtent"
+                        >
+                  <directiveAttributes
+                          data-tag-name="gml:endPosition"
+                          data-indeterminate-position="eval#gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:endPosition/@indeterminatePosition"/>
+                </key>
+              </values>
+              <snippet>
+                <gex:temporalElement>
+                  <gex:EX_TemporalExtent>
+                    <gex:extent>
+                      <gml:TimePeriod gml:id="">
+                        <gml:beginPosition>{{beginPosition}}</gml:beginPosition>
+                        <gml:endPosition>{{endPosition}}</gml:endPosition>
+                      </gml:TimePeriod>
+                    </gex:extent>
+                  </gex:EX_TemporalExtent>
+                </gex:temporalElement>
+              </snippet>
+            </template>
+
+          </field>
 
           <action type="add"
+                  name="extent" or="extent"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+                <mri:extent>
+                  <gex:EX_Extent>
+                    <gex:temporalElement>
+                      <gex:EX_TemporalExtent>
+                        <gex:extent>
+                          <gml:TimePeriod gml:id="">
+                            <gml:beginPosition/>
+                            <gml:endPosition/>
+                          </gml:TimePeriod>
+                        </gex:extent>
+                      </gex:EX_TemporalExtent>
+                    </gex:temporalElement>
+                  </gex:EX_Extent>
+                </mri:extent>
+              </snippet>
+            </template>
+          </action>
+          <!--<action type="add"
                   name="temporalElement" or="temporalElement"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
             <template>
@@ -601,7 +700,8 @@
                 </gex:temporalElement>
               </snippet>
             </template>
-          </action>
+          </action>-->
+
 
           <!-- Geographic extent -->
           <field
