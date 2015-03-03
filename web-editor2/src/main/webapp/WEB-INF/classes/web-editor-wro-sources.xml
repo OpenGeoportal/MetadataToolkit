@@ -92,6 +92,8 @@
     <jsSource webappPath="catalog/lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"/>
     <jsSource webappPath="catalog/lib/zip/zip.js"/>
     <jsSource webappPath="catalog/lib/zip/include.js"/>
+    
+    <jsSource webappPath="catalog/lib/prismjs/prism.js"/>
 
     <cssSource webappPath="catalog/lib/angular-ui/ui-select/select.css" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
 

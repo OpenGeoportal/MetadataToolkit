@@ -56,5 +56,6 @@
     <jsSource webappPath="catalog/lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"/>
     <jsSource webappPath="catalog/lib/zip/zip.js"/>
     <jsSource webappPath="catalog/lib/zip/include.js"/>
+    <jsSource webappPath="catalog/lib/prismjs/prism.js"/>
   </declarative>
 </sources>

@@ -131,6 +131,7 @@
     "ogpLayerIdTooltip": "OGP Layer ID tooltip",
     "ogpNewSearch": "New Search",
     "ogpMetadataPreview": "Metadata Preview",
+    "ogpMetadataPreviewLoading": "Loading preview...",
     "ogpNorth": "N",
     "ogpNumResultsFound": " records found.",
     "ogpNoResultsFound": "No results were found. ",
