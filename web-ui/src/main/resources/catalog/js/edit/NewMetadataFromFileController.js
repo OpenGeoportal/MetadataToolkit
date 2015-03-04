@@ -16,8 +16,8 @@
   });
 
   module.controller('GnNewMetadataFromFileController',
-      ['$scope', '$location', 'gnGroupService', '$filter', '$http', '$modal', 'CONSTANTS',
-        function ($scope, $location, gnGroupService, $filter, $http, $modal, CONSTANTS) {
+      ['$scope', '$location', 'gnGroupService', '$filter', '$http', '$modal', '$log', 'CONSTANTS',
+        function ($scope, $location, gnGroupService, $filter, $http, $modal, $log, CONSTANTS) {
 
           $scope.fileName = null;
           $scope.metadataId = null;
@@ -53,7 +53,7 @@
             if (mdId && mdId.lastIndexOf(';') != -1) {
               mdId = mdId.substring(0, mdId.lastIndexOf(';'));
             }
-            console.info("Metadata id created " + mdId);
+            $log.info("Metadata id created " + mdId);
             $scope.metadataId = mdId;
           };
 
@@ -120,10 +120,11 @@
 
         }]);
   
-  module.controller('PreviewMetadataPopupController', ['$scope', '$http', '$sce', '$modalInstance', 'metadataId',
-    function ($scope, $http, $sce, $modalInstance, metadataId) {
+  module.controller('PreviewMetadataPopupController', ['$scope', '$http', '$sce', '$modalInstance', '$log', 'metadataId',
+    function ($scope, $http, $sce, $modalInstance, $log, metadataId) {
       $scope.metadataId = metadataId;
       $scope.loading = true;
+      $scope.error = false;
       
       // retrieve the medatata from the server
       $http.get("xml.metadata.get", {
@@ -131,10 +132,12 @@
       }).success(function(data, status, headers, config) {
         $scope.response = data;
         $scope.loading = false;
+        $scope.error = false;
       }).
           error(function(data, status, headers, config) {
-            scope.loading = false;
-            console.log("Error retrieving metadata")
+            $log.warn("Error retrieving metadata with id=" + $scope.metadataId);
+            $scope.loading = false;
+            $scope.error = true;
           });
 
 
