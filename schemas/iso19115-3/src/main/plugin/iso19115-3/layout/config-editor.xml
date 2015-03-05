@@ -243,70 +243,66 @@
   <views>
     <view name="tufts-standard" vertical-tabs="true">
 
-      <tab id="tufts-standard2" default="true" mode="flat">
+      <tab id="tufts-standard-tab-identification" default="true" mode="flat">
+        
+        <!-- Metadata originator -->
+        <section name="metadataOriginator">
+          <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                 del=".">
+            <template>
+              <values>
+                <key label="organisationName"
+                     xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
+                <key label="individualName"
+                     xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+              </values>
+              <snippet>
+                <cit:citedResponsibleParty>
+                  <cit:CI_Responsibility>
+                    <cit:role>
+                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                       codeListValue="originator">originator</cit:CI_RoleCode>
+                    </cit:role>
+                    <cit:party>
+                      <cit:CI_Organisation>
+                        <cit:name>
+                          <gco:CharacterString>{{organisationName}}</gco:CharacterString>
+                        </cit:name>
+
+                        <gn:copy select="cit:contactInfo"/>
+                        <cit:individual>
+                          <cit:CI_Individual>
+                            <cit:name>
+                              <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                            </cit:name>
+                          </cit:CI_Individual>
+                        </cit:individual>
+                      </cit:CI_Organisation>
+                    </cit:party>
+                  </cit:CI_Responsibility>
+                </cit:citedResponsibleParty>
+              </snippet>
+            </template>
+          </field>
+
+          <action type="add" name="metadataOriginator"
+                  addDirective="data-gn-directory-entry-selector"
+                  or="citedResponsibleParty"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+            <directiveAttributes
+                    data-template-add-action="true"
+                    data-template-type="contact"
+                    data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
+
+          </action>
+        </section>
+
         <section name="tufts-identificationinfo">
-          <!-- Metadata title -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
-
-          <!-- Presentation form -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" or="presentationForm"
-                 in="/cit:CI_Citation"/>
-
-          <!-- Metadata originator -->
-          <section name="metadataOriginator">
-            <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
-                   del=".">
-              <template>
-                <values>
-                  <key label="organisationName"
-                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
-                  <key label="individualName"
-                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
-                  <!--<key label="electronicMailAddress"
-                       xpath="gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
-                       use="email"/>
-                  <key label="role"
-                       xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
-                    <codelist name="gmd:CI_RoleCode"/>
-                  </key>-->
-                </values>
-                <snippet>
-                  <cit:citedResponsibleParty>
-                    <cit:CI_Responsibility>
-                      <cit:role>
-                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="originator">originator</cit:CI_RoleCode>
-                      </cit:role>
-                      <cit:party>
-                        <cit:CI_Organisation>
-                          <cit:name>
-                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
-                          </cit:name>
-                          <gn:copy select="cit:contactInfo"/>
-                          <cit:individual>
-                            <cit:CI_Individual>
-                              <cit:name>
-                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
-                              </cit:name>
-                            </cit:CI_Individual>
-                          </cit:individual>
-                        </cit:CI_Organisation>
-                      </cit:party>
-                    </cit:CI_Responsibility>
-                  </cit:citedResponsibleParty>
-                </snippet>
-              </template>
-            </field>
-
-            <action type="add" name="metadataOriginator"
-                    addDirective="data-gn-directory-entry-selector" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
-
-          </section>
-
           <!-- Publication date -->
           <field name="publicationDate" templateModeOnly="true"
                  xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/
-              cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']"
+                cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']"
                  if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification) > 0">
             <template>
               <values>
@@ -330,48 +326,153 @@
             </template>
           </field>
 
+          <!-- Metadata title -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+
+          <!-- Presentation form -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" or="presentationForm"
+                 in="/cit:CI_Citation"/>
+
+          <!-- Publisher -->
+          <section name="publisher">
+
+            <field name="publisher" templateModeOnly="true" notDisplayedIfMissing="true"
+                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                   del=".">
+              <template>
+                <values>
+                  <key label="publisherOrganisationName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
+                  <key label="individualName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+                  <key label="cityName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:city/gco:CharacterString"/>
+                  <key label="adminAreaName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:administrativeArea/gco:CharacterString" />
+                  <key label="countryName"
+                          xpath="cit:CI_Responsibility/cit:party/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:country/gco:CharacterString"/>
+
+
+                </values>
+                <snippet>
+                  <cit:citedResponsibleParty>
+                    <cit:CI_Responsibility>
+                      <cit:role>
+                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                         codeListValue="publisher">publisher</cit:CI_RoleCode>
+                      </cit:role>
+                      <cit:party>
+                        <cit:CI_Organisation>
+                          <cit:name>
+                            <gco:CharacterString>{{publisherOrganisationName}}</gco:CharacterString>
+                          </cit:name>
+                          <cit:contactInfo>
+                            <cit:CI_Contact>
+                              <cit:address>
+                                <cit:CI_Address>
+                                  <cit:city>
+                                    <gco:CharacterString>{{cityName}}</gco:CharacterString>
+                                  </cit:city>
+                                  <cit:administrativeArea>
+                                    <gco:CharacterString>{{adminAreaName}}</gco:CharacterString>
+                                  </cit:administrativeArea>
+                                  <cit:country>
+                                    <gco:CharacterString>{{countryName}}</gco:CharacterString>
+                                  </cit:country>
+                                  <gn:copy select="cit:electronicMailAddress" />
+                                </cit:CI_Address>
+                              </cit:address>
+                            </cit:CI_Contact>
+                          </cit:contactInfo>
+                          <cit:individual>
+                            <cit:CI_Individual>
+                              <cit:name>
+                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                              </cit:name>
+                            </cit:CI_Individual>
+                          </cit:individual>
+                        </cit:CI_Organisation>
+                      </cit:party>
+                    </cit:CI_Responsibility>
+                  </cit:citedResponsibleParty>
+                </snippet>
+              </template>
+            </field>
+
+            <action type="add" name="publisher"
+                    addDirective="data-gn-directory-entry-selector"
+                    or="citedResponsibleParty"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+              <directiveAttributes
+                      data-template-add-action="true"
+                      data-template-type="contact"
+                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
+
+            </action>
+          </section>
+          
           <!-- Metadata abstract -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
 
           <!-- Temporal extent -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement">
+            <template>
+              <values>
+                <!-- -Need a * for gml:TimePeriodTypeCHOICE_ELEMENT2 added by editor enumerated tree -->
+                <key label="beginPosition"
+                     xpath="gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:beginPosition"
+                     use="gn-date-picker"
+                     tooltip="gex:extent|gex:EX_TemporalExtent">
+                  <directiveAttributes data-tag-name="gml:beginPosition"/>
+                </key>
+                <key label="endPosition"
+                     xpath="gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:endPosition"
+                     use="gn-date-picker"
+                     tooltip="gex:extent|gex:EX_TemporalExtent"
+                        >
+                  <directiveAttributes
+                          data-tag-name="gml:endPosition"
+                          data-indeterminate-position="eval#gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/*/gml:endPosition/@indeterminatePosition"/>
+                </key>
+              </values>
+              <snippet>
+                <gex:temporalElement>
+                  <gex:EX_TemporalExtent>
+                    <gex:extent>
+                      <gml:TimePeriod gml:id="">
+                        <gml:beginPosition>{{beginPosition}}</gml:beginPosition>
+                        <gml:endPosition>{{endPosition}}</gml:endPosition>
+                      </gml:TimePeriod>
+                    </gex:extent>
+                  </gex:EX_TemporalExtent>
+                </gex:temporalElement>
+              </snippet>
+            </template>
 
-            <action type="add"
-                    name="temporalElement" or="temporalElement"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
-              <template>
-                <values>
-                  <!-- -Need a * for gml:TimePeriodTypeCHOICE_ELEMENT2 added by editor enumerated tree -->
-                  <key label="beginPosition"
-                       xpath="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:beginPosition"
-                       use="gn-date-picker"
-                       tooltip="gmd:extent|gmd:EX_TemporalExtent">
-                    <directiveAttributes data-tag-name="gml:beginPosition"/>
-                  </key>
-                  <key label="endPosition"
-                       xpath="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:endPosition"
-                       use="gn-date-picker"
-                       tooltip="gmd:extent|gmd:EX_TemporalExtent"
-                          >
-                    <directiveAttributes
-                            data-tag-name="gml:endPosition"
-                            data-indeterminate-position="eval#gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/*/gml:endPosition/@indeterminatePosition"/>
-                  </key>
-                </values>
-                <snippet>
-                  <gex:temporalElement>
-                    <gex:EX_TemporalExtent>
-                      <gex:extent>
-                        <gml:TimePeriod gml:id="">
-                          {{beginPosition}}
-                          {{endPosition}}
-                        </gml:TimePeriod>
-                      </gex:extent>
-                    </gex:EX_TemporalExtent>
-                  </gex:temporalElement>
-                </snippet>
-              </template>
-            </action>
+          </field>
+
+          <action type="add"
+                  name="extent" or="extent"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+                <mri:extent>
+                  <gex:EX_Extent>
+                    <gex:temporalElement>
+                      <gex:EX_TemporalExtent>
+                        <gex:extent>
+                          <gml:TimePeriod gml:id="">
+                            <gml:beginPosition/>
+                            <gml:endPosition/>
+                          </gml:TimePeriod>
+                        </gex:extent>
+                      </gex:EX_TemporalExtent>
+                    </gex:temporalElement>
+                  </gex:EX_Extent>
+                </mri:extent>
+              </snippet>
+            </template>
+          </action>
 
 
           <!-- Geographic extent -->
@@ -380,22 +481,24 @@
               mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
 
           <!-- Descriptive keywords -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"/>
+          <section name="descriptiveKeywords">
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"/>
 
-          <!-- TODO: Check why can't be removed  topic category -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
+            <!-- TODO: Check why can't be removed  topic category -->
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
 
-          <action type="add"
-                  name="topicCategory" or="topicCategory"
-                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
-            <template>
-              <snippet>
-                <mri:topicCategory>
-                  <mri:MD_TopicCategoryCode></mri:MD_TopicCategoryCode>
-                </mri:topicCategory>
-              </snippet>
-            </template>
-          </action>
+            <action type="add"
+                    name="topicCategory" or="topicCategory"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+              <template>
+                <snippet>
+                  <mri:topicCategory>
+                    <mri:MD_TopicCategoryCode></mri:MD_TopicCategoryCode>
+                  </mri:topicCategory>
+                </snippet>
+              </template>
+            </action>
+          </section>
 
           <!-- TODO: Language -->
           <!--<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/gmd:language"/>-->
