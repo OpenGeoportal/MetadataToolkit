@@ -481,31 +481,101 @@
               mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
 
           <!-- Descriptive keywords -->
+          <!-- FIXME Add more keywords -->
           <section name="descriptiveKeywords">
             <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"/>
 
             <!-- TODO: Check why can't be removed  topic category -->
+<!--
             <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
-
-            <action type="add"
-                    name="topicCategory" or="topicCategory"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+-->
+          </section>
+          
+          <!-- Place Keywords -->
+          <!-- FIXME select only  place  keywords -->
+          <!-- FIXME add more keywords -->
+          <section name="placeKeywords">
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords" />
+          </section>
+          
+          
+          <!-- Metadata contact -->
+          <!-- FIXME electronicMailAddress label not shown -->
+          <section name="metadataContact">
+            <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"
+                   xpath="/mdb:MD_Metadata/mdb:contact"
+                   del=".">
               <template>
+                <values>
+                  <key label="organisationName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
+                  <key label="individualName"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+                  <key label="electronicMailAddress"
+                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress/gco:CharacterString"
+                       use="email"/>
+                  <!--<key label="role"
+                       xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
+                    <codelist name="gmd:CI_RoleCode"/>
+                  </key>-->
+                </values>
                 <snippet>
-                  <mri:topicCategory>
-                    <mri:MD_TopicCategoryCode></mri:MD_TopicCategoryCode>
-                  </mri:topicCategory>
+                  <mdb:contact>
+                    <cit:CI_Responsibility>
+                      <cit:role>
+                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</cit:CI_RoleCode>
+                      </cit:role>
+                      <cit:party>
+                        <cit:CI_Organisation>
+                          <cit:name>
+                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
+                          </cit:name>
+                          <cit:contactInfo>
+                            <cit:CI_Contact>
+                              <cit:address>
+                                <cit:CI_Address>
+                                  <cit:electronicMailAddress>
+                                    <gco:CharacterString>{{electronicMailAddress}}</gco:CharacterString>
+                                  </cit:electronicMailAddress>
+                                </cit:CI_Address>
+                              </cit:address>
+                            </cit:CI_Contact>
+                          </cit:contactInfo>
+                          <cit:individual>
+                            <cit:CI_Individual>
+                              <cit:name>
+                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                              </cit:name>
+                            </cit:CI_Individual>
+                          </cit:individual>
+                        </cit:CI_Organisation>
+                      </cit:party>
+                    </cit:CI_Responsibility>
+                  </mdb:contact>
                 </snippet>
               </template>
+            </field>
+
+            <action type="add" name="metadataContact"
+                    addDirective="data-gn-directory-entry-selector"
+                    or="contact"
+                    in="/mdb:MD_Metadata">
+              <directiveAttributes
+                      data-template-add-action="true"
+                      data-template-type="contact"
+                      data-variables="cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
+
             </action>
           </section>
-
-          <!-- TODO: Language -->
-          <!--<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/gmd:language"/>-->
-
+          
+          <!-- Language -->
+          <!-- FIXME check if this is the data locale -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:defaultLocale" />
+          
+          
+          
           <!-- Access constraints -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:accessConstraints"/>
-
           <action type="add"
                   name="accessConstraints" or="accessConstraints"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints">
@@ -513,7 +583,7 @@
               <snippet>
                 <mco:accessConstraints>
                   <mco:MD_RestrictionCode codeListValue=""
-                                          codeList="http://www.isotc211.org/namespace/resources/codeList.xml#MD_RestrictionCode"/>
+                                          codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"/>
                 </mco:accessConstraints>
               </snippet>
             </template>
@@ -521,7 +591,6 @@
 
           <!-- Use constraints -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:useConstraints"/>
-
           <action type="add"
                   name="useConstraints" or="useConstraints"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints">
@@ -529,7 +598,7 @@
               <snippet>
                 <mco:useConstraints>
                   <mco:MD_RestrictionCode codeListValue=""
-                                          codeList="http://www.isotc211.org/namespace/resources/codeList.xml#MD_RestrictionCode"/>
+                                          codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"/>
                 </mco:useConstraints>
               </snippet>
             </template>
@@ -537,11 +606,36 @@
 
 
           <!-- Spatial resolution -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution"/>
+          <section name="spatialResolution">
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution"/>
 
-          <!-- TODO: Point of contact -->
-          <!--<field xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact"/>-->
+            <action type="add"
+                    name="equivalentScale"
+                    forceLabel="true"
+                    or="spatialResolution"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+              <template>
+                <snippet>
+                  <mri:spatialResolution>
+                    <mri:MD_Resolution>
+                      <mri:equivalentScale>
+                        <mri:MD_RepresentativeFraction>
+                          <mri:denominator>
+                            <gco:Integer/>
+                          </mri:denominator>
+                        </mri:MD_RepresentativeFraction>
+                      </mri:equivalentScale>
+                    </mri:MD_Resolution>
+                  </mri:spatialResolution>
+                </snippet>
+              </template>
+            </action>
+          </section>
         </section>
+        
+<!--
+        tab 1 end
+-->
 
         <section name="tufts-metadata">
           <!-- TODO: Template in layout-custom-fields.xsl not invoked with this, the field is editable -->
@@ -567,59 +661,17 @@
           <!-- Metadata language -->
           <field xpath="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language" or="language" in="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale"/>
 
-          <!-- Metadata contact -->
-          <section name="metadataContact">
-            <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"
-                   xpath="/mdb:MD_Metadata/mdb:contact"
-                   del=".">
-              <template>
-                <values>
-                  <key label="organisationName"
-                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
-                  <key label="individualName"
-                       xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
-                  <!--<key label="electronicMailAddress"
-                       xpath="gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
-                       use="email"/>
-                  <key label="role"
-                       xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
-                    <codelist name="gmd:CI_RoleCode"/>
-                  </key>-->
-                </values>
-                <snippet>
-                  <mdb:contact>
-                    <cit:CI_Responsibility>
-                      <cit:role>
-                        <cit:CI_RoleCode codeList="http://www.isotc211.org/namespace/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</cit:CI_RoleCode>
-                      </cit:role>
-                      <cit:party>
-                        <cit:CI_Organisation>
-                          <cit:name>
-                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
-                          </cit:name>
-                          <gn:copy select="cit:contactInfo"/>
-                          <cit:individual>
-                            <cit:CI_Individual>
-                              <cit:name>
-                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
-                              </cit:name>
-                            </cit:CI_Individual>
-                          </cit:individual>
-                        </cit:CI_Organisation>
-                      </cit:party>
-                    </cit:CI_Responsibility>
-                  </mdb:contact>
-                </snippet>
-              </template>
-            </field>
 
-            <action type="add" name="metadataContact"
-                    addDirective="data-gn-directory-entry-selector" or="contact" in="/mdb:MD_Metadata"/>
-
-          </section>
         </section>
       </tab>
-      <tab id="tufts-standard-tab2" ></tab>
+      <tab id="tuftsstandardtabidentification2"  mode="flat">
+       <!-- &lt;!&ndash; Process Step &ndash;&gt;
+        <field xpath="/mdb:MD_Metadata/mdb:resourceLineage/mrl:LI_Lineage/mrl:processStep/mrl:LI_ProcessStep/mrl:description" />
+        -->
+        <!-- Metadata title -->
+        <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+
+      </tab>
       <tab id="tufts-standard-tab3" ></tab>
       <tab id="tufts-standard-tab4" ></tab>
 

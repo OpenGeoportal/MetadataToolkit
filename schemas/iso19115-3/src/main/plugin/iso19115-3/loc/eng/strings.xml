@@ -37,13 +37,17 @@
 
   <!-- Tufts standard strings -->
   <tufts-standard>Tufts standard</tufts-standard>
-  <tufts-standard-tab-identification>Identication Information</tufts-standard-tab-identification>
-  <tufts-standard-tab2>Attribute Information (Feature Catalog)</tufts-standard-tab2>
+  <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
+  <tuftsstandardtabidentification2>test</tuftsstandardtabidentification2>
+  <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
   <tufts-standard-tab3>Spatial Representation Information</tufts-standard-tab3>
   <tufts-standard-tab4>Distribution &amp; Metadata Information</tufts-standard-tab4>
   <publisher>Publisher</publisher>
   <publicationPlace>Publication Place</publicationPlace>
-  <descriptiveKeywords>Descriptive keywords</descriptiveKeywords>
+  <descriptiveKeywords>Descriptive Leywords</descriptiveKeywords>
+  <placeKeywords>Place Keywords</placeKeywords>
+  <spatialResolution>Spatial Resolution</spatialResolution>
+  <equivalentScale>Equivalent Scale</equivalentScale>
   
 
   
@@ -57,7 +61,7 @@
   <individualName>Individual name</individualName>
   <organisationName>Organisation name</organisationName>
   <metadataContact>Point of Contact</metadataContact>
-
+  <electronicMailAddress>Email</electronicMailAddress>
   <publicationDate>Publication Date  </publicationDate>
 
   <add-resource-id>
