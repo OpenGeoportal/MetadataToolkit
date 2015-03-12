@@ -7,6 +7,8 @@
   xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
   xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
   xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
+  xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
+  xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
   xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
   xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
   xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"

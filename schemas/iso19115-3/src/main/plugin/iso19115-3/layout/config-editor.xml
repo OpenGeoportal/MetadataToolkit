@@ -28,7 +28,7 @@
         xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
         xmlns:gml="http://www.opengis.net/gml/3.2"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:geonet="http://www.fao.org/geonetwork" xmlns:gn="http://www.w3.org/1999/XSL/Transform">
+        xmlns:geonet="http://www.fao.org/geonetwork" xmlns:gn="http://www.fao.org/geonetwork">
 
   <!-- Form field type configuration. Default is text. -->
   <fields>
@@ -660,30 +660,177 @@
 
           <!-- Metadata language -->
           <field xpath="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language" or="language" in="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale"/>
-
-
         </section>
       </tab>
-      <tab id="tuftsstandardtabidentification2"  mode="flat">
-       <!-- &lt;!&ndash; Process Step &ndash;&gt;
-        <field xpath="/mdb:MD_Metadata/mdb:resourceLineage/mrl:LI_Lineage/mrl:processStep/mrl:LI_ProcessStep/mrl:description" />
-        -->
-        <!-- Metadata title -->
-        <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+      <tab id="tufts-standard-data-quality" mode="flat">
+        <section name="processDescription">
+          <!-- TODO content is missed after saving -->
+          <field name="resourceLineage" templateModeOnly="true" notDisplayedIfMissing="true"
+                 xpath="/mdb:MD_Metadata/mdb:resourceLineage"
+                 del=".">
+            <template>
+              <values>
+                <key label="stepDescription"
+                        xpath="mrl:LI_Lineage/mrl:processStep/mrl:LI_ProcessStep/mrl:description/gco:CharacterString"/>
+                                
+              </values>
+              <snippet>
+                <mdb:resourceLineage>
+                  <mrl:LI_Lineage>
+                    <mrl:processStep>
+                      <mrl:LI_ProcessStep>
+                        <mrl:description>
+                          <gco:CharacterString>{{stepDescription}}</gco:CharacterString>
+                        </mrl:description>
+                        <!-- TODO check why in XML view appears gn:copy tags -->
+                        <gn:copy select="mrl:stepDateTime"/>
+                        <gn:copy select="mrl:processor" />
+                        <mrl:scope/>
+                      </mrl:LI_ProcessStep>
+                    </mrl:processStep>
+                  </mrl:LI_Lineage>
+                </mdb:resourceLineage>
+              </snippet>
+            </template>
+          </field>
 
+          <action type="add" name="resourceLineage" 
+                  or="resourceLineage"
+                  in="/mdb:MD_Metadata">
+            <template>
+              <snippet>
+                <mdb:resourceLineage>
+                  <mrl:LI_Lineage>
+                    <mrl:processStep>
+                      <mrl:LI_ProcessStep>
+                        <mrl:description>
+                          <gco:CharacterString></gco:CharacterString>
+                        </mrl:description>
+                        <mrl:scope/>
+                      </mrl:LI_ProcessStep>
+                    </mrl:processStep>
+                  </mrl:LI_Lineage>
+                </mdb:resourceLineage>
+              </snippet>
+            </template>
+          </action>
+          
+        </section>
       </tab>
-      <tab id="tufts-standard-tab3" ></tab>
-      <tab id="tufts-standard-tab4" ></tab>
+      <tab id="distributionInformation" mode="flat">
+        <section name="distributionFormat">
+          <field  name="distributionFormatField"
+                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:distributionFormat"
+                  templateModeOnly="true"
+                  notDisplayedIfMissing="true"
+                  del=".">
+            <template>
+              <values>
+                <key label="distributionFormatKey"
+                     xpath="mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title/gco:CharacterString"/>
+              </values>
+              <snippet>
+                <mrd:distributionFormat>
+                  <mrd:MD_Format>
+                    <mrd:formatSpecificationCitation>
+                      <cit:CI_Citation>
+                        <cit:title>
+                          <gco:CharacterString>{{distributionFormatKey}}</gco:CharacterString>
+                        </cit:title>
+                      </cit:CI_Citation>
+                    </mrd:formatSpecificationCitation>
+                    <gn:copy select="mrd:medium" />
+                  </mrd:MD_Format>
+                </mrd:distributionFormat>
+              </snippet>
+            </template>
+          </field>
+          <action type="add" name="distributionFormatField"
+                  or="distributionFormat"
+                  in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution" >
+            <template>
+              <snippet>
+                <mrd:distributionFormat>
+                  <mrd:MD_Format>
+                    <mrd:formatSpecificationCitation>
+                      <cit:CI_Citation>
+                        <cit:title>
+                          <gco:CharacterString></gco:CharacterString>
+                        </cit:title>
+                      </cit:CI_Citation>
+                    </mrd:formatSpecificationCitation>
+                    <gn:copy select="mrd:medium" />
+                  </mrd:MD_Format>
+                </mrd:distributionFormat>
+              </snippet>
+            </template>
+          </action>
+        </section>
+        
+        <section xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:distributor"
+                or="distributor"
+                in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution">
+        </section>
+
+        <section name="onlineResources">
+          <!--<field name="" templateModeOnly="true" notDisplayedIfMissing="true"
+                 xpath=""
+                 del=".">
+            <template>
+              <values>
+                <key label=""
+                     xpath=""/>
+                <key label=""
+                     xpath=""/>
+              </values>
+              <snippet>
+
+              </snippet>
+
+
+            </template>
+          </field>-->
+
+        </section>
+        
+      </tab>
+      <tab id="tufts-standard-tab3" mode="flat">
+
+
+        
+        
+        <section xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType"
+                 or="spatialRepresentationType" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
+        <section xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo" or="referenceSystemInfo"
+                 in="/mdb:MD_Metadata"/>
+        
+        <!--<section name="tuftsSpatialRepresentation">
+          &lt;!&ndash; Spatial Representation Type &ndash;&gt;
+          &lt;!&ndash; TODO only vector value appears in the list. Why? &ndash;&gt;
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType" />
+          
+          &lt;!&ndash; Reference system &ndash;&gt;
+          &lt;!&ndash; TODO a lot of entry method defined in excel document &ndash;&gt;
+          <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier" />
+        </section>-->
+      </tab>
+      <tab id="tufts-standard-tab4" mode="flat">
+        <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue"
+                in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue"
+                or="MD_FeatureCatalogue">
+          
+        </section>
+      </tab>
 
 
       <!-- Elements that should not use the "flat" mode -->
       <flatModeExceptions>
         <for name="gmd:descriptiveKeywords" />
+        <for name="mrd:distributorContact" />
       </flatModeExceptions>
     </view>
 
     <view name="tufts-minimal">
-
       <tab id="tufts-minimal2" default="true" mode="flat">
 
         <section name="tufts-identificationinfo">

@@ -38,16 +38,23 @@
   <!-- Tufts standard strings -->
   <tufts-standard>Tufts standard</tufts-standard>
   <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
-  <tuftsstandardtabidentification2>test</tuftsstandardtabidentification2>
   <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
+  <tufts-distribution-information>Distribution</tufts-distribution-information>
   <tufts-standard-tab3>Spatial Representation Information</tufts-standard-tab3>
-  <tufts-standard-tab4>Distribution &amp; Metadata Information</tufts-standard-tab4>
+  <tufts-standard-tab4>Feature Catalog</tufts-standard-tab4>
   <publisher>Publisher</publisher>
   <publicationPlace>Publication Place</publicationPlace>
   <descriptiveKeywords>Descriptive Leywords</descriptiveKeywords>
   <placeKeywords>Place Keywords</placeKeywords>
   <spatialResolution>Spatial Resolution</spatialResolution>
   <equivalentScale>Equivalent Scale</equivalentScale>
+  <tuftsSpatialRepresentation>Spatial Representation</tuftsSpatialRepresentation>
+  <processDescription>Process Description</processDescription>
+  <stepDescription>Process description</stepDescription>
+  <distributionInformation>Distribution</distributionInformation>
+  <distributionFormat>Format</distributionFormat>
+  <distributionFormatField>Distribution Format</distributionFormatField>
+  <onlineResources>Content Information</onlineResources>
   
 
   
@@ -62,7 +69,7 @@
   <organisationName>Organisation name</organisationName>
   <metadataContact>Point of Contact</metadataContact>
   <electronicMailAddress>Email</electronicMailAddress>
-  <publicationDate>Publication Date  </publicationDate>
+  <publicationDate>Publication Date</publicationDate>
 
   <add-resource-id>
 Compute resource identifier</add-resource-id>
