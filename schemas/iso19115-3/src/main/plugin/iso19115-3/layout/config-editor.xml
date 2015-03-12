@@ -773,23 +773,50 @@
         </section>
 
         <section name="onlineResources">
-          <!--<field name="" templateModeOnly="true" notDisplayedIfMissing="true"
-                 xpath=""
+          <field name="" templateModeOnly="true" notDisplayedIfMissing="true"
+                 xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions"
                  del=".">
             <template>
               <values>
-                <key label=""
-                     xpath=""/>
-                <key label=""
-                     xpath=""/>
+                <key label="linkage"
+                     xpath="mrd:onLine/cit:CI_OnlineResource/cit:linkage/gco:CharacterString"/>
+                <key label="protocol"
+                     xpath="mrd:onLine/cit:CI_OnlineResource/cit:protocol/gco:CharacterString"/>
+                <key label="size"
+                     xpath="mrd:transferSize/gco:Real"/>
               </values>
               <snippet>
-
+                <mrd:MD_DigitalTransferOptions>
+                  <mrd:transferSize>
+                    <gco:Real>{{size}}</gco:Real>
+                  </mrd:transferSize>
+                  <mrd:onLine>
+                    <cit:CI_OnlineResource>
+                      <cit:linkage>
+                        <gco:CharacterString>{{linkage}}</gco:CharacterString>
+                      </cit:linkage>
+                      <cit:protocol>
+                        <gco:CharacterString>{{protocol}}</gco:CharacterString>
+                      </cit:protocol>
+                      <cit:name gco:nilReason="missing">
+                        <gco:CharacterString/>
+                      </cit:name>
+                      <gn:copy select="cit:description" />
+                      <cit:description gco:nilReason="missing">
+                        <gco:CharacterString/>
+                      </cit:description>
+                      <cit:function>
+                        <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
+                                                   codeListValue=""/>
+                      </cit:function>
+                    </cit:CI_OnlineResource>
+                  </mrd:onLine>
+                  <gn:copy select="mrd:offLine" />
+                  <gn:copy select="mrd:transferFrequency" />
+                </mrd:MD_DigitalTransferOptions>
               </snippet>
-
-
             </template>
-          </field>-->
+          </field>
 
         </section>
         
