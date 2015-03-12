@@ -773,7 +773,7 @@
         </section>
 
         <section name="onlineResources">
-          <field name="" templateModeOnly="true" notDisplayedIfMissing="true"
+          <field name="digitalTransferOptions" templateModeOnly="true" notDisplayedIfMissing="true"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions"
                  del=".">
             <template>
@@ -817,9 +817,40 @@
               </snippet>
             </template>
           </field>
-
+          <action type="add" name="digitalTransferOptions"
+                  in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions"
+                  or="MD_DigitalTransferOptions" >
+            <template>
+              <snippet>
+                <mrd:MD_DigitalTransferOptions>
+                  <mrd:transferSize>
+                    <gco:Real></gco:Real>
+                  </mrd:transferSize>
+                  <mrd:onLine>
+                    <cit:CI_OnlineResource>
+                      <cit:linkage>
+                        <gco:CharacterString></gco:CharacterString>
+                      </cit:linkage>
+                      <cit:protocol>
+                        <gco:CharacterString></gco:CharacterString>
+                      </cit:protocol>
+                      <cit:name gco:nilReason="missing">
+                        <gco:CharacterString/>
+                      </cit:name>
+                      <cit:description gco:nilReason="missing">
+                        <gco:CharacterString/>
+                      </cit:description>
+                      <cit:function>
+                        <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
+                                                   codeListValue=""/>
+                      </cit:function>
+                    </cit:CI_OnlineResource>
+                  </mrd:onLine>
+                </mrd:MD_DigitalTransferOptions>
+              </snippet>
+            </template>
+          </action>
         </section>
-        
       </tab>
       <tab id="tufts-standard-tab3" mode="flat">
 

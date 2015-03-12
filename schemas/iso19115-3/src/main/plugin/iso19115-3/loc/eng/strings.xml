@@ -55,6 +55,10 @@
   <distributionFormat>Format</distributionFormat>
   <distributionFormatField>Distribution Format</distributionFormatField>
   <onlineResources>Content Information</onlineResources>
+  <digitalTransferOptions>Digital Transfer Options</digitalTransferOptions>
+  <size>Size</size>
+  <linkage>URL</linkage>
+  <protocol>Protocol</protocol>
   
 
   
