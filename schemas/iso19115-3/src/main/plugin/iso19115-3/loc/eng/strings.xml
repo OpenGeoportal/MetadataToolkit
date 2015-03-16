@@ -40,7 +40,8 @@
   <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
   <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
   <tufts-distribution-information>Distribution</tufts-distribution-information>
-  <tufts-standard-tab3>Spatial Representation Information</tufts-standard-tab3>
+  <tufts-metadata-reference-information>Metadata Reference</tufts-metadata-reference-information>
+  <tufts-spatial-representation-tab>Spatial Representation</tufts-spatial-representation-tab>
   <tufts-standard-tab4>Feature Catalog</tufts-standard-tab4>
   <publisher>Publisher</publisher>
   <publicationPlace>Publication Place</publicationPlace>
@@ -59,6 +60,13 @@
   <size>Size</size>
   <linkage>URL</linkage>
   <protocol>Protocol</protocol>
+  <metadataReferenceInformation>Metadata Reference</metadataReferenceInformation>
+  <metadataDate>Metadata Date</metadataDate>
+  <metadataStandard>Metadata Standard</metadataStandard>
+  <hierarchyLevel>Hierarchy Level</hierarchyLevel>
+  <fileIdentifier>File Identifier</fileIdentifier>
+  <language>Language</language>
+  <spatialRepresentation>Spatial Representation</spatialRepresentation>
   
 
   

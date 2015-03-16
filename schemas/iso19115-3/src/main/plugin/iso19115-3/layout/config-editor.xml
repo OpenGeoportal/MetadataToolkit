@@ -5,6 +5,7 @@
         xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0/2014-12-25"
         xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
         xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"
+        xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
         xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
         xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
         xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
@@ -773,6 +774,7 @@
         </section>
 
         <section name="onlineResources">
+          <!-- TODO check why protocol and linkage are missed after saving. -->
           <field name="digitalTransferOptions" templateModeOnly="true" notDisplayedIfMissing="true"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions"
                  del=".">
@@ -817,6 +819,7 @@
               </snippet>
             </template>
           </field>
+          <!-- TODO check why add button doesn't appear -->
           <action type="add" name="digitalTransferOptions"
                   in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions"
                   or="MD_DigitalTransferOptions" >
@@ -852,13 +855,66 @@
           </action>
         </section>
       </tab>
-      <tab id="tufts-standard-tab3" mode="flat">
 
+      <tab id="tufts-metadata-reference-information" mode="flat">
+        <section name="metadataDate">
+          <field xpath="/mdb:MD_Metadata/mdb:dateInfo"/>
+          <action type="add" name="dateInfo" in="/mdb:MD_Metadata" or="dateInfo">
+            <template>
+              <snippet>
+                <mdb:dateInfo>
+                  <cit:CI_Date>
+                    <cit:date>
+                      <gco:DateTime></gco:DateTime>
+                    </cit:date>
+                    <cit:dateType>
+                      <cit:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+                                           codeListValue=""/>
+                    </cit:dateType>
+                  </cit:CI_Date>
+                </mdb:dateInfo>
+              </snippet>
+            </template>
+          </action>
+        </section>
+        <section name="metadataStandard">
+          <field xpath="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation/cit:title"></field>
+        </section>
+        <!-- TODO there is no field in schema for metadata standard version -->
 
-        
-        
-        <section xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType"
-                 or="spatialRepresentationType" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
+        <section name="hierarchyLevel">
+          <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope" />
+        </section>
+        <section name="fileIdentifier">
+          <!-- TODO readonly field -->
+          <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code" >
+            <!--<template>
+              <values>
+                <key label="fileIdentifier" xpath="/mdb:MD_Metadata/mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code/gco:CharacterString"/>
+              </values>
+              <snippet>
+                  <mcc:MD_Identifier>
+                    <mcc:code>
+                      <gco:CharacterString>{{fileIdentifiers}}</gco:CharacterString>
+                    </mcc:code>
+                    <gn:copy select="mcc:codeSpace" />
+                  </mcc:MD_Identifier>
+              </snippet>
+            </template>-->
+          </field>
+        </section>
+        <section name="language">
+          <!-- TODO check if it is possible to show only the language field -->
+          <field xpath="/mdb:MD_Metadata/mdb:defaultLocale" />
+        </section>
+
+      </tab>
+
+      <tab id="tufts-spatial-representation-tab" mode="flat">
+        <section name="spatialRepresentation">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType"
+                   or="spatialRepresentationType" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
+        </section>
         <section xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo" or="referenceSystemInfo"
                  in="/mdb:MD_Metadata"/>
         
