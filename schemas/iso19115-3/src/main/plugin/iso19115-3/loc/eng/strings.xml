@@ -72,7 +72,9 @@
   <publisherCityName>City</publisherCityName>
   <publisherAdminAreaName>Admin area</publisherAdminAreaName>
   <publisherCountryName>Country</publisherCountryName>
-
+  <mdContactOrganisationName>Organisation name</mdContactOrganisationName>
+  <mdContactIndividualName>Individual name</mdContactIndividualName>
+  <mdContactElectronicMailAddress>Email</mdContactElectronicMailAddress>
 
 
 
