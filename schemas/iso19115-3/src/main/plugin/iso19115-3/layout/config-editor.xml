@@ -506,11 +506,11 @@
                    del=".">
               <template>
                 <values>
-                  <key label="organisationName"
+                  <key label="mdContactOrganisationName"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
-                  <key label="individualName"
+                  <key label="mdContactIndividualName"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
-                  <key label="electronicMailAddress"
+                  <key label="mdContactElectronicMailAddress"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress/gco:CharacterString"
                        use="email"/>
                   <!--<key label="role"
@@ -527,14 +527,14 @@
                       <cit:party>
                         <cit:CI_Organisation>
                           <cit:name>
-                            <gco:CharacterString>{{organisationName}}</gco:CharacterString>
+                            <gco:CharacterString>{{mdContactOrganisationName}}</gco:CharacterString>
                           </cit:name>
                           <cit:contactInfo>
                             <cit:CI_Contact>
                               <cit:address>
                                 <cit:CI_Address>
                                   <cit:electronicMailAddress>
-                                    <gco:CharacterString>{{electronicMailAddress}}</gco:CharacterString>
+                                    <gco:CharacterString>{{mdContactElectronicMailAddress}}</gco:CharacterString>
                                   </cit:electronicMailAddress>
                                 </cit:CI_Address>
                               </cit:address>
@@ -543,7 +543,7 @@
                           <cit:individual>
                             <cit:CI_Individual>
                               <cit:name>
-                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                                <gco:CharacterString>{{mdContactIndividualName}}</gco:CharacterString>
                               </cit:name>
                             </cit:CI_Individual>
                           </cit:individual>
