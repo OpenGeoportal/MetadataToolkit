@@ -249,7 +249,7 @@
         <!-- Metadata originator -->
         <section name="metadataOriginator">
           <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='originator']"
                  del=".">
             <template>
               <values>
@@ -336,25 +336,23 @@
 
           <!-- Publisher -->
           <section name="publisher">
-
             <field name="publisher" templateModeOnly="true" notDisplayedIfMissing="true"
-                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='publisher']"
                    del=".">
               <template>
                 <values>
                   <key label="publisherOrganisationName"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
-                  <key label="individualName"
+                  <key label="publisherIndividualName"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
-                  <key label="cityName"
+                  <key label="publisherCityName"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:city/gco:CharacterString"/>
-                  <key label="adminAreaName"
+                  <key label="publisherAdminAreaName"
                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:administrativeArea/gco:CharacterString" />
-                  <key label="countryName"
+                  <key label="publisherCountryName"
                           xpath="cit:CI_Responsibility/cit:party/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:country/gco:CharacterString"/>
-
-
                 </values>
+
                 <snippet>
                   <cit:citedResponsibleParty>
                     <cit:CI_Responsibility>
@@ -372,13 +370,13 @@
                               <cit:address>
                                 <cit:CI_Address>
                                   <cit:city>
-                                    <gco:CharacterString>{{cityName}}</gco:CharacterString>
+                                    <gco:CharacterString>{{publisherCityName}}</gco:CharacterString>
                                   </cit:city>
                                   <cit:administrativeArea>
-                                    <gco:CharacterString>{{adminAreaName}}</gco:CharacterString>
+                                    <gco:CharacterString>{{publisherAdminAreaName}}</gco:CharacterString>
                                   </cit:administrativeArea>
                                   <cit:country>
-                                    <gco:CharacterString>{{countryName}}</gco:CharacterString>
+                                    <gco:CharacterString>{{publisherCountryName}}</gco:CharacterString>
                                   </cit:country>
                                   <gn:copy select="cit:electronicMailAddress" />
                                 </cit:CI_Address>
@@ -388,7 +386,7 @@
                           <cit:individual>
                             <cit:CI_Individual>
                               <cit:name>
-                                <gco:CharacterString>{{individualName}}</gco:CharacterString>
+                                <gco:CharacterString>{{publisherIndividualName}}</gco:CharacterString>
                               </cit:name>
                             </cit:CI_Individual>
                           </cit:individual>

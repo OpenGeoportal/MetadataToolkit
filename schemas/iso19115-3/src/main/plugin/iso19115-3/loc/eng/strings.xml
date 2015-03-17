@@ -45,7 +45,7 @@
   <tufts-standard-tab4>Feature Catalog</tufts-standard-tab4>
   <publisher>Publisher</publisher>
   <publicationPlace>Publication Place</publicationPlace>
-  <descriptiveKeywords>Descriptive Leywords</descriptiveKeywords>
+  <descriptiveKeywords>Descriptive Keywords</descriptiveKeywords>
   <placeKeywords>Place Keywords</placeKeywords>
   <spatialResolution>Spatial Resolution</spatialResolution>
   <equivalentScale>Equivalent Scale</equivalentScale>
@@ -67,7 +67,14 @@
   <fileIdentifier>File Identifier</fileIdentifier>
   <language>Language</language>
   <spatialRepresentation>Spatial Representation</spatialRepresentation>
-  
+  <publisherOrganisationName>Organisation name</publisherOrganisationName>
+  <publisherIndividualName>Individual name</publisherIndividualName>
+  <publisherCityName>City</publisherCityName>
+  <publisherAdminAreaName>Admin area</publisherAdminAreaName>
+  <publisherCountryName>Country</publisherCountryName>
+
+
+
 
   
   
@@ -79,8 +86,8 @@
   <metadataOriginator>Originator</metadataOriginator>
   <individualName>Individual name</individualName>
   <organisationName>Organisation name</organisationName>
-  <metadataContact>Point of Contact</metadataContact>
   <electronicMailAddress>Email</electronicMailAddress>
+  <metadataContact>Point of Contact</metadataContact>
   <publicationDate>Publication Date</publicationDate>
 
   <add-resource-id>
