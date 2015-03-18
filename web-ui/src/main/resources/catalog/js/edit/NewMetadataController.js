@@ -50,6 +50,31 @@
         dataset: 'fa-file'
       };
 
+      gnGroupService.list(TEMPLATES.EDITOR_PROFILE).then(
+          function (groups) {
+            $scope.groups = groups;
+            var first = $scope.getFirstGroupNonSpecial(groups);
+            $scope.firstGroupNonSpecial = first != null ? first['@id'] : '-1'
+          }, function (reason) {
+
+          }
+      );
+
+      $scope.getFirstGroupNonSpecial = function (groups) {
+        var sortedGroups = $filter('orderBy')(groups, function (obj) {
+          return parseInt(obj["@id"]);
+        });
+        var i = 0;
+        var first = null;
+        while (i < sortedGroups.length && !first) {
+          if (parseInt(groups[i]["@id"]) > 1) {
+            first = groups[i];
+          }
+          i++;
+        }
+        return first;
+      };
+
       $scope.$watchCollection('groups', function() {
         if (!angular.isUndefined($scope.groups)) {
           if ($scope.groups.length == 1) {
