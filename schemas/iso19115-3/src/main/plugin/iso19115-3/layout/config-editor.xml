@@ -169,7 +169,6 @@
     <name>srv:SV_CoupledResource</name>
     <name>mdb:metadataConstraints</name>
     <name>mri:associatedResource</name>
-    <name>gfc:carrierOfCharacteristics</name>
   </fieldsWithFieldset>
 
   <multilingualFields>
@@ -969,7 +968,7 @@
               <values>
                 <key label="featureAttributeMemberName" xpath="gfc:FC_FeatureAttribute/gfc:memberName" />
                 <key label="featureAttributeDescription" xpath="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:definition/gco:CharacterString"/>
-                <key label="featureTypeName" xpath="gfc:FC_FeatureAttribute/gfc:valueType" />
+                <key label="featureTypeName" xpath="gfc:FC_FeatureAttribute/gfc:valueType/gco:TypeName/gco:aName/gco:CharacterString" />
               </values>
               <snippet>
                 <gfc:carrierOfCharacteristics>
@@ -980,19 +979,26 @@
                         <gfc:definition>
                           <gco:CharacterString>{{featureAttributeDescription}}</gco:CharacterString>
                         </gfc:definition>
-                        <gn:copy selec="gfc:isAbstract"/>
+                      <gn:copy select="gfc:isAbstract"/>
                         <gn:copy select="gfc:featureCatalogue" />
                       </gfc:FC_FeatureType>
                     </gfc:featureType>
                     <gn:copy select="gfc:constrainedBy" />
-                    <gfc:memberName>{{memberName}}</gfc:memberName>
+                    <gfc:memberName>{{featureAttributeMemberName}}</gfc:memberName>
                     <gn:copy select="gfc:cardinality" />
-                    <gfc:valueType>{{featureTypeName}}</gfc:valueType>
-                    <gfc:listedValue/>
+                    <gfc:valueType>
+                      <gco:TypeName>
+                        <gco:aName>
+                          <gco:CharacterString>{{featureTypeName}}</gco:CharacterString>
+                        </gco:aName>
+                      </gco:TypeName>
+                    </gfc:valueType>
+                    <gn:copy select="gfc:listedValue"/>
                   </gfc:FC_FeatureAttribute>
                 </gfc:carrierOfCharacteristics>
               </snippet>
             </template>
+
           </field>
 
         <!--  <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:carrierOfCharacteristics"
