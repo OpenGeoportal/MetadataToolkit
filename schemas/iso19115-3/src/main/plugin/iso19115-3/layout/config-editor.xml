@@ -169,6 +169,7 @@
     <name>srv:SV_CoupledResource</name>
     <name>mdb:metadataConstraints</name>
     <name>mri:associatedResource</name>
+    <name>gfc:carrierOfCharacteristics</name>
   </fieldsWithFieldset>
 
   <multilingualFields>
@@ -295,6 +296,33 @@
                     data-template-add-action="true"
                     data-template-type="contact"
                     data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
+            <template>
+              <snippet>
+                <cit:citedResponsibleParty>
+                  <cit:CI_Responsibility>
+                    <cit:role>
+                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                       codeListValue="originator">originator</cit:CI_RoleCode>
+                    </cit:role>
+                    <cit:party>
+                      <cit:CI_Organisation>
+                        <cit:name>
+                          <gco:CharacterString></gco:CharacterString>
+                        </cit:name>
+
+                        <cit:individual>
+                          <cit:CI_Individual>
+                            <cit:name>
+                              <gco:CharacterString></gco:CharacterString>
+                            </cit:name>
+                          </cit:CI_Individual>
+                        </cit:individual>
+                      </cit:CI_Organisation>
+                    </cit:party>
+                  </cit:CI_Responsibility>
+                </cit:citedResponsibleParty>
+              </snippet>
+            </template>
 
           </action>
         </section>
@@ -926,12 +954,57 @@
           <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier" />
         </section>-->
       </tab>
-      <tab id="tufts-standard-tab4" mode="flat">
-        <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue"
+      <tab id="featureCatalogTab" mode="flat">
+        <section name="gfc:FC_FeatureCatalogue" >
+          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:typeName"
+                  or="typeName"
+                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"></field>
+          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:definition"
+                 or="definition"
+                 in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"></field>
+          <field  templateModeOnly="true" notDisplayedIfMissing="true"
+                  xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:carrierOfCharacteristics"
+                  del=".">
+            <template>
+              <values>
+                <key label="featureAttributeMemberName" xpath="gfc:FC_FeatureAttribute/gfc:memberName" />
+                <key label="featureAttributeDescription" xpath="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:definition/gco:CharacterString"/>
+                <key label="featureTypeName" xpath="gfc:FC_FeatureAttribute/gfc:valueType" />
+              </values>
+              <snippet>
+                <gfc:carrierOfCharacteristics>
+                  <gfc:FC_FeatureAttribute>
+                    <gfc:featureType>
+                      <gfc:FC_FeatureType>
+                        <gfc:typeName/>
+                        <gfc:definition>
+                          <gco:CharacterString>{{featureAttributeDescription}}</gco:CharacterString>
+                        </gfc:definition>
+                        <gn:copy selec="gfc:isAbstract"/>
+                        <gn:copy select="gfc:featureCatalogue" />
+                      </gfc:FC_FeatureType>
+                    </gfc:featureType>
+                    <gn:copy select="gfc:constrainedBy" />
+                    <gfc:memberName>{{memberName}}</gfc:memberName>
+                    <gn:copy select="gfc:cardinality" />
+                    <gfc:valueType>{{featureTypeName}}</gfc:valueType>
+                    <gfc:listedValue/>
+                  </gfc:FC_FeatureAttribute>
+                </gfc:carrierOfCharacteristics>
+              </snippet>
+            </template>
+          </field>
+
+        <!--  <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:carrierOfCharacteristics"
+                  or="carrierOfCharacteristics"
+                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType">
+
+          </section>-->
+        </section>
+<!--        <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue"
                 in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue"
                 or="MD_FeatureCatalogue">
-          
-        </section>
+        </section>-->
       </tab>
 
 

@@ -42,7 +42,7 @@
   <tufts-distribution-information>Distribution</tufts-distribution-information>
   <tufts-metadata-reference-information>Metadata Reference</tufts-metadata-reference-information>
   <tufts-spatial-representation-tab>Spatial Representation</tufts-spatial-representation-tab>
-  <tufts-standard-tab4>Feature Catalog</tufts-standard-tab4>
+  <featureCatalogTab>Feature Catalog</featureCatalogTab>
   <publisher>Publisher</publisher>
   <publicationPlace>Publication Place</publicationPlace>
   <descriptiveKeywords>Descriptive Keywords</descriptiveKeywords>
@@ -75,6 +75,10 @@
   <mdContactOrganisationName>Organisation name</mdContactOrganisationName>
   <mdContactIndividualName>Individual name</mdContactIndividualName>
   <mdContactElectronicMailAddress>Email</mdContactElectronicMailAddress>
+  <featureCatalogSection>Feature Catalog</featureCatalogSection>
+  <featureAttributeDescription>Attribute Definition</featureAttributeDescription>
+  <featureTypeName>Attribute Type</featureTypeName>
+  <featureAttributeMemberName>Attribute Label</featureAttributeMemberName>
 
 
 

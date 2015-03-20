@@ -589,9 +589,11 @@
   <xs:element name="template">
     <xs:annotation>
       <xs:documentation><![CDATA[
-        A templace configuration for an XML snippet to edit.
+        A template configuration for an XML snippet to edit.
         
-        A template field is compose of an XML snippet corresponding to the element to edit where values to be edited are identified using {{fields}} notation. Each fields needs to be defined as values from which one input field will be created.
+        A template field is composed of an XML snippet corresponding to the element to edit where values to be edited
+        are identified using {{fields}} notation. Each fields needs to be defined as values from which one input field
+        will be created.
         
         This mode is used to hide the complexity of the XML element to edit.
         
@@ -611,7 +613,10 @@
             </template>
         </pre>
         
-        The template field mode will only provide editing of part of the snippet element. In some case the snippet may contains more elements than the one edited. In such case, the snippet MUST identified the list of potential elements in order to not to loose information when using this mode. Use the gn:copy element to properly combined the template with the current document.
+        The template field mode will only provide editing of part of the snippet element. In some case the snippet may
+        contains more elements than the one edited. In such case, the snippet MUST identified the list of potential
+        elements in order to not to loose information when using this mode. Use the gn:copy element to properly combine
+        the template with the current document.
         
         eg. The gmd:MD_Identifier may contain a gmd:authority node which needs to be preserved.
         <pre>
