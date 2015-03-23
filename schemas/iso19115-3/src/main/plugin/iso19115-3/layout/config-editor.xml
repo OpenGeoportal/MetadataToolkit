@@ -359,7 +359,7 @@
 
           <!-- Presentation form -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" or="presentationForm"
-                 in="/cit:CI_Citation"/>
+                 in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
 
           <!-- Publisher -->
           <section name="publisher">
@@ -998,19 +998,8 @@
                 </gfc:carrierOfCharacteristics>
               </snippet>
             </template>
-
           </field>
-
-        <!--  <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:carrierOfCharacteristics"
-                  or="carrierOfCharacteristics"
-                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType">
-
-          </section>-->
         </section>
-<!--        <section xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue"
-                in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue"
-                or="MD_FeatureCatalogue">
-        </section>-->
       </tab>
 
 
