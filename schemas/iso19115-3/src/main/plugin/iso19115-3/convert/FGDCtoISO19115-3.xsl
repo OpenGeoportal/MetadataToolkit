@@ -701,7 +701,7 @@
     <cit:CI_PresentationFormCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_PresentationFormCode">
       <xsl:if test=".='vector digital data'">
         <xsl:attribute name="codeListValue">
-          <xsl:text>digitalMap</xsl:text>
+          <xsl:text>mapDigital</xsl:text>
         </xsl:attribute>
       </xsl:if>
     </cit:CI_PresentationFormCode>
