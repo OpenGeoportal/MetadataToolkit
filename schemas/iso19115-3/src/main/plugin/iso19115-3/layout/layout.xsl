@@ -393,9 +393,6 @@
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-    <xsl:message>
-      #Found type name <xsl:value-of select="."/>
-    </xsl:message>
 
     <xsl:call-template name="render-element">
       <xsl:with-param name="label"
