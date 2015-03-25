@@ -624,7 +624,6 @@
           
           
           <!-- Metadata contact -->
-          <!-- FIXME electronicMailAddress label not shown -->
           <section name="metadataContact">
             <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"
                    xpath="/mdb:MD_Metadata/mdb:contact"
