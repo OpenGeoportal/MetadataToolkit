@@ -574,34 +574,35 @@
 
 
           <!-- Geographic extent -->
-          <field
-                  xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
-          <!-- TODO the button for adding a new Geographic Bounding Box is not rendered -->
-          <action type="add"
-                  name="gex:EX_GeographicBoundingBox"
-                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent"
-                  or="geographicElement">
-            <template>
-              <snippet>
-                <gex:geographicElement>
-                  <gex:EX_GeographicBoundingBox>
-                    <gex:westBoundLongitude>
-                      <gco:Decimal></gco:Decimal>
-                    </gex:westBoundLongitude>
-                    <gex:eastBoundLongitude>
-                      <gco:Decimal></gco:Decimal>
-                    </gex:eastBoundLongitude>
-                    <gex:southBoundLatitude>
-                      <gco:Decimal></gco:Decimal>
-                    </gex:southBoundLatitude>
-                    <gex:northBoundLatitude>
-                      <gco:Decimal></gco:Decimal>
-                    </gex:northBoundLatitude>
-                  </gex:EX_GeographicBoundingBox>
-                </gex:geographicElement>
-              </snippet>
-            </template>
-          </action>
+          <section name="gex:geographicElement">
+            <field
+                    xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+            <action type="add"
+                    name="gex:EX_GeographicBoundingBox"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent"
+                    or="geographicElement">
+              <template>
+                <snippet>
+                  <gex:geographicElement>
+                    <gex:EX_GeographicBoundingBox>
+                      <gex:westBoundLongitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:westBoundLongitude>
+                      <gex:eastBoundLongitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:eastBoundLongitude>
+                      <gex:southBoundLatitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:southBoundLatitude>
+                      <gex:northBoundLatitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:northBoundLatitude>
+                    </gex:EX_GeographicBoundingBox>
+                  </gex:geographicElement>
+                </snippet>
+              </template>
+            </action>
+          </section>
 
           <!-- Descriptive keywords -->
           <!-- FIXME Add more keywords -->
