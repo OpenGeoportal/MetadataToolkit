@@ -250,7 +250,7 @@
         <!-- Metadata originator -->
         <section name="metadataOriginator">
           <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='originator']"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
                  del=".">
             <template>
               <values>
@@ -258,6 +258,13 @@
                      xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"/>
                 <key label="individualName"
                      xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString"/>
+                <!--<key label="electronicMailAddress"
+                     xpath="gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString"
+                     use="email"/>
+                <key label="role"
+                     xpath="gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue">
+                  <codelist name="gmd:CI_RoleCode"/>
+                </key>-->
               </values>
               <snippet>
                 <cit:citedResponsibleParty>
@@ -288,61 +295,15 @@
             </template>
           </field>
 
-
-          <!-- TODO for some reason this action only add a snippet like the following instead the one specified in the template -->
-          <!-- <cit:citedResponsibleParty>
-            <cit:CI_Responsibility>
-              <cit:role>
-                <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                 codeListValue=""/>
-              </cit:role>
-            </cit:CI_Responsibility>
-          </cit:citedResponsibleParty> -->
           <action type="add" name="metadataOriginator"
                   addDirective="data-gn-directory-entry-selector"
                   or="citedResponsibleParty"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
             <directiveAttributes
-                    data-template-add-action="true"
-                    data-template-type="contact"
-                    data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
-            <template>
-              <snippet>
-                <cit:citedResponsibleParty>
-                  <cit:CI_Responsibility>
-                    <cit:role>
-                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                       codeListValue="originator"/>
-                    </cit:role>
-                    <cit:party>
-                      <cit:CI_Organisation>
-                        <cit:name>
-                          <gco:CharacterString></gco:CharacterString>
-                        </cit:name>
-                        <cit:contactInfo>
-                          <cit:CI_Contact>
-                            <cit:address>
-                              <cit:CI_Address>
-                                <cit:electronicMailAddress gco:nilReason="missing">
-                                  <gco:CharacterString/>
-                                </cit:electronicMailAddress>
-                              </cit:CI_Address>
-                            </cit:address>
-                          </cit:CI_Contact>
-                        </cit:contactInfo>
-                        <cit:individual>
-                          <cit:CI_Individual>
-                            <cit:name>
-                              <gco:CharacterString></gco:CharacterString>
-                            </cit:name>
-                          </cit:CI_Individual>
-                        </cit:individual>
-                      </cit:CI_Organisation>
-                    </cit:party>
-                  </cit:CI_Responsibility>
-                </cit:citedResponsibleParty>
-              </snippet>
-            </template>
+              data-template-add-action="true"
+              data-template-type="contact"
+              data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
+
           </action>
         </section>
 
