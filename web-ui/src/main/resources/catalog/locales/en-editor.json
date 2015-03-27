@@ -55,6 +55,7 @@
     "description": "Description",
     "directory": "Folder path",
     "directoryEntries": "Entries",
+    "downloadMetadata": "Download metadata",
     "drawRectangle": "Draw rectangle",
     "error": "Error",
     "errors": "Error(s)",

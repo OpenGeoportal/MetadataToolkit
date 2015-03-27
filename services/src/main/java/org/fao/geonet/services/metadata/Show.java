@@ -42,6 +42,7 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 //=============================================================================
 
@@ -50,6 +51,7 @@ import java.nio.file.Path;
 
 public class Show extends ShowViewBaseService
 {
+    private static final String CONTENT_DISPOSITION = "Content-Disposition";
     //--------------------------------------------------------------------------
 	//---
 	//--- Init
@@ -76,6 +78,10 @@ public class Show extends ShowViewBaseService
 
 		Element elCurrTab = params.getChild(Params.CURRTAB);
 		boolean removeSchemaLocation = Util.getParam(params, "removeSchemaLocation", "false").equals("true");
+        boolean download = Util.getParam(params, "download", "false").equals("true");
+
+
+
 
 		if (elCurrTab != null)
 			session.setProperty(Geonet.Session.METADATA_SHOW, elCurrTab.getText());
@@ -152,6 +158,14 @@ public class Show extends ShowViewBaseService
 		if (removeSchemaLocation) {
 		    elMd.removeAttribute("schemaLocation", Xml.xsiNS);
 		}
+
+        if (download) {
+            // If it is a download request add the file download headers
+            Map<String, String> headers = context.getResponseHeaders();
+            String header="attachment; filename=md-" + id + ".xml";
+            headers.put(CONTENT_DISPOSITION, header);
+        }
+
 		return elMd;
 	}
 

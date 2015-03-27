@@ -25,6 +25,14 @@
     </td>
     <td>
       <a class="btn btn-link"
+         data-ng-href="xml.metadata.get?download=true&id={{md['geonet:info'].id}}"
+              title="{{'downloadMetadata' | translate}}">
+          <i class="fa fa-file-code-o"></i>
+      </a>
+
+    </td>
+    <td>
+      <a class="btn btn-link"
          data-ng-show="user.canEditRecord(md)"
          data-gn-click-and-spin="deleteRecord(md)"
          title="{{'delete' | translate}}">
