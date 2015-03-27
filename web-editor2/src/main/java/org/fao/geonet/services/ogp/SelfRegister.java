@@ -3,6 +3,7 @@ package org.fao.geonet.services.ogp;
 import jeeves.server.context.ServiceContext;
 import jeeves.services.ReadWriteController;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fao.geonet.domain.*;
 import org.fao.geonet.domain.responses.OkResponse;
 import org.fao.geonet.exceptions.BadInputEx;
@@ -12,17 +13,20 @@ import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.services.ogp.beans.FailureResult;
 import org.fao.geonet.services.ogp.beans.RegisterForm;
-import org.fao.geonet.services.ogp.responses.DataTypeResponse;
 import org.fao.geonet.util.PasswordUtil;
-import org.fao.oaipmh.exceptions.BadArgumentException;
-import org.jdom.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * Created by JuanLuis on 26/03/2015.
@@ -79,6 +83,19 @@ public class SelfRegister {
         userGroupRepository.save(userGroup);
 
         return response;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public @ResponseBody FailureResult handleException(Exception ex, HttpServletResponse response) {
+        FailureResult result = new FailureResult();
+        result.setId(UUID.randomUUID().toString());
+        result.setClazz(ex.getClass().getSimpleName());
+        // result.setStack(ExceptionUtils.getStackTrace(ex));
+        result.setService("ogp.create.account");
+        result.setMessage(ex.getClass().getSimpleName() + ": " + ex.getMessage());
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        return result;
     }
 
     private void validateForm(RegisterForm form) {

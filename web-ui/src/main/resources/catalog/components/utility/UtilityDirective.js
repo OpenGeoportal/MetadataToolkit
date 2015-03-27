@@ -432,7 +432,8 @@
               //} else {
               callback().then(function() {
                 done();
-              });
+              }, function() { done(); }
+              );
               //if (angular.isFunction(callback.then)) {
               //  callback().then(function() {
               //    done();
