@@ -4,7 +4,7 @@
   <xsl:include href="../base-layout.xsl"/>
   
   <xsl:template mode="content" match="/">
-    <div data-ng-include="'{$uiResourcesPath}templates/signin.html'">
+    <div data-ng-include="'{$uiResourcesPath}templates/ogp/signin.html'">
     </div>
 
     <div ng-include="'{$uiResourcesPath}templates/info.html'">

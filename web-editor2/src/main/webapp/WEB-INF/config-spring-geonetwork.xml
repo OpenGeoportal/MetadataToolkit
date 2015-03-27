@@ -3,10 +3,12 @@
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-" >
+		    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		    http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd" >
 
 	<import resource="config-spring-env.xml" />
 	<import resource="config-security/config-security.xml" />
@@ -15,6 +17,7 @@
 
 	<import resource="config-db/initial_data.xml" />
 	<import resource="config-print/config-spring-print.xml" />
+  <context:component-scan base-package="org.fao.geonet.services.ogp"/>
 
 
     <!-- Uncomment if you want to use a non-shapefile datastore -->

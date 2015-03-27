@@ -1,0 +1,1 @@
+UPDATE Settings SET value='true' WHERE name='system/userSelfRegistration/enable';
