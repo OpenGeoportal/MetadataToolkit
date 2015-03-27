@@ -1,0 +1,109 @@
+<div class="container" data-ng-controller="OgpLoginController">
+  <div class="col-lg-6">
+    <div class="panel panel-default" data-ng-hide="registrationStatus.value === 'ok'">
+
+      <div class="panel-heading" data-translate="">needAnAccount</div>
+      <div class="panel-body">
+        <form class="form-horizontal" id="userinfo" name="userinfo" action="ogp.create.account" method="post">
+            <div data-ng-show="registrationStatus.value && registrationStatus.value !== 'ok'">
+                <div class="alert alert-danger" role="alert" data-translate="{{registrationStatus.value}}"></div>
+            </div>
+
+          <div class="form-group gn-required" data-gn-show-errors>
+            <label class="control-label col-lg-4" for="email" data-translate="">email</label>
+            <div class="col-lg-8">
+              <input id="email" type="email" name="email" autofocus="" data-ng-model="registerForm.email" class="form-control" required="required"/>
+            </div>
+          </div>
+          <div class="form-group gn-required" data-gn-show-errors>
+            <label class="control-label col-lg-4" for="password" data-translate="">password</label>
+            <div class="col-lg-8">
+                <input id="password" type="password" name="password" data-ng-model="registerForm.password" class="form-control"
+                       required="required" data-ng-minlength="6"/>
+                <div class="msg-block" data-ng-show="userinfo.$error">
+                    <span class="help-block"  data-ng-show="userinfo.password.$error.minlength" data-translate="">passwordMinlength</span>
+                </div>
+            </div>
+          </div>
+          <div class="form-group gn-required" data-gn-show-errors>
+            <label class="control-label col-lg-4" for="repeatPassword" data-translate="">passwordRepeat</label>
+            <div class="col-lg-8">
+                <input id="repeatPassword" type="password" name="repeatPassword" data-ng-model="registerForm.repeatPassword"
+                       class="form-control" required="required" data-match="userinfo.password"/>
+                <div class="msg-block" data-ng-show="userinfo.$error">
+                  <span class="help-block"  data-ng-show="userinfo.repeatPassword.$error.match" data-translate="">passwordNotMatching</span>
+                </div>
+            </div>
+          </div>
+          <div class="form-group gn-required" data-gn-show-errors>
+            <label class="control-label col-lg-4" for="name" translate="">name</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" id="name" name="name" data-ng-model="registerForm.name" required="required"/>
+            </div>
+          </div>
+
+          <div class="form-group gn-required" data-gn-show-errors>
+            <label class="control-label col-lg-4" for="surname" translate="">surname</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" id="surname" name="surname" data-ng-model="registerForm.surname" required="required"/>
+            </div>
+          </div>
+
+          <div class="form-group gn-required" data-gn-show-errors>
+            <label class="control-label col-lg-4" for="org" data-translate="">organisation</label>
+            <div class="col-lg-8">
+              <input type="text" name="org" id="org" class="form-control" data-ng-model="registerForm.org" required="required"/>
+            </div>
+          </div>
+
+
+          <fieldset>
+            <legend data-translate="">address</legend>
+
+
+            <div class="form-group">
+              <label class="control-label col-lg-4" for="address" data-translate="">address</label>
+              <div class="col-lg-8">
+                <input type="text" name="address" id="address" class="form-control" data-ng-model="registerForm.address"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-lg-4" for="zip" data-translate="">zip</label>
+              <div class="col-lg-8">
+                <input type="text" name="zip" id="zip" class="form-control" data-ng-model="registerForm.zip"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-lg-4" for="state" data-translate="">state</label>
+              <div class="col-lg-8">
+                <input type="text" name="state" id="state" class="form-control" data-ng-model="registerForm.state"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-lg-4" for="city" data-translate="">city</label>
+              <div class="col-lg-8">
+                <input type="text" name="city" id="city" class="form-control" data-ng-model="registerForm.city"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-lg-4" for="country" data-translate="">country</label>
+              <div class="col-lg-8">
+                <!-- TODO : Add country list -->
+                <input type="text" name="country" id="country" class="form-control" data-ng-model="registerForm.country"/>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <button data-gn-click-and-spin="register()" class="btn btn-primary btn-block"
+          data-translate="">register</button>
+      </div>
+    </div>
+    <div class="alert alert-success" role="alert" data-ng-show="registrationStatus.value === 'ok'">
+        <strong data-translate="">successfulRegistration</strong> <span data-translate="">loginLink</span>.
+        <a href="catalog.signin"><span data-translate="">signIn</span></a>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <p data-translate="">whyToRegister</p>
+  </div>
+</div>

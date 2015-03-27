@@ -140,6 +140,8 @@
     "state": "State",
     "staticMap": "Static map",
     "surname": "Surname",
+    "successfulRegistration": "Congratulations! You are now a registered user.",
+    "loginLink": "Please follow this link and log in",
     "title": "Title",
     "to": "To",
     "toggleScrollSpy": "Toggle scrolling navigation",
@@ -196,5 +198,6 @@
     "valueCode": "Code",
     "addRecord": "Add new record",
     "ImportRecord": "Import new records",
-    "directoryManager": "Manage directory"
+    "directoryManager": "Manage directory",
+    "whyToRegister": "To create metadata you need to register in the system. Please provide the required information to request an account and start creating metadata."
 }
