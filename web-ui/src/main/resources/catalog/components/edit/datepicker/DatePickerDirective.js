@@ -35,6 +35,7 @@
              // If not datetimepicker.js is used (it will not
              // support year or month only mode in this case)
              scope.dateTypeSupported = Modernizr.inputtypes.date;
+             scope.isRequired = attrs.required;
              scope.isValidDate = true;
              var namespaces = {
                iso19139: {
