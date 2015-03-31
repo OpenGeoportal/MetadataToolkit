@@ -17,6 +17,7 @@
     <jsSource webappPath="catalog/js/gn" />
 
     <jsSource webappPath="catalog/views/default" />
+    <jsSource webappPath="catalog/views/ogp" />
 
     <!-- Moved to catalog/components/utility, jsSource doesn't accept file
     names and if added catalog/components all is added -->
@@ -38,7 +39,7 @@
     <jsSource webappPath="catalog/components/viewer" />
     <jsSource webappPath="catalog/components/cookieWarning" />
 
-    <cssSource webappPath="catalog/views/default" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+    <cssSource webappPath="catalog/views" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
     <cssSource webappPath="catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
   </require>
 
