@@ -260,7 +260,8 @@
     <div data-gn-date-picker="{gco:Date|gco:DateTime}"
          data-label="{$labelConfig/label}"
          data-element-name="{name(gco:Date|gco:DateTime)}"
-         data-element-ref="{concat('_X', gn:element/@ref)}">
+         data-element-ref="{concat('_X', gn:element/@ref)}"
+         data-required="{$labelConfig/condition = 'mandatory'}">
     </div>
   </xsl:template>
 

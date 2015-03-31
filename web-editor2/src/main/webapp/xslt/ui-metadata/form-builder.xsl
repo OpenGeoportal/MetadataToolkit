@@ -79,11 +79,18 @@
     editing information is used. 
     In view mode, always set to false.
     -->
+    <!-- Also, mandatory from labels -->
+    <xsl:variable name="labelConfig"
+                  select="gn-fn-metadata:getLabel($schema, name(), $labels)"/>
     <xsl:variable name="isRequired" as="xs:boolean">
       <xsl:choose>
         <xsl:when
           test="($parentEditInfo and $parentEditInfo/@min = 1 and $parentEditInfo/@max = 1) or 
           (not($parentEditInfo) and $editInfo and $editInfo/@min = 1 and $editInfo/@max = 1)">
+          <xsl:value-of select="true()"/>
+        </xsl:when>
+        <xsl:when
+          test="$labelConfig/condition = 'mandatory'">
           <xsl:value-of select="true()"/>
         </xsl:when>
         <xsl:otherwise>
