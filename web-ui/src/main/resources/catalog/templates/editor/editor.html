@@ -7,10 +7,10 @@
 <div data-ng-show="metadataFound">
 
 
-  <div data-ng-if="gnConfig['system.ui.defaultView']!=='ogp'">
+  <div data-ng-if="gnConfig['system.ui.defaultView'] !== 'ogp'"
     data-ng-include="'../../catalog/templates/editor/top-toolbar.html'">
   </div>
-  <div data-ng-if="gnConfig['system.ui.defaultView']==='ogp'"
+  <div data-ng-if="gnConfig['system.ui.defaultView'] === 'ogp'"
        data-ng-include="'../../catalog/views/ogp/templates/editor/top-toolbar-editor.html'"/>
   </div>
   <div class="row gn-editor-container">
