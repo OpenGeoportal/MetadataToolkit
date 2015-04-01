@@ -402,6 +402,14 @@
                 </snippet>
               </template>
             </xsl:variable>
+            
+            <xsl:variable name="nodetmp">  
+               <xsl:call-template name="backtrackingSearch">
+                <xsl:with-param name="node" select="$base"/>
+                <xsl:with-param name="ref" select="gn:element/@ref"/>
+               </xsl:call-template>
+            </xsl:variable>
+            
             <xsl:call-template name="render-element-template-field">
               <xsl:with-param name="name" select="$strings/*[name() = $name]"/>
               <xsl:with-param name="id" select="$id"/>
@@ -409,6 +417,7 @@
               <xsl:with-param name="isExisting" select="false()"/>
               <xsl:with-param name="template" select="$templateWithoutGnCopyElement"/>
               <xsl:with-param name="isMissingLabel" select="$strings/*[name() = $isMissingLabel]"/>
+              <xsl:with-param name="parentName" select="$nodetmp" />
             </xsl:call-template>
           </xsl:if>
         </xsl:when>

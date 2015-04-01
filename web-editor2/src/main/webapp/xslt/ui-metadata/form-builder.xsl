@@ -93,6 +93,10 @@
           test="$labelConfig/condition = 'mandatory'">
           <xsl:value-of select="true()"/>
         </xsl:when>
+        <xsl:when
+          test="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', '')/condition = 'mandatory'">
+          <xsl:value-of select="true()"/>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="false()"/>
         </xsl:otherwise>
@@ -349,8 +353,6 @@
                   select="gn-fn-metadata:getLabel($schema, name(), $labels, $parentName, '', '')"/>
     <xsl:variable name="isRequired" select="$labelConfig/condition='mandatory'"/>
  
- 
-
     <div class="form-group gn-field gn-{$firstFieldKey} 
              {if ($isFirst) then '' else 'gn-extra-field'}
              {if ($isAddAction) then 'gn-add-field' else ''} 

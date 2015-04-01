@@ -439,7 +439,7 @@
     	<label>Presentation form</label>
     	<description iso="true">Mode in which the resource is represented</description>
     	<help></help>
-    	<condition/>
+    	<condition>mandatory</condition>
   	</element>
   	<element name="cit:series" id="370.0">
     	<label>Series</label>
@@ -951,12 +951,11 @@
             contacted</description>
 	</element>
 	<element name="cit:address" id="397.0">
-    <label>Adresse</label>
-    <description>Adresse physique et électronique à laquelle la personne ou l'organisation responsable peut être contactée</description>
-    <help>Adresse postale ou électronique d'un premier niveau de contact (par exemple un secrétariat). Ces informations sont du type CI_Address et sont gérées dans la classe du même nom.</help>
-    <condition/>
-    
-  </element>
+	    <label>Adresse</label>
+	    <description>Adresse physique et électronique à laquelle la personne ou l'organisation responsable peut être contactée</description>
+	    <help>Adresse postale ou électronique d'un premier niveau de contact (par exemple un secrétariat). Ces informations sont du type CI_Address et sont gérées dans la classe du même nom.</help>
+        <condition/>
+    </element>
 	<element name="cit:administrativeArea" id="391.0">
 		<label>Administrative area</label>
 		<description>State, province of the location</description>
@@ -1094,10 +1093,20 @@
 		<description>Name and position information for an individual or organization that is
             responsible for the resource</description>
 	</element>
-	<element name="cit:city" id="390.0">
-		<label>City</label>
-		<description>City of the location</description>
-	</element>
+    <element name="cit:city" id="390.0">
+        <label>City</label>
+        <description>City of the location</description>
+    </element>
+    <element name="cit:city" context="cit:CI_Address">
+        <label>City</label>
+        <description>City of the location</description>
+        <condition>mandatory</condition>
+    </element>
+    <element name="cit:administrativeArea" context="cit:CI_Address">
+        <label>Administrative area</label>
+        <description>State, province of the location</description>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mco:classification" id="74.0">
 		<condition>mandatory</condition>
 		<label>Classification</label>
@@ -1232,11 +1241,11 @@
 		<description>Designation of the specific country of the locale language</description>
 		<condition>optional</condition>
 	</element>
-	<element name="cit:country" id="393.0" context="cit:CI_Address">
-		<label>Country</label>
-		<description>Country of the address</description>
-		<condition>optional</condition>
-	</element>
+    <element name="cit:country" id="393.0" context="cit:CI_Address">
+        <label>Country</label>
+        <description>Country of the address</description>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mri:credit" id="46.0">
 		<label>Credit</label>
 		<description>Recognition of those who contributed to the resource(s)</description>
@@ -1276,18 +1285,18 @@
 		<label>Date of next update</label>
 		<description>Scheduled revision date for resource</description>
 	</element>
-	<element name="cit:date" id="364.0" context="cit:CI_Citation">
-		<condition>mandatory</condition>
-		<label>Date</label>
-		<description>Reference date for the cited resource</description>
-		<_condition>M</_condition>
-	</element>
-	<element name="cit:date" id="403.0" context="cit:CI_Date">
-		<condition>mandatory</condition>
-		<label>Date</label>
-		<description>Reference date for the cited resource</description>
-		<_condition>M</_condition>
-	</element>
+    <element name="cit:date" id="364.0" context="cit:CI_Citation">
+        <condition>mandatory</condition>
+        <label>Date</label>
+        <description>Reference date for the cited resource</description>
+        <_condition>M</_condition>
+    </element>
+    <element name="gmd:date" context="gmd:CI_Date">
+        <condition>mandatory</condition>
+        <label>Date</label>
+        <description>Reference date for the cited resource</description>
+        <_condition>M</_condition>
+    </element>
 	<element name="mri:dateOfNextUpdate" id="144.0">
 		<label>Date of next update</label>
 		<description>Scheduled revision date for resource (YYYY-MM-DD)</description>
