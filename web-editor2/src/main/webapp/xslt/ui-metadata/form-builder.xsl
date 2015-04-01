@@ -330,6 +330,7 @@
     <xsl:param name="isMissingLabel" required="no"/>
     <xsl:param name="isFirst" required="no" as="xs:boolean" select="true()"/>
     <xsl:param name="isAddAction" required="no" as="xs:boolean" select="false()"/>
+    <xsl:param name="parentName" required="no" as="xs:string" select="''"/>
 
     <xsl:variable name="tagId" select="generate-id()"/>
 
@@ -344,7 +345,16 @@
     <xsl:variable name="firstFieldKey"
                   select="$template/values/key[position() = 1]/@label"/>
 
-    <div class="form-group gn-field gn-{$firstFieldKey} {if ($isFirst) then '' else 'gn-extra-field'} {if ($isAddAction) then 'gn-add-field' else ''}"
+    <xsl:variable name="labelConfig"
+                  select="gn-fn-metadata:getLabel($schema, name(), $labels, $parentName, '', '')"/>
+    <xsl:variable name="isRequired" select="$labelConfig/condition='mandatory'"/>
+ 
+ 
+
+    <div class="form-group gn-field gn-{$firstFieldKey} 
+             {if ($isFirst) then '' else 'gn-extra-field'}
+             {if ($isAddAction) then 'gn-add-field' else ''} 
+             {if ($isRequired) then 'gn-required' else ''}"
          id="gn-el-{if ($refToDelete) then $refToDelete/@ref else generate-id()}"
          data-gn-field-highlight="">
 
