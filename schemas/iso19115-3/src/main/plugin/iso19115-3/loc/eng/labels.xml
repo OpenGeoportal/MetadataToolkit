@@ -564,6 +564,7 @@
 		<description>Information required to enable contact with the responsible person and/or
             organization</description>
 		<_condition>Use obligation/condition from referencing object</_condition>
+		<condition>mandatory</condition>
 	</element>
 	<element name="cit:CI_Date" id="402.0">
 		<label>Date</label>
@@ -691,10 +692,14 @@
 		<label>Extent</label>
 		<description>Information about spatial, vertical, and temporal extent</description>
 	</element>
-	<element name="gex:EX_GeographicBoundingBox" id="343.0">
-		<label>Geographic bounding box</label>
-		<description>Geographic position of the dataset</description>
-	</element>
+    <element name="gex:EX_GeographicBoundingBox" id="343.0">
+        <label>Geographic bounding box</label>
+        <description>Geographic position of the dataset</description>
+    </element>
+    <element name="gex:EX_GeographicBoundingBox" context="gex:geographicElement">
+        <label>Geographic bounding box</label>
+        <description>Geographic position of the dataset</description>
+    </element>
 	<element name="gex:EX_GeographicDescription" id="348.0">
 		<label>Geographic description</label>
 		<description>Description of the geographic area using identifiers</description>
@@ -940,6 +945,7 @@
 		<description>Access constraints applied to assure the protection of privacy or intellectual
             property, and any special restrictions or limitations on obtaining the
             resource</description>
+        <condition>mandatory</condition>
 	</element>
 	<element name="mri:address" id="525.0" context="mri:CI_ResponsibleParty">
 		<label>Address</label>
@@ -1088,11 +1094,17 @@
 		<label>Citation</label>
 		<description>Citation data for the resource(s)</description>
 	</element>
-	<element name="cit:citedResponsibleParty" id="367.0">
-		<label>Cited responsible party</label>
-		<description>Name and position information for an individual or organization that is
+    <element name="cit:citedResponsibleParty" id="367.0">
+        <label>Cited responsible party</label>
+        <description>Name and position information for an individual or organization that is
             responsible for the resource</description>
-	</element>
+    </element>
+    <element name="cit:citedResponsibleParty" id="367.0" context="CI_ResponsibleParty">
+        <label>Cited responsible party</label>
+        <description>Name and position information for an individual or organization that is
+            responsible for the resource</description>
+        <condition>mandatory</condition>
+    </element>
     <element name="cit:city" id="390.0">
         <label>City</label>
         <description>City of the location</description>
@@ -1634,7 +1646,7 @@
 	<element name="gex:extent" id="351.0" context="gex:EX_TemporalExtent">
 		<label>Extent</label>
 		<description>Date and time for the content of the dataset</description>
-		<_condition>mandatory</_condition>
+		<condition>mandatory</condition>
 	</element>
 	<element name="gex:extentTypeCode" id="340.0">
 		<label>Extent type code</label>
@@ -1854,11 +1866,17 @@
 		<label>Issue identification</label>
 		<description>Information identifying the issue of the series</description>
 	</element>
-	<element name="mri:keyword" id="53.0">
-		<label>Keyword</label>
-		<description>Commonly used word(s) or formalised word(s) or phrase(s) used to describe the
+    <element name="mri:keyword" id="53.0">
+        <label>Keyword</label>
+        <description>Commonly used word(s) or formalised word(s) or phrase(s) used to describe the
             subject</description>
-	</element>
+    </element>
+    <element name="mri:keyword" context="mri:MD_Keywords">
+        <label>Keyword</label>
+        <description>Commonly used word(s) or formalised word(s) or phrase(s) used to describe the
+            subject</description>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mri:language" context="mri:MD_Metadata" id="3.0">
 		<label>Metadata language</label>
 		<description>Language used for documenting metadata</description>
@@ -2554,6 +2572,7 @@
 			<option value="RBNB:DATATURBINE">Data Turbine</option>
 			<option value="UKST">Unknown Service Type</option>
 		</helper>
+		<condition>mandatory</condition>
 	</element>
 	<element name="mri:purpose" id="26.0">
 		<label>Purpose</label>
@@ -2792,14 +2811,21 @@
 		<label>Spatial representation info</label>
 		<description>Digital representation of spatial information in the dataset</description>
 	</element>
-	<element name="mri:spatialRepresentationType" id="37.0">
-		<label>Spatial representation type</label>
-		<description>Method used to spatially represent geographic information</description>
-	</element>
+    <element name="mri:spatialRepresentationType" id="37.0">
+        <label>Spatial representation type</label>
+        <description>Method used to spatially represent geographic information</description>
+        <condition>mandatory</condition>
+    </element>
+    <element name="mri:MD_SpatialRepresentationTypeCode">
+        <label>Spatial representation type</label>
+        <description>Method used to spatially represent geographic information</description>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mri:spatialResolution" id="38.0">
 		<label>Spatial resolution</label>
 		<description>Factor which provides a general understanding of the density of spatial data in
             the dataset</description>
+        <condition>mandatory</condition>
 	</element>
 	<element name="mri:specificUsage" id="63.0">
 		<label>Specific usage</label>
@@ -2872,6 +2898,7 @@
             Listed examples are not exhaustive. NOTE It is understood there are overlaps between
             general categories and the user is encouraged to select the one most
             appropriate.</description>
+        <condition>mandatory</condition>
 	</element>
 	<element name="mri:topologyLevel" id="177.0">
 		<label>Topology level</label>
@@ -2887,6 +2914,7 @@
 		<label>Transfer size</label>
 		<description>Estimated size of a unit in the specified transfer format, expressed in
             megabytes. The transfer size is &gt; 0.0</description>
+        <condition>mandatory</condition>
 	</element>
 	<element name="mri:transformationDimensionDescription" id="168.0">
 		<label>Transformation dimension description</label>
@@ -2952,6 +2980,7 @@
 		<description>Constraints applied to assure the protection of privacy or intellectual
             property, and any special restrictions or limitations or warnings on using the
             resource</description>
+        <condition>mandatory</condition>
 	</element>
 	<element name="mco:useLimitation" id="99.0">
 		<label>Use limitation</label>
@@ -2964,12 +2993,12 @@
     	<help></help>
     	<condition/>
     </element>
-	<element name="mri:userContactInfo" id="66.0">
-		<label>User contact info</label>
-		<description>Identification of and means of communicating with person(s) and organization(s)
+    <element name="mri:userContactInfo" id="66.0">
+        <label>User contact info</label>
+        <description>Identification of and means of communicating with person(s) and organization(s)
             using the resource(s)</description>
-		<condition>mandatory</condition>
-	</element>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mmi:userDefinedMaintenanceFrequency" id="145.0">
 		<label>User defined maintenance frequency</label>
 		<description>Maintenance period other than those defined</description>
