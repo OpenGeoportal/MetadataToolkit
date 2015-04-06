@@ -3774,6 +3774,11 @@
     <description>Property definition</description>
     <condition>mandatory</condition>
   </element>
+  <element name="gfc:definition" context="gfc:FC_FeatureAttribute">
+    <label>Definition</label>
+    <description>Property definition</description>
+    <condition>mandatory</condition>
+  </element>
   <element name="gfc:fieldOfApplication">
     <label>Field of application</label>
     <description>Field of application</description>
