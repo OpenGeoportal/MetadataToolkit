@@ -3769,6 +3769,11 @@
     <label>Definition</label>
     <description>Property definition</description>
   </element>
+  <element name="gfc:definition" context="gfc:FC_ListedValue">
+    <label>Definition</label>
+    <description>Property definition</description>
+    <condition>mandatory</condition>
+  </element>
   <element name="gfc:fieldOfApplication">
     <label>Field of application</label>
     <description>Field of application</description>
