@@ -58,7 +58,7 @@
               <xsl:if test="$angularApp != 'gn_search' and $angularApp != 'gn_viewer'">
                 <div class="navbar navbar-default gn-top-bar"
                      data-ng-hide="layout.hideTopToolBar"
-                     data-ng-include="'{$uiResourcesPath}templates/top-toolbar-editor.html'"></div>
+                     data-ng-include="'{$uiResourcesPath}views/ogp/templates/top-toolbar.html'"></div>
               </xsl:if>
 
               <xsl:apply-templates mode="content" select="."/>
