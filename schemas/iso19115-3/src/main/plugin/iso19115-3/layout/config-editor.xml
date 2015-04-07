@@ -250,7 +250,7 @@
         <!-- Metadata originator -->
         <section name="metadataOriginator">
           <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='originator']"
                  del=".">
             <template>
               <values>
