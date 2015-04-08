@@ -296,14 +296,38 @@
           </field>
 
           <action type="add" name="metadataOriginator"
-                  addDirective="data-gn-directory-entry-selector"
                   or="citedResponsibleParty"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
-            <directiveAttributes
-              data-template-add-action="true"
-              data-template-type="contact"
-              data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
-
+           <directiveAttributes
+                      data-template-add-action="true"
+                      data-template-type="contact"
+                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~originator"/>
+            <template>
+              <snippet>
+                <cit:citedResponsibleParty>
+                  <cit:CI_Responsibility>
+                    <cit:role>
+                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                       codeListValue="originator">originator</cit:CI_RoleCode>
+                    </cit:role>
+                    <cit:party>
+                      <cit:CI_Organisation>
+                        <cit:name>
+                          <gco:CharacterString></gco:CharacterString>
+                        </cit:name>
+                        <cit:individual>
+                          <cit:CI_Individual>
+                            <cit:name>
+                              <gco:CharacterString></gco:CharacterString>
+                            </cit:name>
+                          </cit:CI_Individual>
+                        </cit:individual>
+                      </cit:CI_Organisation>
+                    </cit:party>
+                  </cit:CI_Responsibility>
+                </cit:citedResponsibleParty>
+              </snippet>
+            </template>
           </action>
         </section>
 
@@ -416,14 +440,14 @@
                 </cit:role>
               </cit:CI_Responsibility>
             </cit:citedResponsibleParty>-->
-            <action type="add" name="publisher"
-                    addDirective="data-gn-directory-entry-selector"
-                    or="citedResponsibleParty"
+      
+            <action type="add" 
+                    name="publisher" or="citedResponsibleParty"
                     in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
               <directiveAttributes
                       data-template-add-action="true"
                       data-template-type="contact"
-                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
+                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~publisher"/>
               <template>
                 <snippet>
                   <cit:citedResponsibleParty>
@@ -1104,8 +1128,8 @@
 
           <section name="metadataOriginator">
             <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
-                   del=".">
+                    xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='originator']"
+                    del=".">
               <template>
                 <values>
                   <key label="organisationName"
@@ -1149,16 +1173,41 @@
               </template>
             </field>
 
-            <action type="add" name="metadataOriginator"
-                    addDirective="data-gn-directory-entry-selector"
-                    or="citedResponsibleParty"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
-                <directiveAttributes
-                        data-template-add-action="true"
-                        data-template-type="contact"
-                        data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
-
-            </action>
+             <action type="add" name="metadataOriginator"
+                  or="citedResponsibleParty"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+	           <directiveAttributes
+	                      data-template-add-action="true"
+	                      data-template-type="contact"
+	                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~originator"/>
+	            <template>
+	              <snippet>
+	                <cit:citedResponsibleParty>
+	                  <cit:CI_Responsibility>
+	                    <cit:role>
+	                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+	                                       codeListValue="originator">originator</cit:CI_RoleCode>
+	                    </cit:role>
+	                    <cit:party>
+	                      <cit:CI_Organisation>
+	                        <cit:name>
+	                          <gco:CharacterString></gco:CharacterString>
+	                        </cit:name>
+	                        <cit:individual>
+	                          <cit:CI_Individual>
+	                            <cit:name>
+	                              <gco:CharacterString></gco:CharacterString>
+	                            </cit:name>
+	                          </cit:CI_Individual>
+	                        </cit:individual>
+	                      </cit:CI_Organisation>
+	                    </cit:party>
+	                  </cit:CI_Responsibility>
+	                </cit:citedResponsibleParty>
+	              </snippet>
+	            </template>
+	          </action>
+            
           </section>
 
           <!-- Metadata abstract -->
