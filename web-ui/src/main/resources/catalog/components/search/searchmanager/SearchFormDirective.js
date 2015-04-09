@@ -121,6 +121,7 @@
             gnFacetService.getParamsFromFacets($scope.currentFacets));
       }
 
+
       gnSearchManagerService.gnSearch(params).then(
           function(data) {
             $scope.searching--;

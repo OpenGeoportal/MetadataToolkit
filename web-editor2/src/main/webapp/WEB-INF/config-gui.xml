@@ -15,7 +15,7 @@
   * stateId attribute is the identifier of the search form (if stateful) in the application. It is used to build quick links section in the administration.
  -->
  <!-- redirect requests to edit metadata view -->
- <client type="redirect" widget="false" url="catalog.edit" parameters="" stateId="" createParameter=""/>
+ <client type="redirect" widget="false" url="ogp.edit" parameters="" stateId="" createParameter=""/>
 
  <!-- <client type="redirect" widget="true" url="search" createParameter="#create" stateId="s"/> -->
  <!-- Classic interface using the xslt layout-templates -->

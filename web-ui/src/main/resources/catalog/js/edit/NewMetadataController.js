@@ -51,7 +51,7 @@
       };
 
       gnGroupService.list(TEMPLATES.EDITOR_PROFILE).then(
-          function (groups) {
+              function (groups) {
             $scope.groups = groups;
             var first = $scope.getFirstGroupNonSpecial(groups);
             $scope.firstGroupNonSpecial = first != null ? first['@id'] : '-1'

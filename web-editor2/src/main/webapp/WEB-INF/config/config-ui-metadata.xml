@@ -8,6 +8,13 @@
           </output>
       </service>
 
+    <service name="ogp.edit">
+      <documentation>OpenGeoPortal wizard</documentation>
+      <output sheet="../xslt/ui-metadata/ogp-editor.xsl">
+        <xml name="i18n" file="xml/i18n.xml"/>
+      </output>
+    </service>
+
       <service name="catalog.viewer">
           <documentation>Map viewer</documentation>
           <output sheet="../xslt/ui-metadata/viewer.xsl">
