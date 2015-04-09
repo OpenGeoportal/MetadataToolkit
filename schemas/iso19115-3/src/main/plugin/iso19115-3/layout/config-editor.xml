@@ -250,7 +250,7 @@
         <!-- Metadata originator -->
         <section name="metadataOriginator">
           <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
+                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='originator']"
                  del=".">
             <template>
               <values>
@@ -296,14 +296,38 @@
           </field>
 
           <action type="add" name="metadataOriginator"
-                  addDirective="data-gn-directory-entry-selector"
                   or="citedResponsibleParty"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
-            <directiveAttributes
-              data-template-add-action="true"
-              data-template-type="contact"
-              data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
-
+           <directiveAttributes
+                      data-template-add-action="true"
+                      data-template-type="contact"
+                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~originator"/>
+            <template>
+              <snippet>
+                <cit:citedResponsibleParty>
+                  <cit:CI_Responsibility>
+                    <cit:role>
+                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                       codeListValue="originator">originator</cit:CI_RoleCode>
+                    </cit:role>
+                    <cit:party>
+                      <cit:CI_Organisation>
+                        <cit:name>
+                          <gco:CharacterString></gco:CharacterString>
+                        </cit:name>
+                        <cit:individual>
+                          <cit:CI_Individual>
+                            <cit:name>
+                              <gco:CharacterString></gco:CharacterString>
+                            </cit:name>
+                          </cit:CI_Individual>
+                        </cit:individual>
+                      </cit:CI_Organisation>
+                    </cit:party>
+                  </cit:CI_Responsibility>
+                </cit:citedResponsibleParty>
+              </snippet>
+            </template>
           </action>
         </section>
 
@@ -416,14 +440,14 @@
                 </cit:role>
               </cit:CI_Responsibility>
             </cit:citedResponsibleParty>-->
-            <action type="add" name="publisher"
-                    addDirective="data-gn-directory-entry-selector"
-                    or="citedResponsibleParty"
+      
+            <action type="add" 
+                    name="publisher" or="citedResponsibleParty"
                     in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
               <directiveAttributes
                       data-template-add-action="true"
                       data-template-type="contact"
-                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
+                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~publisher"/>
               <template>
                 <snippet>
                   <cit:citedResponsibleParty>
@@ -472,6 +496,19 @@
           
           <!-- Metadata abstract -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
+          
+          
+          <action type="add"
+                  name="abstract" or="abstract"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+		         <mri:abstract gco:nilReason="missing">
+		            <gco:CharacterString/>
+		         </mri:abstract>
+              </snippet>
+            </template>
+          </action>
 
           <!-- Temporal extent -->
           <!-- TODO review gml:TimePeriodType fields. They appear as free text input fields. -->
@@ -568,12 +605,26 @@
           <!-- Descriptive keywords -->
           <!-- FIXME Add more keywords -->
           <section name="descriptiveKeywords">
-            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"/>
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"
+                 addDirective="data-gn-thesaurus-selector">
+                <directiveAttributes
+                    data-transformation="to-iso19115-3-keyword"/>
+            </field>
 
             <!-- TODO: Check why can't be removed  topic category -->
-<!--
+
             <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
--->
+            <action type="mri:topicCategory"
+                    name="mri:topicCategory"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+              <template>
+                <snippet>
+                  <mri:topicCategory>
+		            <mri:MD_TopicCategoryCode/>
+		         </mri:topicCategory>
+                </snippet>
+              </template>
+            </action>
           </section>
           
           <!-- Place Keywords -->
@@ -1011,15 +1062,24 @@
           <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier" />
         </section>-->
       </tab>
+      
       <tab id="featureCatalogTab" mode="flat">
+          
         <section name="gfc:FC_FeatureCatalogue" >
+          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:typeName"
+                  or="title"
+                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue"></field>
+         
           <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:typeName"
                   or="typeName"
                   in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"></field>
           <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:definition"
                  or="definition"
                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"></field>
-          <field  templateModeOnly="true" notDisplayedIfMissing="true"
+          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:definitionSource"
+                 or="source"
+                 in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"></field>
+          <field  templateModeOnly="true"
                   xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType/gfc:carrierOfCharacteristics"
                   del=".">
             <template>
@@ -1033,7 +1093,7 @@
                   <gfc:FC_FeatureAttribute>
                     <gfc:featureType>
                       <gfc:FC_FeatureType>
-                        <gfc:typeName/>
+                        <gfc:typeName>{{typeName}}</gfc:typeName>
                         <gfc:definition>
                           <gco:CharacterString>{{featureAttributeDescription}}</gco:CharacterString>
                         </gfc:definition>
@@ -1104,8 +1164,8 @@
 
           <section name="metadataOriginator">
             <field name="metadataOriginator" templateModeOnly="true" notDisplayedIfMissing="true"
-                   xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty"
-                   del=".">
+                    xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='originator']"
+                    del=".">
               <template>
                 <values>
                   <key label="organisationName"
@@ -1149,21 +1209,58 @@
               </template>
             </field>
 
-            <action type="add" name="metadataOriginator"
-                    addDirective="data-gn-directory-entry-selector"
-                    or="citedResponsibleParty"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
-                <directiveAttributes
-                        data-template-add-action="true"
-                        data-template-type="contact"
-                        data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"/>
-
-            </action>
+             <action type="add" name="metadataOriginator"
+                  or="citedResponsibleParty"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+	           <directiveAttributes
+	                      data-template-add-action="true"
+	                      data-template-type="contact"
+	                      data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~originator"/>
+	            <template>
+	              <snippet>
+	                <cit:citedResponsibleParty>
+	                  <cit:CI_Responsibility>
+	                    <cit:role>
+	                      <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+	                                       codeListValue="originator">originator</cit:CI_RoleCode>
+	                    </cit:role>
+	                    <cit:party>
+	                      <cit:CI_Organisation>
+	                        <cit:name>
+	                          <gco:CharacterString></gco:CharacterString>
+	                        </cit:name>
+	                        <cit:individual>
+	                          <cit:CI_Individual>
+	                            <cit:name>
+	                              <gco:CharacterString></gco:CharacterString>
+	                            </cit:name>
+	                          </cit:CI_Individual>
+	                        </cit:individual>
+	                      </cit:CI_Organisation>
+	                    </cit:party>
+	                  </cit:CI_Responsibility>
+	                </cit:citedResponsibleParty>
+	              </snippet>
+	            </template>
+	          </action>
+            
           </section>
 
           <!-- Metadata abstract -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
 
+          <action type="add"
+                  name="abstract" or="abstract"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+                 <mri:abstract gco:nilReason="missing">
+                    <gco:CharacterString/>
+                 </mri:abstract>
+              </snippet>
+            </template>
+          </action>
+          
           <!-- Temporal extent -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement">
             <template>
@@ -1244,22 +1341,39 @@
 
 
           <!-- Geographic extent -->
-          <field
-                  xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/
-              mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+         <section name="gex:geographicElement">
+            <field
+                    xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+            <action type="add"
+                    name="gex:EX_GeographicBoundingBox"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent"
+                    or="geographicElement">
+              <template>
+                <snippet>
+                  <gex:geographicElement>
+                    <gex:EX_GeographicBoundingBox>
+                      <gex:westBoundLongitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:westBoundLongitude>
+                      <gex:eastBoundLongitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:eastBoundLongitude>
+                      <gex:southBoundLatitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:southBoundLatitude>
+                      <gex:northBoundLatitude>
+                        <gco:Decimal></gco:Decimal>
+                      </gex:northBoundLatitude>
+                    </gex:EX_GeographicBoundingBox>
+                  </gex:geographicElement>
+                </snippet>
+              </template>
+            </action>
+          </section>
 
 
         </section>
 
-
-        <section name="tufts-metadata">
-          <!-- TODO: Template in layout-custom-fields.xsl not invoked with this, the field is editable -->
-          <!--<field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code"/>-->
-          <!-- TODO: This works, but shows codespace field also -->
-          <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
-
-          <field xpath="/mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='revision']/cit:date"/>
-        </section>
       </tab>
 
       <!-- Elements that should not use the "flat" mode -->
