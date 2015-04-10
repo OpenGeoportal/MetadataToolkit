@@ -1,17 +1,6 @@
 <!-- views/ogp/templates/editor/top-toolbar-editor.html.bak -->
 <nav class="navbar navbar-default navbar-fixed-top gn-top-bar" role="navigation"
      data-ng-if="!unsupportedSchema">
-    <div>
-        <ul class="gn-view-menu-button pull-left nav navbar-nav">
-            <!-- An empty drown down updated when form is loaded -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-eye"></i>
-                    <b class="caret"/>
-                </a>
-            </li>
-        </ul>
-    </div>
     <p class="navbar-text brand">
         <img class="gn-logo" src="../../images/logos/OGP-icon-24.png" alt="OGP logo"/>
         <a href="ogp.edit">OGP METADATA TOOLKIT</a>
@@ -19,6 +8,17 @@
     <ul class="nav navbar-nav">
         <li><a href="catalog.edit" data-translate="">search</a></li>
     </ul>
+    <div>
+        <ul class="gn-view-menu-button pull-left nav navbar-nav">
+            <!-- An empty drown down updated when form is loaded -->
+            <li class="dropdown">
+                <button class="btn btn-default dropdown-toggle navbar-btn disabled" type="button" id="viewMenu" data-toggle="dropdown" aria-expanded="true" data-translate="">
+                    <span class="loading fa fa-spinner fa-spin"></span>
+                    <span class="caret"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
     <p class="navbar-text gn-tooltip"
        data-ng-mouseover="getSaveStatus()" title="{{savedStatus}}">
         <span data-ng-class="saveError ? 'text-danger' : ''">{{savedStatus}}</span>

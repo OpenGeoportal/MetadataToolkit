@@ -37,28 +37,26 @@
 
         <!-- Make a drop down choice to switch to one view to another -->
         <li class="dropdown" id="gn-view-menu-{$metadataId}">
-          <a class="dropdown-toggle" data-toggle="dropdown" href=""
-            title="{$i18n/selectView}">
-            <i class="fa fa-eye"></i>
-            <b class="caret"/>
-          </a>
-          <ul class="dropdown-menu">
+          <button class="btn btn-default dropdown-toggle navbar-btn" type="button" id="viewMenu" data-toggle="dropdown" aria-expanded="true">
+            <xsl:value-of select="$i18n/selectView" />
+
+            <xsl:for-each select="$config/editor/views/view[not(@disabled)]">
+              <xsl:if test="@name = $currentView/@name">
+              <xsl:variable name="viewName" select="@name"/>
+                (<xsl:value-of select="$strings/*[name() = $viewName]"/>)
+              </xsl:if>
+            </xsl:for-each>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="viewMenu">
             <!-- links -->
             <xsl:choose>
               <xsl:when test="$isTemplate = 's'">
-                <li>
-                  <xsl:if test="'simple' = $currentView/@name">
-                    <xsl:attribute name="class">disabled</xsl:attribute>
-                  </xsl:if>
-                  <a data-ng-click="switchToTab('simple', '')" href="">
-                    <xsl:value-of select="$strings/*[name() = 'simple']"/>
-                  </a>
-                </li>
-                <li>
+                <li role="presentation">
                   <xsl:if test="'xml' = $currentView/@name">
                     <xsl:attribute name="class">disabled</xsl:attribute>
                   </xsl:if>
-                  <a data-ng-click="switchToTab('xml', '')" href="">
+                  <a role="menuitem" tabindex="-1" data-ng-click="switchToTab('xml', '')" href="">
                     <xsl:value-of select="$strings/*[name() = 'xml']"/>
                   </a>
                 </li>
@@ -113,13 +111,13 @@
 
 
                   <xsl:if test="$isViewDisplayed">
-                    <li>
+                    <li role="presentation">
                       <xsl:if test="@name = $currentView/@name">
                         <xsl:attribute name="class">disabled</xsl:attribute>
                       </xsl:if>
                       <!-- When a view contains multiple tab, the one with
                     the default attribute is the one to open -->
-                      <a data-ng-click="switchToTab('{tab[@default]/@id}', '{tab[@default]/@mode}')" href="">
+                      <a role="menuitem" tabindex="-1" data-ng-click="switchToTab('{tab[@default]/@id}', '{tab[@default]/@mode}')" href="">
                         <xsl:variable name="viewName" select="@name"/>
                         <xsl:value-of select="$strings/*[name() = $viewName]"/>
                       </a>
@@ -128,15 +126,15 @@
                 </xsl:for-each>
 
                 <li class="divider"/>
-                <li>
-                  <a data-ng-click="toggleAttributes(true)" href="">
+                <li role="presentation">
+                  <a role="menuitem" tabindex="-1" data-ng-click="toggleAttributes(true)" href="">
                     <i class="fa"
                       data-ng-class="gnCurrentEdit.displayAttributes ? 'fa-check-square-o' : 'fa-square-o'"/>
                     &#160;<span data-translate="">toggleAttributes</span>
                   </a>
                 </li>
-                <li>
-                  <a data-ng-click="toggleTooltips(true)" href="">
+                <li role="presentation">
+                  <a role="menuitem" tabindex="-1" data-ng-click="toggleTooltips(true)" href="">
                     <i class="fa"
                       data-ng-class="gnCurrentEdit.displayTooltips ? 'fa-check-square-o' : 'fa-square-o'"/>
                     &#160;<span data-translate="">toggleTooltips</span>

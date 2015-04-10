@@ -243,7 +243,7 @@
 
   <!-- View configuration -->
   <views>
-    <view name="tufts-standard" vertical-tabs="true">
+    <view name="default" vertical-tabs="true">
 
       <tab id="tufts-standard-tab-identification" default="true" mode="flat">
         

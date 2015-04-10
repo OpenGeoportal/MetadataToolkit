@@ -15,7 +15,6 @@
   <!-- New strings added for the AngularJS editor -->
   <!-- View and tabs -->
   <advanced>Full</advanced>
-  <default>Simple</default>
   <simple>Simple</simple>
   <inspire>INSPIRE</inspire>
   <resource>Resource</resource>
@@ -36,7 +35,7 @@
 
 
   <!-- Tufts standard strings -->
-  <tufts-standard>Tufts standard</tufts-standard>
+  <default>Standard</default>
   <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
   <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
   <tufts-distribution-information>Distribution</tufts-distribution-information>
@@ -85,7 +84,7 @@
   
   
   <!-- Tufts minimal strings -->
-  <tufts-minimal>Tufts minimal</tufts-minimal>
+  <tufts-minimal>Minimal</tufts-minimal>
   <tufts-identificationinfo>Identification Information</tufts-identificationinfo>
   <tufts-metadata>Metadata Reference Information</tufts-metadata>
   <tufts-spatialrepresentation>Spatial Representation Information</tufts-spatialrepresentation>
