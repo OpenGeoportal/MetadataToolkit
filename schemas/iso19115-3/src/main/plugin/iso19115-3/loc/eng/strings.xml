@@ -36,6 +36,7 @@
 
   <!-- Tufts standard strings -->
   <default>Standard</default>
+  <tufts-standard>Standard</tufts-standard>
   <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
   <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
   <tufts-distribution-information>Distribution</tufts-distribution-information>

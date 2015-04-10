@@ -15,6 +15,10 @@
     <xsl:param name="config" as="node()"/>
 
     <xsl:variable name="currentView" select="$config/editor/views/view[tab/@id = $tab]"/>
+    <xsl:message>
+      tab: <xsl:value-of select="$tab"/>
+      view: <xsl:value-of select="$config/editor/views/view/@name"/>
+    </xsl:message>
 
     <div class="gn-scroll-spy"
       data-gn-scroll-spy="gn-editor-{$metadataId}"

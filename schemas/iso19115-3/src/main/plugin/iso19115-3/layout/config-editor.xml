@@ -243,7 +243,7 @@
 
   <!-- View configuration -->
   <views>
-    <view name="default" vertical-tabs="true">
+    <view name="tufts-standard" vertical-tabs="true">
 
       <tab id="tufts-standard-tab-identification" default="true" mode="flat">
         
@@ -1453,7 +1453,7 @@
     </view>
 
 
-    <view name="default">
+    <!--<view name="default">
       <tab id="default" default="true" mode="flat">
         <section xpath="/mdb:MD_Metadata/mdb:identificationInfo"/>
         <section xpath="/mdb:MD_Metadata/mdb:distributionInfo"/>
@@ -1479,7 +1479,7 @@
         </section>
       </tab>
 
-      <!-- Elements that should not use the "flat" mode -->
+      &lt;!&ndash; Elements that should not use the "flat" mode &ndash;&gt;
       <flatModeExceptions>
         <for name="mri:descriptiveKeywords" />
         <for name="mri:pointOfContact"/>
@@ -1488,7 +1488,7 @@
         <for name="mcc:processor"/>
         <for name="cit:citedResponsibleParty"/>
       </flatModeExceptions>
-    </view>
+    </view>-->
     <view name="advanced">
       <tab id="identificationInfo" default="true">
         <section xpath="/mdb:MD_Metadata/mdb:identificationInfo" or="identificationInfo"
