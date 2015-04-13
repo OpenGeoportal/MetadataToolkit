@@ -79,6 +79,9 @@
   <featureAttributeDescription>Attribute Definition</featureAttributeDescription>
   <featureTypeName>Attribute Type</featureTypeName>
   <featureAttributeMemberName>Attribute Label</featureAttributeMemberName>
+  <typeName>Type Name</typeName>
+  <entityDefinition>Definition</entityDefinition>
+  <definitionSource>Definition Source</definitionSource>
 
 
 
