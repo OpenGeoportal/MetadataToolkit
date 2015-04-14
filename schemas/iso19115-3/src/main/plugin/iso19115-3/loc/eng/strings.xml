@@ -83,6 +83,8 @@
   <entityDefinition>Definition</entityDefinition>
   <definitionSource>Definition Source</definitionSource>
   <title>Feature Catalog for</title>
+  <extent>Temporal Extent</extent>
+  <EX_GeographicBoundingBox>Geographic Extent</EX_GeographicBoundingBox>
 
 
 

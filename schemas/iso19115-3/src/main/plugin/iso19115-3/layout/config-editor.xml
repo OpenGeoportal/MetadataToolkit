@@ -496,21 +496,9 @@
           <!-- Metadata abstract -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
           
-          
-          <action type="add"
-                  name="abstract" or="abstract"
-                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
-            <template>
-              <snippet>
-		         <mri:abstract gco:nilReason="missing">
-		            <gco:CharacterString/>
-		         </mri:abstract>
-              </snippet>
-            </template>
-          </action>
-
           <!-- Temporal extent -->
           <!-- TODO review gml:TimePeriodType fields. They appear as free text input fields. -->
+          <section>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement">
             <template>
               <values>
@@ -546,7 +534,7 @@
             </template>
           </field>
 
-          <action type="add"
+          <action type="add" forceLabel="true"
                   name="extent" or="extent"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
             <template>
@@ -568,13 +556,14 @@
               </snippet>
             </template>
           </action>
-
+         </section>
 
           <!-- Geographic extent -->
+          <section>
             <field
                     xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
-            <action type="add"
-                    name="gex:EX_GeographicBoundingBox"
+            <action type="add" forceLabel="true"
+                    name="EX_GeographicBoundingBox"
                     in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent"
                     or="geographicElement">
               <template>
@@ -598,13 +587,13 @@
                 </snippet>
               </template>
             </action>
-
+        </section>
           <!-- Descriptive keywords -->
           <!-- FIXME Add more keywords -->
             <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"
                  addDirective="data-gn-thesaurus-selector">
-                <directiveAttributes
-                    data-transformation="to-iso19115-3-keyword"/>
+            <!--     <directiveAttributes
+                    data-transformation="to-iso19115-3-keyword"/> -->
             </field>
 
             <!-- TODO: Check why can't be removed  topic category -->
@@ -625,8 +614,16 @@
           <!-- Place Keywords -->
           <!-- FIXME select only  place  keywords -->
           <!-- FIXME add more keywords -->
+          <section>
             <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords" />
-          
+           
+            <action type="descriptiveKeywords" or="descriptiveKeywords"
+                    name="descriptiveKeywords"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" 
+                    addDirective="data-gn-thesaurus-selector">
+                <directiveAttributes data-transformation="to-iso19115-3-keyword"/>
+            </action>
+          </section>
           
           <!-- Metadata contact -->
             <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"

@@ -695,6 +695,7 @@
     <element name="gex:EX_GeographicBoundingBox" id="343.0">
         <label>Geographic bounding box</label>
         <description>Geographic position of the dataset</description>
+        <condition>mandatory</condition>
     </element>
     <element name="gex:EX_GeographicBoundingBox" context="gex:geographicElement">
         <label>Geographic bounding box</label>
@@ -1625,13 +1626,11 @@
 		<description>Information about on-line sources containing the community profile name and the
             extended metadata elements. Information for all new metadata elements</description>
 	</element>
-	<element name="mri:extent" id="45.0" context="mri:MD_DataIdentification">
+	<element name="mri:extent">
 		<label>Extent</label>
 		<description>Extent information including the bounding polygon, vertical, and temporal
             extent of the dataset</description>
-		<_condition>Conditional / if hierarchyLevel equals "dataset"? Either
-            extent.geographicElement.EX_GeographicBoundingBox or
-            extent.geographicElement.EX_GeographicDescription is required</_condition>
+		<condition>mandatory</condition>
 	</element>
 	<element name="mcc:extent" id="140.0" context="mcc:MD_Scope">
 		<label>Extent</label>
@@ -1736,8 +1735,7 @@
 		<label>Geographic element</label>
 		<description>Provides geographic component of the extent of the referring
             object</description>
-		<_condition>Conditional / description and temporalElement and verticalElement not
-            documented?</_condition>
+        <condition>mandatory</condition>
 	</element>
 	<element name="gex:geographicIdentifier" id="349.0">
 		<label>Geographic identifier</label>
