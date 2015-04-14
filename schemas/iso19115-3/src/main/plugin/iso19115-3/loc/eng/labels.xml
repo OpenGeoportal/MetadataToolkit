@@ -1098,11 +1098,6 @@
         <label>Cited responsible party</label>
         <description>Name and position information for an individual or organization that is
             responsible for the resource</description>
-    </element>
-    <element name="cit:citedResponsibleParty" id="367.0" context="CI_ResponsibleParty">
-        <label>Cited responsible party</label>
-        <description>Name and position information for an individual or organization that is
-            responsible for the resource</description>
         <condition>mandatory</condition>
     </element>
     <element name="cit:city" id="390.0">
@@ -2083,6 +2078,7 @@
 	<element name="cit:name">
 		<label>Name</label>
 		<description />
+		<condition>mandatory</condition>
 	</element>
 	<element name="mri:nameOfMeasure" id="100.0">
 		<label>Name of measure</label>
