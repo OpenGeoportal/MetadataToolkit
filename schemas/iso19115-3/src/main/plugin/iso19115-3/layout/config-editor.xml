@@ -1053,6 +1053,18 @@
       <tab id="featureCatalogTab" mode="flat">
           
         <section name="gfc:FC_FeatureCatalogue" >
+           
+          <field templateModeOnly="true" name="title" or="title" 
+                    xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+            <template>
+                <values>
+                    <key label="title" xpath="cit:title/gco:CharacterString"/>
+                </values>
+                <snippet>
+                    <cit:title><gco:CharacterString>{{title}}</gco:CharacterString></cit:title>
+                </snippet>
+            </template>
+          </field>
         
           <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"
                  or="FC_FeatureType" del=".." templateModeOnly="true" notDisplayedIfMissing="false"
@@ -1073,7 +1085,8 @@
                         <gfc:definitionSource>
                            <gco:CharacterString>{{definitionSource}}</gco:CharacterString>
                         </gfc:definitionSource>
-                         <xsl:for-each select="gfc:carrierOfCharacteristics">
+                         <gn:copy select="gfc:carrierOfCharacteristics"/> 
+                         <!-- <xsl:for-each select="gfc:carrierOfCharacteristics">
                            <gfc:carrierOfCharacteristics>
                             <gfc:FC_FeatureAttribute>
                               <gfc:featureType>
@@ -1099,7 +1112,7 @@
                               <gn:copy select="gfc:listedValue"/>
                             </gfc:FC_FeatureAttribute>
                           </gfc:carrierOfCharacteristics>
-                       </xsl:for-each> 
+                       </xsl:for-each>  -->
                    </gfc:FC_FeatureType>
                </snippet>
              </template>
