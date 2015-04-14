@@ -367,7 +367,8 @@
                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation" />
 
           <!-- Publisher -->
-            <field name="publisher" templateModeOnly="true" notDisplayedIfMissing="true"
+          <section>
+            <field name="publisher" templateModeOnly="true" notDisplayedIfMissing="false"
                    xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='publisher']"
                    del=".">
               <template>
@@ -428,6 +429,7 @@
                 </snippet>
               </template>
             </field>
+          </section>
 
             <!-- TODO Plus button doesn't add the right XML. Below is the wrong XML generated -->
             <!--<cit:citedResponsibleParty>
