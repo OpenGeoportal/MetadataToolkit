@@ -98,10 +98,11 @@
         </xsl:call-template>
       </xsl:if>
 
-      <div>
+      <div id="form-content-{$metadataId}">
         <xsl:if test="string($viewVerticalTabs)">
           <!-- if this class is modified, please modify also the one defined in menu-builder.xsl tab section -->
           <xsl:attribute name="class">col-md-9</xsl:attribute>
+          <xsl:attribute name="id">gn-editor-column-<xsl:value-of select="$metadataId"/></xsl:attribute>
         </xsl:if>
         <xsl:choose>
           <xsl:when test="$service != 'md.element.add' and $tabConfig/section">
