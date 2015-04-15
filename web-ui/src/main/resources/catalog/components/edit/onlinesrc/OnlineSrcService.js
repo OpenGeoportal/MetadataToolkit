@@ -97,27 +97,29 @@
       var parseRelations = function(data) {
 
         var relations = {};
-        if (!angular.isArray(data.relation)) {
-          data.relation = [data.relation];
+        if (data && data.relation) {
+          if (!angular.isArray(data.relation)) {
+            data.relation = [data.relation];
+          }
+          angular.forEach(data.relation, function (rel) {
+
+            var type = rel['@type'];
+            if (!relations[type]) {
+              relations[type] = [];
+            }
+            rel.type = type;
+            delete rel['@type'];
+
+            if (rel['@subType']) {
+              rel.subType = rel['@subType'];
+              delete rel['@subType'];
+            }
+            if (angular.isString(rel.title) ||
+                type == 'thumbnail') {
+              relations[type].push(rel);
+            }
+          });
         }
-        angular.forEach(data.relation, function(rel) {
-
-          var type = rel['@type'];
-          if (!relations[type]) {
-            relations[type] = [];
-          }
-          rel.type = type;
-          delete rel['@type'];
-
-          if (rel['@subType']) {
-            rel.subType = rel['@subType'];
-            delete rel['@subType'];
-          }
-          if (angular.isString(rel.title) ||
-              type == 'thumbnail') {
-            relations[type].push(rel);
-          }
-        });
         return relations;
       };
 
