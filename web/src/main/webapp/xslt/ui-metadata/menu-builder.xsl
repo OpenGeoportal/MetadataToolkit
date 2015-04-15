@@ -17,9 +17,17 @@
     <xsl:variable name="currentView" select="$config/editor/views/view[tab/@id = $tab]"/>
 
     <div class="gn-scroll-spy"
-      data-gn-scroll-spy="gn-editor-{$metadataId}"
-      data-watch=""
-      data-all-depth="{if ($isFlatMode) then 'true' else 'false'}"/>
+         data-watch=""
+         data-all-depth="{if ($isFlatMode) then 'true' else 'false'}" >
+      <xsl:choose>
+        <xsl:when test="$currentView[@vertical-tabs]">
+          <xsl:attribute name="data-gn-scroll-spy">gn-editor-column-<xsl:value-of select="$metadataId"/></xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="data-gn-scroll-spy">form-content-<xsl:value-of select="$metadataId"/></xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
 
     <div>
       <xsl:if test="$currentView[@vertical-tabs]">
