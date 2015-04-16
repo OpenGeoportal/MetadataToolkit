@@ -1870,6 +1870,19 @@
 		</entry>
 	</codelist>
 	<!-- ==================================================== -->
+	<codelist name="mcc:MD_SpatialRepresentationTypeCode">
+		<entry>
+			<code>vector</code>
+			<label>Vecteur</label>
+			<description>Donnée vecteur (point, ligne, polygone)</description>
+		</entry>
+		<entry>
+			<code>grid</code>
+			<label>Raster</label>
+			<description>Donnée raster ou matricielle</description>
+		</entry>
+	</codelist>
+	<!-- ==================================================== -->
 	<codelist name="mri:MD_SpatialRepresentationTypeCode">
 		<entry>
 			<code>vector</code>

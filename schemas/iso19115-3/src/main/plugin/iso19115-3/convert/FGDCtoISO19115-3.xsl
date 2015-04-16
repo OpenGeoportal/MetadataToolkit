@@ -700,11 +700,6 @@
   <xsl:template match="geoform">
     <cit:CI_PresentationFormCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_PresentationFormCode">
       <xsl:choose>
-        <xsl:when test=".='vector digital data'">
-          <xsl:attribute name="codeListValue">
-            <xsl:text>mapDigital</xsl:text>
-          </xsl:attribute>
-        </xsl:when>
         <xsl:when test=".='remote-sensing image'">
           <xsl:attribute name="codeListValue">
             <xsl:text>imageDigital</xsl:text>
@@ -1091,13 +1086,6 @@
           </mri:spatialRepresentationType>
         </xsl:when>
       </xsl:choose>
-
-      <test>
-        <xsl:value-of select="direct" />
-      </test>
-      <xsl:message>
-        Found spdinfo/direct: <xsl:value-of select="direct" />
-      </xsl:message>
     </xsl:if>
 
 

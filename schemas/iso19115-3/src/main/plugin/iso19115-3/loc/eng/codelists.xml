@@ -1872,6 +1872,20 @@
 		</entry>
 	</codelist>
 	<!-- ==================================================== -->
+	<codelist name="mcc:MD_SpatialRepresentationTypeCode">
+		<entry>
+			<code>vector</code>
+			<label>Vector</label>
+			<description>Vector data is used to represent geographic data</description>
+		</entry>
+		<entry>
+			<code>grid</code>
+			<label>Raster</label>
+			<description>Grid data is used to represent geographic data</description>
+		</entry>
+	</codelist>
+
+	<!-- ==================================================== -->
 	<codelist name="mri:MD_SpatialRepresentationTypeCode">
 		<entry>
 			<code>vector</code>
