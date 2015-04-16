@@ -139,11 +139,18 @@
             <xsl:if test="$isMultilingual">
               <xsl:attribute name="data-gn-multilingual-field" select="$metadataOtherLanguagesAsJson"/>
               <xsl:attribute name="data-main-language" select="$metadataLanguage"/>
-              <xsl:attribute name="data-expanded" select="$toggleLang"/>
+              <xsl:attribute name="data-expanded
+              " select="$toggleLang"/>
             </xsl:if>
-            
+
+            <xsl:variable name="mainLangCode" select="upper-case(java-xsl-util:twoCharLangCode($metadataLanguage, substring($metadataLanguage,0,2)))"/>
+
+
             <xsl:choose>
               <xsl:when test="$isMultilingual">
+
+                <xsl:variable name="tooltip" select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"></xsl:variable>
+
                 <xsl:for-each select="$value/values/value">
                   <xsl:sort select="@lang"/>
                   
@@ -152,12 +159,13 @@
                     <xsl:with-param name="lang" select="@lang"/>
                     <xsl:with-param name="value" select="."/>
                     <xsl:with-param name="type" select="$type"/>
-                    <xsl:with-param name="tooltip" select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"/>
+                    <xsl:with-param name="tooltip" select="$tooltip"/>
                     <xsl:with-param name="isRequired" select="$isRequired"/>
                     <xsl:with-param name="isDisabled" select="$isDisabled"/>
                     <xsl:with-param name="editInfo" select="$editInfo"/>
                     <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
                     <xsl:with-param name="listOfValues" select="$listOfValues"/>
+                    <xsl:with-param name="checkDirective" select="upper-case(@lang) = $mainLangCode or normalize-space(@lang) = ''"/>
                   </xsl:call-template>
                 </xsl:for-each>
               </xsl:when>
@@ -303,10 +311,12 @@
   <xsl:template name="render-boxed-element-control">
     <xsl:param name="editInfo"/>
 
-    <i class="btn fa fa-times text-danger pull-right"
-      data-ng-click="remove({$editInfo/@ref}, {$editInfo/@parent})"
-      data-gn-field-highlight-remove="{$editInfo/@ref}"
-      title="{{{{'deleteFieldSet' | translate}}}}"/>
+    <a class="btn pull-right"
+       data-gn-click-and-spin="remove({$editInfo/@ref}, {$editInfo/@parent})"
+       data-gn-field-highlight-remove="{$editInfo/@ref}"
+       title="{{{{'deleteFieldSet' | translate}}}}">
+      <i class="fa fa-times text-danger"/>
+    </a>
 
   </xsl:template>
   
@@ -628,11 +638,13 @@
             <xsl:when test="count($childEditInfo/gn:choose) = 1">
                   <xsl:for-each select="$childEditInfo/gn:choose">
                     <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
-                    
-                    <i type="button" class="btn btn-default fa fa-plus gn-add" 
-                    title="{$label/description}"
-                    data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'replaceWith');">
-                    </i>
+
+                    <a class="btn btn-default"
+                       data-gn-click-and-spin="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'replaceWith');">
+                      <i type="button" class="fa fa-plus gn-add"
+                         title="{$label/description}">
+                      </i>
+                    </a>
                   </xsl:for-each>
             </xsl:when>
             <!-- 
@@ -646,10 +658,10 @@
                 <ul class="dropdown-menu">
                   <xsl:for-each select="$childEditInfo/gn:choose">
                     <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
-                    
+
                     <li title="{$label/description}">
                       <a
-                        data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
+                              data-gn-click-and-spin="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
                         <xsl:value-of select="$label/label"/>
                       </a>
                     </li>
@@ -677,9 +689,10 @@
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
-                  <i class="btn btn-default fa fa-plus gn-add"
-                    data-ng-click="add({$parentEditInfo/@ref}, '{concat(@prefix, ':', @name)}', '{$id}', 'before');"
-                  />
+                  <a class="btn btn-default"
+                     data-gn-click-and-spin="add({$parentEditInfo/@ref}, '{concat(@prefix, ':', @name)}', '{$id}', 'before');">
+                    <i class="fa fa-plus gn-add"/>
+                  </a>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -705,6 +718,7 @@
     <xsl:param name="isDisabled"/>
     <xsl:param name="editInfo"/>
     <xsl:param name="parentEditInfo"/>
+    <xsl:param name="checkDirective" select="$isRequired"/>
     <!-- 
         May contain a codelist or a helper list.
         -->
@@ -728,6 +742,9 @@
           data-gn-autogrow="">
           <xsl:if test="$isRequired">
             <xsl:attribute name="required" select="'required'"/>
+          </xsl:if>
+          <xsl:if test="$isDisabled">
+            <xsl:attribute name="disabled" select="'disabled'"/>
           </xsl:if>
           <xsl:if test="$tooltip">
             <xsl:attribute name="data-gn-field-tooltip" select="$tooltip"/>
@@ -797,6 +814,9 @@
               </xsl:if>
               <xsl:if test="$isDisabled">
                 <xsl:attribute name="disabled" select="'disabled'"/>
+              </xsl:if>
+              <xsl:if test="$checkDirective">
+                <xsl:attribute name="data-gn-check" select="concat('#gn-el-', $editInfo/@ref)"/>
               </xsl:if>
               <xsl:if test="$tooltip">
                 <xsl:attribute name="data-gn-field-tooltip" select="$tooltip"/>
@@ -966,11 +986,13 @@
       
       <xsl:variable name="elementToRemove" select="if ($parentEditInfo) then 
         $parentEditInfo else $editInfo"/>
-      
-      <i class="btn fa fa-times text-danger gn-control pull-right"
-        data-ng-click="remove({$elementToRemove/@ref}, {$elementToRemove/@parent}, {$editInfo/@ref})"
-        data-gn-field-highlight-remove="{$editInfo/@ref}"
-        data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}"/>
+
+      <a class="btn pull-right"
+         data-gn-click-and-spin="remove({$elementToRemove/@ref}, {$elementToRemove/@parent}, {$editInfo/@ref})"
+         data-gn-field-highlight-remove="{$editInfo/@ref}"
+         data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}">
+        <i class="fa fa-times text-danger gn-control"/>
+      </a>
     </xsl:if>
   </xsl:template>
 
@@ -984,8 +1006,10 @@
 
     <!-- Add icon for last element of its kind -->
     <xsl:if test="$parentEditInfo and $parentEditInfo/@add = 'true' and not($parentEditInfo/@down)">
-      <i class="btn btn-default fa fa-plus gn-add"
-        data-ng-click="add({$parentEditInfo/@parent}, '{$name}', {$editInfo/@ref})"/>
+      <a class="btn btn-default"
+         data-gn-click-and-spin="add({$parentEditInfo/@parent}, '{$name}', {$editInfo/@ref})">
+        <i class="fa fa-plus gn-add"/>
+      </a>
     </xsl:if>
   </xsl:template>
 
@@ -1068,7 +1092,10 @@
         </xsl:choose>
       </div>
       <div class="col-sm-1">
-          <i class="btn pull-right fa fa-times text-danger" data-ng-click="removeAttribute('{$fieldName}')" data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}"/>
+        <a class="btn pull-right"
+           data-gn-click-and-spin="removeAttribute('{$fieldName}')" data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}">
+          <i class="fa fa-times text-danger"/>
+        </a>
       </div>
     </div>
   </xsl:template>
@@ -1103,8 +1130,8 @@
 
     <xsl:variable name="attributeLabel" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
     <button type="button" class="btn btn-link btn-xs"
-      data-ng-click="add('{$ref}', '{@name}', '{$insertRef}', null, true)"
-      title="{$attributeLabel/description}">
+            data-gn-click-and-spin="add('{$ref}', '{@name}', '{$insertRef}', null, true)"
+            title="{$attributeLabel/description}">
       <i class="fa fa-plus"/>
       <xsl:value-of select="$attributeLabel/label"/>
     </button>
