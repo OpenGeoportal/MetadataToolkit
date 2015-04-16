@@ -211,130 +211,75 @@
 	<!-- ==================================================== -->
 	<codelist name="cit:CI_PresentationFormCode">
 		<entry>
-			<code>documentDigital</code>
-			<label>Document numérique</label>
-			<description>Document numérique contenant du texte et pouvant contenir des illustrations</description>
+			<code>vector digital data</code>
+			<label>Vector digital data</label>
+			<description>Map represented in vector form</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
 			<code>imageDigital</code>
-			<label>Image numérique</label>
-			<description>Aspects à travers la télédétection, stocké sous format numérique</description>
+			<label>Digital image</label>
+			<description>Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and stored in digital format</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>documentHardcopy</code>
-			<label>Document papier</label>
-			<description>Document papier contenant du texte et pouvant contenir des illustrations</description>
+			<code>raster digital data</code>
+			<label>Raster digital data</label>
+			<description>Map represented in raster form</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>imageHardcopy</code>
-			<label>Image papier</label>
-			<description>Aspects à travers la télédétection, reproduit sur un support utilisable par l’homme</description>
+			<code>atlas</code>
+			<label>Atlas</label>
+			<description>Collections of maps, geospatial illustrations and other information</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>mapDigital</code>
-			<label>Carte numérique</label>
-			<description>Carte numérique au format raster ou vecteur</description>
+			<code>documentDigital</code>
+			<label>Digital document</label>
+			<description>Digital representation of a primarily textual item (can contain illustrations also)</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>mapHardcopy</code>
-			<label>Carte papier</label>
-			<description>Carte imprimée sur papier ou autre support utilisable par l’homme</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>modelDigital</code>
-			<label>Modèle numérique de terrain</label>
-			<description>Modèle numérique 3D sous forme digitale</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>modelHardcopy</code>
-			<label>Modèle numérique physique</label>
-			<description>Modèle numérique 3D physique</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>profileDigital</code>
-			<label>Profil numérique</label>
-			<description>Profil vertical sous forme numérique</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>profileHardcopy</code>
-			<label>Profil papier</label>
-			<description>Profil vertical sous forme papier</description>
+			<code>globe</code>
+			<label>Globe</label>
+			<description>Physical models of celestial bodies</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
 			<code>tableDigital</code>
-			<label>Table numérique</label>
-			<description>Représentation numérique d’informations sous forme de colonnes</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>tableHardcopy</code>
-			<label>Table papier</label>
-			<description>Représentation d’informations sous forme de colonnes sur papier ou autre support utilisable par l’homme</description>
+			<label>Digital table</label>
+			<description>Digital representation of facts or figures systematically displayed, especially in columns</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
 			<code>videoDigital</code>
-			<label>Vidéo numérique</label>
-			<description>Vidéo numérique</description>
+			<label>Digital video</label>
+			<description>Digital video recording</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>videoHardcopy</code>
-			<label>Vidéo magnétique</label>
-			<description>Vidéo enregistré sur bande</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- new in ISO19115-1-2013 -->
-		<entry>
-			<code>audioDigital</code>
-			<label>Audio numérique</label>
-			<description>Enregistrement audio numérique</description>
+			<code>mapDigital</code>
+			<label>MTK Map Digital Ungeoreferenced </label>
+			<description>Map represented in raster or vector form. Ungeoreferenced.</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>audioHardcopy</code>
-			<label>Audio analogique</label>
-			<description>Enregistrement audio délivré par support analogique, telle qu’une bande magnétique</description>
+			<code>mapHardcopy</code>
+			<label>Hardcopy map</label>
+			<description>Map printed on paper, photographic material, or other media for use directly by the human user</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>multimediaDigital</code>
-			<label>Multimédia numérique</label>
-			<description>représentation d’informations utilisant simultanément des modes numériques divers pour le texte, le son et l’image </description>
+			<code>mapDigitalGeoreferenced</code>
+			<label>MTK Map Digital Georeferenced</label>
+			<description>Map represented in raster or vector form. Georeferenced.</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>multimediaHardcopy</code>
-			<label>Multimédia analogique</label>
-			<description>Représentation d’informations utilisant simultanément divers modes analogiques pour le texte, le son et l’image</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>physicalObject</code>
-			<label>Objet physique</label>
-			<description>objet physique. EXEMPLE Roche ou échantillon minéral, lame pour microscope.</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>diagramDigital</code>
-			<label>Diagramme numérique</label>
-			<description>Informations représentées de manière graphique par des graphes, tels que diagramme circulaire, diagramme à barres et tout autre type de diagramme, et enregistrées sous format numérique</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>diagramHardcopy</code>
-			<label>Diagramme papier</label>
-			<description>Informations représentées de manière graphique par des graphes, comme un diagramme circulaire, un diagramme à barres et tout autre type de diagramme, et imprimées sur papier, support photographique ou autre support</description>
+			<code>remote-sensing image ungeoreferenced</code>
+			<label>MTK "remote-sensing image ungeoreferenced”</label>
+			<description>Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and stored in digital format. Ungeoreferenced</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 	</codelist>
@@ -1937,31 +1882,31 @@
 			<label>Raster</label>
 			<description>Donnée raster ou matricielle</description>
 		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - -
 		<entry>
 			<code>textTable</code>
 			<label>Tabulaire</label>
 			<description>Fichier texte ou table</description>
 		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+		 - - - - - - - - - - - - - - - - - - - - - - - -
 		<entry>
 			<code>tin</code>
 			<label>TIN</label>
 			<description>Réseau de triangle irrégulier (Triangulated Irregular Network)</description>
 		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+		 - - - - - - - - - - - - - - - - - - - - - - - -
 		<entry>
 			<code>stereoModel</code>
 			<label>Modèle stéréoscopique</label>
 			<description>Vue tridimensionnelle formée par l'intersection des rayons homologues d'une paire d'images se recouvrant</description>
 		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+		 - - - - - - - - - - - - - - - - - - - - - - - -
 		<entry>
 			<code>video</code>
 			<label>Vidéo</label>
 			<description>Enregistrement vidéo</description>
 		</entry>
-		<!-- ISO PROFIL CHE ONLY
+		 ISO PROFIL CHE ONLY
 		<entry>
 			<code>paperMap</code>
 			<label>Carte papier</label>
