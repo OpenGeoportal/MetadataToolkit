@@ -18,7 +18,8 @@
 
     <div class="gn-scroll-spy"
          data-watch=""
-         data-all-depth="{if ($isFlatMode) then 'true' else 'false'}" >
+         data-all-depth="{if ($isFlatMode) then 'true' else 'false'}"
+         data-ng-hide="gnSchemaConfig.hideScrollSpy"   >
       <xsl:choose>
         <xsl:when test="$currentView[@vertical-tabs]">
           <xsl:attribute name="data-gn-scroll-spy">gn-editor-column-<xsl:value-of select="$metadataId"/></xsl:attribute>
