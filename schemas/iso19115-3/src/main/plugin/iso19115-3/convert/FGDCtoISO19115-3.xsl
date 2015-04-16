@@ -15,7 +15,7 @@
                 xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
                 xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
                 xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
-                xmlns:gml="http://www.opengis.net/gml/3.2">
+                xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:c="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="no" version="1.0" indent="yes" />
   <xsl:template match="/">
@@ -114,8 +114,8 @@
         <xsl:apply-templates select="mdb:alternativeMetadataReference"/>
         <xsl:apply-templates select="mdb:otherLocale"/>
         <xsl:apply-templates select="mdb:metadataLinkage"/>
-        <xsl:apply-templates select="mdb:spatialRepresentationInfo"/>
       -->
+
 
       <!-- Reference system info -->
       <xsl:for-each select="metadata/refSysInfo">
@@ -123,7 +123,9 @@
       </xsl:for-each>
 
       <!-- Identification info -->
-      <xsl:apply-templates select="metadata/idinfo"/>
+      <xsl:apply-templates select="metadata/idinfo">
+        <xsl:with-param name="metadata" select="metadata"/>
+      </xsl:apply-templates>
 
 
       <!-- Feature catalogue attributes -->
@@ -337,6 +339,7 @@
   </xsl:template>
 
   <xsl:template match="idinfo">
+    <xsl:param name="metadata" />
     <mdb:identificationInfo>
       <mri:MD_DataIdentification>
         <xsl:apply-templates select="citation"/>
@@ -362,10 +365,7 @@
         <xsl:apply-templates select="ptcontac" />
 
         <!-- Spatial representation type -->
-        <mri:spatialRepresentationType>
-          <mcc:MD_SpatialRepresentationTypeCode codeList="codeListLocation#MD_SpatialRepresentationTypeCode"
-                                                codeListValue="vector"/>
-        </mri:spatialRepresentationType>
+        <xsl:apply-templates select="$metadata/spdoinfo" />
         <mri:spatialResolution />
 
         <!-- Topic category -->
@@ -699,11 +699,38 @@
 
   <xsl:template match="geoform">
     <cit:CI_PresentationFormCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_PresentationFormCode">
-      <xsl:if test=".='vector digital data'">
-        <xsl:attribute name="codeListValue">
-          <xsl:text>mapDigital</xsl:text>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test=".='vector digital data'">
+          <xsl:attribute name="codeListValue">
+            <xsl:text>mapDigital</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test=".='remote-sensing image'">
+          <xsl:attribute name="codeListValue">
+            <xsl:text>imageDigital</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test=".='document'">
+          <xsl:attribute name="codeListValue">
+            <xsl:text>documentDigital</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test=".='tabular digital data'">
+          <xsl:attribute name="codeListValue">
+            <xsl:text>tableDigital</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test=".='video'">
+          <xsl:attribute name="codeListValue">
+            <xsl:text>videoDigital</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="codeListValue">
+            <xsl:value-of select="."/>
+          </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
     </cit:CI_PresentationFormCode>
   </xsl:template>
 
@@ -1045,5 +1072,34 @@
       </xsl:when>
       <xsl:otherwise><xsl:value-of select="$dateval" /></xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="spdoinfo">
+    <xsl:if test="direct">
+      <xsl:variable name="directVal" select="direct"/>
+      <xsl:choose>
+        <xsl:when test="$directVal='Vector'">
+          <mri:spatialRepresentationType>
+            <mcc:MD_SpatialRepresentationTypeCode codeList="codeListLocation#MD_SpatialRepresentationTypeCode"
+                                                  codeListValue="vector"/>
+          </mri:spatialRepresentationType>
+        </xsl:when>
+        <xsl:when test="$directVal='Raster'">
+          <mri:spatialRepresentationType>
+            <mcc:MD_SpatialRepresentationTypeCode codeList="codeListLocation#MD_SpatialRepresentationTypeCode"
+                                                  codeListValue="grid"/>
+          </mri:spatialRepresentationType>
+        </xsl:when>
+      </xsl:choose>
+
+      <test>
+        <xsl:value-of select="direct" />
+      </test>
+      <xsl:message>
+        Found spdinfo/direct: <xsl:value-of select="direct" />
+      </xsl:message>
+    </xsl:if>
+
+
   </xsl:template>
 </xsl:stylesheet>
