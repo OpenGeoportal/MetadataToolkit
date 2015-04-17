@@ -590,11 +590,20 @@
         </section>
           <!-- Descriptive keywords -->
           <!-- FIXME Add more keywords -->
-            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme']"
                  addDirective="data-gn-thesaurus-selector">
                  <directiveAttributes
                     data-transformation="to-iso19115-3-keyword"/>
             </field>
+            
+        <!--     <action type="add" forceLabel="true"
+                    name="descriptiveKeywords"
+                    addDirective="data-gn-thesaurus-selector"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"
+                    or="descriptiveKeywords">
+                 <directiveAttributes
+                    data-transformation="to-iso19115-3-keyword"/>
+            </action> -->
 
             <field del="." notDisplayedIfMissing="false" name="topicCategory" or="topicCategory"
                 xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
@@ -613,18 +622,13 @@
             </action>
             
           <!-- Place Keywords -->
-          <!-- FIXME select only  place  keywords -->
           <!-- FIXME add more keywords -->
-          <section>
-            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords" />
-           
-            <action type="descriptiveKeywords" or="descriptiveKeywords"
-                    name="descriptiveKeywords"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" 
-                    addDirective="data-gn-thesaurus-selector">
-                <directiveAttributes data-transformation="to-iso19115-3-keyword"/>
-            </action>
-          </section>
+        
+            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='place']"
+                 addDirective="data-gn-thesaurus-selector">
+                 <directiveAttributes
+                    data-transformation="to-iso19115-3-keyword"/>
+            </field>
           
           <!-- Metadata contact -->
             <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"
