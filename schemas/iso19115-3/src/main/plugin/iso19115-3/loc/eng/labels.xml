@@ -691,15 +691,12 @@
 	<element name="gex:EX_Extent" id="334.0">
 		<label>Extent</label>
 		<description>Information about spatial, vertical, and temporal extent</description>
+		<condition>mandatory</condition>
 	</element>
     <element name="gex:EX_GeographicBoundingBox" id="343.0">
         <label>Geographic bounding box</label>
         <description>Geographic position of the dataset</description>
         <condition>mandatory</condition>
-    </element>
-    <element name="gex:EX_GeographicBoundingBox" context="gex:geographicElement">
-        <label>Geographic bounding box</label>
-        <description>Geographic position of the dataset</description>
     </element>
 	<element name="gex:EX_GeographicDescription" id="348.0">
 		<label>Geographic description</label>

@@ -592,25 +592,26 @@
           <!-- FIXME Add more keywords -->
             <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"
                  addDirective="data-gn-thesaurus-selector">
-            <!--     <directiveAttributes
-                    data-transformation="to-iso19115-3-keyword"/> -->
+                 <directiveAttributes
+                    data-transformation="to-iso19115-3-keyword"/>
             </field>
 
-            <!-- TODO: Check why can't be removed  topic category -->
-
-            <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
-            <action type="mri:topicCategory"
-                    name="mri:topicCategory"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <field del="." notDisplayedIfMissing="false" name="topicCategory" or="topicCategory"
+                xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
+            
+            <action type="add" forceLabel="true"
+                    name="topicCategory"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"
+                    or="topicCategory">
               <template>
                 <snippet>
                   <mri:topicCategory>
-		            <mri:MD_TopicCategoryCode/>
-		         </mri:topicCategory>
+                    <mri:MD_TopicCategoryCode/>
+                 </mri:topicCategory>
                 </snippet>
               </template>
             </action>
-          
+            
           <!-- Place Keywords -->
           <!-- FIXME select only  place  keywords -->
           <!-- FIXME add more keywords -->
@@ -753,10 +754,6 @@
               </template>
             </action>
         </section>
-        
-<!--
-        tab 1 end
--->
 
         <section name="tufts-metadata">
           <!-- TODO: Template in layout-custom-fields.xsl not invoked with this, the field is editable -->
@@ -1174,6 +1171,7 @@
         <for name="mri:pointOfContact"/>
         <for name="mrd:distributor"/>
         <for name="mdb:contact"/>
+        <for name="mri:topicCategory"/>
         <for name="gfc:FC_FeatureType"/>
         <for name="mrc:MD_FeatureCatalogue"/>
         <for name="mrc:featureCatalogue"/>
