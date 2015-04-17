@@ -2,7 +2,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+                xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
                 xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+                xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
+                xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
                 xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
                 xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
@@ -12,17 +15,19 @@
                 xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
                 xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
                 xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
-                xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
-                xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
                 xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
-                xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:c="http://www.w3.org/1999/XSL/Transform">
+                xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
+                xmlns:c="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="no" version="1.0" indent="yes" />
   <xsl:template match="/">
 
     <mdb:MD_Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
+                     xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
                      xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
+                     xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
+                     xmlns:gml="http://www.opengis.net/gml/3.2"
                      xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
                      xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
                      xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
@@ -31,13 +36,9 @@
                      xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
                      xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
                      xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
-                     xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
-                     xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
-                     xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
                      xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
-                     xmlns:gml="http://www.opengis.net/gml/3.2"
+                     xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
                      xsi:schemaLocation="http://www.isotc211.org/namespace/mdb/1.0/2014-12-25 ../schema.xsd">
-
       <!-- Metadata identifier -->
       <xsl:choose>
         <xsl:when test="mdFileID">
@@ -158,10 +159,10 @@
       <cit:CI_Date>
         <cit:date>
           <gco:DateTime>
-          <xsl:call-template name="format-date">
-            <xsl:with-param name="dateval" select="." />
-            <xsl:with-param name="format" select="'datetime'" />
-          </xsl:call-template>
+            <xsl:call-template name="format-date">
+              <xsl:with-param name="dateval" select="." />
+              <xsl:with-param name="format" select="'datetime'" />
+            </xsl:call-template>
           </gco:DateTime>
         </cit:date>
         <cit:dateType><cit:CI_DateTypeCode codeList="" codeListValue="creation" /></cit:dateType>
@@ -170,9 +171,9 @@
   </xsl:template>
 
   <xsl:template match="languageCode">
-<!--
-      <languageCode Sync="TRUE" value="en"/>
--->
+    <!--
+          <languageCode Sync="TRUE" value="en"/>
+    -->
     <lan:LanguageCode codeList="codeListLocation#LanguageCode">
       <!-- TODO: Add more language mappings -->
       <xsl:choose>
@@ -316,15 +317,15 @@
   </xsl:template>
 
   <xsl:template match="refSysInfo">
-<!--
-    <refSysInfo>
-      <RefSystem>
-        <refSysID>
-          <identCode Sync="TRUE">NAD_1983_StatePlane_New_York_Long_Island_FIPS_3104_Feet</identCode>
-        </refSysID>
-      </RefSystem>
-    </refSysInfo>
--->
+    <!--
+        <refSysInfo>
+          <RefSystem>
+            <refSysID>
+              <identCode Sync="TRUE">NAD_1983_StatePlane_New_York_Long_Island_FIPS_3104_Feet</identCode>
+            </refSysID>
+          </RefSystem>
+        </refSysInfo>
+    -->
     <mdb:referenceSystemInfo>
       <mrs:MD_ReferenceSystem>
         <mrs:referenceSystemIdentifier>
@@ -394,53 +395,53 @@
 
         <!-- Keywords -->
         <xsl:for-each select="keywords">
-            <xsl:for-each select="theme[not(themekt = 'ISO 19115 Topic Category')]">
-              <mri:descriptiveKeywords>
-                <mri:MD_Keywords>
-                  <xsl:for-each select="themekey">
-                    <mri:keyword><gco:CharacterString><xsl:apply-templates select="."/></gco:CharacterString></mri:keyword>
-                  </xsl:for-each>
+          <xsl:for-each select="theme[not(themekt = 'ISO 19115 Topic Category')]">
+            <mri:descriptiveKeywords>
+              <mri:MD_Keywords>
+                <xsl:for-each select="themekey">
+                  <mri:keyword><gco:CharacterString><xsl:apply-templates select="."/></gco:CharacterString></mri:keyword>
+                </xsl:for-each>
 
-                  <mri:type>
-                    <mri:MD_KeywordTypeCode codeListValue="theme"
-                                            codeList="./resources/codeList.xml#MD_KeywordTypeCode"/>
-                  </mri:type>
+                <mri:type>
+                  <mri:MD_KeywordTypeCode codeListValue="theme"
+                                          codeList="./resources/codeList.xml#MD_KeywordTypeCode"/>
+                </mri:type>
 
-                  <mri:thesaurusName>
-                    <cit:CI_Citation>
-                      <cit:title>
-                        <gco:CharacterString><xsl:value-of select="themekt" /></gco:CharacterString>
-                      </cit:title>
-                    </cit:CI_Citation>
-                  </mri:thesaurusName>
-                </mri:MD_Keywords>
-              </mri:descriptiveKeywords>
+                <mri:thesaurusName>
+                  <cit:CI_Citation>
+                    <cit:title>
+                      <gco:CharacterString><xsl:value-of select="themekt" /></gco:CharacterString>
+                    </cit:title>
+                  </cit:CI_Citation>
+                </mri:thesaurusName>
+              </mri:MD_Keywords>
+            </mri:descriptiveKeywords>
 
-            </xsl:for-each>
+          </xsl:for-each>
 
-            <xsl:for-each select="place">
-              <mri:descriptiveKeywords>
-                <mri:MD_Keywords>
-                  <xsl:for-each select="placekey">
-                    <mri:keyword><gco:CharacterString><xsl:apply-templates select="."/></gco:CharacterString></mri:keyword>
-                  </xsl:for-each>
+          <xsl:for-each select="place">
+            <mri:descriptiveKeywords>
+              <mri:MD_Keywords>
+                <xsl:for-each select="placekey">
+                  <mri:keyword><gco:CharacterString><xsl:apply-templates select="."/></gco:CharacterString></mri:keyword>
+                </xsl:for-each>
 
-                  <mri:type>
-                    <mri:MD_KeywordTypeCode codeListValue="place"
-                                            codeList="./resources/codeList.xml#MD_KeywordTypeCode"/>
-                  </mri:type>
+                <mri:type>
+                  <mri:MD_KeywordTypeCode codeListValue="place"
+                                          codeList="./resources/codeList.xml#MD_KeywordTypeCode"/>
+                </mri:type>
 
-                  <mri:thesaurusName>
-                    <cit:CI_Citation>
-                      <cit:title>
-                        <gco:CharacterString><xsl:value-of select="placekt" /></gco:CharacterString>
-                      </cit:title>
-                    </cit:CI_Citation>
-                  </mri:thesaurusName>
-                </mri:MD_Keywords>
-              </mri:descriptiveKeywords>
+                <mri:thesaurusName>
+                  <cit:CI_Citation>
+                    <cit:title>
+                      <gco:CharacterString><xsl:value-of select="placekt" /></gco:CharacterString>
+                    </cit:title>
+                  </cit:CI_Citation>
+                </mri:thesaurusName>
+              </mri:MD_Keywords>
+            </mri:descriptiveKeywords>
 
-            </xsl:for-each>
+          </xsl:for-each>
 
         </xsl:for-each>
 
@@ -543,21 +544,21 @@
         <mrd:transferOptions>
           <mrd:MD_DigitalTransferOptions>
             <xsl:if test="stdorder/digform/digtinfo/transize">
-            <mrd:transferSize>
-              <gco:Real><xsl:value-of select="stdorder/digform/digtinfo/transize" /></gco:Real>
-            </mrd:transferSize>
+              <mrd:transferSize>
+                <gco:Real><xsl:value-of select="stdorder/digform/digtinfo/transize" /></gco:Real>
+              </mrd:transferSize>
             </xsl:if>
 
             <xsl:if test="stdorder/digform/digtopt/onlinopt/computer/networka">
-                <xsl:for-each select="stdorder/digform/digtopt/onlinopt/computer/networka/networkr">
-                  <mrd:onLine>
-                    <cit:CI_OnlineResource>
-                      <cit:linkage>
-                        <gco:CharacterString><xsl:value-of select="." /></gco:CharacterString>
-                      </cit:linkage>
-                    </cit:CI_OnlineResource>
-                  </mrd:onLine>
-                </xsl:for-each>
+              <xsl:for-each select="stdorder/digform/digtopt/onlinopt/computer/networka/networkr">
+                <mrd:onLine>
+                  <cit:CI_OnlineResource>
+                    <cit:linkage>
+                      <gco:CharacterString><xsl:value-of select="." /></gco:CharacterString>
+                    </cit:linkage>
+                  </cit:CI_OnlineResource>
+                </mrd:onLine>
+              </xsl:for-each>
             </xsl:if>
 
           </mrd:MD_DigitalTransferOptions>
@@ -732,127 +733,127 @@
 
   <xsl:template match="eainfo">
     <xsl:if test="detailed">
-    <mdb:contentInfo>
-      <mrc:MD_FeatureCatalogue>
-        <mrc:featureCatalogue>
-          <gfc:FC_FeatureCatalogue>
-            <gfc:producer>
-              <cit:CI_Responsibility>
-                <cit:role>
-                  <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                   codeListValue=""/>
-                </cit:role>
-                <cit:party>
-                  <cit:CI_Organisation>
-                    <cit:name gco:nilReason="missing">
-                      <gco:CharacterString />
-                    </cit:name>
-                    <cit:contactInfo>
-                      <cit:CI_Contact>
-                        <cit:address>
-                          <cit:CI_Address>
-                            <cit:electronicMailAddress gco:nilReason="missing">
+      <mdb:contentInfo>
+        <mrc:MD_FeatureCatalogue>
+          <mrc:featureCatalogue>
+            <gfc:FC_FeatureCatalogue>
+              <gfc:producer>
+                <cit:CI_Responsibility>
+                  <cit:role>
+                    <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                     codeListValue=""/>
+                  </cit:role>
+                  <cit:party>
+                    <cit:CI_Organisation>
+                      <cit:name gco:nilReason="missing">
+                        <gco:CharacterString />
+                      </cit:name>
+                      <cit:contactInfo>
+                        <cit:CI_Contact>
+                          <cit:address>
+                            <cit:CI_Address>
+                              <cit:electronicMailAddress gco:nilReason="missing">
+                                <gco:CharacterString/>
+                              </cit:electronicMailAddress>
+                            </cit:CI_Address>
+                          </cit:address>
+                        </cit:CI_Contact>
+                      </cit:contactInfo>
+                    </cit:CI_Organisation>
+                  </cit:party>
+                </cit:CI_Responsibility>
+              </gfc:producer>
+              <gfc:featureType>
+                <gfc:FC_FeatureType>
+
+                  <gfc:typeName>
+                    <xsl:value-of select="detailed/enttyp/enttypl" />
+                  </gfc:typeName>
+                  <gfc:definition>
+                    <gco:CharacterString><xsl:value-of select="detailed/enttyp/enttypl" /></gco:CharacterString>
+                  </gfc:definition>
+                  <gfc:isAbstract>
+                    <gco:Boolean>false</gco:Boolean>
+                  </gfc:isAbstract>
+
+                  <!-- ADD FOR EACH ATTRIBUTE A SECTION LIKE THIS, REPLACING THE NAME AND TYPE -->
+                  <xsl:for-each select="detailed/attr">
+                    <gfc:carrierOfCharacteristics>
+                      <gfc:FC_FeatureAttribute>
+                        <gfc:featureType>
+                          <gfc:FC_FeatureType>
+                            <gfc:typeName/>
+                            <gfc:definition>
+                              <gco:CharacterString><xsl:value-of select="attrdef" /></gco:CharacterString>
+                            </gfc:definition>
+                            <gfc:isAbstract>
+                              <gco:Boolean>false</gco:Boolean>
+                            </gfc:isAbstract>
+                            <gfc:featureCatalogue/>
+                          </gfc:FC_FeatureType>
+                        </gfc:featureType>
+                        <gfc:constrainedBy>
+                          <gfc:FC_Constraint>
+                            <gfc:description gco:nilReason="missing">
                               <gco:CharacterString/>
-                            </cit:electronicMailAddress>
-                          </cit:CI_Address>
-                        </cit:address>
-                      </cit:CI_Contact>
-                    </cit:contactInfo>
-                  </cit:CI_Organisation>
-                </cit:party>
-              </cit:CI_Responsibility>
-            </gfc:producer>
-            <gfc:featureType>
-              <gfc:FC_FeatureType>
-
-                <gfc:typeName>
-                  <xsl:value-of select="detailed/enttyp/enttypl" />
-                </gfc:typeName>
-                <gfc:definition>
-                  <gco:CharacterString><xsl:value-of select="detailed/enttyp/enttypl" /></gco:CharacterString>
-                </gfc:definition>
-                <gfc:isAbstract>
-                  <gco:Boolean>false</gco:Boolean>
-                </gfc:isAbstract>
-
-                <!-- ADD FOR EACH ATTRIBUTE A SECTION LIKE THIS, REPLACING THE NAME AND TYPE -->
-                <xsl:for-each select="detailed/attr">
-                  <gfc:carrierOfCharacteristics>
-                    <gfc:FC_FeatureAttribute>
-                      <gfc:featureType>
-                        <gfc:FC_FeatureType>
-                          <gfc:typeName/>
-                          <gfc:definition>
-                            <gco:CharacterString><xsl:value-of select="attrdef" /></gco:CharacterString>
-                          </gfc:definition>
-                          <gfc:isAbstract>
-                            <gco:Boolean>false</gco:Boolean>
-                          </gfc:isAbstract>
-                          <gfc:featureCatalogue/>
-                        </gfc:FC_FeatureType>
-                      </gfc:featureType>
-                      <gfc:constrainedBy>
-                        <gfc:FC_Constraint>
-                          <gfc:description gco:nilReason="missing">
-                            <gco:CharacterString/>
-                          </gfc:description>
-                        </gfc:FC_Constraint>
-                      </gfc:constrainedBy>
-                      <gfc:memberName>
-                        <xsl:value-of select="attrlabl" />
-                      </gfc:memberName>
-                      <gfc:cardinality gco:nilReason="missing">
-                        <gco:CharacterString/>
-                      </gfc:cardinality>
-                      <gfc:valueType>
-                        <gco:TypeName>
-                          <gco:aName>
-                            <gco:CharacterString><xsl:value-of select="attrtype" /></gco:CharacterString>
-                          </gco:aName>
-                        </gco:TypeName>
-                      </gfc:valueType>
-                      <gfc:listedValue/>
-                    </gfc:FC_FeatureAttribute>
-                  </gfc:carrierOfCharacteristics>
-                </xsl:for-each>
+                            </gfc:description>
+                          </gfc:FC_Constraint>
+                        </gfc:constrainedBy>
+                        <gfc:memberName>
+                          <xsl:value-of select="attrlabl" />
+                        </gfc:memberName>
+                        <gfc:cardinality gco:nilReason="missing">
+                          <gco:CharacterString/>
+                        </gfc:cardinality>
+                        <gfc:valueType>
+                          <gco:TypeName>
+                            <gco:aName>
+                              <gco:CharacterString><xsl:value-of select="attrtype" /></gco:CharacterString>
+                            </gco:aName>
+                          </gco:TypeName>
+                        </gfc:valueType>
+                        <gfc:listedValue/>
+                      </gfc:FC_FeatureAttribute>
+                    </gfc:carrierOfCharacteristics>
+                  </xsl:for-each>
 
 
-                <gfc:featureCatalogue/>
-              </gfc:FC_FeatureType>
-            </gfc:featureType>
-          </gfc:FC_FeatureCatalogue>
-        </mrc:featureCatalogue>
-      </mrc:MD_FeatureCatalogue>
-    </mdb:contentInfo>
+                  <gfc:featureCatalogue/>
+                </gfc:FC_FeatureType>
+              </gfc:featureType>
+            </gfc:FC_FeatureCatalogue>
+          </mrc:featureCatalogue>
+        </mrc:MD_FeatureCatalogue>
+      </mdb:contentInfo>
     </xsl:if>
   </xsl:template>
 
 
   <xsl:template match="rngdates">
-      <mri:extent>
-        <gex:EX_Extent>
-          <gex:temporalElement>
-            <gex:EX_TemporalExtent>
-              <gex:extent>
-                <gml:TimePeriod>
-                  <gml:beginPosition>
-                    <xsl:call-template name="format-date">
-                      <xsl:with-param name="dateval" select="begdate" />
-                      <xsl:with-param name="format" select="'date'" />
-                    </xsl:call-template>
-                  </gml:beginPosition>
-                  <gml:endPosition>
-                    <xsl:call-template name="format-date">
-                      <xsl:with-param name="dateval" select="enddate" />
-                      <xsl:with-param name="format" select="'date'" />
-                    </xsl:call-template>
-                  </gml:endPosition>
-                </gml:TimePeriod>
-              </gex:extent>
-            </gex:EX_TemporalExtent>
-          </gex:temporalElement>
-        </gex:EX_Extent>
-      </mri:extent>
+    <mri:extent>
+      <gex:EX_Extent>
+        <gex:temporalElement>
+          <gex:EX_TemporalExtent>
+            <gex:extent>
+              <gml:TimePeriod>
+                <gml:beginPosition>
+                  <xsl:call-template name="format-date">
+                    <xsl:with-param name="dateval" select="begdate" />
+                    <xsl:with-param name="format" select="'date'" />
+                  </xsl:call-template>
+                </gml:beginPosition>
+                <gml:endPosition>
+                  <xsl:call-template name="format-date">
+                    <xsl:with-param name="dateval" select="enddate" />
+                    <xsl:with-param name="format" select="'date'" />
+                  </xsl:call-template>
+                </gml:endPosition>
+              </gml:TimePeriod>
+            </gex:extent>
+          </gex:EX_TemporalExtent>
+        </gex:temporalElement>
+      </gex:EX_Extent>
+    </mri:extent>
   </xsl:template>
 
   <xsl:template match="sngdate">
@@ -989,17 +990,17 @@
             </xsl:if>
 
             <xsl:if test="cntfax">
-            <cit:phone>
-              <cit:CI_Telephone>
-                <cit:number>
-                  <gco:CharacterString><xsl:value-of select="cntfax" /></gco:CharacterString>
-                </cit:number>
-                <cit:numberType>
-                  <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_TelephoneTypeCode"
-                                            codeListValue="facsimilie"/>
-                </cit:numberType>
-              </cit:CI_Telephone>
-            </cit:phone>
+              <cit:phone>
+                <cit:CI_Telephone>
+                  <cit:number>
+                    <gco:CharacterString><xsl:value-of select="cntfax" /></gco:CharacterString>
+                  </cit:number>
+                  <cit:numberType>
+                    <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_TelephoneTypeCode"
+                                              codeListValue="facsimilie"/>
+                  </cit:numberType>
+                </cit:CI_Telephone>
+              </cit:phone>
             </xsl:if>
 
             <cit:address>
@@ -1078,6 +1079,17 @@
             <mcc:MD_SpatialRepresentationTypeCode codeList="codeListLocation#MD_SpatialRepresentationTypeCode"
                                                   codeListValue="vector"/>
           </mri:spatialRepresentationType>
+          <mdb:spatialRepresentationInfo>
+            <msr:MD_VectorSpatialRepresentation>
+              <xsl:for-each select="ptvctinf/sdtsterm">
+                <msr:geometricObjects>
+                  <msr:MD_GeometricObjects>
+                    <xsl:apply-templates select="." />
+                  </msr:MD_GeometricObjects>
+                </msr:geometricObjects>
+              </xsl:for-each>
+            </msr:MD_VectorSpatialRepresentation>
+          </mdb:spatialRepresentationInfo>
         </xsl:when>
         <xsl:when test="$directVal='Raster'">
           <mri:spatialRepresentationType>
@@ -1085,9 +1097,40 @@
                                                   codeListValue="grid"/>
           </mri:spatialRepresentationType>
         </xsl:when>
+        <!-- TODO Add a msr:MD_GridSpatialRepresentation element if FGDC contains that info. -->
       </xsl:choose>
     </xsl:if>
-
-
+  </xsl:template>
+  <xsl:template match="sdtsterm">
+    <xsl:apply-templates select="sdtstype"/>
+    <xsl:apply-templates select="ptvctcnt"/>
+  </xsl:template>
+  <xsl:template match="sdtstype">
+    <msr:geometricObjectType>
+      <msr:MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode">
+        <xsl:choose>
+          <xsl:when test=".='G-polygon'">
+            <xsl:attribute name="codeListValue"><xsl:text>surface</xsl:text></xsl:attribute>
+            <xsl:text>surface</xsl:text>
+          </xsl:when>
+          <xsl:when test=".='String'">
+            <xsl:attribute name="codeListValue"><xsl:text>curve</xsl:text></xsl:attribute>
+            <xsl:text>curve</xsl:text>
+          </xsl:when>
+          <xsl:when test=".='Point'">
+            <xsl:attribute name="codeListValue"><xsl:text>point</xsl:text></xsl:attribute>
+            <xsl:text>point</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:message>Type of fgdctype "<xsl:value-of select="."/>" not mapped. Using original term found in FGDC document for msr:MD_GeometricObjectTypeCode.</xsl:message>
+            <xsl:attribute name="codeListValue"><xsl:value-of select="."/></xsl:attribute>
+            <xsl:value-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </msr:MD_GeometricObjectTypeCode>
+    </msr:geometricObjectType>
+  </xsl:template>
+  <xsl:template match="ptvctcnt">
+    <msr:geometricObjectCount><gco:Integer><xsl:value-of select="."/></gco:Integer></msr:geometricObjectCount>
   </xsl:template>
 </xsl:stylesheet>
