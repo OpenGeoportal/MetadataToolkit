@@ -208,6 +208,7 @@
     <label>Resource lineage</label>
     <description iso="true">Information about the provenance, source(s), and/or the production process(es) applied to the resource</description>
     <_condition>optional</_condition>
+    <condition>mandatory</condition>
   </element>
   <element name="mdb:metadataScope" id="38.0">
     <label>Type of resource</label>
@@ -2384,6 +2385,7 @@
 		<label>OnLine resource</label>
 		<description>Information about online sources from which the resource can be
             obtained</description>
+        <condition>mandatory</condition>
 	</element>
 	<element name="cit:onlineResource" id="390.0">
 		<help>Define URL to access the website</help>

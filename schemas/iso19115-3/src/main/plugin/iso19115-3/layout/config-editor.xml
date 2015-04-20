@@ -895,24 +895,23 @@
         </section>
 
         <section name="onlineResources">
-          <!-- TODO check why protocol and linkage are missed after saving. -->
-          <field name="digitalTransferOptions" templateModeOnly="true" notDisplayedIfMissing="true"
-                 xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions"
+          <!-- TODO check why protocol ad linkage are missed after saving. -->
+          
+          
+          <field name="transferSize"  notDisplayedIfMissing="false"
+                 xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:transferSize"/>
+          
+          <field name="onLine" templateModeOnly="true" notDisplayedIfMissing="true"
+                 xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:onLine"
                  del=".">
             <template>
               <values>
                 <key label="linkage"
-                     xpath="mrd:onLine/cit:CI_OnlineResource/cit:linkage/gco:CharacterString"/>
+                     xpath="cit:CI_OnlineResource/cit:linkage/gco:CharacterString"/>
                 <key label="protocol"
-                     xpath="mrd:onLine/cit:CI_OnlineResource/cit:protocol/gco:CharacterString"/>
-                <key label="size"
-                     xpath="mrd:transferSize/gco:Real"/>
+                     xpath="cit:CI_OnlineResource/cit:protocol/gco:CharacterString"/>
               </values>
               <snippet>
-                <mrd:MD_DigitalTransferOptions>
-                  <mrd:transferSize>
-                    <gco:Real>{{size}}</gco:Real>
-                  </mrd:transferSize>
                   <mrd:onLine>
                     <cit:CI_OnlineResource>
                       <cit:linkage>
@@ -924,32 +923,25 @@
                       <cit:name gco:nilReason="missing">
                         <gco:CharacterString/>
                       </cit:name>
-                      <gn:copy select="cit:description" />
                       <cit:description gco:nilReason="missing">
                         <gco:CharacterString/>
                       </cit:description>
                       <cit:function>
                         <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
-                                                   codeListValue=""/>
+                                                   codeListValue="download"/>
                       </cit:function>
                     </cit:CI_OnlineResource>
                   </mrd:onLine>
-                  <gn:copy select="mrd:offLine" />
-                  <gn:copy select="mrd:transferFrequency" />
-                </mrd:MD_DigitalTransferOptions>
               </snippet>
             </template>
           </field>
-          <!-- TODO check why add button doesn't appear -->
-          <action type="add" name="digitalTransferOptions"
-                  in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions"
-                  or="MD_DigitalTransferOptions" >
+          
+          
+          <action type="add" name="onLine"
+                  or="onLine" forceLabel="true"
+                  in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions" >
             <template>
               <snippet>
-                <mrd:MD_DigitalTransferOptions>
-                  <mrd:transferSize>
-                    <gco:Real></gco:Real>
-                  </mrd:transferSize>
                   <mrd:onLine>
                     <cit:CI_OnlineResource>
                       <cit:linkage>
@@ -966,15 +958,15 @@
                       </cit:description>
                       <cit:function>
                         <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
-                                                   codeListValue=""/>
+                                                   codeListValue="download"/>
                       </cit:function>
                     </cit:CI_OnlineResource>
                   </mrd:onLine>
-                </mrd:MD_DigitalTransferOptions>
               </snippet>
             </template>
           </action>
         </section>
+          
       </tab>
 
       <tab id="tufts-metadata-reference-information" mode="flat">
