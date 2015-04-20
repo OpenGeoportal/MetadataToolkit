@@ -362,7 +362,6 @@
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
 
           <!-- Presentation form -->
-          <!-- TODO digital map option should be selected for new entries -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" or="presentationForm"
                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation" />
 
@@ -430,16 +429,6 @@
               </template>
             </field>
           </section>
-
-            <!-- TODO Plus button doesn't add the right XML. Below is the wrong XML generated -->
-            <!--<cit:citedResponsibleParty>
-              <cit:CI_Responsibility>
-                <cit:role>
-                  <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                   codeListValue=""/>
-                </cit:role>
-              </cit:CI_Responsibility>
-            </cit:citedResponsibleParty>-->
       
             <action type="add" 
                     name="publisher" or="citedResponsibleParty"
@@ -497,7 +486,6 @@
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
           
           <!-- Temporal extent -->
-          <!-- TODO review gml:TimePeriodType fields. They appear as free text input fields. -->
           <section>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement">
             <template>
@@ -685,16 +673,41 @@
               </template>
             </field>
 
-            <action type="add" name="metadataContact"
-                    addDirective="data-gn-directory-entry-selector"
-                    or="contact"
-                    in="/mdb:MD_Metadata">
-              <directiveAttributes
-                      data-template-add-action="true"
-                      data-template-type="contact"
-                      data-variables="cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
-
-            </action>
+          
+          <action type="add" name="pointOfContact"
+               or="pointOfContact"
+               in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+         <directiveAttributes
+                    data-template-add-action="true"
+                    data-template-type="contact"
+                    data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~pointOfContact"/>
+          <template>
+            <snippet>
+              <cit:citedResponsibleParty>
+                <cit:CI_Responsibility>
+                  <cit:role>
+                    <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                     codeListValue="pointOfContact">Point of Contact</cit:CI_RoleCode>
+                  </cit:role>
+                  <cit:party>
+                    <cit:CI_Organisation>
+                      <cit:name>
+                        <gco:CharacterString></gco:CharacterString>
+                      </cit:name>
+                      <cit:individual>
+                        <cit:CI_Individual>
+                          <cit:name>
+                            <gco:CharacterString></gco:CharacterString>
+                          </cit:name>
+                        </cit:CI_Individual>
+                      </cit:individual>
+                    </cit:CI_Organisation>
+                  </cit:party>
+                </cit:CI_Responsibility>
+              </cit:citedResponsibleParty>
+            </snippet>
+          </template>
+        </action>
           
           <!-- Language -->
           <!-- FIXME check if this is the data locale -->
@@ -895,12 +908,21 @@
         </section>
 
         <section name="onlineResources">
-          <!-- TODO check why protocol ad linkage are missed after saving. -->
           
-          
-          <field name="transferSize"  notDisplayedIfMissing="false"
+          <field name="transferSize"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:transferSize"/>
           
+          <action type="add" name="transferSize"
+                  or="transferSize" forceLabel="true"
+                  in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions" >
+            <template>
+              <snippet>
+                  <mrd:transferSize>
+                    <gco:Real></gco:Real>
+                  </mrd:transferSize>
+              </snippet>
+            </template>
+          </action>
           <field name="onLine" templateModeOnly="true" notDisplayedIfMissing="true"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:onLine"
                  del=".">
@@ -1031,15 +1053,6 @@
         <section xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo" or="referenceSystemInfo"
                  in="/mdb:MD_Metadata"/>
         
-        <!--<section name="tuftsSpatialRepresentation">
-          &lt;!&ndash; Spatial Representation Type &ndash;&gt;
-          &lt;!&ndash; TODO only vector value appears in the list. Why? &ndash;&gt;
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType" />
-          
-          &lt;!&ndash; Reference system &ndash;&gt;
-          &lt;!&ndash; TODO a lot of entry method defined in excel document &ndash;&gt;
-          <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier" />
-        </section>-->
       </tab>
       
       <tab id="featureCatalogTab" mode="flat">
