@@ -88,7 +88,11 @@
   <topicCategory>Topic Category</topicCategory>
   <onLine>Online Resource</onLine>
   <transferSize>Transfer Size</transferSize>
-
+  <dateInfo>Metadata Date</dateInfo>
+  <contact>Metadata Contact</contact>
+  <name>Organisation</name>
+  <individual>Email</individual>
+  <email>Individual</email> 
 
   
   

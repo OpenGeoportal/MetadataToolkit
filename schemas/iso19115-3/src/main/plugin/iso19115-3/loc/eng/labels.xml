@@ -215,6 +215,12 @@
     <description iso="true">Type of resource for which metadata is provided</description>
   </element>
 
+  <element name="mdb:resourceScope">
+    <label>Hierarchy level</label>
+    <description>Scope to which the metadata applies (see annex H for more information about
+      metadata hierarchy levels)</description>
+    <condition>mandatory</condition>
+  </element>
   <element name="mdb:MD_MetadataScope" id="6.0">
     <label>Hierarchy level</label>
     <description>Scope to which the metadata applies (see annex H for more information about

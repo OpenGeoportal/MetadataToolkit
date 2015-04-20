@@ -790,8 +790,37 @@
                  in="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation"/>
 
           <!-- Hierarchy level -->
-          <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope" or="resourceScope"
-                 in="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope" 
+                 name="resourceScope" del="."
+                or="resourceScope" in="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope"/>
+                
+          <action type="add" forceLabel="true"
+                  name="resourceScope" or="resourceScope"
+                  in="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope">
+            <template>
+              <snippet>
+                <mdb:resourceScope>
+		            <mcc:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+		                              codeListValue=""/>
+		         </mdb:resourceScope>
+              </snippet>
+            </template>
+          </action>
+                
+                
+            <action type="add" forceLabel="true"
+                    name="resourceScope"
+                    in="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope"
+                    or="resourceScope">
+              <template>
+                <snippet>
+                <mdb:resourceScope>
+                    <mcc:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+                                      codeListValue=""/>
+                 </mdb:resourceScope>
+                </snippet>
+              </template>
+            </action>
 
           <!-- Metadata language -->
           <field xpath="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language" or="language" in="/mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale"/>
@@ -1012,15 +1041,105 @@
             </template>
           </action>
         </section>
-        <section name="metadataStandard">
+        <section>
+          <field xpath="/mdb:MD_Metadata/mdb:contact" templateModeOnly="true" 
+                in="/mdb:MD_Metadata" name="contact" or="contact" del=".">
+            <template>
+                <values>
+                    <key label="name" 
+                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString" />
+                    <key label="individual" 
+                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco:CharacterString" />
+                    <key label="email" 
+                        xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress/gco:CharacterString" />
+                </values>
+                <snippet>
+	                <mdb:contact>
+                        <cit:CI_Responsibility>
+                             <cit:role>
+                                <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                                 codeListValue="pointOfContact"/>
+                             </cit:role>
+                             <cit:party>
+                                <cit:CI_Organisation>
+                                   <cit:name>
+                                      <gco:CharacterString>{{name}}</gco:CharacterString>
+                                   </cit:name>
+                                   <cit:contactInfo>
+                                      <cit:CI_Contact>
+                                         <cit:address>
+                                            <cit:CI_Address>
+                                               <cit:electronicMailAddress>
+                                                  <gco:CharacterString>{{email}}</gco:CharacterString>
+                                               </cit:electronicMailAddress>
+                                            </cit:CI_Address>
+                                         </cit:address>
+                                      </cit:CI_Contact>
+                                   </cit:contactInfo>
+                                   <cit:individual>
+                                      <cit:CI_Individual>
+                                         <cit:name>
+                                            <gco:CharacterString>{{individual}}</gco:CharacterString>
+                                         </cit:name>
+                                      </cit:CI_Individual>
+                                   </cit:individual>
+                                </cit:CI_Organisation>
+                             </cit:party>
+                          </cit:CI_Responsibility>
+                      </mdb:contact>
+                </snippet>
+            </template>
+          </field>
+          <action type="add" forceLabel="true" name="contact" in="/mdb:MD_Metadata" or="contact">
+            <template>
+              <snippet>
+                   <mdb:contact>
+			            <cit:CI_Responsibility>
+					         <cit:role>
+					            <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+					                             codeListValue="pointOfContact"/>
+					         </cit:role>
+					         <cit:party>
+					            <cit:CI_Organisation>
+					               <cit:name>
+					                  <gco:CharacterString></gco:CharacterString>
+					               </cit:name>
+					               <cit:contactInfo>
+					                  <cit:CI_Contact>
+					                     <cit:address>
+					                        <cit:CI_Address>
+					                           <cit:electronicMailAddress>
+					                              <gco:CharacterString></gco:CharacterString>
+					                           </cit:electronicMailAddress>
+					                        </cit:CI_Address>
+					                     </cit:address>
+					                  </cit:CI_Contact>
+					               </cit:contactInfo>
+					               <cit:individual>
+					                  <cit:CI_Individual>
+					                     <cit:name gco:nilReason="missing">
+					                        <gco:CharacterString/>
+					                     </cit:name>
+					                  </cit:CI_Individual>
+					               </cit:individual>
+					            </cit:CI_Organisation>
+					         </cit:party>
+					      </cit:CI_Responsibility>
+					  </mdb:contact>
+              </snippet>
+            </template>
+          </action>
+        </section>
+        
+        <section>
           <field xpath="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation/cit:title"></field>
         </section>
         <!-- TODO there is no field in schema for metadata standard version -->
 
-        <section name="hierarchyLevel">
+        <section>
           <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope" />
         </section>
-        <section name="fileIdentifier">
+        <section>
           <!-- TODO readonly field -->
           <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code" >
             <!--<template>
@@ -1038,7 +1157,7 @@
             </template>-->
           </field>
         </section>
-        <section name="language">
+        <section>
           <!-- TODO check if it is possible to show only the language field -->
           <field xpath="/mdb:MD_Metadata/mdb:defaultLocale" />
         </section>
@@ -1188,6 +1307,7 @@
         <for name="gfc:featureType"/>
         <for name="mcc:processor"/>
         <for name="cit:citedResponsibleParty"/>
+        <for name="mdb:resourceScope"/>
       </flatModeExceptions>
     </view>
 
