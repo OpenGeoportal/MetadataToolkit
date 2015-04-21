@@ -824,7 +824,7 @@
 
           <!-- Use constraints -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:useConstraints"/>
-          <action type="add"
+          <action type="add" forceLabel="true"
                   name="useConstraints" or="useConstraints"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints">
             <template>
