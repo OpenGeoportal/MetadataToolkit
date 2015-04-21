@@ -785,7 +785,7 @@
           
           <!-- Other languages, not default one -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:otherLocale" 
-                    del="." name="otherLocale" />
+                    del="." name="otherLocale" or="otherLocale" />
           
             <action type="add" forceLabel="true"
                   name="otherLocale" or="otherLocale"
@@ -882,11 +882,10 @@
                  in="/mdb:MD_Metadata/mdb:metadataStandard/cit:CI_Citation"/>
 
           <!-- Hierarchy level -->
-          <field xpath="/mdb:MD_Metadata/mdb:metadataScope" 
-                 name="metadataScope" del="." in="/mdb:MD_Metadata"/>
+          <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope" 
+                 name="resourceScope" del="." in="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope"/>
                 
-          <action type="add" forceLabel="true"
-                  name="metadataScope" or="metadataScope"
+          <action type="add" forceLabel="true" name="hierarchyLevel" or="metadataScope"
                   in="/mdb:MD_Metadata">
             <template>
               <snippet>
