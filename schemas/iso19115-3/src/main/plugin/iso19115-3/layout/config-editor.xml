@@ -781,14 +781,35 @@
         </action>
           
           <!-- Language -->
-          <!-- FIXME check if this is the data locale -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:defaultLocale" />
           
+          <!-- Other languages, not default one -->
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:otherLocale" 
+                    del="." name="otherLocale" />
           
+            <action type="add" forceLabel="true"
+                  name="otherLocale" or="otherLocale"
+                  in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification">
+            <template>
+              <snippet>
+                 <mri:otherLocale>
+		            <lan:PT_Locale>
+		               <lan:language>
+		                  <lan:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue=""/>
+		               </lan:language>
+		               <lan:characterEncoding>
+		                  <lan:MD_CharacterSetCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CharacterSetCode"
+		                                           codeListValue=""/>
+		               </lan:characterEncoding>
+		            </lan:PT_Locale>
+		         </mri:otherLocale> 
+              </snippet>
+            </template>
+          </action>
           
           <!-- Access constraints -->
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:accessConstraints"/>
-          <action type="add"
+          <action type="add" forceLabel="true"
                   name="accessConstraints" or="accessConstraints"
                   in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints">
             <template>
