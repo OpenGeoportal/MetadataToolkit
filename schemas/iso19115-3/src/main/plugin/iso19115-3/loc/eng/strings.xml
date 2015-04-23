@@ -97,7 +97,7 @@
   <otherLocale>Non Default Language</otherLocale>
   <accessConstraints>Access Constraints</accessConstraints>
   <useConstraints>Use Constraints</useConstraints>
-
+  <featureType>Feature Type</featureType>
   
   
   <!-- Tufts minimal strings -->
