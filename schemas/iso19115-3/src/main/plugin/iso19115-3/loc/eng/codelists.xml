@@ -1082,38 +1082,20 @@
 	<!-- ==================================================== -->
 	<codelist name="msr:MD_GeometricObjectTypeCode">
 		<entry>
-			<code>complex</code>
-			<label>Complex</label>
-			<description>Set of geometric primitives such that their boundaries can be represented as an union of other primitives</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>composite</code>
-			<label>Composite</label>
-			<description>Connected set of curves, solids or surfaces</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
 			<code>curve</code>
-			<label>Curve</label>
+			<label>MTK Line</label>
 			<description>Bounded, 1-dimensional geometric primitive, representing the continuous image of a line</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
 			<code>point</code>
-			<label>Point</label>
+			<label>MTK Point</label>
 			<description>Zero-dimensional geometric primitive, representing a position but not having an extent</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>solid</code>
-			<label>Solid</label>
-			<description>Bounded, connected 3-dimensional geometric primitive, representing the continuous image of a region of space</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
 			<code>surface</code>
-			<label>Surface</label>
+			<label>MTK Polygon</label>
 			<description>Bounded, connected 2-dimensional geometric primitive, representing the continuous image of a region of a plane</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
