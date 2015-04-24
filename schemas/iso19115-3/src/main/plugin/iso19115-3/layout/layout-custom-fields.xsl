@@ -12,6 +12,8 @@
   exclude-result-prefixes="#all">
 
 
+  <xsl:include href="layout-custom-fields-feature-catalog.xsl"/>
+
   <!-- Readonly elements
   [parent::mds:metadataIdentifier and
                         mcc:codeSpace/gco:CharacterString='urn:uuid']|

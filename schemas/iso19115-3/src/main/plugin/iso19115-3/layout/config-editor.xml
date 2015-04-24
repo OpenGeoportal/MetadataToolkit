@@ -1268,65 +1268,9 @@
                 <cit:title><gco:CharacterString></gco:CharacterString></cit:title>
               </template>      
           </action>
-         
         
-          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue"
-                 or="FC_FeatureCatalogue" del="." templateModeOnly="true" notDisplayedIfMissing="false"
-                 name="FC_FeatureCatalogue"
-                in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue">
-                        
-              <template>
-               <values>
-                   <key label="typeName" xpath="gfc:featureType/gfc:FC_FeatureType/gfc:typeName" />
-                   <key label="entityDefinition" xpath="gfc:featureType/gfc:FC_FeatureType/gfc:definition/gco:CharacterString" />
-                   <key label="definitionSource" xpath="gfc:definitionSource/gfc:FC_DefinitionSource/gfc:source/cit:CI_Citation/cit:title/gco:CharacterString" />
-               </values>
-               <snippet> 
-                <gfc:FC_FeatureCatalogue>
-                   <gfc:featureType>
-                    <gfc:FC_FeatureType>
-                      <gfc:typeName>{{typeName}}</gfc:typeName>
-                      <gfc:definition>
-                        <gco:CharacterString>{{entityDefinition}}</gco:CharacterString>
-                      </gfc:definition>
-                      <gn:copy select="gfc:isAbstract"/>
-                      <gn:copy select="gfc:carrierOfCharacteristics"/> 
-                   </gfc:FC_FeatureType>
-                  </gfc:featureType>
-                   <gfc:definitionSource>
-                      <gfc:FC_DefinitionSource>
-                         <gfc:source>
-                            <cit:CI_Citation>
-                               <cit:title>
-                                  <gco:CharacterString>{{definitionSource}}</gco:CharacterString>
-                               </cit:title>
-                            </cit:CI_Citation>
-                         </gfc:source>
-                      </gfc:FC_DefinitionSource>
-                   </gfc:definitionSource>
-                </gfc:FC_FeatureCatalogue>
-               </snippet>
-             </template>
+          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue">
           </field>  
-          
-          <action type="add" name="featureType" or="featureType" forceLabel="true"
-                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue">
-            <template>
-              <snippet>
-                <gfc:featureType>
-	                 <gfc:FC_FeatureType>
-                        <gfc:typeName></gfc:typeName>
-                        <gfc:definition>
-                           <gco:CharacterString></gco:CharacterString>
-                        </gfc:definition>
-                        <gfc:definitionSource>
-                           <gco:CharacterString></gco:CharacterString>
-                        </gfc:definitionSource>
-                   </gfc:FC_FeatureType>
-                </gfc:featureType>
-              </snippet>
-            </template>
-          </action>
           
         </section>
       </tab>
@@ -1609,104 +1553,76 @@
         
         
         
-          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType"
-                 or="FC_FeatureType" del=".." templateModeOnly="true" notDisplayedIfMissing="false"
-                in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType">
-                        
-              <template>
-               <values>
-                   <key label="typeName" xpath="gfc:typeName" />
-                   <key label="entityDefinition" xpath="gfc:definition/gco:CharacterString" />
-                   <key label="definitionSource" xpath="gfc:definitionSource/gco:CharacterString" />
-               </values>
-               <snippet> 
-                   <gfc:FC_FeatureType>
-                        <gfc:typeName>{{typeName}}</gfc:typeName>
-                        <gfc:definition>
-                           <gco:CharacterString>{{entityDefinition}}</gco:CharacterString>
-                        </gfc:definition>
-                        <gfc:definitionSource>
-                           <gco:CharacterString>{{definitionSource}}</gco:CharacterString>
-                        </gfc:definitionSource>
-                         <gn:copy select="gfc:carrierOfCharacteristics"/> 
-                         <!-- <xsl:for-each select="gfc:carrierOfCharacteristics">
-                           <gfc:carrierOfCharacteristics>
-                            <gfc:FC_FeatureAttribute>
-                              <gfc:featureType>
-                                <gfc:FC_FeatureType>
-                                  <gfc:typeName><xsl:value-of select="gfc:FC_FeatureAttribute/gfc:valueType/gco:TypeName/gco:aName/gco:CharacterString"/></gfc:typeName>
-                                  <gfc:definition>
-                                    <gco:CharacterString><xsl:value-of select="gfc:FC_FeatureAttribute/gfc:memberName"/></gco:CharacterString>
-                                  </gfc:definition>
-                                <gn:copy select="gfc:isAbstract"/>
-                                  <gn:copy select="gfc:featureCatalogue" />
-                                </gfc:FC_FeatureType>
-                              </gfc:featureType>
-                              <gn:copy select="gfc:constrainedBy" />
-                              <gfc:memberName><xsl:value-of select="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:definition/gco:CharacterString"/></gfc:memberName>
-                              <gn:copy select="gfc:cardinality" />
-                              <gfc:valueType>
-                                <gco:TypeName>
-                                  <gco:aName>
-                                    <gco:CharacterString><xsl:value-of select="gfc:FC_FeatureAttribute/gfc:valueType/gco:TypeName/gco:aName/gco:CharacterString"/></gco:CharacterString>
-                                  </gco:aName>
-                                </gco:TypeName>
-                              </gfc:valueType>
-                              <gn:copy select="gfc:listedValue"/>
-                            </gfc:FC_FeatureAttribute>
-                          </gfc:carrierOfCharacteristics>
-                       </xsl:for-each>  -->
-                   </gfc:FC_FeatureType>
-               </snippet>
-             </template>
+          <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue">
           </field>  
                 
-          <!-- <action type="add" name="carrierOfCharacteristics" or="carrierOfCharacteristics"
-                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:featureType/gfc:FC_FeatureType">
+          <action type="add" name="MD_FeatureCatalogue" or="MD_FeatureCatalogue"
+                  in="/mdb:MD_Metadata/mdb:contentInfo">
             <template>
               <snippet>
-                 <gfc:carrierOfCharacteristics>
-                  <gfc:FC_FeatureAttribute>
-                    <gfc:featureType>
-                      <gfc:FC_FeatureType>
-                        <gfc:typeName></gfc:typeName>
-                        <gfc:definition>
-                          <gco:CharacterString></gco:CharacterString>
-                        </gfc:definition>
-                      </gfc:FC_FeatureType>
-                    </gfc:featureType>
-                    <gfc:memberName></gfc:memberName>
-                    <gfc:valueType>
-                      <gco:TypeName>
-                        <gco:aName>
-                          <gco:CharacterString></gco:CharacterString>
-                        </gco:aName>
-                      </gco:TypeName>
-                    </gfc:valueType>
-                  </gfc:FC_FeatureAttribute>
-                </gfc:carrierOfCharacteristics>
+                 <mrc:MD_FeatureCatalogue>
+			      <mrc:featureCatalogue>
+			        <gfc:FC_FeatureCatalogue>
+			          <gfc:producer>
+			            <cit:CI_Responsibility>
+			              <cit:role>
+			                <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="" />
+			              </cit:role>
+			              <cit:party>
+			                <cit:CI_Organisation>
+			                  <cit:name gco:nilReason="missing">
+			                    <gco:CharacterString />
+			                  </cit:name>
+			                  <cit:contactInfo>
+			                    <cit:CI_Contact>
+			                      <cit:address>
+			                        <cit:CI_Address>
+			                          <cit:electronicMailAddress gco:nilReason="missing">
+			                            <gco:CharacterString />
+			                          </cit:electronicMailAddress>
+			                        </cit:CI_Address>
+			                      </cit:address>
+			                    </cit:CI_Contact>
+			                  </cit:contactInfo>
+			                </cit:CI_Organisation>
+			              </cit:party>
+			            </cit:CI_Responsibility>
+			          </gfc:producer>
+			          <gfc:featureType>
+			            <gfc:FC_FeatureType>
+			              <gfc:typeName></gfc:typeName>
+			              <gfc:definition>
+			                <gco:CharacterString></gco:CharacterString>
+			              </gfc:definition>
+			              <gfc:isAbstract>
+			                <gco:Boolean>false</gco:Boolean>
+			              </gfc:isAbstract>
+			              <gfc:carrierOfCharacteristics>
+			                <gfc:FC_FeatureAttribute>
+			                  <gfc:featureType>
+			                    <gfc:FC_FeatureType>
+			                      <gfc:typeName></gfc:typeName>
+			                      <gfc:definition>
+			                        <gco:CharacterString></gco:CharacterString>
+			                      </gfc:definition>
+			                      <gfc:isAbstract>
+			                        <gco:Boolean>false</gco:Boolean>
+			                      </gfc:isAbstract>
+			                      <gfc:featureCatalogue />
+			                    </gfc:FC_FeatureType>
+			                  </gfc:featureType>
+			                </gfc:FC_FeatureAttribute>
+			              </gfc:carrierOfCharacteristics>
+			              <gfc:featureCatalogue />
+			            </gfc:FC_FeatureType>
+			          </gfc:featureType>
+			        </gfc:FC_FeatureCatalogue>
+			      </mrc:featureCatalogue>
+			    </mrc:MD_FeatureCatalogue>
               </snippet>
             </template>
-          </action>  -->
+          </action>  
           
-          <action type="add" name="featureType" or="featureType" forceLabel="true"
-                  in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue">
-            <template>
-              <snippet>
-                <gfc:featureType>
-                     <gfc:FC_FeatureType>
-                        <gfc:typeName></gfc:typeName>
-                        <gfc:definition>
-                           <gco:CharacterString></gco:CharacterString>
-                        </gfc:definition>
-                        <gfc:definitionSource>
-                           <gco:CharacterString></gco:CharacterString>
-                        </gfc:definitionSource>
-                   </gfc:FC_FeatureType>
-                </gfc:featureType>
-              </snippet>
-            </template>
-          </action>
           
         </section>
 
