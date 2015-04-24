@@ -145,13 +145,6 @@
                     &#160;<span data-translate="">toggleAttributes</span>
                   </a>
                 </li>
-                <li role="presentation">
-                  <a role="menuitem" tabindex="-1" data-ng-click="toggleTooltips(true)" href="">
-                    <i class="fa"
-                      data-ng-class="gnCurrentEdit.displayTooltips ? 'fa-check-square-o' : 'fa-square-o'"/>
-                    &#160;<span data-translate="">toggleTooltips</span>
-                  </a>
-                </li>
               </xsl:otherwise>
             </xsl:choose>
           </ul>

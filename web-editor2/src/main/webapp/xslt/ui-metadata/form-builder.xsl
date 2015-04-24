@@ -135,7 +135,7 @@
             <xsl:value-of select="$label"/>
           </label>
 
-          <div class="col-sm-9 gn-value">
+          <div class="col-sm-8 gn-value">
             <xsl:if test="$isMultilingual">
               <xsl:attribute name="data-gn-multilingual-field" select="$metadataOtherLanguagesAsJson"/>
               <xsl:attribute name="data-main-language" select="$metadataLanguage"/>
@@ -207,7 +207,7 @@
               </xsl:for-each>
             </xsl:if>
           </div>
-          <div class="col-sm-1 gn-control">
+          <div class="col-sm-2 gn-control">
             <xsl:if test="not($isDisabled)">
               <xsl:call-template name="render-form-field-control-remove">
                 <xsl:with-param name="editInfo" select="$editInfo"/>
@@ -373,7 +373,7 @@
       <label class="col-sm-2 control-label">
         <xsl:value-of select="$name"/>
       </label>
-      <div class="col-sm-9">
+      <div class="col-sm-8">
         <!-- Create an empty input to contain the data-gn-field-tooltip
         key which is used to check if an element
         is the first element of its kind in the form. The key for a template
@@ -562,13 +562,13 @@
           </xsl:if>
         </div>
       </div>
-      <xsl:if test="$refToDelete">
-        <div class="col-sm-1 gn-control">
+      <div class="col-sm-2 gn-control">
+        <xsl:if test="$refToDelete">
           <xsl:call-template name="render-form-field-control-remove">
-            <xsl:with-param name="editInfo" select="$refToDelete"/>
-          </xsl:call-template>
-        </div>
-      </xsl:if>
+             <xsl:with-param name="editInfo" select="$refToDelete"/>
+           </xsl:call-template>
+        </xsl:if>
+      </div>
     </div>
   </xsl:template>
 
@@ -987,7 +987,7 @@
       <xsl:variable name="elementToRemove" select="if ($parentEditInfo) then 
         $parentEditInfo else $editInfo"/>
 
-      <a class="btn pull-right"
+      <a class="btn"
          data-gn-click-and-spin="remove({$elementToRemove/@ref}, {$elementToRemove/@parent}, {$editInfo/@ref})"
          data-gn-field-highlight-remove="{$editInfo/@ref}"
          data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}">
@@ -1059,7 +1059,7 @@
       <label class="col-sm-4">
         <xsl:value-of select="gn-fn-metadata:getLabel($schema, $attributeName, $labels)/label"/>
       </label>
-      <div class="col-sm-7">
+      <div class="col-sm-6">
         <xsl:if test="$directive">
           <xsl:attribute name="{$directive}"/>
         </xsl:if>
@@ -1091,7 +1091,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-2">
         <a class="btn pull-right"
            data-gn-click-and-spin="removeAttribute('{$fieldName}')" data-toggle="tooltip" data-placement="top" title="{{{{'deleteField' | translate}}}}">
           <i class="fa fa-times text-danger"/>
