@@ -13,6 +13,7 @@
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+                xmlns:geonet="http://www.fao.org/geonetwork"
                 xmlns:gn="http://www.fao.org/geonetwork"
                 xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
                 exclude-result-prefixes="#all">
@@ -63,35 +64,62 @@
     
   </xsl:template>
 
-
-
-
-  <xsl:template mode="mode-tufts" match="gfc:featureType" priority="2000">
+  <xsl:template mode="mode-tufts" match="gfc:FC_FeatureCatalogue" priority="2000">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
-    
     
     <xsl:apply-templates mode="mode-iso19115-3" select="gfc:definitionSource">
           <xsl:with-param name="schema" select="$schema"/>
           <xsl:with-param name="labels" select="$labels"/>
     </xsl:apply-templates>
     
+     <xsl:if test="$isEditing and not(gfc:definitionSource)">
+         <xsl:for-each select="geonet:child[@name='definitionSource']">
+         
+           <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
+           <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+      
+           <xsl:call-template name="render-element-to-add">
+             <!-- TODO: add xpath and isoType to get label ? -->
+             <xsl:with-param name="label"
+                             select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+             <xsl:with-param name="directive" select="$directive"/>
+             <xsl:with-param name="childEditInfo" select="."/>
+             <xsl:with-param name="parentEditInfo" select="../gn:element"/>
+           <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+           </xsl:call-template>
+         </xsl:for-each>
+     </xsl:if>
+     
     <xsl:apply-templates mode="mode-tufts" select="gfc:featureType">
           <xsl:with-param name="schema" select="$schema"/>
           <xsl:with-param name="labels" select="$labels"/>
     </xsl:apply-templates>
-  </xsl:template>
     
+    
+     <xsl:if test="$isEditing">
+         <xsl:for-each select="geonet:child[@name='featureType']">
+         
+           <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
+           <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+      
+           <xsl:call-template name="render-element-to-add">
+             <!-- TODO: add xpath and isoType to get label ? -->
+             <xsl:with-param name="label"
+                             select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+             <xsl:with-param name="directive" select="$directive"/>
+             <xsl:with-param name="childEditInfo" select="."/>
+             <xsl:with-param name="parentEditInfo" select="../gn:element"/>
+           <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+           </xsl:call-template>
+         </xsl:for-each>
+     </xsl:if>
+     
+   </xsl:template>
     
   <xsl:template mode="mode-tufts" match="gfc:featureType" priority="2000">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
-    
-    
-    <xsl:apply-templates mode="mode-iso19115-3" select="gfc:definitionSource/gfc:FC_DefinitionSource">
-          <xsl:with-param name="schema" select="$schema"/>
-          <xsl:with-param name="labels" select="$labels"/>
-    </xsl:apply-templates>
     
     <xsl:for-each select="gfc:FC_FeatureType">
     
@@ -104,6 +132,24 @@
 	          <xsl:with-param name="schema" select="$schema"/>
 	          <xsl:with-param name="labels" select="$labels"/>
 	    </xsl:apply-templates>
+	    
+	     <xsl:if test="$isEditing">
+	         <xsl:for-each select="geonet:child[@name='definition']">
+	         
+	           <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
+	           <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+	      
+	           <xsl:call-template name="render-element-to-add">
+	             <!-- TODO: add xpath and isoType to get label ? -->
+	             <xsl:with-param name="label"
+	                             select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+	             <xsl:with-param name="directive" select="$directive"/>
+	             <xsl:with-param name="childEditInfo" select="."/>
+	             <xsl:with-param name="parentEditInfo" select="../gn:element"/>
+	           <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+	           </xsl:call-template>
+	         </xsl:for-each>
+	     </xsl:if>
 	    
 	    <xsl:for-each select="gfc:carrierOfCharacteristics">
 		    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
@@ -127,20 +173,26 @@
             </xsl:call-template>     
 	    </xsl:for-each>
 	    
-	  <!-- Add new carrierOfCharacteristics -->
-      <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, 'gfc:carrierOfCharacteristics')"/>
-	    <xsl:call-template name="render-element-to-add">
-	        <!-- TODO: add xpath and isoType to get label ? -->
-	        <xsl:with-param name="label"
-	                        select="gn-fn-metadata:getLabel($schema, 'gfc:carrierOfCharacteristics', $labels, name(.), '', '')/label"/>
-	        <xsl:with-param name="directive" select="$directive"/>
-	        <xsl:with-param name="childEditInfo" select=".."/>
-	        <xsl:with-param name="parentEditInfo" select="gn:element"/>
-	      <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = 'gfc:carrierOfCharacteristics']) = 0"/>
-	    </xsl:call-template>
-	    
+       <xsl:if test="$isEditing">
+		   <xsl:for-each select="geonet:child[@name='carrierOfCharacteristics']">
+		   
+		     <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
+		     <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+		
+		     <xsl:call-template name="render-element-to-add">
+		       <!-- TODO: add xpath and isoType to get label ? -->
+		       <xsl:with-param name="label"
+		                       select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+		       <xsl:with-param name="directive" select="$directive"/>
+		       <xsl:with-param name="childEditInfo" select="."/>
+		       <xsl:with-param name="parentEditInfo" select="../gn:element"/>
+		     <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+		     </xsl:call-template>
+	       </xsl:for-each>
+	   </xsl:if>
+	 
     </xsl:for-each>
-
+    
   </xsl:template>
 
 </xsl:stylesheet>

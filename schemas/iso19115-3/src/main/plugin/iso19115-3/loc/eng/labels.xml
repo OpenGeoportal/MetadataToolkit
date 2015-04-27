@@ -2876,11 +2876,16 @@
 		<description>Name of the formally registered thesaurus or a similar authoritative source of
             keywords</description>
 	</element>
-	<element name="cit:title" id="360.0">
-		<label>Title</label>
-		<description>Name by which the cited resource is known</description>
-		<condition>mandatory</condition>
-	</element>
+    <element name="cit:title" id="360.0">
+        <label>Title</label>
+        <description>Name by which the cited resource is known</description>
+        <condition>mandatory</condition>
+    </element>
+    <element name="cit:title" context="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue/gfc:FC_FeatureCatalogue/gfc:definitionSource/gfc:FC_DefinitionSource/gfc:source/cit:CI_Citation">
+        <label>Definition Source</label>
+        <description>Name by which the definition source is known</description>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mri:title" id="507.0" context="mri:MD_Legislation">
 		<label>Title</label>
 		<description>Reference to legal title</description>
