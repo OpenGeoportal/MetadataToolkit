@@ -1657,12 +1657,16 @@
 		<description>Telephone number of a facsimile machine for the responsible organization or
             individual</description>
 	</element>
-	<element name="mrc:featureCatalogueCitation" id="238.0">
-		<label>Feature catalogue citation</label>
-		<description>Complete bibliographic reference to one or more external feature
+    <element name="mrc:featureCatalogueCitation" id="238.0">
+        <label>Feature catalogue citation</label>
+        <description>Complete bibliographic reference to one or more external feature
             catalogues</description>
-		<condition>mandatory</condition>
-	</element>
+        <condition>mandatory</condition>
+    </element>
+    <element name="mrc:featureCatalogue">
+        <label>Feature catalogue</label>
+        <condition>mandatory</condition>
+    </element>
 	<element name="mcc:featureInstances" id="152.0">
 		<label>Feature instances</label>
 		<description>Feature instances to which the information applies</description>
