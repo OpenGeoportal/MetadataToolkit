@@ -191,6 +191,7 @@
 		       <xsl:with-param name="childEditInfo" select="."/>
 		       <xsl:with-param name="parentEditInfo" select="../gn:element"/>
 		       <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+           <!-- Display only the 5th choice: Attribute -->
            <xsl:with-param name="choicePosition" select="5"/>
 		     </xsl:call-template>
 	       </xsl:for-each>
