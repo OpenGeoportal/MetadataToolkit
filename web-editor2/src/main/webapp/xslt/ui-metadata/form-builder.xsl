@@ -609,6 +609,10 @@
     <xsl:param name="isDisabled" select="ancestor::node()[@xlink:href]"/>
     <xsl:param name="isFirst" required="no" as="xs:boolean" select="true()"/>
 
+    <!-- When rendering a choice element, if specified a choice position, instead of a dropdown with all the options,
+        only the selected choice is rendered -->
+    <xsl:param name="choicePosition" required="no" as="xs:integer" select="0"/>
+
     <xsl:if test="not($isDisabled)">
       <xsl:variable name="id" select="generate-id()"/>
       <xsl:variable name="qualifiedName" select="concat($childEditInfo/@prefix, ':', $childEditInfo/@name)"/>
@@ -650,24 +654,41 @@
             <!-- 
                   If many choices, make a dropdown button -->
             <xsl:when test="count($childEditInfo/gn:choose) > 1">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown">
-                  <span/>
-                  <span class="caret"/>
-                </button>
-                <ul class="dropdown-menu">
-                  <xsl:for-each select="$childEditInfo/gn:choose">
-                    <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
+              <xsl:choose>
+                <!-- Display all options -->
+                <xsl:when test="$choicePosition = 0">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown">
+                      <span/>
+                      <span class="caret"/>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <xsl:for-each select="$childEditInfo/gn:choose">
+                        <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
 
-                    <li title="{$label/description}">
-                      <a
-                              data-gn-click-and-spin="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
-                        <xsl:value-of select="$label/label"/>
+                        <li title="{$label/description}">
+                          <a
+                            data-gn-click-and-spin="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
+                            <xsl:value-of select="$label/label"/>
+                          </a>
+                        </li>
+                      </xsl:for-each>
+                    </ul>
+                  </div>
+                </xsl:when>
+                <!-- Display only choice selection -->
+                <xsl:otherwise>
+                  <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, $childEditInfo/gn:choose[$choicePosition]/@name, $labels)"/>
+
+                  <a class="btn btn-default"
+                         data-gn-click-and-spin="addChoice({../gn:element/@ref}, '{$qualifiedName}', '{$childEditInfo/gn:choose[$choicePosition]/@name}', '{$id}', 'before');">
+                        <i type="button" class="fa fa-plus gn-add"
+                           title="{$label/description}">
+                        </i>
                       </a>
-                    </li>
-                  </xsl:for-each>
-                </ul>
-              </div>
+                </xsl:otherwise>
+              </xsl:choose>
+
             </xsl:when>
             <xsl:otherwise>
               <!-- Add custom widget to add element.

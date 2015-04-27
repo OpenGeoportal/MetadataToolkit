@@ -178,15 +178,20 @@
 		   
 		     <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
 		     <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
-		
+
+
+         <!-- Instead of the default + button with choices, select the choice required (position 5 = Attribute)
+              TODO: To improve in render-element-to-add sending an optional choice position parameter, if specified
+              instead of displaying the full choice, just the selection
+         -->
 		     <xsl:call-template name="render-element-to-add">
-		       <!-- TODO: add xpath and isoType to get label ? -->
 		       <xsl:with-param name="label"
 		                       select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
 		       <xsl:with-param name="directive" select="$directive"/>
 		       <xsl:with-param name="childEditInfo" select="."/>
 		       <xsl:with-param name="parentEditInfo" select="../gn:element"/>
-		     <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+		       <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+           <xsl:with-param name="choicePosition" select="5"/>
 		     </xsl:call-template>
 	       </xsl:for-each>
 	   </xsl:if>
