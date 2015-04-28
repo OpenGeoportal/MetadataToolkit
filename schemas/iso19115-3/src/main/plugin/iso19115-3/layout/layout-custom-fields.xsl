@@ -167,5 +167,6 @@
     </textarea>
   </xsl:template>
 
+  <xsl:template mode="mode-iso19115-3" match="gml:TimePeriodTypeGROUP_ELEMENT0|gml:TimePeriodTypeGROUP_ELEMENT4" priority="2000" />
 
 </xsl:stylesheet>
