@@ -47,14 +47,14 @@
 <div data-gn-modal="" class="onlinesrc-popup"
   data-gn-popup-options="{title:'addThumbnailTitle'}"
   id="addthumbnail-popup">
-  <div data-gn-add-thumbnail="" class="add-thumbnail"
+  <div data-gn-add-thumbnail="" data-gn-disable-upload="{{gnSchemaConfig.related.disableResourceUpload === true}}" class="add-thumbnail"
     data-gn-popupid="#addthumbnail-popup"></div>
 </div>
 
 <div data-gn-modal="" class="onlinesrc-popup"
   data-gn-popup-options="{title:'addOnlinesrcTitle'}"
   id="addonlinesrc-popup">
-  <div data-gn-add-onlinesrc="" class="add-onlinesrc"
+  <div data-gn-add-onlinesrc="" data-gn-disable-upload="{{gnSchemaConfig.related.disableResourceUpload === true}}" class="add-onlinesrc"
     data-gn-popupid="#addonlinesrc-popup"></div>
 </div>
 
