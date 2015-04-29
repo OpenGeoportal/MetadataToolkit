@@ -20,8 +20,9 @@
       <table class="text-center">
         <tr align="center">
           <td>
+
             <select data-ng-model="projs.form"
-                title="{{'chooseAProj' | translate}}">
+                title="{{'chooseAProj' | translate}}" data-ng-show="projs.list && projs.list.length > 1">
               <option data-ng-repeat="proj in projs.list"
                       value="{{proj.code}}"
                       data-ng-selected="proj.code == projs.form">{{proj.label}}
