@@ -111,6 +111,8 @@
              <xsl:with-param name="childEditInfo" select="."/>
              <xsl:with-param name="parentEditInfo" select="../gn:element"/>
            <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+           <!-- Display only the 5th choice: Attribute -->
+           <xsl:with-param name="choicePosition" select="2"/>
            </xsl:call-template>
          </xsl:for-each>
      </xsl:if>
@@ -152,6 +154,7 @@
 	     </xsl:if>
 	    
 	    <xsl:for-each select="gfc:carrierOfCharacteristics">
+	    
 		    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
 		    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
             <xsl:call-template name="render-boxed-element">
@@ -164,15 +167,53 @@
 		            <xsl:apply-templates mode="mode-iso19115-3" select="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:typeName">
 		                  <xsl:with-param name="schema" select="$schema"/>
 		                  <xsl:with-param name="labels" select="$labels"/>
-		            </xsl:apply-templates>      
+		            </xsl:apply-templates>
 		            <xsl:apply-templates mode="mode-iso19115-3" select="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:definition">
 		                  <xsl:with-param name="schema" select="$schema"/>
 		                  <xsl:with-param name="labels" select="$labels"/>
 		            </xsl:apply-templates> 
+                    <xsl:choose>
+	                    <xsl:when test="$isEditing and not(gfc:FC_FeatureAttribute/gfc:featureType)">
+		                     <xsl:for-each select="gfc:FC_FeatureAttribute/geonet:child[@name='featureType']">
+		           
+					             <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
+					             <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+	                             
+					             <xsl:call-template name="render-element-to-add">
+						               <xsl:with-param name="label"
+		                                    select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+		                               <xsl:with-param name="directive" select="$directive"/>
+						               <xsl:with-param name="childEditInfo" select="."/>
+						               <xsl:with-param name="parentEditInfo" select="../gn:element"/>
+						               <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+		    				           <xsl:with-param name="choicePosition" select="2"/>
+					             </xsl:call-template> 
+				           </xsl:for-each>
+	                   </xsl:when>
+	                   <xsl:when test="$isEditing and not(gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:definition)">
+	                       <xsl:for-each select="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/geonet:child[@name='definition']">
+                   
+                                 <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
+                                 <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+                                
+                                 <xsl:call-template name="render-element-to-add">
+                                       <xsl:with-param name="label"
+                                            select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+                                       <xsl:with-param name="directive" select="$directive"/>
+                                       <xsl:with-param name="childEditInfo" select="."/>
+                                       <xsl:with-param name="parentEditInfo" select="../gn:element"/>
+                                       <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+                                       <xsl:with-param name="choicePosition" select="2"/>
+                                 </xsl:call-template> 
+                           </xsl:for-each>
+	                   </xsl:when>
+	                   <xsl:otherwise></xsl:otherwise>
+                   </xsl:choose>
                   </xsl:with-param>
-            </xsl:call-template>     
+            </xsl:call-template> 
+            
 	    </xsl:for-each>
-	    
+
        <xsl:if test="$isEditing">
 		   <xsl:for-each select="geonet:child[@name='carrierOfCharacteristics']">
 		   
@@ -186,7 +227,7 @@
          -->
 		     <xsl:call-template name="render-element-to-add">
 		       <xsl:with-param name="label"
-		                       select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
+		                       select="gn-fn-metadata:getLabel($schema, $name, $labels, 'carrierOfCharacteristics', '', '')/label"/>
 		       <xsl:with-param name="directive" select="$directive"/>
 		       <xsl:with-param name="childEditInfo" select="."/>
 		       <xsl:with-param name="parentEditInfo" select="../gn:element"/>
