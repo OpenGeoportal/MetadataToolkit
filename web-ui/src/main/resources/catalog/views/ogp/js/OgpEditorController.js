@@ -9,15 +9,20 @@
   goog.require('gn_search_manager_service');
   goog.require('gn_locale');
   goog.require('gn_new_metadata_from_file_controller');
+  goog.require('ogp_search');
+  goog.require('ogp_editor_service');
 
   var module = angular.module('ogp_editor_controller', [
+    'ui.bootstrap',
     'ngRoute',
     'gn_group_service',
     'gn_search_manager_service',
     'ui.bootstrap',
     'gn_locale',
     'gn_catalog_service',
-    'gn_new_metadata_from_file_controller'
+    'gn_new_metadata_from_file_controller',
+    'ogp_search_controller',
+    'ogp_editor_service'
   ]);
 
   /**
@@ -41,12 +46,21 @@
           when('/create/fromFile', {
             templateUrl: gnTplFolder + 'upload-form.html',
             controller: 'GnNewMetadataFromFileController'}).
+          when('/create/fromOGP', {
+            templateUrl: gnTplFolder + 'upload-form.html',
+            controller:'OgpSearchController'
+          }).
+          when('/new/:from/optionalAdditions', {
+            templateUrl: tplFolder + "optional-additions.html",
+            controller: 'OgpEditorBoardController'
+          }).
           otherwise({
-            templateUrl: tplFolder + 'ogp-new-metadata.html',
+            templateUrl: tplFolder + 'ogp-wizard-first-step.html',
             controller: 'OgpEditorBoardController'
           });
 
     }]);
+
 
   module.controller('OgpRedirectController', ['$scope', '$routeParams', '$window',
     function($scope, $routeParams, $window) {
@@ -63,14 +77,27 @@
   }]);
 
   module.controller('OgpEditorBoardController', [
-    '$scope', '$routeParams', 'gnGroupService', 'gnSearchManagerService', 'gnMetadataManager', '$filter', '$location', '$window', 'TEMPLATES',
-    function($scope, $routeParams, gnGroupService, gnSearchManagerService, gnMetadataManager, $filter, $location, $window, TEMPLATES) {
-    $scope.isTemplate = false;
-    $scope.hasTemplates = true;
-    $scope.mdList = null;
-    $scope.blankTemplate = null;
-    $scope.newFromTemplateIsCollapsed = true;
-    $scope.showMyTemplatesOnly = false;
+    '$scope', '$routeParams', 'gnGroupService', 'gnSearchManagerService', 'gnMetadataManager', '$filter', '$location',
+    '$window', 'OgpEditorService', 'TEMPLATES',
+    function($scope, $routeParams, gnGroupService, gnSearchManagerService, gnMetadataManager, $filter, $location,
+             $window, OgpEditorService, TEMPLATES) {
+      $scope.from = $routeParams.from;
+      $scope.importXmlMetadataStep = 'importLocalRecord';
+      $scope.isTemplate = false;
+      $scope.hasTemplates = true;
+      $scope.mdList = null;
+      $scope.blankTemplate = null;
+      $scope.newFromTemplateIsCollapsed = true;
+      $scope.showMyTemplatesOnly = false;
+
+      $scope.step = OgpEditorService.getStep();
+
+
+      if (!OgpEditorService.getStep() && $location.path() !== "/") {
+          $location.path("/");
+        return;
+      }
+
 
       // List of record type to not take into account
       // Could be avoided if a new index field is created FIXME ?
@@ -78,6 +105,52 @@
       var defaultType = 'dataset';
       var unknownType = 'unknownType';
       var fullPrivileges = true;
+
+      $scope.changeStep = function(step) {
+        OgpEditorService.setStep(step);
+        $scope.step = step;
+      };
+
+      $scope.switchXmlStep = function(xmlStep) {
+        $scope.importXmlMetadataStep = xmlStep;
+      };
+
+      $scope.$on('ogpEditorMdIdChanged', function(event, newValue) {
+        $scope.mdId = newValue;
+      });
+
+      $scope.$on('ogpImportedMdIdChanged', function(event, newValue) {
+        $scope.ogpMdId = newValue;
+      });
+
+      $scope.doEdit = function () {
+        var id;
+        if ($scope.from === 'fromBlankRecord') {
+          gnMetadataManager.copy(
+              $scope.blankTemplate['geonet:info'].id,
+              $scope.groups[0]['@id'],
+              false,
+              false,
+              false
+          ).success(function (data) {
+                var path = '/metadata/' + data.id;
+                var pathPart = $window.location.pathname.split('/');
+                pathPart[pathPart.length - 1] = "catalog.edit";
+                var pathname = pathPart.join('/');
+                pathname = pathname + "#" + path;
+                $window.location.href = pathname;
+              }).error(function () {
+                $scope.working = false;
+                $scope.creatingFrom = false;
+              }
+          );
+          return;
+        } else {
+          id = $scope.ogpMdId || $scope.mdId;
+        }
+        var path = '/metadata/' + id;
+        $location.path(path);
+      };
 
     $scope.loadGroups = function() {
       gnGroupService.list(TEMPLATES.EDITOR_PROFILE).then(
@@ -247,7 +320,10 @@
           // isTemplate, isChild, tab
           $scope.working = true;
           $scope.creatingFrom = 'blankTemplate';
-          gnMetadataManager.copy(
+          OgpEditorService.setStep('importDataProperties');
+          $location.path("/new/fromBlankRecord/optionalAdditions");
+
+         /* gnMetadataManager.copy(
               $scope.blankTemplate['geonet:info'].id,
               $scope.groups[0]['@id'],
               false,
@@ -264,7 +340,7 @@
                 $scope.working = false;
                 $scope.creatingFrom = false;
               }
-          );
+          );*/
         }
       };
 

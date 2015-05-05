@@ -1,0 +1,76 @@
+<div class="container" id="gn-new-metadata-container">
+  <h2 data-translate="">{{title}}</h2>
+
+  <div class="alert alert-warning" data-ng-hide="hasTemplates"
+    data-translate="">noTemplatesAvailable</div>
+
+  <div class="progress progress-striped active"
+    data-ng-show="hasTemplates && mdList === null">
+    <div class="progress-bar" style="width: 100%" data-translate>
+      loadingTemplates
+    </div>
+  </div>
+
+  <div class="row" data-ng-show="mdTypes">
+    <div class="col-md-offset-3 col-md-6">
+
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading cursor-pointer" data-ng-click="newFromBlankTemplate()">
+            <h4 class="panel-title" data-ng-class="{'text-muted': working}">
+              <span data-translate="">newBlankRecord</span>
+              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'blankTemplate'"></span>
+            </h4>
+          </div>
+        </div>
+        <div class="panel panel-default"  data-ng-class="{'text-muted': working}">
+          <div class="panel-heading cursor-pointer" data-ng-click="newFromTemplateIsCollapsed = !newFromTemplateIsCollapsed">
+            <h4 class="panel-title" data-ng-class="{'text-muted': working}">
+              <span data-translate="">newFromTemplate</span>
+              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'template'"></span>
+            </h4>
+          </div>
+          <div class="panel-body" data-collapse="newFromTemplateIsCollapsed">
+            <h5><span data-translate="">chooseTemplate</span> <span class="label-help fa fa-question-circle" data-tooltip="{{'chooseTemplateTooltip' | translate}}"></span></h5>
+            <div class="list-group template-selector">
+              <a href="" class="list-group-item" data-ng-class="{'active': tpl==activeTpl}"
+                 data-ng-repeat="tpl in tpls | filter:filterOwnTemplates(tpl)"
+                 data-ng-click="createFromTemplate(tpl)">{{tpl.title || tpl.defaultTitle}}</a>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" data-ng-model="showMyTemplatesOnly"> <span data-translate="">viewMyTemplatesOnly</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!--<div class="panel panel-default">
+          <div class="panel-heading cursor-pointer" data-ng-click="importLocalRecord()">
+            <h4 class="panel-title" data-ng-class="{'text-muted': working}">
+              <span data-translate="">importLocalRecord</span>
+              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'localRecord'"></span>
+            </h4>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading cursor-pointer" data-ng-click="importOgpCloud()">
+            <h4 class="panel-title" data-ng-class="{'text-muted': working}">
+              <span data-translate="">importOgpCloud</span>
+              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'ogpCloud'"></span>
+            </h4>
+          </div>
+        </div>-->
+        <div class="panel panel-default">
+          <div class="panel-heading cursor-pointer" data-ng-click="">
+            <h4 class="panel-title" data-ng-class="{'text-muted': working}">
+              <span data-translate="">openExistingXmlRecord</span>
+              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'openExistingXmlRecord'"></span>
+            </h4>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

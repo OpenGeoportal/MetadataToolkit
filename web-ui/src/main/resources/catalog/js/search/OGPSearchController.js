@@ -6,9 +6,10 @@
     goog.require('gn_date_validator_directive');
     goog.require('gn_map');
     goog.require('gn_group_service');
+    goog.require('ogp_editor_service');
 
     var module = angular.module('ogp_search_controller',
-        ['gn_date_validator_directive', 'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive', 'gn_group_service']);
+        ['gn_date_validator_directive', 'ui.bootstrap', 'ui.select', 'ngSanitize', 'gn_map_directive', 'gn_group_service', 'ogp_editor_service']);
 
     /**
      * Constants
@@ -21,8 +22,8 @@
      * Controller for OpenGeoPortal search.
      */
     module.controller('OgpSearchController', [
-        '$scope', '$filter', '$http', '$modal', '$rootScope', '$timeout', '$location', 'gnGroupService', 'CONSTANTS',
-        function ($scope, $filter, $http, $modal, $rootScope, $timeout, $location, gnGroupService, CONSTANTS) {
+        '$scope', '$filter', '$http', '$modal', '$rootScope', '$timeout', '$location', 'gnGroupService', 'OgpEditorService', 'CONSTANTS',
+        function ($scope, $filter, $http, $modal, $rootScope, $timeout, $location, gnGroupService, OgpEditorService, CONSTANTS) {
 
             $scope.searchForm = {};
             $scope.resultBean = {};
@@ -273,7 +274,7 @@
                 if (!$scope.resultBean && !$scope.resultBean.selectedMetadata && !$scope.resultBean.selectedMetadata.LayerId) {
                     return;
                 }
-                console.log($scope.resultBean.selectedMetadata.LayerId);
+
 
                 $scope.performingImport = true;
                 $http.post("ogp.dataTypes.import", {},
@@ -289,7 +290,11 @@
                         }
                         console.log(data);
                         $scope.metadataId = data;
-                        $timeout($scope.goToEditor, 4000);
+                        OgpEditorService.setOgpImportedMdId($scope.metadataId);
+                        //$timeout($scope.goToEditor, 4000);
+                        return $timeout(function(){
+                            $scope.performingImport = false;
+                        }, 4000);
 
                     }).
                     error(function (data, status, headers, config) {

@@ -4,9 +4,10 @@
 
   goog.require('gn_group_service');
   goog.require('gn_code_highlight');
+  goog.require('ogp_editor_service');
 
   var module = angular.module('gn_new_metadata_from_file_controller',
-      ['blueimp.fileupload', 'gn_group_service', 'ui.bootstrap', 'gn_code_highlight']);
+      ['blueimp.fileupload', 'gn_group_service', 'ui.bootstrap', 'gn_code_highlight', 'ogp_editor_service']);
 
   /**
    * Constants
@@ -16,8 +17,8 @@
   });
 
   module.controller('GnNewMetadataFromFileController',
-      ['$scope', '$location', 'gnGroupService', '$filter', '$http', '$modal', '$log', 'CONSTANTS',
-        function ($scope, $location, gnGroupService, $filter, $http, $modal, $log, CONSTANTS) {
+      ['$scope', '$location', 'gnGroupService', '$filter', '$http', '$modal', '$log', 'OgpEditorService', 'CONSTANTS',
+        function ($scope, $location, gnGroupService, $filter, $http, $modal, $log, OgpEditorService, CONSTANTS) {
 
           $scope.fileName = null;
           $scope.metadataId = null;
@@ -55,6 +56,7 @@
             }
             $log.info("Metadata id created " + mdId);
             $scope.metadataId = mdId;
+            OgpEditorService.setMetadataId(mdId);
           };
 
           var uploadXmlRecordError = function (evt, data) {
@@ -89,7 +91,9 @@
           };
 
           $scope.goToEditor = function () {
-            var path = '/metadata/' + $scope.metadataId;
+            OgpEditorService.setMdFileUploaded(true);
+
+                var path = '/metadata/' + $scope.metadataId;
             $location.path(path);
           };
 
