@@ -34,6 +34,25 @@
   <applicationSchemaInfo>Schema info</applicationSchemaInfo>
   <acquisitionInformation>Acquisition info</acquisitionInformation>
 
+  <!-- Tufts standard strings -->
+  <tufts-standard>Tufts standard</tufts-standard>
+  <tufts-standard2>Identication Information</tufts-standard2>
+  <tufts-standard-tab2>Attribute Information (Feature Catalog)</tufts-standard-tab2>
+  <tufts-standard-tab3>Spatial Representation Information</tufts-standard-tab3>
+  <tufts-standard-tab4>Distribution &amp; Metadata Information</tufts-standard-tab4>
+
+  <!-- Tufts minimal strings -->
+  <tufts-minimal>Tufts minimal</tufts-minimal>
+  <tufts-identificationinfo>Identification Information</tufts-identificationinfo>
+  <tufts-metadata>Metadata Reference Information</tufts-metadata>
+  <tufts-spatialrepresentation>Spatial Representation Information</tufts-spatialrepresentation>
+  <metadataOriginator>Originator</metadataOriginator>
+  <individualName>Individual name</individualName>
+  <organisationName>Organisation name</organisationName>
+  <metadataContact>Point of Contact</metadataContact>
+
+  <publicationDate>Publication Date  </publicationDate>
+
 
   <add-resource-id>Compute resource identifier</add-resource-id>
   <add-resource-idHelp>Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
