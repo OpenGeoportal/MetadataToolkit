@@ -310,7 +310,6 @@
 
             // resultPagination
             $scope.setPage = function () {
-
                 if ($scope.busy) {
                     console.log("nextPage aborting. Busy is true");
                     return;
