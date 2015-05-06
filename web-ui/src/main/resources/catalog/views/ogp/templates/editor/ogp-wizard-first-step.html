@@ -35,7 +35,7 @@
             <div class="list-group template-selector">
               <a href="" class="list-group-item" data-ng-class="{'active': tpl==activeTpl}"
                  data-ng-repeat="tpl in tpls | filter:filterOwnTemplates(tpl)"
-                 data-ng-click="createFromTemplate(tpl)">{{tpl.title || tpl.defaultTitle}}</a>
+                 data-ng-click="nextStepFromTemplate(tpl)">{{tpl.title || tpl.defaultTitle}}</a>
             </div>
             <div class="checkbox">
               <label>
@@ -61,10 +61,10 @@
           </div>
         </div>-->
         <div class="panel panel-default">
-          <div class="panel-heading cursor-pointer" data-ng-click="">
+          <div class="panel-heading cursor-pointer" data-ng-click="importLocalRecord()">
             <h4 class="panel-title" data-ng-class="{'text-muted': working}">
               <span data-translate="">openExistingXmlRecord</span>
-              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'openExistingXmlRecord'"></span>
+              <span class="loading fa fa-spinner fa-spin" data-ng-show="working && creatingFrom === 'localRecord'"></span>
             </h4>
           </div>
         </div>

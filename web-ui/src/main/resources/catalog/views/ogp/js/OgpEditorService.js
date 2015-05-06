@@ -4,10 +4,10 @@
   var module = angular.module('ogp_editor_service', []);
 
   module.factory('OgpEditorService', ['$rootScope', function($rootScope) {
-    var _step;
-    var _metadataId;
+    var _step = null;
+    var _metadataId = null;
     var _mdFileUploaded = false;
-    var _ogpImportedMdId;
+    var _ogpImportedMdId = null;
 
     var service = {};
     service.getStep = function() {
@@ -47,7 +47,17 @@
 
     service.getOgpImportedMdId = function() {
       return _ogpImportedMdId;
-    }
+    };
+
+    /**
+     * Reset the service state.
+     */
+    service.reset = function() {
+      _step = null;
+      _metadataId = null;
+      _mdFileUploaded = false;
+      _ogpImportedMdId = null;
+    };
 
 
 

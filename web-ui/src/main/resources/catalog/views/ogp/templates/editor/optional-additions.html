@@ -31,7 +31,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <button class="btn btn-default navbar-btn"
-                                    data-ng-click="doEdit()"><span class="fa fa-pencil fa-fw"></span><span data-translate="">editRecord</span></button>
+                                    data-ng-click="doEdit()" data-ng-disabled="editDisabled"><span class="fa fa-pencil fa-fw"></span><span data-translate="">editRecord</span></button>
                         </li>
                     </ul>
 
@@ -41,10 +41,11 @@
         </div>
     </nav>
     <div>
-        <pre>
+        <pre data-ng-if="isDebug">
             step: {{step}}
             mdId: {{mdId}}
             ogpMdid: {{ogpMdId}}
+            templateId: {{templateId}}
         </pre>
         <div data-ng-if="step === 'importDataProperties'" class="container">
             <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/templates/editor/upload-form.html'">
