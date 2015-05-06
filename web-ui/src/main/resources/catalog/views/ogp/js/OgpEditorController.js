@@ -9,15 +9,20 @@
   goog.require('gn_search_manager_service');
   goog.require('gn_locale');
   goog.require('gn_new_metadata_from_file_controller');
+  goog.require('ogp_search');
+  goog.require('ogp_editor_service');
 
   var module = angular.module('ogp_editor_controller', [
+    'ui.bootstrap',
     'ngRoute',
     'gn_group_service',
     'gn_search_manager_service',
     'ui.bootstrap',
     'gn_locale',
     'gn_catalog_service',
-    'gn_new_metadata_from_file_controller'
+    'gn_new_metadata_from_file_controller',
+    'ogp_search_controller',
+    'ogp_editor_service'
   ]);
 
   /**
@@ -33,20 +38,36 @@
 
   module.config(['$routeProvider',
     function($routeProvider) {
-      console.log($routeProvider);
       $routeProvider.
           when('/metadata/:id', {
             templateUrl: tplFolder + "redirect.html",
             controller: 'OgpRedirectController'}).
-          when('/create/fromFile', {
+          /*when('/create/fromFile', {
             templateUrl: gnTplFolder + 'upload-form.html',
             controller: 'GnNewMetadataFromFileController'}).
+          when('/create/fromOGP', {
+            templateUrl: gnTplFolder + 'upload-form.html',
+            controller:'OgpSearchController'
+          }).*/
+          when('/new/:from/optionalAdditions', {
+            templateUrl: tplFolder + "optional-additions.html",
+            controller: 'OgpEditorBoardController'
+          }).
+          when('/new/:from/:templateId', {
+            templateUrl: tplFolder + "optional-additions.html",
+            controller: 'OgpEditorBoardController'
+          }).
+          when('/new/:from', {
+            templateUrl: tplFolder + "optional-additions.html",
+            controller: 'OgpEditorBoardController'
+          }).
           otherwise({
-            templateUrl: tplFolder + 'ogp-new-metadata.html',
+            templateUrl: tplFolder + 'ogp-wizard-first-step.html',
             controller: 'OgpEditorBoardController'
           });
 
     }]);
+
 
   module.controller('OgpRedirectController', ['$scope', '$routeParams', '$window',
     function($scope, $routeParams, $window) {
@@ -63,14 +84,44 @@
   }]);
 
   module.controller('OgpEditorBoardController', [
-    '$scope', '$routeParams', 'gnGroupService', 'gnSearchManagerService', 'gnMetadataManager', '$filter', '$location', '$window', 'TEMPLATES',
-    function($scope, $routeParams, gnGroupService, gnSearchManagerService, gnMetadataManager, $filter, $location, $window, TEMPLATES) {
-    $scope.isTemplate = false;
-    $scope.hasTemplates = true;
-    $scope.mdList = null;
-    $scope.blankTemplate = null;
-    $scope.newFromTemplateIsCollapsed = true;
-    $scope.showMyTemplatesOnly = false;
+    '$scope', '$routeParams', 'gnGroupService', 'gnSearchManagerService', 'gnMetadataManager', '$filter', '$location',
+    '$window', '$log', 'OgpEditorService', 'TEMPLATES',
+    function($scope, $routeParams, gnGroupService, gnSearchManagerService, gnMetadataManager, $filter, $location,
+             $window, $log, OgpEditorService, TEMPLATES) {
+      $scope.from = $routeParams.from;
+      $scope.templateId = $routeParams.templateId;
+      $scope.importXmlMetadataStep = 'importLocalRecord';
+      $scope.isTemplate = false;
+      $scope.hasTemplates = true;
+      $scope.mdList = null;
+      $scope.blankTemplate = null;
+      $scope.newFromTemplateIsCollapsed = true;
+      $scope.showMyTemplatesOnly = false;
+      $scope.editDisabled = ($scope.from === 'existingXmlRecord');
+
+      $scope.step = OgpEditorService.getStep();
+
+
+
+      if ($scope.from && ($scope.from !== 'fromBlankRecord' && $scope.from !== 'fromTemplate' && $scope.from !== 'existingXmlRecord')) {
+        $log.debug("Not valid 'from' path part. Redirecting to '/'");
+        OgpEditorService.reset();
+        $location.path("/");
+        return;
+      }
+
+      if (!OgpEditorService.getStep() && $location.path() !== "/") {
+        OgpEditorService.reset();
+        $location.path("/");
+        return;
+      }
+      if ($scope.from === 'fromTemplate' && !$scope.templateId) {
+        OgpEditorService.reset();
+        $location.path("/");
+        return;
+      }
+
+
 
       // List of record type to not take into account
       // Could be avoided if a new index field is created FIXME ?
@@ -78,6 +129,77 @@
       var defaultType = 'dataset';
       var unknownType = 'unknownType';
       var fullPrivileges = true;
+
+      $scope.changeStep = function(step) {
+        OgpEditorService.setStep(step);
+        $scope.step = step;
+      };
+
+      $scope.switchXmlStep = function(xmlStep) {
+        $scope.importXmlMetadataStep = xmlStep;
+      };
+
+      $scope.$on('ogpEditorMdIdChanged', function(event, newValue) {
+        $scope.mdId = newValue;
+        $scope.isEditDisabled();
+      });
+
+      $scope.$on('ogpImportedMdIdChanged', function(event, newValue) {
+        $scope.ogpMdId = newValue;
+        $scope.isEditDisabled();
+      });
+
+      $scope.isEditDisabled = function() {
+        var disabled = false;
+        if ($scope.from === 'existingXmlRecord' && !($scope.mdId || $scope.ogpMdId)) {
+          disabled = true;
+        }
+        $scope.editDisabled = disabled;;
+      }
+
+      $scope.doEdit = function () {
+        var id;
+        if ($scope.from === 'fromBlankRecord') {
+          gnMetadataManager.copy(
+              $scope.blankTemplate['geonet:info'].id,
+              $scope.groups[0]['@id'],
+              false,
+              false,
+              false
+          ).success(function (data) {
+                var path = '/metadata/' + data.id;
+                var pathPart = $window.location.pathname.split('/');
+                pathPart[pathPart.length - 1] = "catalog.edit";
+                var pathname = pathPart.join('/');
+                pathname = pathname + "#" + path;
+                $window.location.href = pathname;
+              }).error(function () {
+                $scope.working = false;
+                $scope.creatingFrom = false;
+              }
+          );
+          return;
+        } else if ($scope.from === 'fromTemplate') {
+          gnMetadataManager.copy(
+              $scope.templateId,
+              $scope.groups[0]['@id'],
+              false,
+              false,
+              false
+          ).success(function (data) {
+                var path = '/metadata/' + data.id;
+                $location.path(path);
+              }).error(function () {
+                $scope.working = false;
+                $scope.creatingFrom = false;
+              });
+          return;
+        } else {
+          id = $scope.ogpMdId || $scope.mdId;
+        }
+        var path = '/metadata/' + id;
+        $location.path(path);
+      };
 
     $scope.loadGroups = function() {
       gnGroupService.list(TEMPLATES.EDITOR_PROFILE).then(
@@ -247,7 +369,10 @@
           // isTemplate, isChild, tab
           $scope.working = true;
           $scope.creatingFrom = 'blankTemplate';
-          gnMetadataManager.copy(
+          OgpEditorService.setStep('importDataProperties');
+          $location.path("/new/fromBlankRecord/optionalAdditions");
+
+         /* gnMetadataManager.copy(
               $scope.blankTemplate['geonet:info'].id,
               $scope.groups[0]['@id'],
               false,
@@ -264,7 +389,7 @@
                 $scope.working = false;
                 $scope.creatingFrom = false;
               }
-          );
+          );*/
         }
       };
 
@@ -285,15 +410,20 @@
         if (!$scope.working) {
           $scope.working = true;
           $scope.creatingFrom = 'localRecord';
-          var path = '/create/fromFile';
-          //var pathPart = $window.location.pathname.split('/');
-          //pathPart[pathPart.length - 1] = "catalog.edit";
-          //var pathname = pathPart.join('/');
-          //pathname = pathname + "#" + path;
-          //$window.location.href = pathname;
-          $location.path(path);
+          OgpEditorService.setStep('importDataProperties');
+          $location.path('/new/existingXmlRecord');
         }
       };
+
+      $scope.nextStepFromTemplate = function(tpl) {
+        if (!$scope.working) {
+          $scope.working = true;
+          $scope.creatingFrom = 'template';
+          $scope.activeTpl = tpl;
+          OgpEditorService.setStep('importDataProperties');
+          $location.path('/new/fromTemplate/' + tpl['geonet:info'].id);
+        }
+      }
 
       $scope.createFromTemplate = function(tpl) {
         if (!$scope.working) {
@@ -307,7 +437,7 @@
               false,
               false
           ).success(function (data) {
-                console.log($location.url());
+                $log.debug($location.url());
                 var path = '/metadata/' + data.id;
                 var pathPart = $window.location.pathname.split('/');
                 pathPart[pathPart.length - 1] = "catalog.edit";

@@ -6,6 +6,7 @@
 
   goog.require('gn_module');
   goog.require('ogp_editor_controller');
+  goog.require('ogp_editor_service');
 
   var module = angular.module('ogp_editor', [
     'gn_module', 'ogp_editor_controller']);
