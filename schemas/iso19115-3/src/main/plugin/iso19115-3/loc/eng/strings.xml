@@ -15,7 +15,6 @@
   <!-- New strings added for the AngularJS editor -->
   <!-- View and tabs -->
   <advanced>Full</advanced>
-  <default>Simple</default>
   <simple>Simple</simple>
   <inspire>INSPIRE</inspire>
   <resource>Resource</resource>
@@ -34,25 +33,84 @@
   <applicationSchemaInfo>Schema info</applicationSchemaInfo>
   <acquisitionInformation>Acquisition info</acquisitionInformation>
 
+
   <!-- Tufts standard strings -->
-  <tufts-standard>Tufts standard</tufts-standard>
-  <tufts-standard2>Identication Information</tufts-standard2>
-  <tufts-standard-tab2>Attribute Information (Feature Catalog)</tufts-standard-tab2>
-  <tufts-standard-tab3>Spatial Representation Information</tufts-standard-tab3>
-  <tufts-standard-tab4>Distribution &amp; Metadata Information</tufts-standard-tab4>
+  <default>Standard</default>
+  <tufts-standard>Standard</tufts-standard>
+  <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
+  <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
+  <tufts-distribution-information>Distribution</tufts-distribution-information>
+  <tufts-metadata-reference-information>Metadata Reference</tufts-metadata-reference-information>
+  <tufts-spatial-representation-tab>Spatial Representation</tufts-spatial-representation-tab>
+  <featureCatalogTab>Feature Catalog</featureCatalogTab>
+  <publisher>Publisher</publisher>
+  <publicationPlace>Publication Place</publicationPlace>
+  <descriptiveKeywords>Descriptive Keywords</descriptiveKeywords>
+  <placeKeywords>Place Keywords</placeKeywords>
+  <themeKeywords>Theme Keywords</themeKeywords>
+  <spatialResolution>Spatial Resolution</spatialResolution>
+  <equivalentScale>Equivalent Scale</equivalentScale>
+  <tuftsSpatialRepresentation>Spatial Representation</tuftsSpatialRepresentation>
+  <processDescription>Process Description</processDescription>
+  <stepDescription>Process description</stepDescription>
+  <distributionInformation>Distribution</distributionInformation>
+  <distributionFormat>Format</distributionFormat>
+  <distributionFormatField>Distribution Format</distributionFormatField>
+  <onlineResources>Content Information</onlineResources>
+  <digitalTransferOptions>Digital Transfer Options</digitalTransferOptions>
+  <size>Size</size>
+  <linkage>URL</linkage>
+  <protocol>Protocol</protocol>
+  <metadataReferenceInformation>Metadata Reference</metadataReferenceInformation>
+  <metadataDate>Metadata Date</metadataDate>
+  <metadataStandard>Metadata Standard</metadataStandard>
+  <hierarchyLevel>Hierarchy Level</hierarchyLevel>
+  <fileIdentifier>File Identifier</fileIdentifier>
+  <language>Language</language>
+  <spatialRepresentation>Spatial Representation</spatialRepresentation>
+  <publisherOrganisationName>Organisation name</publisherOrganisationName>
+  <publisherIndividualName>Individual name</publisherIndividualName>
+  <publisherCityName>City</publisherCityName>
+  <publisherAdminAreaName>Admin area</publisherAdminAreaName>
+  <publisherCountryName>Country</publisherCountryName>
+  <mdContactOrganisationName>Organisation name</mdContactOrganisationName>
+  <mdContactIndividualName>Individual name</mdContactIndividualName>
+  <mdContactElectronicMailAddress>Email</mdContactElectronicMailAddress>
+  <featureCatalogSection>Feature Catalog</featureCatalogSection>
+  <featureAttributeDescription>Attribute Definition</featureAttributeDescription>
+  <featureTypeName>Attribute Type</featureTypeName>
+  <featureAttributeMemberName>Attribute Label</featureAttributeMemberName>
+  <typeName>Type Name</typeName>
+  <entityDefinition>Definition</entityDefinition>
+  <definitionSource>Definition Source</definitionSource>
+  <title>Feature Catalog for</title>
+  <extent>Temporal Extent</extent>
+  <EX_GeographicBoundingBox>Geographic Extent</EX_GeographicBoundingBox>
+  <topicCategory>Topic Category</topicCategory>
+  <onLine>Online Resource</onLine>
+  <transferSize>Transfer Size</transferSize>
+  <dateInfo>Metadata Date</dateInfo>
+  <contact>Metadata Contact</contact>
+  <name>Organisation</name>
+  <individual>Email</individual>
+  <email>Individual</email>
+  <otherLocale>Non Default Language</otherLocale>
+  <accessConstraints>Access Constraints</accessConstraints>
+  <useConstraints>Use Constraints</useConstraints>
+  <featureType>Feature Type</featureType>
+
 
   <!-- Tufts minimal strings -->
-  <tufts-minimal>Tufts minimal</tufts-minimal>
+  <tufts-minimal>Minimal</tufts-minimal>
   <tufts-identificationinfo>Identification Information</tufts-identificationinfo>
   <tufts-metadata>Metadata Reference Information</tufts-metadata>
   <tufts-spatialrepresentation>Spatial Representation Information</tufts-spatialrepresentation>
   <metadataOriginator>Originator</metadataOriginator>
   <individualName>Individual name</individualName>
   <organisationName>Organisation name</organisationName>
+  <electronicMailAddress>Email</electronicMailAddress>
   <metadataContact>Point of Contact</metadataContact>
-
-  <publicationDate>Publication Date  </publicationDate>
-
+  <publicationDate>Publication Date</publicationDate>
 
   <add-resource-id>Compute resource identifier</add-resource-id>
   <add-resource-idHelp>Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
