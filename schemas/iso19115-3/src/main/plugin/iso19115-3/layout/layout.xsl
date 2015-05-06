@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
-  xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0/2014-12-25"
-  xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
-  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
-  xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
-  xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0/2014-12-25"
-  xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0/2014-12-25"
-  xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
-  xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
-  xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
-  xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
-  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
-  xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"
-  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
-  xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
-  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0"
+  xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
+  xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
+  xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0"
+  xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0"
+  xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0"
+  xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0"
+  xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0"
+  xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0"
+  xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0"
+  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0"
+  xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
+  xmlns:mrc="http://standards.iso.org/19157/-2/mrc/1.0"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
+  xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"
+  xmlns:gfc="http://standards.iso.org/19110/gfc/1.1"
   xmlns:gmx="http://standards.iso.org/19115/-3/gmx"
   xmlns:gts="http://www.isotc211.org/2005/gts"
-  xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:gn="http://www.fao.org/geonetwork"
   xmlns:gn-fn-core="http://geonetwork-opensource.org/xsl/functions/core" 
@@ -33,8 +34,8 @@
 
   <!-- Visit all XML tree recursively -->
   <xsl:template mode="mode-iso19115-3"
-                match="mds:*|mcc:*|mri:*|mrs:*|mrd:*|mco:*|msr:*|lan:*|
-                       gcx:*|gex:*|dqm:*|mdq:*|cit:*|srv:*|gml:*|gts:*"
+                match="mds:*|mcc:*|mri:*|mrs:*|mrc:*|mrd:*|mco:*|msr:*|lan:*|
+                       gcx:*|gex:*|dqm:*|mdq:*|cit:*|srv:*|gml:*|gts:*|gfc:*"
                 priority="2">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
@@ -43,7 +44,7 @@
       <xsl:with-param name="schema" select="$schema"/>
       <xsl:with-param name="labels" select="$labels"/>
     </xsl:apply-templates>
-    </xsl:template>
+  </xsl:template>
 
   <!-- Ignore all gn element -->
   <xsl:template mode="mode-iso19115-3" match="gn:*|@gn:*|@*" priority="1000"/>
@@ -70,7 +71,7 @@
         <xsl:with-param name="directive" select="$directive"/>
         <xsl:with-param name="childEditInfo" select="."/>
         <xsl:with-param name="parentEditInfo" select="../gn:element"/>
-      <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
+        <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -136,27 +137,80 @@
   <xsl:template mode="mode-iso19115-3" priority="200"
                 match="*[gco:CharacterString|gco:Integer|gco:Decimal|
        gco:Boolean|gco:Real|gco:Measure|gco:Length|gco:Distance|gco:Angle|gmx:FileName|
-       gco:Scale|gco:RecordType|gmx:MimeFileType|gco:LocalName]">
+       gco:Scale|gco:RecordType|gmx:MimeFileType|gco:LocalName|gco:ScopedName|gco:RecordType|
+       gco:Record|lan:PT_FreeText]">
+    <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
 
     <xsl:variable name="elementName" select="name()"/>
 
+    <xsl:variable name="exclusionMatchesParent">
+      <xsl:variable name="parent">
+        <xsl:value-of separator="," select="$editorConfig/editor/multilingualFields/exclude/name[. = $elementName]/@parent" />
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="string-length($parent) > 0">
+          <xsl:value-of select="contains($parent, ../name())" />
+        </xsl:when>
+        <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="exclusionMatchesAncestor">
+      <xsl:variable name="ancestor">
+        <xsl:value-of separator="," select="$editorConfig/editor/multilingualFields/exclude/name[. = $elementName]/@ancestor" />
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="string-length($ancestor) > 0 and count(ancestor::*[contains($ancestor, name())]) != 0">
+          <xsl:value-of select="true()" />
+        </xsl:when>
+        <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="exclusionMatchesChild">
+      <xsl:variable name="child">
+        <xsl:value-of separator="," select="$editorConfig/editor/multilingualFields/exclude/name[. = $elementName]/@child" />
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="string-length($child) > 0 and count(*[contains($child, name())]) != 0">
+          <xsl:value-of select="true()" />
+        </xsl:when>
+        <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="excluded"
+                  select="(
+                    count($editorConfig/editor/multilingualFields/exclude/name[. = $elementName]) > 0 and
+                    not($editorConfig/editor/multilingualFields/exclude/name[. = $elementName]/@ancestor) and
+                    not($editorConfig/editor/multilingualFields/exclude/name[. = $elementName]/@child) and
+                    not($editorConfig/editor/multilingualFields/exclude/name[. = $elementName]/@parent)) or
+                      $exclusionMatchesAncestor = true() or $exclusionMatchesParent = true() or $exclusionMatchesChild = true()"/>
+
+
     <xsl:variable name="hasPTFreeText" select="count(lan:PT_FreeText) > 0"/>
+    <xsl:variable name="hasOnlyPTFreeText"
+                  select="count(lan:PT_FreeText) > 0 and count(gco:CharacterString) = 0"/>
+
 
     <xsl:variable name="isMultilingualElement"
-                  select="$metadataIsMultilingual and
-              count($editorConfig/editor/multilingualFields/exclude[name = $elementName]) = 0"/>
+                  select="$metadataIsMultilingual and $excluded = false()"/>
     <xsl:variable name="isMultilingualElementExpanded"
-                  select="count($editorConfig/editor/multilingualFields/expanded[name = $elementName]) > 0"/>
+                  select="$isMultilingualElement and count($editorConfig/editor/multilingualFields/expanded[name = $elementName]) > 0"/>
 
     <!-- For some fields, always display attributes.
     TODO: move to editor config ? -->
     <xsl:variable name="forceDisplayAttributes" select="false()"/>
 
-    <!-- TODO: Support gmd:LocalisedCharacterString -->
-    <xsl:variable name="theElement" select="gco:CharacterString|gco:Integer|gco:Decimal|
-      gco:Boolean|gco:Real|gco:Measure|gco:Length|gco:Distance|gco:Angle|gmx:FileName|
-      gco:Scale|gco:RecordType|gmx:MimeFileType|gco:LocalName"/>
+    <xsl:variable name="monoLingualValue"
+                  select="gco:CharacterString|gco:Integer|gco:Decimal|
+                          gco:Boolean|gco:Real|gco:Measure|gco:Length|
+                          gco:Distance|gco:Angle|gmx:FileName|
+                          gco:Scale|gco:RecordType|gmx:MimeFileType|
+                          gco:LocalName|gco:ScopedName|gco:RecordType|
+                          gco:Record"/>
+    <xsl:variable name="theElement"
+                  select="if ($isMultilingualElement and $hasOnlyPTFreeText or not($monoLingualValue))
+                          then lan:PT_FreeText
+                          else $monoLingualValue"/>
 
     <!--
       This may not work if node context is lost eg. when an element is rendered
@@ -203,7 +257,10 @@
 
         <values>
           <!-- Or the PT_FreeText element matching the main language -->
-          <value ref="{$theElement/gn:element/@ref}" lang="{$metadataLanguage}"><xsl:value-of select="gco:CharacterString"/></value>
+          <xsl:if test="gco:CharacterString">
+            <value ref="{$theElement/gn:element/@ref}" lang="{$metadataLanguage}"><xsl:value-of select="gco:CharacterString"/></value>
+          </xsl:if>
+
 
           <!-- the existing translation -->
           <xsl:for-each select="lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString">
@@ -223,6 +280,7 @@
         </values>
       </xsl:if>
     </xsl:variable>
+
     <xsl:call-template name="render-element">
       <xsl:with-param name="label" select="$labelConfig/label"/>
       <xsl:with-param name="value" select="if ($isMultilingualElement) then $values else *"/>
@@ -242,7 +300,7 @@
       <xsl:with-param name="listOfValues" select="$helper"/>
       <xsl:with-param name="toggleLang" select="$isMultilingualElementExpanded"/>
       <xsl:with-param name="forceDisplayAttributes" select="$forceDisplayAttributes"/>
-    <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $elementName]) = 0"/>
+      <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $elementName]) = 0"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -260,8 +318,7 @@
     <div data-gn-date-picker="{gco:Date|gco:DateTime}"
          data-label="{$labelConfig/label}"
          data-element-name="{name(gco:Date|gco:DateTime)}"
-         data-element-ref="{concat('_X', gn:element/@ref)}"
-         data-required="{$labelConfig/condition = 'mandatory'}">
+         data-element-ref="{concat('_X', gn:element/@ref)}">
     </div>
   </xsl:template>
 
@@ -273,16 +330,14 @@
     <xsl:variable name="value" select="normalize-space(text())"/>
 
     <xsl:variable name="attributes">
-      <xsl:if test="$isEditing">
-        <!-- Create form for all existing attribute (not in gn namespace)
-        and all non existing attributes not already present. -->
-        <xsl:apply-templates mode="render-for-field-for-attribute"
-                             select="@*|
-                              gn:attribute[not(@name = parent::node()/@*/name())]">
-          <xsl:with-param name="ref" select="gn:element/@ref"/>
-          <xsl:with-param name="insertRef" select="gn:element/@ref"/>
-        </xsl:apply-templates>
-      </xsl:if>
+      <!-- Create form for all existing attribute (not in gn namespace)
+      and all non existing attributes not already present. -->
+      <xsl:apply-templates mode="render-for-field-for-attribute"
+                           select="@*|
+                            gn:attribute[not(@name = parent::node()/@*/name())]">
+        <xsl:with-param name="ref" select="gn:element/@ref"/>
+        <xsl:with-param name="insertRef" select="gn:element/@ref"/>
+      </xsl:apply-templates>
     </xsl:variable>
 
     <xsl:call-template name="render-element">
@@ -327,7 +382,7 @@
       <xsl:with-param name="parentEditInfo" select="gn:element"/>
       <xsl:with-param name="listOfValues"
                       select="gn-fn-metadata:getCodeListValues($schema, name(*[@codeListValue]), $codelists, .)"/>
-    <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $elementName]) = 0"/>
+      <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $elementName]) = 0"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -387,23 +442,4 @@
       <xsl:with-param name="listOfValues" select="$helper"/>
     </xsl:call-template>
   </xsl:template>
-
-  <xsl:template mode="mode-iso19115-3"
-                match="gfc:typeName"
-                priority="200">
-    <xsl:param name="schema" select="$schema" required="no"/>
-    <xsl:param name="labels" select="$labels" required="no"/>
-    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-
-    <xsl:call-template name="render-element">
-      <xsl:with-param name="label"
-                      select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', $xpath)/label"/>
-      <xsl:with-param name="name" select="gn:element/@ref"/>
-      <xsl:with-param name="value" select="text()"/>
-      <xsl:with-param name="cls" select="local-name()"/>
-      <xsl:with-param name="xpath" select="$xpath"/>
-      <xsl:with-param name="editInfo" select="*/gn:element"/>
-    </xsl:call-template>
-  </xsl:template>
-
 </xsl:stylesheet>

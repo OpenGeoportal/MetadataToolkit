@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-  xmlns:gml="http://www.opengis.net/gml/3.2" 
-  xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
-  xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"
-  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
-  xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
-  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
-  xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
-  xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
-  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
-  xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0/2014-12-25"
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
-  xmlns:gn="http://www.fao.org/geonetwork"
+      xmlns:gn="http://www.fao.org/geonetwork"
+      xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0"
+      xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
+      xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
+      xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
+      xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0"
+      xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0"
+      xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0"
+      xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0"
+      xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0"
+      xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0"
+      xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0"
+      xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
+      xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
+      xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"   
+      xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0/2014-12-25"
+      xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
+      xmlns:mas="http://standards.iso.org/19115/-3/mas/1.0/2014-12-25"
+      xmlns:mda="http://standards.iso.org/19115/-3/mda/1.0/2014-12-25"
+      xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0/2014-12-25"
+      xmlns:mdt="http://standards.iso.org/19115/-3/mdt/1.0/2014-12-25"
+      xmlns:mex="http://standards.iso.org/19115/-3/mex/1.0/2014-12-25"
+      xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0/2014-12-25"
+      xmlns:mpc="http://standards.iso.org/19115/-3/mpc/1.0/2014-12-25"
+      xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
+      xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
+      xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0/2014-12-25"
+      xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0/2014-12-25"
+      xmlns:gml="http://www.opengis.net/gml/3.2"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:geonet="http://www.fao.org/geonetwork"
   exclude-result-prefixes="#all">
   
   <xsl:import href="convert/create19115-3Namespaces.xsl"/>
@@ -25,6 +44,10 @@
   <xsl:variable name="url" select="/root/env/siteURL"/>
   <xsl:variable name="uuid" select="/root/env/uuid"/>
 
+  <xsl:variable name="metadataIdentifierCodeSpace"
+                select="'urn:uuid'"
+                as="xs:string"/>
+
   <xsl:template match="/root">
     <xsl:apply-templates select="mdb:MD_Metadata"/>
   </xsl:template>
@@ -35,7 +58,8 @@
       
       <xsl:call-template name="add-iso19115-3-namespaces"/>
       
-      <!-- Add metadataIdentifier if it doesn't exist -->
+      <!-- Add metadataIdentifier if it doesn't exist
+      TODO: only if not harvested -->
       <mdb:metadataIdentifier>
         <mcc:MD_Identifier>
           <!-- authority could be for this GeoNetwork node ?
@@ -45,11 +69,15 @@
             <gco:CharacterString><xsl:value-of select="/root/env/uuid"/></gco:CharacterString>
           </mcc:code>
           <mcc:codeSpace>
-            <gco:CharacterString>urn:uuid</gco:CharacterString>
+            <gco:CharacterString><xsl:value-of select="$metadataIdentifierCodeSpace"/></gco:CharacterString>
           </mcc:codeSpace>
         </mcc:MD_Identifier>
       </mdb:metadataIdentifier>
-      
+
+  <!--    <xsl:apply-templates select="mdb:metadataIdentifier[
+                                    mcc:MD_Identifier/mcc:codeSpace/gco:CharacterString !=
+                                    $metadataIdentifierCodeSpace]"/>-->
+
       <xsl:apply-templates select="mdb:defaultLocale"/>
       <xsl:apply-templates select="mdb:parentMetadata"/>
       <xsl:apply-templates select="mdb:metadataScope"/>
@@ -103,7 +131,7 @@
       <xsl:apply-templates select="mdb:otherLocale"/>
       <xsl:apply-templates select="mdb:metadataLinkage"/>
 
-      <xsl:variable name="pointOfTruthUrl" select="concat($url, '/search?uuid=', $uuid)"/>
+      <xsl:variable name="pointOfTruthUrl" select="concat($url, '/metadata/', $uuid)"/>
 
       <xsl:if test="$createMetadataLinkage and count(mdb:metadataLinkage/cit:CI_OnlineResource/cit:linkage/*[. = $pointOfTruthUrl]) = 0">
         <!-- TODO: This should only be updated for not harvested records ? -->
@@ -137,12 +165,13 @@
       <xsl:apply-templates select="mdb:metadataConstraints"/>
       <xsl:apply-templates select="mdb:applicationSchemaInfo"/>
       <xsl:apply-templates select="mdb:metadataMaintenance"/>
+      <xsl:apply-templates select="mdb:acquisitionInformation"/>
     </xsl:copy>
   </xsl:template>
   
   
   <!-- Update revision date -->
-  <xsl:template match="mdb:dateInfo[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='revision']">
+  <xsl:template match="mdb:dateInfo[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='lastUpdate']">
     <xsl:copy>
       <xsl:choose>
         <xsl:when test="/root/env/changeDate">
@@ -151,7 +180,7 @@
               <gco:DateTime><xsl:value-of select="/root/env/changeDate"/></gco:DateTime>
             </cit:date>
             <cit:dateType>
-              <cit:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision"/>
+              <cit:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="lastUpdate"/>
             </cit:dateType>
           </cit:CI_Date>
         </xsl:when>
@@ -267,19 +296,19 @@
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <cit:linkage>
-        <cit:URL>
+        <gco:CharacterString>
           <xsl:choose>
             <xsl:when test="/root/env/config/downloadservice/simple='true'">
-              <xsl:value-of select="concat(/root/env/siteURL,'/resources.get?uuid=',/root/env/uuid,'&amp;fname=',$fname,'&amp;access=private')"/>
+              <xsl:value-of select="concat(/root/env/siteURL,'resources.get?uuid=',/root/env/uuid,'&amp;fname=',$fname,'&amp;access=private')"/>
             </xsl:when>
             <xsl:when test="/root/env/config/downloadservice/withdisclaimer='true'">
-              <xsl:value-of select="concat(/root/env/siteURL,'/file.disclaimer?uuid=',/root/env/uuid,'&amp;fname=',$fname,'&amp;access=private')"/>
+              <xsl:value-of select="concat(/root/env/siteURL,'file.disclaimer?uuid=',/root/env/uuid,'&amp;fname=',$fname,'&amp;access=private')"/>
             </xsl:when>
             <xsl:otherwise> <!-- /root/env/config/downloadservice/leave='true' -->
               <xsl:value-of select="cit:linkage/gco:CharacterString"/>
             </xsl:otherwise>
           </xsl:choose>
-        </cit:URL>
+        </gco:CharacterString>
       </cit:linkage>
       <xsl:copy-of select="cit:protocol"/>
       <xsl:copy-of select="cit:applicationProfile"/>
@@ -320,10 +349,10 @@
       <xsl:attribute name="src">
         <xsl:choose>
           <xsl:when test="/root/env/config/downloadservice/simple='true'">
-            <xsl:value-of select="concat(/root/env/siteURL,'/resources.get?uuid=',/root/env/uuid,'&amp;fname=',.,'&amp;access=private')"/>
+            <xsl:value-of select="concat(/root/env/siteURL,'resources.get?uuid=',/root/env/uuid,'&amp;fname=',.,'&amp;access=private')"/>
           </xsl:when>
           <xsl:when test="/root/env/config/downloadservice/withdisclaimer='true'">
-            <xsl:value-of select="concat(/root/env/siteURL,'/file.disclaimer?uuid=',/root/env/uuid,'&amp;fname=',.,'&amp;access=private')"/>
+            <xsl:value-of select="concat(/root/env/siteURL,'file.disclaimer?uuid=',/root/env/uuid,'&amp;fname=',.,'&amp;access=private')"/>
           </xsl:when>
           <xsl:otherwise> <!-- /root/env/config/downloadservice/leave='true' -->
             <xsl:value-of select="@src"/>
@@ -338,15 +367,15 @@
   <!-- Do not allow to expand operatesOn sub-elements 
     and constrain users to use uuidref attribute to link
     service metadata to datasets. This will avoid to have
-    error on XSD validation. -->
-  <xsl:template match="srv:operatesOn|mrc:featureCatalogueCitation">
+    error on XSD validation.  |mrc:featureCatalogueCitation[@uuidref] -->
+  <xsl:template match="srv:operatesOn">
     <xsl:copy>
       <xsl:copy-of select="@uuidref"/>
       <xsl:if test="@uuidref">
         <xsl:choose>
           <xsl:when test="not(string(@xlink:href)) or starts-with(@xlink:href, /root/env/siteURL)">
             <xsl:attribute name="xlink:href">
-              <xsl:value-of select="concat(/root/env/siteURL,'/csw?service=CSW&amp;request=GetRecordById&amp;version=2.0.2&amp;outputSchema=http://standards.iso.org/19115/-3/gmd&amp;elementSetName=full&amp;id=',@uuidref)"/>
+              <xsl:value-of select="concat(/root/env/siteURL,'csw?service=CSW&amp;request=GetRecordById&amp;version=2.0.2&amp;outputSchema=http://standards.iso.org/19115/-3/gmd&amp;elementSetName=full&amp;id=',@uuidref)"/>
             </xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
@@ -365,8 +394,8 @@
   -->
   <xsl:template match="lan:PT_Locale">
     <xsl:element name="lan:{local-name()}">
-      <xsl:variable name="id" select="upper-case(
-        substring(lan:language/lan:LanguageCode/@codeListValue, 1, 3))"/>
+      <xsl:variable name="id"
+                    select="upper-case(java:twoCharLangCode(lan:language/lan:LanguageCode/@codeListValue))"/>
       
       <xsl:apply-templates select="@*"/>
       <xsl:if test="normalize-space(@id)='' or normalize-space(@id)!=$id">
@@ -379,13 +408,13 @@
   </xsl:template>
   
   <!-- Apply same changes as above to the lan:LocalisedCharacterString -->
-  <xsl:variable name="language" select="//lan:PT_Locale" /> <!-- Need list of all locale -->
+  <xsl:variable name="language" select="//(mdb:defaultLocale|mdb:otherLocale)/lan:PT_Locale" /> <!-- Need list of all locale -->
   
   <xsl:template match="lan:LocalisedCharacterString">
     <xsl:element name="lan:{local-name()}">
       <xsl:variable name="currentLocale" select="upper-case(replace(normalize-space(@locale), '^#', ''))"/>
       <xsl:variable name="ptLocale" select="$language[upper-case(replace(normalize-space(@id), '^#', ''))=string($currentLocale)]"/>
-      <xsl:variable name="id" select="upper-case(substring($ptLocale/lan:language/lan:LanguageCode/@codeListValue, 1, 3))"/>
+      <xsl:variable name="id" select="upper-case(java:twoCharLangCode($ptLocale/lan:language/lan:LanguageCode/@codeListValue))"/>
       <xsl:apply-templates select="@*"/>
       <xsl:if test="$id != '' and ($currentLocale='' or @locale!=concat('#', $id)) ">
         <xsl:attribute name="locale">
