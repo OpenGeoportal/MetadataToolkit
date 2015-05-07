@@ -260,7 +260,7 @@
     <include>config-metadata.xml</include>
     <!--<include>config-metadata-experimental.xml</include>-->
     <!--<include>config-portal.xml</include> -->
-    <!--<include>config-export.xml</include> -->
+    <include>config-export.xml</include> 
 
 	<!-- ====================================================================== -->
 

@@ -79,7 +79,9 @@
     <!-- 
     root element (MD_Metadata or MI_Metadata)
     -->
-    <xsl:for-each select="/*">
+    
+    <xsl:for-each select="/*/mdb:MD_Metadata">
+    
       <xsl:variable name="nameSpacePrefix">
         <xsl:call-template name="getNamespacePrefix"/>
       </xsl:variable>
