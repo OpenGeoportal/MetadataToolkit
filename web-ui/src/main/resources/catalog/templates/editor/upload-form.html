@@ -35,6 +35,11 @@
                         <span class="sr-only">Error:</span>
                         <span>{{errorText}}</span>
                     </div>
+               		<div data-ng-show="metadataId" class="alert alert-success col-sm-offset-2" role="alert">
+                    	<p>
+                        	<span class="fa fa-check fa-fw" aria-hidden="true"></span><span data-translate="">uploadXmlSuccess</span>
+                    	</p>
+                	</div>
                     <div class="col-sm-offset-2 fade" data-ng-class="{in: active()}" data-ng-show="uploading">
                         <!-- The global progress bar -->
                         <div class="progress progress-striped active" data-file-upload-progress="progress()"
@@ -50,8 +55,10 @@
             </div>
             <div class="panel-footer clearfix">
                 <div class="pull-right">
-                    <button type="button" class="btn btn-default" data-translate="" data-ng-disabled="!metadataId" data-ng-click="metadataPreview()">previewBtn</button>
-                    <button type="button" class="btn btn-primary" data-translate="" data-ng-disabled="!fileName" data-ng-click="submit()">importBtn</button>
+                    <button type="button" class="btn btn-default" data-translate="" data-ng-disabled="!metadataId"
+                            data-ng-click="metadataPreview()">previewBtn</button>
+                    <button type="button" class="btn btn-primary" data-translate="" data-ng-disabled="!fileName || metadataId"
+                            data-ng-click="submit()">importBtn</button>
                 </div>
             </div>
         </div>
