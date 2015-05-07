@@ -1673,10 +1673,6 @@
             catalogues</description>
     <condition>mandatory</condition>
   </element>
-    <element name="mrc:featureCatalogue">
-        <label>Feature catalogue</label>
-        <condition>mandatory</condition>
-    </element>
   <element name="mcc:featureInstances" id="152.0">
     <label>Feature instances</label>
     <description>Feature instances to which the information applies</description>
@@ -3275,10 +3271,6 @@
   </element>
   <element name="owns">
     <label>Owns</label>
-    <description></description>
-  </element>
-  <element name="xlink:type">
-    <label>Type of link</label>
     <description></description>
   </element>
   <element name="unit">
