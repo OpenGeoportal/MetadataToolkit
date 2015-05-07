@@ -249,11 +249,11 @@
 	</codelist>
 	<!-- ==================================================== -->
 	<codelist name="cit:CI_PresentationFormCode">
-		<entry>
-			<code>documentDigital</code>
-			<label>Digital document</label>
-			<description>Digital representation of a primarily textual item (can contain illustrations also)</description>
-		</entry>
+				<entry>
+		<code>vector digital data</code>
+		<label>Vector digital data</label>
+		<description>Map represented in vector form</description>
+	</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
 			<code>imageDigital</code>
@@ -262,51 +262,27 @@
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>documentHardcopy</code>
-			<label>Hardcopy document</label>
-			<description>Representation of a primarily textual item (can contain illustrations also) on paper, photograhic material, or other media</description>
+			<code>raster digital data</code>
+			<label>Raster digital data</label>
+			<description>Map represented in raster form</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>imageHardcopy</code>
-			<label>Hardcopy image</label>
-			<description>Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and reproduced on paper, photographic material, or other media for use directly by the human user</description>
+			<code>atlas</code>
+			<label>Atlas</label>
+			<description>Collections of maps, geospatial illustrations and other information</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>mapDigital</code>
-			<label>Digital map</label>
-			<description>Map represented in raster or vector form</description>
+			<code>documentDigital</code>
+			<label>Digital document</label>
+			<description>Digital representation of a primarily textual item (can contain illustrations also)</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>mapHardcopy</code>
-			<label>Hardcopy map</label>
-			<description>Map printed on paper, photographic material, or other media for use directly by the human user</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>modelDigital</code>
-			<label>Digital model</label>
-			<description>Multi-dimensional digital representation of a feature, process, etc.</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>modelHardcopy</code>
-			<label>Hardcopy model</label>
-			<description>3-dimensional, physical model</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>profileDigital</code>
-			<label>Digital profile</label>
-			<description>Vertical cross-section in digital form</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>profileHardcopy</code>
-			<label>Hardcopy profile</label>
-			<description>Vertical cross-section printed on paper, etc.</description>
+			<code>globe</code>
+			<label>Globe</label>
+			<description>Physical models of celestial bodies</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
@@ -316,64 +292,33 @@
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>tableHardcopy</code>
-			<label>Hardcopy table</label>
-			<description>Representation of facts or figures systematically displayed, especially in columns, printed onpapers, photographic material, or other media</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
 			<code>videoDigital</code>
 			<label>Digital video</label>
 			<description>Digital video recording</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>videoHardcopy</code>
-			<label>Hardcopy video</label>
-			<description>Video recording on film</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- new in ISO19115-1-2013 -->
-		<entry>
-			<code>audioDigital</code>
-			<label>Digital audio</label>
-			<description>Digital audio recording</description>
+			<code>mapDigital</code>
+			<label>MTK Map Digital Ungeoreferenced </label>
+			<description>Map represented in raster or vector form. Ungeoreferenced.</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>audioHardcopy</code>
-			<label>Hardcopy audio</label>
-			<description>Audio recording delivered by analog media, such as magnetic tape</description>
+			<code>mapHardcopy</code>
+			<label>Hardcopy map</label>
+			<description>Map printed on paper, photographic material, or other media for use directly by the human user</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>multimediaDigital</code>
-			<label>Multimedia digital</label>
-			<description>Information representation using simultaneously various digital modes for text, sound and image</description>
+			<code>mapDigitalGeoreferenced</code>
+			<label>MTK Map Digital Georeferenced</label>
+			<description>Map represented in raster or vector form. Georeferenced.</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>multimediaHardcopy</code>
-			<label>Multimedia hardcopy</label>
-			<description>Information representation using simultaneously various analog modes for text, sound and image</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>physicalObject</code>
-			<label>Physical object</label>
-			<description>A physical object eg. rock or mineral sample, microscope slide</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>diagramDigital</code>
-			<label>Digital diagram</label>
-			<description>Information represented graphically by charts such as pie chart, bar chart and other type of diagrams and recorded in digital format</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>diagramHardcopy</code>
-			<label>Hardcopy diagram</label>
-			<description>Information represented graphically by charts such as pie chart, bar chart and other type of diagrams and printed on paper, photographic material, or other media</description>
+			<code>remote-sensing image ungeoreferenced</code>
+			<label>MTK "remote-sensing image ungeoreferenced”</label>
+			<description>Likeness of natural or man-made features, objects, and activities acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar and stored in digital format. Ungeoreferenced</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 	</codelist>
@@ -1137,38 +1082,20 @@
 	<!-- ==================================================== -->
 	<codelist name="msr:MD_GeometricObjectTypeCode">
 		<entry>
-			<code>complex</code>
-			<label>Complex</label>
-			<description>Set of geometric primitives such that their boundaries can be represented as an union of other primitives</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>composite</code>
-			<label>Composite</label>
-			<description>Connected set of curves, solids or surfaces</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
 			<code>curve</code>
-			<label>Curve</label>
+			<label>MTK Line</label>
 			<description>Bounded, 1-dimensional geometric primitive, representing the continuous image of a line</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
 			<code>point</code>
-			<label>Point</label>
+			<label>MTK Point</label>
 			<description>Zero-dimensional geometric primitive, representing a position but not having an extent</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<entry>
-			<code>solid</code>
-			<label>Solid</label>
-			<description>Bounded, connected 3-dimensional geometric primitive, representing the continuous image of a region of space</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
 			<code>surface</code>
-			<label>Surface</label>
+			<label>MTK Polygon</label>
 			<description>Bounded, connected 2-dimensional geometric primitive, representing the continuous image of a region of a plane</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -1927,6 +1854,20 @@
 		</entry>
 	</codelist>
 	<!-- ==================================================== -->
+	<codelist name="mcc:MD_SpatialRepresentationTypeCode">
+		<entry>
+			<code>vector</code>
+			<label>Vector</label>
+			<description>Vector data is used to represent geographic data</description>
+		</entry>
+		<entry>
+			<code>grid</code>
+			<label>Raster</label>
+			<description>Grid data is used to represent geographic data</description>
+		</entry>
+	</codelist>
+
+	<!-- ==================================================== -->
 	<codelist name="mri:MD_SpatialRepresentationTypeCode">
 		<entry>
 			<code>vector</code>
@@ -1939,31 +1880,8 @@
 			<label>Grid</label>
 			<description>Grid data is used to represent geographic data</description>
 		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>textTable</code>
-			<label>Text, table</label>
-			<description>Textual or tabular data is used to represent geographic data</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>tin</code>
-			<label>TIN</label>
-			<description>Triangulated irregular network</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>stereoModel</code>
-			<label>Stereo model</label>
-			<description>Three-dimensional view formed by the intersecting homologous rays of an overlapping pair of images</description>
-		</entry>
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<entry>
-			<code>video</code>
-			<label>Video</label>
-			<description>Scene from a video recording</description>
-		</entry>
 	</codelist>
+
 	<!-- ==================================================== -->
 	<codelist name="mri:MD_TopicCategoryCode">
 		<entry>
