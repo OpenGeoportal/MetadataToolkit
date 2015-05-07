@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
-  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
-  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
-  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
-  xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+  xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
+  xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
+  xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0"
+  xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
+  xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"
   xmlns:gts="http://www.isotc211.org/2005/gts"
   xmlns:gml="http://www.opengis.net/gml/3.2"
   xmlns:gn="http://www.fao.org/geonetwork"
@@ -63,7 +63,7 @@
        A custom directive is created.
   -->
   <xsl:template mode="mode-iso19115-3"
-                match="gts:TM_PeriodDuration|gml:duration"
+                match="gco:TM_PeriodDuration|gml:duration"
                 priority="2000">
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
@@ -152,8 +152,7 @@
           data-hright-ref="_{gex:eastBoundLongitude/gco:Decimal/gn:element/@ref}"
           data-hbottom-ref="_{gex:southBoundLatitude/gco:Decimal/gn:element/@ref}"
           data-htop-ref="_{gex:northBoundLatitude/gco:Decimal/gn:element/@ref}"
-          data-lang="lang"
-></div>
+          data-lang="lang"></div>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -167,6 +166,5 @@
     </textarea>
   </xsl:template>
 
-  <xsl:template mode="mode-iso19115-3" match="gml:TimePeriodTypeGROUP_ELEMENT0|gml:TimePeriodTypeGROUP_ELEMENT4" priority="2000" />
 
 </xsl:stylesheet>

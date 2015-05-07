@@ -93,13 +93,13 @@
   <contact>Metadata Contact</contact>
   <name>Organisation</name>
   <individual>Email</individual>
-  <email>Individual</email> 
+  <email>Individual</email>
   <otherLocale>Non Default Language</otherLocale>
   <accessConstraints>Access Constraints</accessConstraints>
   <useConstraints>Use Constraints</useConstraints>
   <featureType>Feature Type</featureType>
-  
-  
+
+
   <!-- Tufts minimal strings -->
   <tufts-minimal>Minimal</tufts-minimal>
   <tufts-identificationinfo>Identification Information</tufts-identificationinfo>
@@ -112,12 +112,8 @@
   <metadataContact>Point of Contact</metadataContact>
   <publicationDate>Publication Date</publicationDate>
 
-  <add-resource-id>
-Compute resource identifier</add-resource-id>
-  <add-resource-idHelp>
-Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
-  <add-extent-from-geokeywords>
-Compute extent from keyword</add-extent-from-geokeywords>
-  <add-extent-from-geokeywordsHelp>
-Analyze each keyword of type place and add matching extent.</add-extent-from-geokeywordsHelp>
+  <add-resource-id>Compute resource identifier</add-resource-id>
+  <add-resource-idHelp>Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
+  <add-extent-from-geokeywords>Compute extent from keyword</add-extent-from-geokeywords>
+  <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add matching extent.</add-extent-from-geokeywordsHelp>
 </strings>

@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdb:MD_Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25 ../schema.xsd"
- xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0/2014-12-25"
- xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0/2014-12-25"
- xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
- xmlns:mpc="http://standards.iso.org/19115/-3/mpc/1.0/2014-12-25"
- xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
- xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0/2014-12-25"
- xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0/2014-12-25"
- xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25"
- xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0/2014-12-25"
- xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0/2014-12-25"
- xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
- xmlns:mas="http://standards.iso.org/19115/-3/mas/1.0/2014-12-25"
- xmlns:mda="http://standards.iso.org/19115/-3/mda/1.0/2014-12-25"
- xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0/2014-12-25"
- xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
- xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
- xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0/2014-12-25"
- xmlns:mex="http://standards.iso.org/19115/-3/mex/1.0/2014-12-25"
- xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0/2014-12-25"
- xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0/2014-12-25"
- xmlns:mdt="http://standards.iso.org/19115/-3/mdt/1.0/2014-12-25"
- xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0/2014-12-25"
- xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
- xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0/2014-12-25"
- xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+ xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0"
+ xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0"
+ xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
+ xmlns:mpc="http://standards.iso.org/19115/-3/mpc/1.0"
+ xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
+ xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0"
+ xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0"
+ xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0"
+ xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0"
+ xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0"
+ xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
+ xmlns:mas="http://standards.iso.org/19115/-3/mas/1.0"
+ xmlns:mda="http://standards.iso.org/19115/-3/mda/1.0"
+ xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0"
+ xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
+ xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0"
+ xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0"
+ xmlns:mex="http://standards.iso.org/19115/-3/mex/1.0"
+ xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0"
+ xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0"
+ xmlns:mdt="http://standards.iso.org/19115/-3/mdt/1.0"
+ xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0"
+ xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0"
+ xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0"
+ xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:gml="http://www.opengis.net/gml/3.2">
   <mdb:metadataIdentifier>
@@ -99,7 +98,7 @@
     </cit:CI_Citation>
   </mdb:metadataStandard>
   <mdb:otherLocale>
-    <lan:PT_Locale id="FRE">
+    <lan:PT_Locale id="FR">
       <lan:language>
         <lan:LanguageCode codeList="" codeListValue="fre"></lan:LanguageCode>
       </lan:language>
@@ -107,7 +106,7 @@
     </lan:PT_Locale>
   </mdb:otherLocale>
   <mdb:otherLocale>
-    <lan:PT_Locale id="GER">
+    <lan:PT_Locale id="GE">
       <lan:language>
         <lan:LanguageCode codeList="" codeListValue="ger"></lan:LanguageCode>
       </lan:language>
@@ -115,7 +114,7 @@
     </lan:PT_Locale>
   </mdb:otherLocale>
   <mdb:otherLocale>
-    <lan:PT_Locale id="CHI">
+    <lan:PT_Locale id="CH">
       <lan:language>
         <lan:LanguageCode codeList="" codeListValue="chi"></lan:LanguageCode>
       </lan:language>
@@ -123,7 +122,7 @@
     </lan:PT_Locale>
   </mdb:otherLocale>
   <mdb:otherLocale>
-    <lan:PT_Locale id="SPA">
+    <lan:PT_Locale id="SP">
       <lan:language>
         <lan:LanguageCode codeList="" codeListValue="spa"></lan:LanguageCode>
       </lan:language>
@@ -131,7 +130,7 @@
     </lan:PT_Locale>
   </mdb:otherLocale>
   <mdb:otherLocale>
-    <lan:PT_Locale id="ARA">
+    <lan:PT_Locale id="AR">
       <lan:language>
         <lan:LanguageCode codeList="" codeListValue="ara"></lan:LanguageCode>
       </lan:language>
@@ -139,7 +138,7 @@
     </lan:PT_Locale>
   </mdb:otherLocale>
   <mdb:otherLocale>
-    <lan:PT_Locale id="RUS">
+    <lan:PT_Locale id="RU">
       <lan:language>
         <lan:LanguageCode codeList="" codeListValue="rus"></lan:LanguageCode>
       </lan:language>
@@ -165,22 +164,22 @@
             <gco:CharacterString>Multilingual template for Vector data</gco:CharacterString>
             <lan:PT_FreeText>
               <lan:textGroup>
-                <lan:LocalisedCharacterString locale="#FRE">Modèle pour les données vecteur (multilingue)</lan:LocalisedCharacterString>
+                <lan:LocalisedCharacterString locale="#FR">Modèle pour les données vecteur (multilingue)</lan:LocalisedCharacterString>
               </lan:textGroup>
               <lan:textGroup>
-                <lan:LocalisedCharacterString locale="#GER">Vorlage für die Vektor-Daten (mehrsprachig)</lan:LocalisedCharacterString>
+                <lan:LocalisedCharacterString locale="#GE">Vorlage für die Vektor-Daten (mehrsprachig)</lan:LocalisedCharacterString>
               </lan:textGroup>
               <lan:textGroup>
-                <lan:LocalisedCharacterString locale="#SPA">De plantilla para el vector de datos (multilingüe)</lan:LocalisedCharacterString>
+                <lan:LocalisedCharacterString locale="#SP">De plantilla para el vector de datos (multilingüe)</lan:LocalisedCharacterString>
               </lan:textGroup>
               <lan:textGroup>
-                <lan:LocalisedCharacterString locale="#RUS">Шаблон для векторных данных (многоязычное)</lan:LocalisedCharacterString>
+                <lan:LocalisedCharacterString locale="#RU">Шаблон для векторных данных (многоязычное)</lan:LocalisedCharacterString>
               </lan:textGroup>
               <lan:textGroup>
-                <lan:LocalisedCharacterString locale="#ARA">نموذج البيانات الموجهة  (متعددة اللغات)</lan:LocalisedCharacterString>
+                <lan:LocalisedCharacterString locale="#AR">نموذج البيانات الموجهة  (متعددة اللغات)</lan:LocalisedCharacterString>
               </lan:textGroup>
               <lan:textGroup>
-                <lan:LocalisedCharacterString locale="#CHI">模板矢量数据（多种语言）</lan:LocalisedCharacterString>
+                <lan:LocalisedCharacterString locale="#CH">模板矢量数据（多种语言）</lan:LocalisedCharacterString>
               </lan:textGroup>
             </lan:PT_FreeText>
           </cit:title>

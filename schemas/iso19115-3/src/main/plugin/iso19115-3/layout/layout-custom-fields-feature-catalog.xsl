@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25"
-                xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25"
-                xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0/2014-12-25"
-                xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0/2014-12-25"
-                xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0/2014-12-25"
-                xmlns:gfc="http://standards.iso.org/19110/gfc/1.1/2014-12-25"
-                xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0/2014-12-25"
-                xmlns:gco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
+                xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
+                xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
+                xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
+                xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
+                xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0"
+                xmlns:gfc="http://standards.iso.org/19110/gfc/1.1"
+                xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0"
+                xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"
                 xmlns:gmx="http://www.isotc211.org/2005/gmx"
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -154,7 +154,7 @@
 	     </xsl:if>
 	    
 	    <xsl:for-each select="gfc:carrierOfCharacteristics">
-	    
+
 		    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
 		    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
             <xsl:call-template name="render-boxed-element">
@@ -175,10 +175,10 @@
                     <xsl:choose>
 	                    <xsl:when test="$isEditing and not(gfc:FC_FeatureAttribute/gfc:featureType)">
 		                     <xsl:for-each select="gfc:FC_FeatureAttribute/geonet:child[@name='featureType']">
-		           
+
 					             <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
 					             <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
-	                             
+
 					             <xsl:call-template name="render-element-to-add">
 						               <xsl:with-param name="label"
 		                                    select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
@@ -187,15 +187,15 @@
 						               <xsl:with-param name="parentEditInfo" select="../gn:element"/>
 						               <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
 		    				           <xsl:with-param name="choicePosition" select="2"/>
-					             </xsl:call-template> 
+					             </xsl:call-template>
 				           </xsl:for-each>
 	                   </xsl:when>
 	                   <xsl:when test="$isEditing and not(gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:definition)">
 	                       <xsl:for-each select="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/geonet:child[@name='definition']">
-                   
+
                                  <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
                                  <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
-                                
+
                                  <xsl:call-template name="render-element-to-add">
                                        <xsl:with-param name="label"
                                             select="gn-fn-metadata:getLabel($schema, $name, $labels, name(..), '', '')/label"/>
@@ -204,14 +204,14 @@
                                        <xsl:with-param name="parentEditInfo" select="../gn:element"/>
                                        <xsl:with-param name="isFirst" select="count(preceding-sibling::*[name() = $name]) = 0"/>
                                        <xsl:with-param name="choicePosition" select="2"/>
-                                 </xsl:call-template> 
+                                 </xsl:call-template>
                            </xsl:for-each>
 	                   </xsl:when>
 	                   <xsl:otherwise></xsl:otherwise>
                    </xsl:choose>
                   </xsl:with-param>
-            </xsl:call-template> 
-            
+            </xsl:call-template>
+
 	    </xsl:for-each>
 
        <xsl:if test="$isEditing">
