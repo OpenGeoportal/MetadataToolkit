@@ -58,6 +58,7 @@
             $scope.metadataId = mdId;
             OgpEditorService.setMetadataId(mdId);
             OgpEditorService.setMdFileUploaded(true);
+            uploader.scope().clear(uploader.files);
           };
 
           var uploadXmlRecordError = function (evt, data) {
