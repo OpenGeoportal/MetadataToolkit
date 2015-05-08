@@ -5,7 +5,8 @@
     xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0"
     xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
     xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
-    xmlns:gco="http://standards.iso.org/19139/gco/1.0"
+    xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
+    xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"
     xmlns:gml="http://www.opengis.net/gml/3.2"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:date="http://exslt.org/dates-and-times"
@@ -62,16 +63,17 @@
 
       <xsl:variable name="poundLangId" select="concat('#',upper-case(java:twoCharLangCode($isoDocLangId)))" />
 
-      <xsl:variable name="identification" select="/*[name(.)='mds:MD_Metadata' or @gco:isoType='mds:MD_Metadata']/mds:identificationInfo/*"></xsl:variable>
+      <xsl:variable name="identification" select="/*[name(.)='mdb:MD_Metadata' or @gco:isoType='mdb:MD_Metadata']/mdb:identificationInfo/*"></xsl:variable>
       <xsl:variable name="docLangTitle" select="$identification/mri:citation/*/cit:title//lan:LocalisedCharacterString[@locale=$poundLangId]"/>
       <xsl:variable name="charStringTitle" select="$identification/mri:citation/*/cit:title/gco:CharacterString"/>
-      <xsl:variable name="locStringTitles" select="$identification/mri:citation/*/cit:title//lan:LocalisedCharacterString"/>
+      <xsl:variable name="locStringTitles" select="$identification/mri:citation/*/cit:title/lan:LocalisedCharacterString"/>
+      
       <xsl:choose>
       <xsl:when    test="string-length(string($docLangTitle)) != 0">
           <xsl:value-of select="$docLangTitle[1]"/>
       </xsl:when>
-      <xsl:when    test="string-length(string($charStringTitle[1])) != 0">
-          <xsl:value-of select="string($charStringTitle[1])"/>
+      <xsl:when    test="string-length(string($charStringTitle)) != 0">
+          <xsl:value-of select="string($charStringTitle/text())"/>
       </xsl:when>
       <xsl:otherwise>
           <xsl:value-of select="string($locStringTitles[1])"/>
