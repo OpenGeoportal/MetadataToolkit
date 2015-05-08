@@ -10,6 +10,7 @@
   "importLocalRecord": "Import local record",
   "importLocalRecordTooltip": "This is the tooltip for 'Import local record' tab",
   "importOgpCloud": "Import from OGP Cloud",
+  "importOgpCloudSuccess": "OGP record successfully imported.",
   "importOgpCloudTooltip": "This is the tooltip for 'Import from OGP Cloud tab",
   "importXmlMetadata": "Import XML Metadata",
   "importXmlMetadataOptional": "Import XML Metadata (optional)",

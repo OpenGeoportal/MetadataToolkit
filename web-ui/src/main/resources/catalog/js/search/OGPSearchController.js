@@ -152,6 +152,8 @@
             };
 
             $scope.reviseSearch = function () {
+              $scope.metadataId = null;
+              OgpEditorService.setOgpImportedMdId(null);
                 $scope.searchResults = [];
                 $scope.searching = false;
                 $scope.step = "searchForm";
@@ -162,6 +164,8 @@
             };
 
             $scope.newSearch = function () {
+              $scope.metadataId = null;
+              OgpEditorService.setOgpImportedMdId(null);
                 $scope.searchResults = [];
                 $scope.searching = false;
                 $scope.noResultsFound = false;
@@ -277,6 +281,8 @@
 
 
                 $scope.performingImport = true;
+              $scope.metadataId = null;
+              OgpEditorService.setOgpImportedMdId(null);
                 $http.post("ogp.dataTypes.import", {},
                     {
                         "params": {
@@ -294,7 +300,7 @@
                         //$timeout($scope.goToEditor, 4000);
                         return $timeout(function(){
                             $scope.performingImport = false;
-                        }, 4000);
+                        }, 1000);
 
                     }).
                     error(function (data, status, headers, config) {
