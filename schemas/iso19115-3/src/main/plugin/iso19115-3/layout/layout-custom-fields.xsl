@@ -12,6 +12,7 @@
   exclude-result-prefixes="#all">
 
 
+  <xsl:include href="layout-custom-fields-keywords.xsl"/>
   <xsl:include href="layout-custom-fields-feature-catalog.xsl"/>
 
   <!-- Readonly elements
@@ -64,6 +65,25 @@
   -->
   <xsl:template mode="mode-iso19115-3"
                 match="gco:TM_PeriodDuration|gml:duration"
+                priority="2000">
+
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
+
+    <xsl:call-template name="render-element">
+      <xsl:with-param name="label"
+                      select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
+      <xsl:with-param name="value" select="."/>
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="xpath" select="$xpath"/>
+      <xsl:with-param name="directive" select="'gn-field-duration'"/>
+      <xsl:with-param name="editInfo" select="gn:element"/>
+    </xsl:call-template>
+
+  </xsl:template>
+  
+  <xsl:template mode="mode-iso19115-3"
+                match="gts:TM_PeriodDuration|gml:duration"
                 priority="2000">
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
@@ -166,5 +186,6 @@
     </textarea>
   </xsl:template>
 
+  <xsl:template mode="mode-iso19115-3" match="gml:TimePeriodTypeGROUP_ELEMENT0|gml:TimePeriodTypeGROUP_ELEMENT4" priority="2000" />
 
 </xsl:stylesheet>
