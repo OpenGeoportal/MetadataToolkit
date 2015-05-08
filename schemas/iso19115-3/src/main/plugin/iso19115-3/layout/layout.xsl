@@ -30,7 +30,6 @@
 
   <xsl:include href="utility-tpl.xsl"/>
   <xsl:include href="layout-custom-fields.xsl"/>
-  <xsl:include href="layout-custom-fields-keywords.xsl"/>
 
   <!-- Visit all XML tree recursively -->
   <xsl:template mode="mode-iso19115-3"

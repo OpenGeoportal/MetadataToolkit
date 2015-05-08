@@ -159,7 +159,84 @@
       <xsl:apply-templates select="mdb:referenceSystemInfo"/>
       <xsl:apply-templates select="mdb:metadataExtensionInfo"/>
       <xsl:apply-templates select="mdb:identificationInfo"/>
-      <xsl:apply-templates select="mdb:contentInfo"/>
+      
+      <!-- Add featureCatalog if it doesn't exist -->
+      <xsl:choose>
+        <xsl:when test="not(mdb:contentInfo)">
+              <mdb:contentInfo>
+			      <mrc:MD_FeatureCatalogue>
+			         <mrc:featureCatalogue>
+			            <gfc:FC_FeatureCatalogue xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+			               <gfc:producer>
+			                  <cit:CI_Responsibility>
+			                     <cit:role>
+			                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+			                                         codeListValue=""/>
+			                     </cit:role>
+			                  </cit:CI_Responsibility>
+			               </gfc:producer>
+			            </gfc:FC_FeatureCatalogue>
+			         </mrc:featureCatalogue>
+			      </mrc:MD_FeatureCatalogue>
+			   </mdb:contentInfo>
+        </xsl:when>       
+        <xsl:otherwise>
+	        <xsl:for-each select="mdb:contentInfo">
+                <xsl:choose>
+                    <xsl:when test="count(mrc:MD_FeatureCatalogue) = 0">
+                        <mdb:contentInfo>
+	                      <mrc:MD_FeatureCatalogue>
+	                        <mrc:featureCatalogue>
+	                            <gfc:FC_FeatureCatalogue xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+	                               <gfc:producer>
+	                                  <cit:CI_Responsibility>
+	                                     <cit:role>
+	                                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+	                                                         codeListValue=""/>
+	                                     </cit:role>
+	                                  </cit:CI_Responsibility>
+	                               </gfc:producer>
+	                            </gfc:FC_FeatureCatalogue>
+	                         </mrc:featureCatalogue>
+	                        </mrc:MD_FeatureCatalogue>
+	                     </mdb:contentInfo>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:for-each select="mrc:MD_FeatureCatalogue">
+		                   <xsl:choose>
+		                       <xsl:when test="count(*) = 0">
+			                        <mdb:contentInfo>
+			                          <mrc:MD_FeatureCatalogue>
+				                           <mrc:featureCatalogue>
+				                               <gfc:FC_FeatureCatalogue xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+				                                  <gfc:producer>
+				                                     <cit:CI_Responsibility>
+				                                        <cit:role>
+				                                           <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+				                                                            codeListValue=""/>
+				                                        </cit:role>
+				                                     </cit:CI_Responsibility>
+				                                  </gfc:producer>
+				                               </gfc:FC_FeatureCatalogue>
+				                            </mrc:featureCatalogue>
+				                        </mrc:MD_FeatureCatalogue>
+		                            </mdb:contentInfo>
+		                       </xsl:when>
+		                       <xsl:otherwise>
+                                    <mdb:contentInfo>
+                                      <mrc:MD_FeatureCatalogue>
+		                                  <xsl:apply-templates select ="*" />
+		                              </mrc:MD_FeatureCatalogue>
+		                            </mdb:contentInfo>
+		                       </xsl:otherwise>
+		                   </xsl:choose>
+		               </xsl:for-each>
+                    </xsl:otherwise>
+                </xsl:choose>
+	        </xsl:for-each> 
+       </xsl:otherwise>
+      </xsl:choose>
+      
       <xsl:apply-templates select="mdb:distributionInfo"/>
       <xsl:apply-templates select="mdb:dataQualityInfo"/>
       <xsl:apply-templates select="mdb:resourceLineage"/>
