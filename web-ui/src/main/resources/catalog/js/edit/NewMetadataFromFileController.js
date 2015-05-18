@@ -58,14 +58,13 @@
             $scope.metadataId = mdId;
             OgpEditorService.setMetadataId(mdId);
             OgpEditorService.setMdFileUploaded(true);
-            uploader.scope().clear(uploader.files);
           };
 
-          var uploadXmlRecordError = function (evt, data) {
+          var uploadXmlRecordError = function (evt, uploader) {
             $scope.metadataId = null;
             OgpEditorService.setMetadataId(null);
             OgpEditorService.setMdFileUploaded(false);
-            $scope.errorText = data.response().jqXHR.responseText;
+            $scope.errorText = uploader.response().jqXHR.responseText;
           };
 
           var uploadXmlStart = function (evt, data) {
@@ -74,8 +73,9 @@
           };
 
           /* Callback for completed (success, abort or error) upload requests. */
-          var uploadXmlAlways = function (event, data) {
+          var uploadXmlAlways = function (event, uploader) {
             $scope.uploading = false;
+            uploader.scope().clear(uploader.files);
           };
 
           $scope.xmlRecordUploadOptions = {
@@ -91,6 +91,7 @@
             OgpEditorService.setMetadataId(null);
             OgpEditorService.setMdFileUploaded(false);
             $scope.metadataId = null;
+            $scope.errorText = false;
             if (fileElement.files.length != 0) {
               $scope.fileName = fileElement.files[0].name;
             } else {
