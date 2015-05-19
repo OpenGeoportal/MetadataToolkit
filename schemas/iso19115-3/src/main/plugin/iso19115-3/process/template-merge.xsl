@@ -36,8 +36,8 @@
   <!-- Template information has priority over the metadata processed -->
   <!--<xsl:variable name="templateXml"
                 select="document('file:///pathto/template.xml')"/>-->
-
-  <xsl:param name="templateXml" />
+  templateXml
+  <xsl:param name="" />
 
   <xsl:template match="mdb:MD_Metadata">
     <xsl:copy>
@@ -234,7 +234,7 @@
 
             <!-- Publication date from the template -->
             <xsl:choose>
-              <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date)">
+              <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date[normalize-space(*) != '']) > 0">
                 <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']" />
               </xsl:when>
               <xsl:otherwise>
@@ -276,7 +276,7 @@
 
             <!-- presentationForm from the template -->
             <xsl:choose>
-              <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm/cit:CI_PresentationFormCode/@codeListValue)">
+              <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm[normalize-space(cit:CI_PresentationFormCode/@codeListValue) != '']) > 0">
                 <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" />
               </xsl:when>
               <xsl:otherwise>
@@ -336,7 +336,7 @@
 
     <!-- Topic Category from the template -->
     <xsl:choose>
-      <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory/mri:MD_TopicCategoryCode)">
+      <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory[normalize-space(mri:MD_TopicCategoryCode) != '']) > 0">
         <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory" />
       </xsl:when>
       <xsl:otherwise>
