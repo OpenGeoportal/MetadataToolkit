@@ -283,7 +283,7 @@
                 $scope.performingImport = true;
               $scope.metadataId = null;
               OgpEditorService.setOgpImportedMdId(null);
-                $http.post("ogp.dataTypes.import", {},
+                $http.post("ogp.edit.importOgpRecord", {},
                     {
                         "params": {
                             "layerId": $scope.resultBean.selectedMetadata.LayerId,

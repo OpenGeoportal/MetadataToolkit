@@ -43,10 +43,20 @@
     <div>
         <pre data-ng-if="isDebug">
             step: {{step}}
-            mdId: {{mdId}}
-            ogpMdid: {{ogpMdId}}
+            datasetImported: {{datasetImported}}
+            localRecordImported: {{localRecordImported}}
+            ogpRecordImported: {{ogpRecordImported}}
             templateId: {{templateId}}
         </pre>
+        <div class="container" data-ng-show="editError">
+            <div  data-alert data-type="danger" data-close="editError = null">
+                <p>
+                    <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>&nbsp;<span data-translate="">editRecordError</span>
+                </p>
+                <span class="sr-only">Error:</span>
+                <span>{{editError}}</span>
+            </div>
+        </div>
         <div data-ng-if="step === 'importDataProperties'" class="container">
             <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/templates/editor/upload-form.html'">
             </div>

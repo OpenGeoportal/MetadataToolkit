@@ -3,6 +3,7 @@
   "chooseTemplateTooltip": "Choose one of the following templates if you like creating a new record from a template",
   "editorBoard": "Editor board",
   "editRecord": "Edit Record",
+  "editRecordError": "Error: ",
   "importBtn": "Import",
   "importDataProperties": "Import Data Properties",
   "importDataPropertiesTooltip": "This is the tooltip for 'Import Data Properties'",

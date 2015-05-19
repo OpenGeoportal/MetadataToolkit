@@ -3,7 +3,7 @@
 
   var module = angular.module('ogp_editor_service', []);
 
-  module.factory('OgpEditorService', ['$rootScope', function($rootScope) {
+  module.factory('OgpEditorService', ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
     var _step = null;
     var _metadataId = null;
     var _mdFileUploaded = false;
@@ -57,7 +57,32 @@
       _metadataId = null;
       _mdFileUploaded = false;
       _ogpImportedMdId = null;
+
+      return $http.get("ogp.edit.clearStatus");
+
     };
+
+    service.createMetadata = function(group, templateId, datasetImported, localRecordImported, ogpRecordImported) {
+      var deferred = $q.defer();
+      var params = {
+        group: group,
+        templateId: templateId,
+        datasetImported: datasetImported,
+        localRecordImported: localRecordImported,
+        ogpRecordImported: ogpRecordImported
+      }
+      $http.post('ogp.edit.doImport', params).
+          success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            var cause = data;
+            if (data && data.error) {
+              cause = data.error;
+            }
+            deferred.reject(cause);
+          });
+      return deferred.promise;
+    } ;
 
 
 

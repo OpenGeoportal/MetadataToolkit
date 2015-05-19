@@ -9,6 +9,7 @@ import org.jdom.Element;
 public class OgpEditFormBean {
     private Element datasetMetadata;
     private Element localMetadataRecord;
+    private Element ogpImportedMetadata;
 
     public void setDatasetMetadata(Element datasetMetadata) {
         this.datasetMetadata = datasetMetadata;
@@ -24,5 +25,13 @@ public class OgpEditFormBean {
 
     public Element getLocalMetadataRecord() {
         return localMetadataRecord;
+    }
+
+    public void setOgpImportedMetadata(Element ogpImportedMetadata) {
+        this.ogpImportedMetadata = ogpImportedMetadata;
+    }
+
+    public Element getOgpImportedMetadata() {
+        return ogpImportedMetadata;
     }
 }
