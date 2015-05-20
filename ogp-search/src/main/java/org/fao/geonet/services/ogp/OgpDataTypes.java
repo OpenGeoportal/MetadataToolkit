@@ -10,6 +10,7 @@ import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.services.ogp.business.TransformService;
 import org.fao.geonet.services.ogp.client.OgpClient;
 import org.fao.geonet.services.ogp.client.OgpQuery;
 import org.fao.geonet.services.ogp.responses.DataTypeResponse;
@@ -49,6 +50,9 @@ public class OgpDataTypes {
     private SchemaManager schemaManager;
     @Autowired
     private SettingManager settingManager;
+
+    @Autowired
+    private TransformService transformService;
 
     private GeonetHttpRequestFactory requestFactory;
     public OgpDataTypes() {
@@ -113,32 +117,7 @@ public class OgpDataTypes {
         OgpClient client = new OgpClient("http", "geodata.tufts.edu", 80, requestFactory);
         String metadata = client.getMetadataAsXml(layerId);
         Element originalMd = Xml.loadString(metadata, false);
-        Element transformedMd = null;
-        String standard = dataManager.autodetectSchema(originalMd);
-        String schemaOrig = "";
-        boolean mustConvert = false;
-        switch (standard) {
-            case "fgdc-std":
-                schemaOrig = "FGDC";
-                mustConvert = true;
-                break;
-            case "ISO19139":
-                schemaOrig = "ISO19139";
-                mustConvert = true;
-                break;
-        }
-
-        if (mustConvert) {
-            Path stylesheet = schemaManager.getSchemaDir("iso19115-3").resolve(Geonet.Path.CONVERT_STYLESHEETS)
-                    .resolve(schemaOrig + "toISO19115-3.xsl");
-            if (Files.exists(stylesheet)) {
-                transformedMd = Xml.transform(originalMd, stylesheet);
-            }
-        } else {
-            transformedMd = originalMd;
-        }
-        logger.info("Schema detected: " + standard);
-
+        Element transformedMd = transformService.convertToIso19115_3(originalMd);
         return transformedMd;
     }
 

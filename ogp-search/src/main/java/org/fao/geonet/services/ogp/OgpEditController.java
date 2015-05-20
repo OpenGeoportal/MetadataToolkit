@@ -10,6 +10,7 @@ import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.services.ogp.business.TransformService;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
@@ -48,6 +49,8 @@ public class OgpEditController {
     private SettingManager settingManager;
     @Autowired
     private OgpDataTypes ogpController;
+    @Autowired
+    private TransformService transformService;
 
     public OgpEditController() {
         logger = Log.createLogger("ogp.editController", "ogp");
@@ -94,6 +97,7 @@ public class OgpEditController {
                     updateWizardObject(wizardFormBean, null, step);
                     return new ResponseEntity<Object>("Schema not supported", HttpStatus.BAD_REQUEST);
                 }
+                md = transformService.convertToIso19115_3(md);
 
                 updateWizardObject(wizardFormBean, md, step);
 
@@ -114,7 +118,7 @@ public class OgpEditController {
     @RequestMapping(value = "/{lang}/ogp.edit.importOgpRecord", produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
-    ResponseEntity<Object> addDatasetMetadata(@ModelAttribute("wizardFormBean") OgpEditFormBean wizardFormBean,
+    ResponseEntity<Object> addOgpMetadata(@ModelAttribute("wizardFormBean") OgpEditFormBean wizardFormBean,
                                               @RequestParam(value = "layerId") String layerId, @PathVariable("lang") String lang) {
         try {
             Element ogpMetadata = ogpController.getMetadataAsElement(layerId);
