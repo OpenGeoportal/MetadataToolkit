@@ -170,7 +170,7 @@
     <name>mdb:metadataLinkage</name>
     <name>mdb:identificationInfo</name>
     <name>mdb:distributionInfo</name>
-    <name>mri:descriptiveKeywords</name>
+    <name>mri:descriptiveKeywords</name> 
     <name>mri:thesaurusName</name>
     <name>mri:resourceConstraints</name>
     <name>mdb:spatialRepresentationInfo</name>
@@ -684,52 +684,73 @@
             </action>
         </section>
           <!-- Theme keywords -->
-        <section name="themeKeywords">
-            <field del="."  name="themeKeywords" or="keyword"
-                xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme']/mri:MD_Keywords/mri:keyword">
+            
+            <section name="descriptiveKeywords">
+            
+            <field del="." xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme']">
             </field>
-
-            <action type="add" forceLabel="true" name="themeKeywords" or="keyword"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme']/mri:MD_Keywords">
-                  <template>
-                     <snippet>         
-                          <mri:keyword>
-                             <gco:CharacterString></gco:CharacterString>
-                          </mri:keyword>
-                    </snippet>
-                  </template>
-            </action> 
             
             <!-- Show only if there is no theme keyword -->
             <action type="add" forceLabel="true"
-                    name="themeKeywords"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"
-                    or="descriptiveKeywords"
-                    if="count(/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme') = 0">
+                    name="MD_Keywords"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"
+                    or="MD_Keywords">
+                    <!-- if="count(/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme') = 0" -->
+                    
 	              <template>
 	                 <snippet>         
-		                <mri:descriptiveKeywords>
-				            <mri:MD_Keywords>
-				               <mri:keyword>
-				                  <gco:CharacterString></gco:CharacterString>
-				               </mri:keyword>
-				               <mri:type>
-				                  <mri:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
-				                                          codeListValue="theme"/>
-				               </mri:type>
-				               <mri:thesaurusName>
-				                  <cit:CI_Citation>
-				                     <cit:title gco:nilReason="missing">
-				                        <gco:CharacterString/>
-				                     </cit:title>
-				                  </cit:CI_Citation>
-				               </mri:thesaurusName>
-				            </mri:MD_Keywords>
-				         </mri:descriptiveKeywords>
+			            <mri:MD_Keywords>
+			               <mri:keyword>
+			                  <gco:CharacterString></gco:CharacterString>
+			               </mri:keyword>
+			               <mri:type>
+			                  <mri:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
+			                                          codeListValue="theme"/>
+			               </mri:type>
+			               <mri:thesaurusName>
+			                  <cit:CI_Citation>
+			                     <cit:title gco:nilReason="missing">
+			                        <gco:CharacterString/>
+			                     </cit:title>
+			                  </cit:CI_Citation>
+			               </mri:thesaurusName>
+			            </mri:MD_Keywords>
 	                </snippet>
 	              </template>
             </action> 
+            
+            <field del="." xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='place']">
+            </field>
+          
+            <!-- Show only if there is no place keyword -->
+            <action type="add" forceLabel="true"
+                    name="placeKeywords"
+                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"
+                    or="MD_Keywords"
+                    if="count(/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='place') = 0">
+                  <template>
+                     <snippet>         
+                          <mri:MD_Keywords>
+                             <mri:keyword>
+                                <gco:CharacterString></gco:CharacterString>
+                             </mri:keyword>
+                             <mri:type>
+                                <mri:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
+                                                        codeListValue="place"/>
+                             </mri:type>
+                             <mri:thesaurusName>
+                                <cit:CI_Citation>
+                                   <cit:title gco:nilReason="missing">
+                                      <gco:CharacterString/>
+                                   </cit:title>
+                                </cit:CI_Citation>
+                             </mri:thesaurusName>
+                          </mri:MD_Keywords>
+                    </snippet>
+                  </template>
+            </action> 
           </section>
+          
           <!-- Topic Category -->
 
             <field del="." notDisplayedIfMissing="false" name="topicCategory" or="topicCategory"
@@ -748,53 +769,7 @@
               </template>
             </action>
             
-          <!-- Place Keywords -->        
-          <section name="placeKeywords">
-            <field del="." name="placeKeywords" or="keyword"
-                xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='place']/mri:MD_Keywords/mri:keyword">
-            </field>
-
-            <action type="add" forceLabel="true" name="themeKeywords" or="keyword"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='place']/mri:MD_Keywords">
-                  <template>
-                     <snippet>         
-                          <mri:keyword>
-                             <gco:CharacterString></gco:CharacterString>
-                          </mri:keyword>
-                    </snippet>
-                  </template>
-            </action> 
-            
-            <!-- Show only if there is no theme keyword -->
-            <action type="add" forceLabel="true"
-                    name="placeKeywords"
-                    in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"
-                    or="descriptiveKeywords"
-                    if="count(/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue='place') = 0">
-                  <template>
-                     <snippet>         
-                        <mri:descriptiveKeywords>
-                            <mri:MD_Keywords>
-                               <mri:keyword>
-                                  <gco:CharacterString></gco:CharacterString>
-                               </mri:keyword>
-                               <mri:type>
-                                  <mri:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
-                                                          codeListValue="place"/>
-                               </mri:type>
-                               <mri:thesaurusName>
-                                  <cit:CI_Citation>
-                                     <cit:title gco:nilReason="missing">
-                                        <gco:CharacterString/>
-                                     </cit:title>
-                                  </cit:CI_Citation>
-                               </mri:thesaurusName>
-                            </mri:MD_Keywords>
-                         </mri:descriptiveKeywords>
-                    </snippet>
-                  </template>
-            </action> 
-          </section>
+         
           
           <!-- Metadata contact -->
             <field name="metadataContact" templateModeOnly="true" notDisplayedIfMissing="true"
