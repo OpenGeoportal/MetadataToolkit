@@ -15,6 +15,7 @@ import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -225,6 +226,44 @@ public class OgpEditController {
         status.setComplete();
 
         return new ResponseEntity<Object>(createdId, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "{lang}/ogp.edit.preview")
+    public @ResponseBody ResponseEntity<Object> previewMetadata(@ModelAttribute("wizardFormBean") OgpEditFormBean wizardFormBean,
+                                                                @RequestParam("step") String stepParam,
+                                                                @PathVariable("lang") String lang) {
+        Step step;
+        Element metadata = null;
+        String result = "";
+        try {
+            step = Step.valueOf(stepParam);
+        } catch (IllegalArgumentException iae) {
+            // IAE is thrown when stepString doesn't contain any valid Step item
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity<Object>("'step' parameter value is not valid. It must be one of " + Arrays.toString(Step.values()),
+                    headers, HttpStatus.BAD_REQUEST);
+        }
+
+        switch (step) {
+            case importXmlMetadata:
+                metadata = wizardFormBean.getLocalMetadataRecord();
+                break;
+            case importDataProperties:
+                metadata = wizardFormBean.getDatasetMetadata();
+                break;
+        }
+
+        if (metadata != null) {
+            result = Xml.getString(metadata);
+        }
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_HTML);
+        return new ResponseEntity<Object>(result, headers, HttpStatus.OK);
     }
 
     /**

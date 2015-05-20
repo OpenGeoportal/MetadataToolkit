@@ -178,6 +178,7 @@
         } else if ($scope.from === 'fromTemplate') {
           templateId = $scope.templateId;
         }
+        $scope.editError = null;
         OgpEditorService.createMetadata(group, templateId, $scope.datasetImported, $scope.localRecordImported,
             $scope.ogpRecordImported).then(
             function(result) {
