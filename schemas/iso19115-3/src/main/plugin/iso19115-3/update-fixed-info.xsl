@@ -466,6 +466,108 @@
     </xsl:copy>
     
   </xsl:template>
+ 
+    <!--Create default keywords for theme and place. Empty.
+    /mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords/mri:MD_Keywords
+    -->    
+  <xsl:template match="mdb:identificationInfo">
+        <mdb:identificationInfo> 
+            <xsl:apply-templates select="@*|node()"/>
+        </mdb:identificationInfo>  
+  </xsl:template>
+  
+  <xsl:template match="mri:MD_DataIdentification">    
+   <xsl:message>
+        <xsl:value-of 
+            select="not(mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme'])"/>
+  </xsl:message>
+             
+            
+        <mri:MD_DataIdentification>
+            <xsl:apply-templates select="@*|node()"/>
+             <xsl:if test="not(mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme'])">
+	            <mri:descriptiveKeywords xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
+                                  xmlns:gn="http://www.fao.org/geonetwork"
+                                  xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+	                <mri:MD_Keywords>
+	                   <mri:keyword gco:nilReason="missing">
+	                      <gco:CharacterString/>
+	                   </mri:keyword>
+	                   <mri:type>
+                          <mri:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
+                                          codeListValue="theme"/>
+	                   </mri:type> 
+	                   
+	                <!--      <mri:thesaurusName>
+                          <cit:CI_Citation>
+                             <cit:title>
+                                <gco:CharacterString>Region</gco:CharacterString>
+                             </cit:title>
+                             <cit:date>
+                                <cit:CI_Date>
+                                   <cit:date>
+                                      <gco:Date>2006-09-22</gco:Date>
+                                   </cit:date>
+                                   <cit:dateType>
+                                      <cit:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+                                                           codeListValue="publication"/>
+                                   </cit:dateType>
+                                </cit:CI_Date>
+                             </cit:date>
+                             <cit:identifier>
+                                <mcc:MD_Identifier>
+                                   <mcc:code>
+                                      <gcx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/eng//thesaurus.download?ref=external.place.regions">geonetwork.thesaurus.external.place.regions</gcx:Anchor>
+                                   </mcc:code>
+                                </mcc:MD_Identifier>
+                             </cit:identifier>
+                          </cit:CI_Citation>
+                       </mri:thesaurusName> -->
+	                </mri:MD_Keywords>
+                </mri:descriptiveKeywords>
+	          </xsl:if>
+	          <xsl:if test="not(mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='place'])">
+	              <mri:descriptiveKeywords xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
+                                  xmlns:gn="http://www.fao.org/geonetwork"
+                                  xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+	                <mri:MD_Keywords>
+	                   <mri:keyword gco:nilReason="missing">
+	                      <gco:CharacterString/>
+	                   </mri:keyword>
+	                   <mri:type>
+	                      <mri:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"
+                                          codeListValue="place"/>
+                       </mri:type>                       
+		          <!--      <mri:thesaurusName>
+		                  <cit:CI_Citation>
+		                     <cit:title>
+		                        <gco:CharacterString>Region</gco:CharacterString>
+		                     </cit:title>
+		                     <cit:date>
+		                        <cit:CI_Date>
+		                           <cit:date>
+		                              <gco:Date>2006-09-22</gco:Date>
+		                           </cit:date>
+		                           <cit:dateType>
+		                              <cit:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
+		                                                   codeListValue="publication"/>
+		                           </cit:dateType>
+		                        </cit:CI_Date>
+		                     </cit:date>
+		                     <cit:identifier>
+		                        <mcc:MD_Identifier>
+		                           <mcc:code>
+		                              <gcx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/eng//thesaurus.download?ref=external.place.regions">geonetwork.thesaurus.external.place.regions</gcx:Anchor>
+		                           </mcc:code>
+		                        </mcc:MD_Identifier>
+		                     </cit:identifier>
+		                  </cit:CI_Citation>
+		               </mri:thesaurusName> -->
+		            </mri:MD_Keywords>
+	             </mri:descriptiveKeywords>
+	          </xsl:if>
+        </mri:MD_DataIdentification> 
+  </xsl:template>
   
   
   <!-- Set local identifier to the first 3 letters of iso code. Locale ids
