@@ -102,22 +102,22 @@
       $scope.step = OgpEditorService.getStep();
 
 
+      if ($location.path() === '/') {
+        OgpEditorService.reset();
+      }
 
       if ($scope.from && ($scope.from !== 'fromBlankRecord' && $scope.from !== 'fromTemplate' && $scope.from !== 'existingXmlRecord')) {
         $log.debug("Not valid 'from' path part. Redirecting to '/'");
-        OgpEditorService.reset();
-        $location.path("/");
+        OgpEditorService.reset().success(function() { $location.path("/"); });
         return;
       }
 
       if (!OgpEditorService.getStep() && $location.path() !== "/") {
-        OgpEditorService.reset();
-        $location.path("/");
+        OgpEditorService.reset().success(function(){ $location.path("/");});
         return;
       }
       if ($scope.from === 'fromTemplate' && !$scope.templateId) {
-        OgpEditorService.reset();
-        $location.path("/");
+        OgpEditorService.reset().success(function() { $location.path("/");});
         return;
       }
 
@@ -140,18 +140,30 @@
       };
 
       $scope.$on('ogpEditorMdIdChanged', function(event, newValue) {
-        $scope.mdId = newValue;
+        // User uploads a file
+        if ($scope.step === 'importDataProperties' ) {
+          $scope.datasetImported = newValue;
+        } else if ($scope.step === 'importXmlMetadata') {
+          $scope.localRecordImported = newValue;
+          if ($scope.ogpRecordImported && $scope.localRecordImported) {
+            OgpEditorService.setOgpImportedMdId(null);
+          }
+        }
         $scope.isEditDisabled();
       });
 
       $scope.$on('ogpImportedMdIdChanged', function(event, newValue) {
-        $scope.ogpMdId = newValue;
+        // From OGP cloud
+        $scope.ogpRecordImported = newValue;
+        if ($scope.localRecordImported) {
+          OgpEditorService.setMetadataId(null);
+        }
         $scope.isEditDisabled();
       });
 
       $scope.isEditDisabled = function() {
         var disabled = false;
-        if ($scope.from === 'existingXmlRecord' && !($scope.mdId || $scope.ogpMdId)) {
+        if ($scope.from === 'existingXmlRecord' && !($scope.localRecordImported || $scope.datasetImported || $scope.ogpRecordImported)) {
           disabled = true;
         }
         $scope.editDisabled = disabled;;
@@ -159,46 +171,26 @@
 
       $scope.doEdit = function () {
         var id;
+        var templateId;
+        var group = $scope.groups[0]['@id']
         if ($scope.from === 'fromBlankRecord') {
-          gnMetadataManager.copy(
-              $scope.blankTemplate['geonet:info'].id,
-              $scope.groups[0]['@id'],
-              false,
-              false,
-              false
-          ).success(function (data) {
-                var path = '/metadata/' + data.id;
-                var pathPart = $window.location.pathname.split('/');
-                pathPart[pathPart.length - 1] = "catalog.edit";
-                var pathname = pathPart.join('/');
-                pathname = pathname + "#" + path;
-                $window.location.href = pathname;
-              }).error(function () {
-                $scope.working = false;
-                $scope.creatingFrom = false;
-              }
-          );
-          return;
+          templateId = $scope.blankTemplate['geonet:info'].id
         } else if ($scope.from === 'fromTemplate') {
-          gnMetadataManager.copy(
-              $scope.templateId,
-              $scope.groups[0]['@id'],
-              false,
-              false,
-              false
-          ).success(function (data) {
-                var path = '/metadata/' + data.id;
-                $location.path(path);
-              }).error(function () {
-                $scope.working = false;
-                $scope.creatingFrom = false;
-              });
-          return;
-        } else {
-          id = $scope.ogpMdId || $scope.mdId;
+          templateId = $scope.templateId;
         }
-        var path = '/metadata/' + id;
-        $location.path(path);
+        $scope.editError = null;
+        OgpEditorService.createMetadata(group, templateId, $scope.datasetImported, $scope.localRecordImported,
+            $scope.ogpRecordImported).then(
+            function(result) {
+              var path = '/metadata/' + result;
+              $location.path(path);
+            },
+            function(reason) {
+              $scope.editError = reason;
+              $log.error("Error creating metadata: " + reason);
+            }
+        );
+
       };
 
     $scope.loadGroups = function() {
@@ -349,6 +341,8 @@
         $scope.loadGroups();
         $scope.loadTemplates();
       };
+
+
 
       $scope.filterOwnTemplates = function(template) {
         return function(t) {

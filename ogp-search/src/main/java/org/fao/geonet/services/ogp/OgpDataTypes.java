@@ -17,6 +17,7 @@ import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -87,40 +88,14 @@ public class OgpDataTypes {
 
     @RequestMapping(value="/{lang}/ogp.dataTypes.import", produces = {MediaType.APPLICATION_JSON_VALUE})
     public @ResponseBody String importMetadata(@RequestParam(value = "layerId") String layerId, @RequestParam(value = "group") String group) {
-        OgpClient client = new OgpClient("http", "geodata.tufts.edu", 80, requestFactory);
         String metadata = null;
         String createdId = "-1";
         try {
-            metadata = client.getMetadataAsXml(layerId);
-            Element originalMd = Xml.loadString(metadata, false);
-            Element transformedMd = null;
-            String standard = dataManager.autodetectSchema(originalMd);
-            ServiceContext context = ServiceContext.get();
-            String schemaOrig = "";
-            boolean mustConvert = false;
-            switch (standard) {
-                case "fgdc-std":
-                    schemaOrig = "FGDC";
-                    mustConvert = true;
-                    break;
-                case "ISO19139":
-                    schemaOrig = "ISO19139";
-                    mustConvert = true;
-                    break;
-            }
-
-            if (mustConvert) {
-                Path stylesheet = schemaManager.getSchemaDir("iso19115-3").resolve(Geonet.Path.CONVERT_STYLESHEETS)
-                        .resolve(schemaOrig + "toISO19115-3.xsl");
-                if (Files.exists(stylesheet)) {
-                    transformedMd = Xml.transform(originalMd, stylesheet);
-                }
-            } else {
-                transformedMd = originalMd;
-            }
+            Element transformedMd = getMetadataAsElement(layerId);
             // Import record
             String uuid = UUID.randomUUID().toString();
             String date = new ISODate().toString();
+            ServiceContext context = ServiceContext.get();
             int userId = context.getUserSession().getUserIdAsInt();
             String docType = null, category = null;
             boolean ufo = false, indexImmediate = true;
@@ -128,12 +103,43 @@ public class OgpDataTypes {
                     userId, group, settingManager.getSiteId(), MetadataType.METADATA.codeString, docType, category, date, date, ufo, indexImmediate);
 
 
-            logger.info("Schema detected: " + standard);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return createdId;
+    }
+
+    public Element getMetadataAsElement(String layerId) throws Exception {
+        OgpClient client = new OgpClient("http", "geodata.tufts.edu", 80, requestFactory);
+        String metadata = client.getMetadataAsXml(layerId);
+        Element originalMd = Xml.loadString(metadata, false);
+        Element transformedMd = null;
+        String standard = dataManager.autodetectSchema(originalMd);
+        String schemaOrig = "";
+        boolean mustConvert = false;
+        switch (standard) {
+            case "fgdc-std":
+                schemaOrig = "FGDC";
+                mustConvert = true;
+                break;
+            case "ISO19139":
+                schemaOrig = "ISO19139";
+                mustConvert = true;
+                break;
+        }
+
+        if (mustConvert) {
+            Path stylesheet = schemaManager.getSchemaDir("iso19115-3").resolve(Geonet.Path.CONVERT_STYLESHEETS)
+                    .resolve(schemaOrig + "toISO19115-3.xsl");
+            if (Files.exists(stylesheet)) {
+                transformedMd = Xml.transform(originalMd, stylesheet);
+            }
+        } else {
+            transformedMd = originalMd;
+        }
+        logger.info("Schema detected: " + standard);
+
+        return transformedMd;
     }
 
 

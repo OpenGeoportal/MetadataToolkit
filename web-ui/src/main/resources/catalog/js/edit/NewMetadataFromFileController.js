@@ -58,14 +58,13 @@
             $scope.metadataId = mdId;
             OgpEditorService.setMetadataId(mdId);
             OgpEditorService.setMdFileUploaded(true);
-            uploader.scope().clear(uploader.files);
           };
 
-          var uploadXmlRecordError = function (evt, data) {
+          var uploadXmlRecordError = function (evt, uploader) {
             $scope.metadataId = null;
             OgpEditorService.setMetadataId(null);
             OgpEditorService.setMdFileUploaded(false);
-            $scope.errorText = data.response().jqXHR.responseText;
+            $scope.errorText = uploader.response().jqXHR.responseText;
           };
 
           var uploadXmlStart = function (evt, data) {
@@ -74,8 +73,9 @@
           };
 
           /* Callback for completed (success, abort or error) upload requests. */
-          var uploadXmlAlways = function (event, data) {
+          var uploadXmlAlways = function (event, uploader) {
             $scope.uploading = false;
+            uploader.scope().clear(uploader.files);
           };
 
           $scope.xmlRecordUploadOptions = {
@@ -91,6 +91,7 @@
             OgpEditorService.setMetadataId(null);
             OgpEditorService.setMdFileUploaded(false);
             $scope.metadataId = null;
+            $scope.errorText = false;
             if (fileElement.files.length != 0) {
               $scope.fileName = fileElement.files[0].name;
             } else {
@@ -106,8 +107,8 @@
             return $timeout(angular.noop, 500)
           };
 
-          $scope.metadataPreview = function () {
-            if (!$scope.metadataId) {
+          $scope.metadataPreview = function (step) {
+            if (!step) {
               return;
             }
 
@@ -118,37 +119,30 @@
               size: 'lg',
               windowClass: 'modal-large',
               resolve: {
-                metadataId: function () {
-                  return $scope.metadataId;
+                step: function () {
+                  return step;
                 }
               }
             });
-            
-            
-            
-
-
           };
-
-
         }]);
   
-  module.controller('PreviewMetadataPopupController', ['$scope', '$http', '$sce', '$modalInstance', '$log', 'metadataId',
-    function ($scope, $http, $sce, $modalInstance, $log, metadataId) {
-      $scope.metadataId = metadataId;
+  module.controller('PreviewMetadataPopupController', ['$scope', '$http', '$sce', '$modalInstance', '$log', 'step',
+    function ($scope, $http, $sce, $modalInstance, $log, step) {
+      $scope.step = step;
       $scope.loading = true;
       $scope.error = false;
       
       // retrieve the medatata from the server
-      $http.get("xml.metadata.get", {
-        params: {id: $scope.metadataId}
+      $http.get("ogp.edit.preview", {
+        params: {step: $scope.step}
       }).success(function(data, status, headers, config) {
         $scope.response = data;
         $scope.loading = false;
         $scope.error = false;
       }).
           error(function(data, status, headers, config) {
-            $log.warn("Error retrieving metadata with id=" + $scope.metadataId);
+            $log.warn("Error retrieving metadata in step=" + $scope.step);
             $scope.loading = false;
             $scope.error = true;
           });

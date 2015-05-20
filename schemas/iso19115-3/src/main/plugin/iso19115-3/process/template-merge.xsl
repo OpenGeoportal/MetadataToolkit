@@ -36,8 +36,8 @@
   <!-- Template information has priority over the metadata processed -->
   <!--<xsl:variable name="templateXml"
                 select="document('file:///pathto/template.xml')"/>-->
-  templateXml
-  <xsl:param name="" />
+
+  <xsl:param name="templateXml" />
 
   <xsl:template match="mdb:MD_Metadata">
     <xsl:copy>
