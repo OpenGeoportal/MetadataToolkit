@@ -164,7 +164,7 @@
                   <xsl:with-param name="cls" select="local-name()"/>
                   <xsl:with-param name="xpath" select="$xpath"/>
                   <xsl:with-param name="subTreeSnippet">
-		            <xsl:apply-templates mode="mode-iso19115-3" select="gfc:FC_FeatureAttribute/gfc:featureType/gfc:FC_FeatureType/gfc:typeName">
+		            <xsl:apply-templates mode="mode-iso19115-3" select="gfc:FC_FeatureAttribute/gfc:memberName">
 		                  <xsl:with-param name="schema" select="$schema"/>
 		                  <xsl:with-param name="labels" select="$labels"/>
 		            </xsl:apply-templates>
