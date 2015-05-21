@@ -182,7 +182,7 @@ public class OgpEditController {
                     step2Metadata = wizardFormBean.getOgpImportedMetadata();
                 }
                 if (step2Metadata != null) {
-                    metadata = Xml.transformWithXmlParam(metadata, templateMergeStylesheet.toString(), "templateXml", Xml.getString(step2Metadata));
+                    metadata = Xml.transformWithXmlParam(step2Metadata, templateMergeStylesheet.toString(), "templateXml", Xml.getString(metadata));
                 }
             } else {
                 // not from template
@@ -203,7 +203,7 @@ public class OgpEditController {
                 if (metadata == null && step2Metadata != null) {
                     metadata = step2Metadata;
                 } else if (metadata != null && step2Metadata !=null) {
-                    metadata = Xml.transformWithXmlParam(metadata, templateMergeStylesheet.toString(), "templateXml", Xml.getString(step2Metadata));
+                    metadata = Xml.transformWithXmlParam(step2Metadata, etlMergeStylesheet.toString(), "etlXml", Xml.getString(metadata));;
                 }
             }
             if (metadata == null) {
