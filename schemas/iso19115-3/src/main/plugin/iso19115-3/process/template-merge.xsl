@@ -213,228 +213,231 @@
 
 
   <xsl:template match="mri:MD_DataIdentification">
-    <xsl:for-each select="mri:citation">
-      <xsl:copy>
-        <xsl:copy-of select="@*" />
-        <xsl:for-each select="cit:CI_Citation">
-          <xsl:copy>
-            <xsl:copy-of select="@*" />
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+      <xsl:for-each select="mri:citation">
+        <xsl:copy>
+          <xsl:copy-of select="@*" />
+          <xsl:for-each select="cit:CI_Citation">
+            <xsl:copy>
+              <xsl:copy-of select="@*" />
 
-            <!-- Metadata title from the template -->
-            <xsl:choose>
-              <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString)">
-                <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="cit:title" />
-              </xsl:otherwise>
-            </xsl:choose>
+              <!-- Metadata title from the template -->
+              <xsl:choose>
+                <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString)">
+                  <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="cit:title" />
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <xsl:apply-templates select="alternateTitle" />
+              <xsl:apply-templates select="alternateTitle" />
 
-            <!-- Publication date from the template -->
-            <xsl:choose>
-              <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date[normalize-space(*) != '']) > 0">
-                <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']" />
-              </xsl:otherwise>
-            </xsl:choose>
+              <!-- Publication date from the template -->
+              <xsl:choose>
+                <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date[normalize-space(*) != '']) > 0">
+                  <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']" />
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <!-- Copy the rest of dates -->
-            <xsl:apply-templates select="cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue!='publication']" />
+              <!-- Copy the rest of dates -->
+              <xsl:apply-templates select="cit:date[cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue!='publication']" />
 
-            <xsl:apply-templates select="cit:edition" />
-            <xsl:apply-templates select="cit:editionDate" />
-            <xsl:apply-templates select="cit:identifier" />
+              <xsl:apply-templates select="cit:edition" />
+              <xsl:apply-templates select="cit:editionDate" />
+              <xsl:apply-templates select="cit:identifier" />
 
-            <!-- Copy the contacts with other roles than originator, publisher -->
-            <xsl:apply-templates select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue != 'originator' and
-                            cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue != 'publisher']
-                            " />
+              <!-- Copy the contacts with other roles than originator, publisher -->
+              <xsl:apply-templates select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue != 'originator' and
+                              cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue != 'publisher']
+                              " />
 
-            <!-- Originator from template -->
-            <xsl:choose>
-              <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']">
-                <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']" />
-              </xsl:otherwise>
-            </xsl:choose>
+              <!-- Originator from template -->
+              <xsl:choose>
+                <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']">
+                  <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']" />
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <!-- Publisher from template -->
-            <xsl:choose>
-              <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'publisher']">
-                <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'publisher']" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']" />
-              </xsl:otherwise>
-            </xsl:choose>
+              <!-- Publisher from template -->
+              <xsl:choose>
+                <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'publisher']">
+                  <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'publisher']" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'originator']" />
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <!-- presentationForm from the template -->
-            <xsl:choose>
-              <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm[normalize-space(cit:CI_PresentationFormCode/@codeListValue) != '']) > 0">
-                <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="cit:presentationForm" />
-              </xsl:otherwise>
-            </xsl:choose>
+              <!-- presentationForm from the template -->
+              <xsl:choose>
+                <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm[normalize-space(cit:CI_PresentationFormCode/@codeListValue) != '']) > 0">
+                  <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:presentationForm" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="cit:presentationForm" />
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <xsl:apply-templates select="cit:series" />
-            <xsl:apply-templates select="cit:ISBN" />
-            <xsl:apply-templates select="cit:ISSN" />
-            <xsl:apply-templates select="cit:onlineResource" />
-            <xsl:apply-templates select="cit:graphic" />
-            <xsl:apply-templates select="cit:onlineResource" />
+              <xsl:apply-templates select="cit:series" />
+              <xsl:apply-templates select="cit:ISBN" />
+              <xsl:apply-templates select="cit:ISSN" />
+              <xsl:apply-templates select="cit:onlineResource" />
+              <xsl:apply-templates select="cit:graphic" />
+              <xsl:apply-templates select="cit:onlineResource" />
 
-          </xsl:copy>
-        </xsl:for-each>
-      </xsl:copy>
-    </xsl:for-each>
+            </xsl:copy>
+          </xsl:for-each>
+        </xsl:copy>
+      </xsl:for-each>
 
-    <!-- abstract from the template -->
-    <xsl:choose>
-      <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString)">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:abstract" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- abstract from the template -->
+      <xsl:choose>
+        <xsl:when test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString)">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:abstract" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <xsl:apply-templates select="mri:abstract" />
-    <xsl:apply-templates select="mri:purpose" />
-    <xsl:apply-templates select="mri:credit" />
-    <xsl:apply-templates select="mri:status" />
-    <xsl:apply-templates select="mri:pointOfContact" />
+      <xsl:apply-templates select="mri:abstract" />
+      <xsl:apply-templates select="mri:purpose" />
+      <xsl:apply-templates select="mri:credit" />
+      <xsl:apply-templates select="mri:status" />
+      <xsl:apply-templates select="mri:pointOfContact" />
 
-    <!-- spatialRepresentationType from the template -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="spatialRepresentationType" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- spatialRepresentationType from the template -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="spatialRepresentationType" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <!-- spatialResolution from the template -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="spatialResolution" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- spatialResolution from the template -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="spatialResolution" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <xsl:apply-templates select="mri:temporalResolution" />
+      <xsl:apply-templates select="mri:temporalResolution" />
 
-    <!-- Topic Category from the template -->
-    <xsl:choose>
-      <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory[normalize-space(mri:MD_TopicCategoryCode) != '']) > 0">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:topicCategory" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Topic Category from the template -->
+      <xsl:choose>
+        <xsl:when test="count($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory[normalize-space(mri:MD_TopicCategoryCode) != '']) > 0">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:topicCategory" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <!-- Copy non temporal/geographic extents -->
-    <xsl:apply-templates select="mri:extent[not(gex:EX_Extent/gex:geographicElement) and not(gex:EX_Extent/gex:temporalElement)]" />
+      <!-- Copy non temporal/geographic extents -->
+      <xsl:apply-templates select="mri:extent[not(gex:EX_Extent/gex:geographicElement) and not(gex:EX_Extent/gex:temporalElement)]" />
 
-    <!-- Temporal extent from the template -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:temporalElement]">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:temporalElement]" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:extent[gex:EX_Extent/gex:temporalElement]" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Temporal extent from the template -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:temporalElement]">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:temporalElement]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:extent[gex:EX_Extent/gex:temporalElement]" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <!-- Geographic extent from the template -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:extent[gex:EX_Extent/gex:geographicElement]" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Geographic extent from the template -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:extent[gex:EX_Extent/gex:geographicElement]" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <xsl:apply-templates select="mri:additionalDocumentation" />
-    <xsl:apply-templates select="mri:processingLevel" />
-    <xsl:apply-templates select="mri:resourceMaintenance" />
-    <xsl:apply-templates select="mri:graphicOverview" />
-    <xsl:apply-templates select="mri:resourceFormat" />
+      <xsl:apply-templates select="mri:additionalDocumentation" />
+      <xsl:apply-templates select="mri:processingLevel" />
+      <xsl:apply-templates select="mri:resourceMaintenance" />
+      <xsl:apply-templates select="mri:graphicOverview" />
+      <xsl:apply-templates select="mri:resourceFormat" />
 
-    <!-- Copy keywords non related to theme, place -->
-    <xsl:apply-templates select="mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue != 'theme' and
-            mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue != 'place']" />
+      <!-- Copy keywords non related to theme, place -->
+      <xsl:apply-templates select="mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue != 'theme' and
+              mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue != 'place']" />
 
-    <!-- Theme keywords from the template. TODO: Check if both should be integrated?? -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'theme']">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'theme']" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'theme']" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Theme keywords from the template. TODO: Check if both should be integrated?? -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'theme']">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'theme']" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'theme']" />
+        </xsl:otherwise>
+      </xsl:choose>
 
 
-    <!-- Place keywords from the template. TODO: Check if both should be integrated?? -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'place']">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'place']" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'place']" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Place keywords from the template. TODO: Check if both should be integrated?? -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'place']">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'place']" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:descriptiveKeywords[mri:MD_Keywords/mri:type/mri:MD_KeywordTypeCode/@codeListValue = 'place']" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <xsl:apply-templates select="mri:resourceSpecificUsage" />
+      <xsl:apply-templates select="mri:resourceSpecificUsage" />
 
-    <!-- Access, user constraints from the template -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:accessConstraints or
-                $templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:useConstraints">
+      <!-- Access, user constraints from the template -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:accessConstraints or
+                  $templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:useConstraints">
 
-        <!-- Copy the legal contraints content from the template -->
-        <!-- Note that in the md can be several sections with mri:resourceConstraints[mco:MD_LegalConstraint], all are replaced with the ones in the template -->
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraint]"></xsl:copy-of>
+          <!-- Copy the legal contraints content from the template -->
+          <!-- Note that in the md can be several sections with mri:resourceConstraints[mco:MD_LegalConstraint], all are replaced with the ones in the template -->
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraint]"></xsl:copy-of>
 
-      </xsl:when>
+        </xsl:when>
 
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:resourceConstraints[mco:MD_LegalConstraints]" />
-      </xsl:otherwise>
-    </xsl:choose>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:resourceConstraints[mco:MD_LegalConstraints]" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <!-- Copy non legal constraints -->
-    <xsl:apply-templates select="mri:resourceConstraints[mco:MD_Constraints]" />
-    <xsl:apply-templates select="mri:resourceConstraints[mco:MD_SecurityConstraints]" />
+      <!-- Copy non legal constraints -->
+      <xsl:apply-templates select="mri:resourceConstraints[mco:MD_Constraints]" />
+      <xsl:apply-templates select="mri:resourceConstraints[mco:MD_SecurityConstraints]" />
 
-    <xsl:apply-templates select="mri:associatedResource" />
+      <xsl:apply-templates select="mri:associatedResource" />
 
-    <!-- Dataset language from the template -->
-    <xsl:choose>
-      <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:defaultLocale">
-        <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:defaultLocale" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:defaultLocale" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Dataset language from the template -->
+      <xsl:choose>
+        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:defaultLocale">
+          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:defaultLocale" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:defaultLocale" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <xsl:apply-templates select="mri:otherLocale" />
-    <xsl:apply-templates select="mri:environmentDescription" />
-    <xsl:apply-templates select="mri:supplementalInformation" />
+      <xsl:apply-templates select="mri:otherLocale" />
+      <xsl:apply-templates select="mri:environmentDescription" />
+      <xsl:apply-templates select="mri:supplementalInformation" />
+    </xsl:copy>
   </xsl:template>
 
   <!-- ================================================================= -->

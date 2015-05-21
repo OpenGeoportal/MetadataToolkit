@@ -95,76 +95,79 @@
 
 
   <xsl:template match="mri:MD_DataIdentification">
-    <xsl:for-each select="mri:citation">
-      <xsl:copy>
-        <xsl:copy-of select="@*" />
-        <xsl:for-each select="cit:CI_Citation">
-          <xsl:copy>
-            <xsl:copy-of select="@*" />
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+      <xsl:for-each select="mri:citation">
+        <xsl:copy>
+          <xsl:copy-of select="@*" />
+          <xsl:for-each select="cit:CI_Citation">
+            <xsl:copy>
+              <xsl:copy-of select="@*" />
 
-            <!-- Metadata title from the ETL template -->
-            <xsl:choose>
-              <xsl:when test="string($etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString)">
-                <xsl:copy-of select="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="cit:title" />
-              </xsl:otherwise>
-            </xsl:choose>
+              <!-- Metadata title from the ETL template -->
+              <xsl:choose>
+                <xsl:when test="string($etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString)">
+                  <xsl:copy-of select="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="cit:title" />
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <xsl:apply-templates select="*[name () != 'cit:title']" />
-          </xsl:copy>
-        </xsl:for-each>
-      </xsl:copy>
-    </xsl:for-each>
+              <xsl:apply-templates select="*[name () != 'cit:title']" />
+            </xsl:copy>
+          </xsl:for-each>
+        </xsl:copy>
+      </xsl:for-each>
 
-    <xsl:apply-templates select="mri:abstract" />
-    <xsl:apply-templates select="mri:purpose" />
-    <xsl:apply-templates select="mri:credit" />
-    <xsl:apply-templates select="mri:status" />
-    <xsl:apply-templates select="mri:pointOfContact" />
+      <xsl:apply-templates select="mri:abstract" />
+      <xsl:apply-templates select="mri:purpose" />
+      <xsl:apply-templates select="mri:credit" />
+      <xsl:apply-templates select="mri:status" />
+      <xsl:apply-templates select="mri:pointOfContact" />
 
-    <!-- spatialRepresentationType from the ETL template -->
-    <xsl:choose>
-      <xsl:when test="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType">
-        <xsl:copy-of select="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="spatialRepresentationType" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- spatialRepresentationType from the ETL template -->
+      <xsl:choose>
+        <xsl:when test="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType">
+          <xsl:copy-of select="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="spatialRepresentationType" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <!-- spatialResolution. TODO: Check if filled in ETL? -->
-    <xsl:apply-templates select="mri:spatialResolution" />
+      <!-- spatialResolution. TODO: Check if filled in ETL? -->
+      <xsl:apply-templates select="mri:spatialResolution" />
 
-    <xsl:apply-templates select="mri:temporalResolution" />
-    <xsl:apply-templates select="mri:topicCategory" />
+      <xsl:apply-templates select="mri:temporalResolution" />
+      <xsl:apply-templates select="mri:topicCategory" />
 
-    <xsl:apply-templates select="mri:extent[not(gex:EX_Extent/gex:geographicElement)]" />
+      <xsl:apply-templates select="mri:extent[not(gex:EX_Extent/gex:geographicElement)]" />
 
-    <!-- Geographic extent from the ETL template -->
-    <xsl:choose>
-      <xsl:when test="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]">
-        <xsl:copy-of select="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="mri:extent[gex:EX_Extent/gex:geographicElement]" />
-      </xsl:otherwise>
-    </xsl:choose>
+      <!-- Geographic extent from the ETL template -->
+      <xsl:choose>
+        <xsl:when test="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]">
+          <xsl:copy-of select="$etlXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gex:EX_Extent/gex:geographicElement]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="mri:extent[gex:EX_Extent/gex:geographicElement]" />
+        </xsl:otherwise>
+      </xsl:choose>
 
-    <xsl:apply-templates select="mri:additionalDocumentation" />
-    <xsl:apply-templates select="mri:processingLevel" />
-    <xsl:apply-templates select="mri:resourceMaintenance" />
-    <xsl:apply-templates select="mri:graphicOverview" />
-    <xsl:apply-templates select="mri:resourceFormat" />
-    <xsl:apply-templates select="mri:descriptiveKeywords" />
-    <xsl:apply-templates select="mri:resourceSpecificUsage" />
-    <xsl:apply-templates select="mri:resourceConstraints" />
-    <xsl:apply-templates select="mri:associatedResource" />
-    <xsl:apply-templates select="mri:defaultLocale" />
-    <xsl:apply-templates select="mri:otherLocale" />
-    <xsl:apply-templates select="mri:environmentDescription" />
-    <xsl:apply-templates select="mri:supplementalInformation" />
+      <xsl:apply-templates select="mri:additionalDocumentation" />
+      <xsl:apply-templates select="mri:processingLevel" />
+      <xsl:apply-templates select="mri:resourceMaintenance" />
+      <xsl:apply-templates select="mri:graphicOverview" />
+      <xsl:apply-templates select="mri:resourceFormat" />
+      <xsl:apply-templates select="mri:descriptiveKeywords" />
+      <xsl:apply-templates select="mri:resourceSpecificUsage" />
+      <xsl:apply-templates select="mri:resourceConstraints" />
+      <xsl:apply-templates select="mri:associatedResource" />
+      <xsl:apply-templates select="mri:defaultLocale" />
+      <xsl:apply-templates select="mri:otherLocale" />
+      <xsl:apply-templates select="mri:environmentDescription" />
+      <xsl:apply-templates select="mri:supplementalInformation" />
+    </xsl:copy>
   </xsl:template>
 
   <!-- ================================================================= -->
