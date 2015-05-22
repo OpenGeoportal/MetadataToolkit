@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-      xmlns:gn="http://www.fao.org/geonetwork"
-      xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0"
-      xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
-      xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
-      xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
-      xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0"
-      xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0"
-      xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0"
-      xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0"
-      xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0"
+      xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0"
+      xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
+      xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
       xmlns:gcx="http://standards.iso.org/19115/-3/gcx/1.0"
       xmlns:gex="http://standards.iso.org/19115/-3/gex/1.0"
-      xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
-      xmlns:cit="http://standards.iso.org/19115/-3/cit/1.0"
       xmlns:gco="http://standards.iso.org/19115/-3/gco/1.0"
-      xmlns:cat="http://standards.iso.org/19115/-3/cat/1.0"
       xmlns:gfc="http://standards.iso.org/19110/gfc/1.1"
+      xmlns:lan="http://standards.iso.org/19115/-3/lan/1.0"
+      xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0"
       xmlns:mas="http://standards.iso.org/19115/-3/mas/1.0"
+      xmlns:mcc="http://standards.iso.org/19115/-3/mcc/1.0"
+      xmlns:mco="http://standards.iso.org/19115/-3/mco/1.0"
       xmlns:mda="http://standards.iso.org/19115/-3/mda/1.0"
+      xmlns:mdb="http://standards.iso.org/19115/-3/mdb/1.0"
       xmlns:mds="http://standards.iso.org/19115/-3/mds/1.0"
+      xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0"
       xmlns:mdt="http://standards.iso.org/19115/-3/mdt/1.0"
       xmlns:mex="http://standards.iso.org/19115/-3/mex/1.0"
       xmlns:mmi="http://standards.iso.org/19115/-3/mmi/1.0"
       xmlns:mpc="http://standards.iso.org/19115/-3/mpc/1.0"
       xmlns:mrc="http://standards.iso.org/19115/-3/mrc/1.0"
+      xmlns:mrd="http://standards.iso.org/19115/-3/mrd/1.0"
+      xmlns:mri="http://standards.iso.org/19115/-3/mri/1.0"
       xmlns:mrl="http://standards.iso.org/19115/-3/mrl/1.0"
-      xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0"
-      xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0"
+      xmlns:mrs="http://standards.iso.org/19115/-3/mrs/1.0"
+      xmlns:msr="http://standards.iso.org/19115/-3/msr/1.0"
+      xmlns:srv="http://standards.iso.org/19115/-3/srv/2.0"
       xmlns:xs="http://www.w3.org/2001/XMLSchema"
-      xmlns:java="java:org.fao.geonet.util.XslUtil"
       xmlns:gml="http://www.opengis.net/gml/3.2"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       xmlns:geonet="http://www.fao.org/geonetwork"
+      xmlns:gn="http://www.fao.org/geonetwork"
+      xmlns:java="java:org.fao.geonet.util.XslUtil"
   exclude-result-prefixes="#all">
-  
+
   <xsl:import href="convert/create19115-3Namespaces.xsl"/>
-  
+
   <xsl:include href="convert/functions.xsl"/>
 
 
@@ -166,7 +166,7 @@
               <mdb:contentInfo>
 			      <mrc:MD_FeatureCatalogue>
 			         <mrc:featureCatalogue>
-			            <gfc:FC_FeatureCatalogue xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+			            <gfc:FC_FeatureCatalogue>
 			               <gfc:producer>
 			                  <cit:CI_Responsibility>
 			                     <cit:role>
@@ -187,7 +187,7 @@
                         <mdb:contentInfo>
 	                      <mrc:MD_FeatureCatalogue>
 	                        <mrc:featureCatalogue>
-	                            <gfc:FC_FeatureCatalogue xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+	                            <gfc:FC_FeatureCatalogue>
 	                               <gfc:producer>
 	                                  <cit:CI_Responsibility>
 	                                     <cit:role>
@@ -208,7 +208,7 @@
 			                        <mdb:contentInfo>
 			                          <mrc:MD_FeatureCatalogue>
 				                           <mrc:featureCatalogue>
-				                               <gfc:FC_FeatureCatalogue xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+				                               <gfc:FC_FeatureCatalogue>
 				                                  <gfc:producer>
 				                                     <cit:CI_Responsibility>
 				                                        <cit:role>
@@ -486,9 +486,7 @@
         <mri:MD_DataIdentification>
             <xsl:apply-templates select="@*|node()"/>
              <xsl:if test="not(mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='theme'])">
-	            <mri:descriptiveKeywords xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
-                                  xmlns:gn="http://www.fao.org/geonetwork"
-                                  xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+	            <mri:descriptiveKeywords>
 	                <mri:MD_Keywords>
 	                   <mri:keyword gco:nilReason="missing">
 	                      <gco:CharacterString/>
@@ -527,9 +525,7 @@
                 </mri:descriptiveKeywords>
 	          </xsl:if>
 	          <xsl:if test="not(mri:descriptiveKeywords/mri:MD_Keywords[mri:type/mri:MD_KeywordTypeCode/@codeListValue='place'])">
-	              <mri:descriptiveKeywords xmlns:dqm="http://standards.iso.org/19157/-2/dqm/1.0"
-                                  xmlns:gn="http://www.fao.org/geonetwork"
-                                  xmlns:gfc="http://standards.iso.org/19110/gfc/1.1">
+	              <mri:descriptiveKeywords>
 	                <mri:MD_Keywords>
 	                   <mri:keyword gco:nilReason="missing">
 	                      <gco:CharacterString/>
