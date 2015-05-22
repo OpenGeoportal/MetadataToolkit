@@ -42,13 +42,6 @@
           when('/metadata/:id', {
             templateUrl: tplFolder + "redirect.html",
             controller: 'OgpRedirectController'}).
-          /*when('/create/fromFile', {
-            templateUrl: gnTplFolder + 'upload-form.html',
-            controller: 'GnNewMetadataFromFileController'}).
-          when('/create/fromOGP', {
-            templateUrl: gnTplFolder + 'upload-form.html',
-            controller:'OgpSearchController'
-          }).*/
           when('/new/:from/optionalAdditions', {
             templateUrl: tplFolder + "optional-additions.html",
             controller: 'OgpEditorBoardController'
@@ -80,7 +73,6 @@
         pathname = pathname + "#" + path;
         $window.location.href = pathname;
       }
-
   }]);
 
   module.controller('OgpEditorBoardController', [
@@ -88,6 +80,7 @@
     '$window', '$log', 'OgpEditorService', 'TEMPLATES',
     function($scope, $routeParams, gnGroupService, gnSearchManagerService, gnMetadataManager, $filter, $location,
              $window, $log, OgpEditorService, TEMPLATES) {
+      $scope.controllerName= "OgpEditorBoardController";
       $scope.from = $routeParams.from;
       $scope.templateId = $routeParams.templateId;
       $scope.importXmlMetadataStep = 'importLocalRecord';

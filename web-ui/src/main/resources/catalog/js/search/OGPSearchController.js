@@ -24,6 +24,7 @@
     module.controller('OgpSearchController', [
         '$scope', '$filter', '$http', '$modal', '$rootScope', '$timeout', '$location', 'gnGroupService', 'OgpEditorService', 'CONSTANTS',
         function ($scope, $filter, $http, $modal, $rootScope, $timeout, $location, gnGroupService, OgpEditorService, CONSTANTS) {
+            $scope.controllerName = "OgpSearchController";
 
             $scope.searchForm = {};
             $scope.resultBean = {};

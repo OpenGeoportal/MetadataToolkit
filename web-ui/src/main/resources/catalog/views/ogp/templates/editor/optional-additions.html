@@ -58,7 +58,7 @@
             </div>
         </div>
         <div data-ng-if="step === 'importDataProperties'" class="container">
-            <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/templates/editor/upload-form.html'">
+            <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/views/ogp/templates/editor/upload-form.html'">
             </div>
         </div>
         <div data-ng-if="step === 'importXmlMetadata'" class="container">
@@ -72,7 +72,7 @@
                 </li>
             </ul>
             <div data-ng-if="importXmlMetadataStep === 'importLocalRecord'">
-                <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/templates/editor/upload-form.html'">
+                <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/views/ogp/templates/editor/upload-form.html'">
                 </div>
             </div>
             <div data-ng-if="importXmlMetadataStep === 'importOgpCloud'">

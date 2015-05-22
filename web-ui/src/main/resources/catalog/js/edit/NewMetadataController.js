@@ -3,18 +3,8 @@
 
   goog.require('gn_catalog_service');
 
-
   var module = angular.module('gn_new_metadata_controller',
       ['gn_catalog_service']);
-
-
-  /**
-   * Constants
-   */
-   module.constant('TEMPLATES', {
-    'BLANK_TEMPLATE_NAME': 'Blank Template',
-    'EDITOR_PROFILE': 'Editor'
-   });
 
   /**
    * Controller to create new metadata record.
@@ -23,23 +13,15 @@
     '$scope', '$routeParams', '$http', '$rootScope', '$translate', '$compile',
     'gnSearchManagerService',
     'gnUtilityService',
-    'gnMetadataManager', '$location', 'gnGroupService',
-    '$filter', '$q', '$timeout', 'TEMPLATES',
+    'gnMetadataManager',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
-            gnSearchManagerService, 
-            gnUtilityService,
-            gnMetadataManager, $location, gnGroupService,
-            $filter, $q, $timeout, TEMPLATES) {
+             gnSearchManagerService,
+             gnUtilityService,
+             gnMetadataManager) {
 
       $scope.isTemplate = false;
       $scope.hasTemplates = true;
       $scope.mdList = null;
-      $scope.blankTemplate = null;
-
-      // Default group is Guest (-1)
-      $scope.ownerGroup = -1;
-
-
 
       // A map of icon to use for each types
       var icons = {
@@ -48,31 +30,6 @@
         map: 'fa-globe',
         staticMap: 'fa-globe',
         dataset: 'fa-file'
-      };
-
-      gnGroupService.list(TEMPLATES.EDITOR_PROFILE).then(
-              function (groups) {
-            $scope.groups = groups;
-            var first = $scope.getFirstGroupNonSpecial(groups);
-            $scope.firstGroupNonSpecial = first != null ? first['@id'] : '-1'
-          }, function (reason) {
-
-          }
-      );
-
-      $scope.getFirstGroupNonSpecial = function (groups) {
-        var sortedGroups = $filter('orderBy')(groups, function (obj) {
-          return parseInt(obj["@id"]);
-        });
-        var i = 0;
-        var first = null;
-        while (i < sortedGroups.length && !first) {
-          if (parseInt(groups[i]["@id"]) > 1) {
-            first = groups[i];
-          }
-          i++;
-        }
-        return first;
       };
 
       $scope.$watchCollection('groups', function() {
@@ -85,7 +42,7 @@
 
       // List of record type to not take into account
       // Could be avoided if a new index field is created FIXME ?
-      var dataTypesToExclude = ['staticMap'];
+      var dataTypesToExclude = ['staticMap', 'theme', 'place'];
       var defaultType = 'dataset';
       var unknownType = 'unknownType';
       var fullPrivileges = true;
@@ -155,14 +112,6 @@
         }
       };
 
-      $scope.isBlankTemplate = function(tpl) {
-        if (tpl && tpl.defaultTitle && tpl.defaultTitle === TEMPLATES.BLANK_TEMPLATE_NAME) {
-          return true;
-        } else {
-          return false;
-        }
-      };
-
       /**
        * Get all the templates for a given type.
        * Will put this list into $scope.tpls variable.
@@ -170,19 +119,13 @@
       $scope.getTemplateNamesByType = function(type) {
         var tpls = [];
         for (var i = 0; i < $scope.mdList.metadata.length; i++) {
-          var currentTpl = $scope.mdList.metadata[i];
-          var mdType = currentTpl.type || unknownType;
-          if ($scope.isBlankTemplate(currentTpl)) {
-            // Do not add blank template to tpls list. Instead save it in an independent variable.
-            $scope.blankTemplate = currentTpl;
-          } else {
-            if (mdType instanceof Array) {
-              if (mdType.indexOf(type) >= 0 ) {
-                tpls.push(currentTpl);
-              }
-            } else if (mdType == type) {
-              tpls.push(currentTpl);
+          var mdType = $scope.mdList.metadata[i].type || unknownType;
+          if (mdType instanceof Array) {
+            if (mdType.indexOf(type) >= 0) {
+              tpls.push($scope.mdList.metadata[i]);
             }
+          } else if (mdType == type) {
+            tpls.push($scope.mdList.metadata[i]);
           }
         }
 
@@ -206,29 +149,6 @@
         $scope.activeTpl = tpl;
       };
 
-      $scope.setFromFile = function(fromFile) {
-        $scope.fromFile = fromFile;
-      };
-
-      $scope.setBlankRecord = function() {
-        $scope.activeTpl = $scope.blankTemplate;
-      };
-
-      $scope.useTemplate = function(tpl) {
-        $scope.setFromFile(null);
-        $scope.setActiveTpl(tpl);
-      };
-
-      $scope.useFile = function(file) {
-        $scope.setActiveTpl(null);
-        $scope.setFromFile(file)
-      };
-
-      $scope.useBlankTemplate = function() {
-        $scope.setFromFile(null);
-        $scope.setBlankRecord();
-      };
-
 
       if ($routeParams.childOf) {
         $scope.title = $translate('createChildOf');
@@ -239,25 +159,14 @@
       }
 
       $scope.createNewMetadata = function(isPublic) {
-        if ($scope.activeTpl) {
-            return gnMetadataManager.create(
-              $scope.activeTpl['geonet:info'].id,
-              $scope.ownerGroup,
-              isPublic || false,
-              $scope.isTemplate,
-              $routeParams.childOf ? true : false
-          );
-        } else if($scope.fromFile === 'xmlFile') {
-            return $timeout(function(){
-                return  $location.path('/create/fromFile');
-            }, 200);
-        } else if ($scope.fromFile === 'ogpSearch') {
-            return $timeout(function() {
-                $location.path('/ogpSearch/search');
-            }, 200);
-        }
+        return gnMetadataManager.create(
+            $scope.activeTpl['geonet:info'].id,
+            $scope.ownerGroup,
+            isPublic || false,
+            $scope.isTemplate,
+            $routeParams.childOf ? true : false
+        );
       };
-
 
       init();
     }

@@ -45,26 +45,20 @@
   goog.require('gn_import_controller');
   goog.require('gn_mdactions_service');
   goog.require('gn_new_metadata_controller');
-  goog.require('gn_new_metadata_from_file_controller');
   goog.require('gn_scroll_spy');
   goog.require('gn_share');
   goog.require('gn_thesaurus');
   goog.require('gn_utility_directive');
-  goog.require('ogp_search');
 
   var module = angular.module('gn_editor_controller',
       ['gn_fields', 'gn_new_metadata_controller',
-       'gn_new_metadata_from_file_controller',
-       'gn_import_controller',
-       'gn_editorboard_controller', 'gn_share',
-       'gn_directory_controller', 'gn_utility_directive',
-       'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker',
-       'ogp_search',
-       'ngRoute', 'gn_mdactions_service']);
+        'gn_import_controller',
+        'gn_editorboard_controller', 'gn_share',
+        'gn_directory_controller', 'gn_utility_directive',
+        'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker',
+        'ngRoute', 'gn_mdactions_service', 'ui.bootstrap']);
 
   var tplFolder = '../../catalog/templates/editor/';
-  var ogpSearchTplFolder = '../../catalog/templates/search/ogp/';
-
 
   module.config(['$routeProvider',
     function($routeProvider) {
@@ -92,9 +86,6 @@
           when('/create/from/:id/in/:group/template/:template', {
             templateUrl: tplFolder + 'editor.html',
             controller: 'GnNewMetadataController'}).
-          when('/create/fromFile', {
-            templateUrl : tplFolder + "upload-form.html",
-            controller: 'GnNewMetadataFromFileController'}).
           when('/directory', {
             templateUrl: tplFolder + 'directory.html',
             controller: 'GnDirectoryController'}).
@@ -107,14 +98,16 @@
           when('/import', {
             templateUrl: tplFolder + 'import.html',
             controller: 'GnImportController'}).
-          otherwise({
+          when('/board', {
             templateUrl: tplFolder + 'editorboard.html',
-            controller: 'GnEditorBoardController'
+            controller: 'GnEditorBoardController'}).
+          otherwise({
+            redirectTo: '/board'
           });
     }]);
 
   /**
-   * Metadata editor controller - draft
+   * Metadata editor controller
    */
   module.controller('GnEditorController', [
     '$scope', '$routeParams', '$http', '$rootScope',
@@ -122,11 +115,11 @@
     'gnEditor', 'gnSearchManagerService',
     'gnConfigService', 'gnUtilityService',
     'gnCurrentEdit', 'gnConfig', 'gnMetadataActions',
-    function($scope, $routeParams, $http, $rootScope, 
-        $translate, $compile, $timeout, $location,
-        gnEditor, gnSearchManagerService,
-        gnConfigService, gnUtilityService,
-        gnCurrentEdit, gnConfig, gnMetadataActions) {
+    function($scope, $routeParams, $http, $rootScope,
+             $translate, $compile, $timeout, $location,
+             gnEditor, gnSearchManagerService,
+             gnConfigService, gnUtilityService,
+             gnCurrentEdit, gnConfig, gnMetadataActions) {
       $scope.savedStatus = null;
       $scope.savedTime = null;
       $scope.formId = null;
@@ -152,13 +145,13 @@
           menu.empty();
           var button = $('#gn-view-menu-' + gnCurrentEdit.id);
           if (button) {
-            var originalParent = button.parent();  
+            var originalParent = button.parent();
             menu.append(button);
             // empty original container so we can use the CSS :empty selector on it and set an invisible border to it
             // when it doesn't have more content.
             if (originalParent && originalParent.children().length == 0 && originalParent.text().trim() == "") {
               originalParent.empty();
-            }  
+            }
           }
         }
       };
@@ -227,11 +220,12 @@
                   tab: $routeParams.tab || defaultTab,
                   displayAttributes: $routeParams.displayAttributes === 'true',
                   displayTooltips:
-                      gnCurrentEdit.schemaConfig.displayToolTip === true,
+                    gnCurrentEdit.schemaConfig.displayToolTip === true,
                   compileScope: $scope,
                   formScope: $scope.$new(),
                   sessionStartTime: moment(),
-                  formLoadExtraFn: setViewMenuInTopToolbar
+                  formLoadExtraFn: setViewMenuInTopToolbar,
+                  working: false
                 });
 
                 $scope.gnCurrentEdit = gnCurrentEdit;
@@ -242,7 +236,7 @@
                 // appending a random int in order to avoid
                 // caching by route.
                 $scope.editorFormUrl = gnEditor
-                  .buildEditUrlPrefix('md.edit') + '&starteditingsession=yes&' +
+                        .buildEditUrlPrefix('md.edit') + '&starteditingsession=yes&' +
                     '_random=' + Math.floor(Math.random() * 10000);
 
                 window.onbeforeunload = function() {
@@ -360,7 +354,7 @@
           // and the newly created attributes.
           // Save to not lose current edits in main field.
           return gnEditor.save(false)
-            .then(function() {
+              .then(function() {
                 gnEditor.add(gnCurrentEdit.id, ref, name,
                     insertRef, position, attribute);
               });
@@ -386,7 +380,7 @@
       $scope.save = function(refreshForm) {
         $scope.saveError = false;
         var promise = gnEditor.save(refreshForm)
-          .then(function(form) {
+            .then(function(form) {
               $scope.savedStatus = gnCurrentEdit.savedStatus;
               $scope.saveError = false;
               $scope.toggleAttributes();
@@ -418,7 +412,7 @@
       $scope.cancel = function(refreshForm) {
         $scope.savedStatus = gnCurrentEdit.savedStatus;
         return gnEditor.cancel(refreshForm)
-          .then(function(form) {
+            .then(function(form) {
               // Refresh editor form after cancel
               //  $scope.savedStatus = gnCurrentEdit.savedStatus;
               //  $rootScope.$broadcast('StatusUpdated', {
@@ -438,7 +432,7 @@
 
       $scope.close = function() {
         var promise = gnEditor.save(false)
-          .then(function(form) {
+            .then(function(form) {
               closeEditor();
             }, function(error) {
               $rootScope.$broadcast('StatusUpdated', {
@@ -466,9 +460,9 @@
       };
 
       $scope.$on('AddElement', function(event, ref, name,
-          insertRef, position, attribute) {
-            $scope.add(ref, name, insertRef, position, attribute);
-          });
+                                        insertRef, position, attribute) {
+        $scope.add(ref, name, insertRef, position, attribute);
+      });
 
       $scope.validate = function() {
         $('#showvalidationerrors')[0].value = 'true';
