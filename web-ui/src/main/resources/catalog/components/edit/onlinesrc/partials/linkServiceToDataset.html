@@ -10,6 +10,7 @@
               <input class="form-control"
               data-ng-change="triggerSearch()"
               type="text" data-ng-model="searchObj.params.any"
+              data-ng-model-options="modelOptions"
               placeholder="{{'search' | translate}}" autofocus="" />
           </div>
         </div>
@@ -21,7 +22,11 @@
         data-select-records="stateObj.selectRecords"
         data-pagination-info="paginationInfo">
       </div>
-      <div data-gn-layers-grid 
+
+      <p class="alert alert-warning"
+         data-ng-show="alertMsg">{{alertMsg}}</p>
+
+      <div data-gn-layers-grid
         data-gn-selection-mode="multiple"
         data-layers="layers"
         data-selection="srcParams.layers">
@@ -29,7 +34,7 @@
     </div>
     <div class="">
       <button type="button" class="btn navbar-btn btn-success"
-        data-ng-click="linkTo()"
+        data-gn-click-and-spin="linkTo()"
         data-ng-class="{'disabled': (stateObj.selectRecords.length < 1)}">
         <i class="fa fa-cloud" />&nbsp;
         <span data-translate="">linkToService</span>

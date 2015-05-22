@@ -126,13 +126,16 @@
    * On submit, the metadata is saved, the thumbnail is added, then the form
    * and online resource list are refreshed.
    */
-      .directive('gnAddThumbnail', ['$parse', '$http', '$rootScope', '$translate',
+      .directive('gnAddThumbnail', [
+        '$parse',
+        '$http', '$rootScope', '$translate',
+        '$timeout', '$q',
         'gnOnlinesrc',
         'gnEditor',
         'gnCurrentEdit',
         'gnConfig',
         'gnMap',
-        function($parse, $http, $rootScope, $translate,
+        function($parse, $http, $rootScope, $translate, $timeout, $q,
                  gnOnlinesrc, gnEditor, gnCurrentEdit,
                  gnConfig, gnMap) {
           return {
@@ -141,7 +144,7 @@
               gnDisableUpload: '@'
             },
             templateUrl: '../../catalog/components/edit/onlinesrc/' +
-            'partials/addThumbnail.html',
+                'partials/addThumbnail.html',
             compile: function(element, attrs) {
               if (!attrs.gnDisableUpload) {
                 attrs.gnDisableUpload = false;
@@ -154,10 +157,8 @@
                   scope.mode = 'url';
                   scope.action = 'md.thumbnail.upload';
 
-                  // the form params that will be submited
-                  scope.searchObj = {
-                    params: {}
-                  };
+                  // the form params that will be submitted
+                  scope.params = {};
 
                   scope.popupid = attrs['gnPopupid'];
                   scope.mapId = 'gn-thumbnail-maker-map';
@@ -169,6 +170,12 @@
                   scope.map = null;
 
                   function loadLayers() {
+                if (!angular.isArray(scope.map.getSize()) ||
+                    scope.map.getSize().indexOf(0) >= 0) {
+                  $timeout(function() {
+                    scope.map.updateSize();
+                  });
+                }
 
                     // Reset map
                     angular.forEach(scope.map.getLayers(), function(layer) {
@@ -190,12 +197,15 @@
                             })
                           }));
                         });
+
+                $timeout(function() {
                     if (angular.isArray(scope.gnCurrentEdit.extent)) {
                       scope.map.getView().fitExtent(
                           gnMap.reprojExtent(scope.gnCurrentEdit.extent[0],
                               'EPSG:4326', gnMap.getMapConfig().projection),
                           scope.map.getSize());
                     }
+                   });
                   };
 
                   var init = function() {
@@ -227,7 +237,16 @@
                   // TODO: should be in gnEditor ?
                   var getVersion = function() {
                     scope.metadataId = gnCurrentEdit.id;
-                    return scope.searchObj.params.version = gnCurrentEdit.version;
+                    return scope.params.version = gnCurrentEdit.version;
+                  };
+
+                  var resetForm = function() {
+                    if (scope.params) {
+                      scope.params.url = '';
+                      scope.params.thumbnail_url = '';
+                      scope.params.thumbnail_desc = '';
+                    }
+                    scope.clear(scope.queue);
                   };
 
                   /**
@@ -235,7 +254,8 @@
                    * refresh the metadata form.
                    * Callback of the submit().
                    */
-                  var uploadOnlinesrcDone = function(evt, data) {
+              var uploadThumbnailDone = function(evt, data) {
+                    resetForm();
                     gnEditor.refreshEditorForm();
                     gnOnlinesrc.reload = true;
                     $(scope.popupid).modal('hide');
@@ -244,14 +264,17 @@
                   /**
                    * Onlinesrc uploaded with error, broadcast it.
                    */
-                  var uploadOnlineSrcError = function(data) {
+                   var uploadThumbnailError = function(data) {
                   };
 
                   // upload directive options
-                  scope.onlinesrcUploadOptions = {
+                  scope.thumbnailUploadOptions = {
                     autoUpload: false,
-                    done: uploadOnlinesrcDone,
-                    fail: uploadOnlineSrcError
+                    url: 'md.thumbnail.upload',
+                    //maxNumberOfFiles: 1,
+                    //acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tif?f)$/i,
+                    done: uploadThumbnailDone,
+                    fail: uploadThumbnailError
                   };
 
                   /**
@@ -262,24 +285,25 @@
                   scope.addThumbnail = function() {
                     if (scope.mode == 'upload') {
                       getVersion();
-                      gnEditor.save(false, true)
+                      return gnEditor.save(false, true)
                           .then(function(data) {
                             scope.submit();
                           });
                     } else if (scope.mode == 'thumbnailMaker') {
                       getVersion();
-                      scope.processing = true;
+                      var deferred = $q.defer();
+
                       gnEditor.save(false, true)
                           .then(function(data) {
                             scope.action =
                                 'md.thumbnail.generate?_content_type=json&';
-                            $http.post('md.thumbnail.generate?_content_type=json&',
-                                $('#gn-upload-onlinesrc').serialize(), {
+                            $http.post(scope.action,
+                                $('#gn-upload-thumbnail').serialize(), {
                                   headers: {'Content-Type':
                                       'application/x-www-form-urlencoded'}
                                 }).success(function(data) {
-                                  uploadOnlinesrcDone();
-                                  scope.processing = false;
+                                  uploadThumbnailDone();
+                                  deferred.resolve(data);
                                 }).error(function(data, status, headers, config) {
                                   $rootScope.$broadcast('StatusUpdated', {
                                     title: $translate('thumbnailCreationError'),
@@ -291,12 +315,15 @@
                                     },
                                     timeout: 0,
                                     type: 'danger'});
-                                  scope.processing = false;
+                                  deferred.resolve(data);
                                 });
                           });
+                      return deferred.promise;
                     } else {
-                      gnOnlinesrc.addThumbnailByURL(scope.params,
-                          scope.popupid);
+                    return gnOnlinesrc.addThumbnailByURL(scope.params,
+                        scope.popupid).then(function() {
+                      resetForm();
+                     });
                     }
                   };
 
@@ -374,12 +401,22 @@
 
                   scope.onlinesrcService = gnOnlinesrc;
 
+                  var resetForm = function() {
+                    if (scope.params) {
+                      scope.params.desc = '';
+                      scope.params.url = '';
+                      scope.params.name = '';
+                      scope.params.protocol = '';
+                    }
+                    scope.clear(scope.queue);
+                  };
+
                   /**
                    * Onlinesrc uploaded with success, close the popup,
                    * refresh the metadata.
                    */
                   var uploadOnlinesrcDone = function(data) {
-                    scope.clear(scope.queue);
+                    resetForm();
                     gnEditor.refreshEditorForm();
                     gnOnlinesrc.reload = true;
                     $(scope.popupid).modal('hide');
@@ -393,6 +430,7 @@
 
                   scope.onlinesrcUploadOptions = {
                     autoUpload: false,
+                    url: 'resource.upload.and.link',
                     //        TODO: acceptFileTypes: /(\.|\/)(xml|skos|rdf)$/i,
                     done: uploadOnlinesrcDone,
                     fail: uploadOnlineSrcError
@@ -405,9 +443,12 @@
                    */
                   scope.addOnlinesrc = function() {
                     if (scope.mode == 'upload') {
-                      scope.submit();
+                      return scope.submit();
                     } else {
-                      gnOnlinesrc.addOnlinesrc(scope.params, scope.popupid);
+                        return gnOnlinesrc.addOnlinesrc(scope.params, scope.popupid).
+                            then(function() {
+                              resetForm();
+                            });
                     }
                   };
 
@@ -492,7 +533,11 @@
         'Metadata',
         'gnOwsCapabilities',
         'gnCurrentEdit',
-        function(gnOnlinesrc, Metadata, gnOwsCapabilities, gnCurrentEdit) {
+        '$rootScope',
+        '$translate',
+        'gnGlobalSettings',
+        function(gnOnlinesrc, Metadata, gnOwsCapabilities,
+                 gnCurrentEdit, $rootScope, $translate, gnGlobalSettings) {
           return {
             restrict: 'A',
             scope: {},
@@ -504,10 +549,13 @@
                   scope.searchObj = {
                     params: {}
                   };
+                  scope.modelOptions =
+                    angular.copy(gnGlobalSettings.modelOptions);
                 },
                 post: function postLink(scope, iElement, iAttrs) {
                   scope.mode = iAttrs['gnLinkServiceToDataset'];
                   scope.popupid = '#linkto' + scope.mode + '-popup';
+                  scope.alertMsg = null;
 
                   gnOnlinesrc.register(scope.mode, function() {
                     $(scope.popupid).modal('show');
@@ -535,9 +583,15 @@
                    * passed to the layers grid directive.
                    */
                   scope.loadWMSCapabilities = function(url) {
+                    scope.alertMsg = null;
                     gnOwsCapabilities.getWMSCapabilities(url)
-                        .then(function(layers) {
-                          scope.layers = layers;
+                        .then(function(capabilities) {
+                          scope.layers = [];
+                          scope.layers.push(capabilities.Layer[0]);
+                          angular.forEach(scope.layers[0].Layer, function(l) {
+                            scope.layers.push(l);
+                            // TODO: We may have more than one level
+                          });
                         });
                   };
 
@@ -552,14 +606,19 @@
                     if (!angular.isUndefined(scope.stateObj.selectRecords) &&
                         scope.stateObj.selectRecords.length > 0) {
                       var md = new Metadata(scope.stateObj.selectRecords[0]);
-                      var links = md.getLinksByType('OGC:WMS');
+                      var links = [];
+                      links = links.concat(md.getLinksByType('OGC:WMS'));
+                      links = links.concat(md.getLinksByType('wms'));
 
                       if (scope.mode == 'service') {
+                        scope.srcParams.uuidSrv = md.getUuid();
+                        scope.srcParams.uuidDS = gnCurrentEdit.uuid;
 
                         if (angular.isArray(links) && links.length == 1) {
                           scope.loadWMSCapabilities(links[0].url);
-                          scope.srcParams.uuidSrv = md.getUuid();
-                          scope.srcParams.uuidDS = gnCurrentEdit.uuid;
+                        } else {
+                          scope.alertMsg =
+                              $translate('linkToServiceWithoutURLError');
                         }
                       }
                       else {
@@ -578,10 +637,11 @@
                    */
                   scope.linkTo = function() {
                     if (scope.mode == 'service') {
-                      gnOnlinesrc.linkToService(scope.srcParams, scope.popupid);
-                    }
-                    else {
-                      gnOnlinesrc.linkToDataset(scope.srcParams, scope.popupid);
+                      return gnOnlinesrc.
+                          linkToService(scope.srcParams, scope.popupid);
+                    } else {
+                      return gnOnlinesrc.
+                          linkToDataset(scope.srcParams, scope.popupid);
                     }
                   };
                 }
@@ -611,8 +671,9 @@
    * On submit, the metadata is saved, the thumbnail is added,
    * then the form and online resource list are refreshed.
    */
-      .directive('gnLinkToMetadata', ['gnOnlinesrc', '$translate',
-        function(gnOnlinesrc, $translate) {
+  .directive('gnLinkToMetadata', [
+      'gnOnlinesrc', '$translate', 'gnGlobalSettings',
+        function(gnOnlinesrc, $translate, gnGlobalSettings) {
           return {
             restrict: 'A',
             scope: {},
@@ -624,6 +685,8 @@
                   scope.searchObj = {
                     params: {}
                   };
+                  scope.modelOptions =
+                    angular.copy(gnGlobalSettings.modelOptions);
                 },
                 post: function postLink(scope, iElement, iAttrs) {
                   scope.mode = iAttrs['gnLinkToMetadata'];
@@ -687,11 +750,11 @@
    * to be able to add a metadata to his selection. The process alow a multiple
    * selection.
    *
-   * On submit, the metadata is saved, the thumbnail is added, then the form
+   * On submit, the metadata is saved, the resource is associated, then the form
    * and online resource list are refreshed.
    */
-      .directive('gnLinkToSibling', ['gnOnlinesrc',
-        function(gnOnlinesrc) {
+  .directive('gnLinkToSibling', ['gnOnlinesrc', 'gnGlobalSettings',
+        function(gnOnlinesrc, gnGlobalSettings) {
           return {
             restrict: 'A',
             scope: {},
@@ -703,6 +766,8 @@
                   scope.searchObj = {
                     params: {}
                   };
+                  scope.modelOptions =
+                    angular.copy(gnGlobalSettings.modelOptions);
                 },
                 post: function postLink(scope, iElement, iAttrs) {
                   scope.popupid = iAttrs['gnLinkToSibling'];
@@ -784,7 +849,7 @@
                       associationType: scope.associationType,
                       uuids: uuids.join(',')
                     };
-                    gnOnlinesrc.linkToSibling(params, scope.popupid);
+                    return gnOnlinesrc.linkToSibling(params, scope.popupid);
                   };
                 }
               };
