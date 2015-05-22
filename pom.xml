@@ -1180,13 +1180,12 @@
     </profile>
   </profiles>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>scp-repository.geonetwork-opensource.org</id>
-      <name>GeoNetwork opensource repositories</name>
-      <url>scpexe://TO DEFINED</url>
-    </snapshotRepository>
-  </distributionManagement>
+<distributionManagement>
+  <snapshotRepository>
+    <id>tufts</id>
+    <url>https://mavenrepo.geocat.net/content/repositories/tufts</url>
+  </snapshotRepository>
+</distributionManagement>
 
   <properties>
     <jetty.version>8.1.9.v20130131</jetty.version>
