@@ -218,9 +218,9 @@ public class OgpEditController {
             ServiceContext context = ServiceContext.get();
             int userId = context.getUserSession().getUserIdAsInt();
             String docType = null, category = null;
-            boolean ufo = false, indexImmediate = true;
+            boolean updateFixedInfo = true, indexImmediate = true;
             createdId = metadataManager.insertMetadata(context, "iso19115-3" , metadata, uuid,
-                    userId, formBean.getGroup(), settingManager.getSiteId(), MetadataType.METADATA.codeString, docType, category, date, date, ufo, indexImmediate);
+                    userId, formBean.getGroup(), settingManager.getSiteId(), MetadataType.METADATA.codeString, docType, category, date, date, updateFixedInfo, indexImmediate);
 
         } catch (Exception e) {
             String result = "Error creating the record: " + e.getMessage();
