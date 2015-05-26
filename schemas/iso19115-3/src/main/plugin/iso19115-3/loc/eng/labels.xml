@@ -4582,4 +4582,17 @@
     <description></description>
   </element>
 
+  <element name="mrd:MD_Distributor">
+    <label>Distributor</label>
+    <description></description>
+  </element>
+  <element name="mrd:fees">
+    <label>Fees</label>
+    <description></description>
+  </element>
+  <element name="mrd:orderingInstructions">
+    <label>Ordering instructions</label>
+    <description></description>
+  </element>
+
 </labels>
