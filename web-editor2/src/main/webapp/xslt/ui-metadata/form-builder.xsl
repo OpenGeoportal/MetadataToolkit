@@ -619,7 +619,7 @@
       <xsl:variable name="isRequired" select="$childEditInfo/@min = 1 and $childEditInfo/@max = 1"/>
 
       <!-- This element is replaced by the content received when clicking add -->
-      <div class="form-group gn-field {if ($isRequired) then 'gn-required' else ''} {if ($isFirst) then '' else 'gn-extra-field'} gn-add-field"
+      <div class="form-group gn-field {if ($isRequired) then 'gn-required' else ''} gn-add-field"
            id="gn-el-{$id}"
            data-gn-field-highlight="">
         <label class="col-sm-2 control-label"

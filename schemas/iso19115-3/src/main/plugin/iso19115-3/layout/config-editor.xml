@@ -1045,7 +1045,7 @@
           <field name="transferSize"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:transferSize"/>
           
-          <action type="add" name="transferSize"
+          <action type="add" name="mrd:transferSize"
                   or="transferSize" forceLabel="true"
                   in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions" >
             <template>
