@@ -94,16 +94,8 @@
 
       <xsl:apply-templates select="mdb:metadataExtensionInfo"/>
       <xsl:apply-templates select="mdb:identificationInfo"/>
-
-      <!-- Feature Catalogue information from the template -->
-      <xsl:choose>
-        <xsl:when test="$templateXml/mdb:MD_Metadata/mdb:contentInfo">
-          <xsl:copy-of select="$templateXml/mdb:MD_Metadata/mdb:contentInfo"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="mdb:contentInfo"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <!-- Feature Cataloge from original metadata -->
+      <xsl:apply-templates select="mdb:contentInfo"/>
 
 
       <!-- Format, Distributor, Transfer options from template -->
@@ -334,18 +326,19 @@
         </xsl:copy>
       </xsl:for-each>
 
-      <!-- abstract from the template -->
+      <!-- abstract from the metadata -->
       <xsl:choose>
-        <xsl:when
-                test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString)">
-          <xsl:copy-of
-                  select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"
-                  />
+        <xsl:when test="string(mri:abstract/gco:CharacterString)">
+          <xsl:apply-templates select="mri:abstract"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="mri:abstract"/>
+          <xsl:if test="string($templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString)">
+            <xsl:copy-of
+                    select="$templateXml/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract" />
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
+
 
       <xsl:apply-templates select="mri:purpose"/>
       <xsl:apply-templates select="mri:credit"/>
