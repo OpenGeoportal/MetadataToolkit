@@ -160,7 +160,7 @@
       <xsl:apply-templates select="mdb:metadataExtensionInfo"/>
       <xsl:apply-templates select="mdb:identificationInfo"/>
       
-      <!-- Add featureCatalog if it doesn't exist -->
+      <!-- Add featureCatalog and coverageDescription if it doesn't exist -->
       <xsl:choose>
         <xsl:when test="not(mdb:contentInfo)">
               <mdb:contentInfo>
@@ -178,35 +178,56 @@
 			            </gfc:FC_FeatureCatalogue>
 			         </mrc:featureCatalogue>
 			      </mrc:MD_FeatureCatalogue>
+				  <mrc:MD_CoverageDescription>
+				      <mrc:attributeDescription>
+				        <gco:RecordType></gco:RecordType>
+				      </mrc:attributeDescription>
+				      <mrc:attributeGroup>
+				        <mrc:MD_AttributeGroup>
+				          <mrc:contentType>
+				            <mrc:MD_CoverageContentTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CoverageContentTypeCode" codeListValue=""/>
+				          </mrc:contentType>
+				          <mrc:attribute>
+				            <mrc:MD_Band>
+				              <mrc:name>
+				                <mcc:MD_Identifier>
+				                  <mcc:code>
+				                    <gco:CharacterString></gco:CharacterString>
+				                  </mcc:code>
+				                </mcc:MD_Identifier>
+				              </mrc:name>
+				            </mrc:MD_Band>
+				          </mrc:attribute>
+				        </mrc:MD_AttributeGroup>
+				      </mrc:attributeGroup>
+				  </mrc:MD_CoverageDescription>
 			   </mdb:contentInfo>
         </xsl:when>       
         <xsl:otherwise>
 	        <xsl:for-each select="mdb:contentInfo">
-                <xsl:choose>
-                    <xsl:when test="count(mrc:MD_FeatureCatalogue) = 0">
-                        <mdb:contentInfo>
-	                      <mrc:MD_FeatureCatalogue>
-	                        <mrc:featureCatalogue>
-	                            <gfc:FC_FeatureCatalogue>
-	                               <gfc:producer>
-	                                  <cit:CI_Responsibility>
-	                                     <cit:role>
-	                                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-	                                                         codeListValue=""/>
-	                                     </cit:role>
-	                                  </cit:CI_Responsibility>
-	                               </gfc:producer>
-	                            </gfc:FC_FeatureCatalogue>
-	                         </mrc:featureCatalogue>
-	                        </mrc:MD_FeatureCatalogue>
-	                     </mdb:contentInfo>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:for-each select="mrc:MD_FeatureCatalogue">
-		                   <xsl:choose>
-		                       <xsl:when test="count(*) = 0">
-			                        <mdb:contentInfo>
-			                          <mrc:MD_FeatureCatalogue>
+               <mdb:contentInfo>
+	                <xsl:choose>
+	                    <xsl:when test="count(mrc:MD_FeatureCatalogue) = 0">
+		                      <mrc:MD_FeatureCatalogue>
+		                        <mrc:featureCatalogue>
+		                            <gfc:FC_FeatureCatalogue>
+		                               <gfc:producer>
+		                                  <cit:CI_Responsibility>
+		                                     <cit:role>
+		                                        <cit:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+		                                                         codeListValue=""/>
+		                                     </cit:role>
+		                                  </cit:CI_Responsibility>
+		                               </gfc:producer>
+		                            </gfc:FC_FeatureCatalogue>
+		                         </mrc:featureCatalogue>
+		                        </mrc:MD_FeatureCatalogue>
+	                    </xsl:when>
+	                    <xsl:otherwise>
+	                        <xsl:for-each select="mrc:MD_FeatureCatalogue">
+                               <mrc:MD_FeatureCatalogue>
+				                   <xsl:choose>
+				                       <xsl:when test="count(*) = 0">
 				                           <mrc:featureCatalogue>
 				                               <gfc:FC_FeatureCatalogue>
 				                                  <gfc:producer>
@@ -219,20 +240,44 @@
 				                                  </gfc:producer>
 				                               </gfc:FC_FeatureCatalogue>
 				                            </mrc:featureCatalogue>
-				                        </mrc:MD_FeatureCatalogue>
-		                            </mdb:contentInfo>
-		                       </xsl:when>
-		                       <xsl:otherwise>
-                                    <mdb:contentInfo>
-                                      <mrc:MD_FeatureCatalogue>
-		                                  <xsl:apply-templates select ="*" />
-		                              </mrc:MD_FeatureCatalogue>
-		                            </mdb:contentInfo>
-		                       </xsl:otherwise>
-		                   </xsl:choose>
-		               </xsl:for-each>
-                    </xsl:otherwise>
-                </xsl:choose>
+	                                        <xsl:apply-templates select="*"/>
+				                       </xsl:when>
+				                       <xsl:otherwise>
+				                            <xsl:apply-templates select ="*" />
+				                       </xsl:otherwise>
+				                   </xsl:choose>
+                               </mrc:MD_FeatureCatalogue>
+			               </xsl:for-each>
+	                    </xsl:otherwise>
+	                </xsl:choose>
+	                
+	                <xsl:choose>
+                        <xsl:when test="count(mrc:MD_CoverageDescription) = 0">
+                              <mrc:MD_CoverageDescription>
+			                      <mrc:attributeDescription>
+			                        <gco:RecordType></gco:RecordType>
+			                      </mrc:attributeDescription>
+			                  </mrc:MD_CoverageDescription>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:for-each select="mrc:MD_CoverageDescription">
+                               <mrc:MD_CoverageDescription>
+                                   <xsl:choose>
+                                       <xsl:when test="count(*) = 0">
+		                                  <mrc:attributeDescription>
+		                                    <gco:RecordType></gco:RecordType>
+		                                  </mrc:attributeDescription>
+                                          <xsl:apply-templates select="*"/>
+                                       </xsl:when>
+                                       <xsl:otherwise>
+                                          <xsl:apply-templates select ="*" />
+                                       </xsl:otherwise>
+                                   </xsl:choose>
+                               </mrc:MD_CoverageDescription>
+                           </xsl:for-each>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </mdb:contentInfo>
 	        </xsl:for-each> 
        </xsl:otherwise>
       </xsl:choose>
