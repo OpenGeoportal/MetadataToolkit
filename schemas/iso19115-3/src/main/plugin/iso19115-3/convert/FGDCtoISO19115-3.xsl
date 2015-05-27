@@ -67,8 +67,7 @@
 		              xmlns:mdq="http://standards.iso.org/19157/-2/mdq/1.0"
 		              xmlns:mac="http://standards.iso.org/19115/-3/mac/1.0"
 		              xmlns:gml="http://www.opengis.net/gml/3.2"
-		              xmlns:xlink="http://www.w3.org/1999/xlink"
-                      xsi:schemaLocation="http://www.isotc211.org/namespace/mdb/1.0 ../schema.xsd">
+		              xmlns:xlink="http://www.w3.org/1999/xlink">
       <!-- Metadata identifier -->
       <xsl:choose>
         <xsl:when test="mdFileID">
