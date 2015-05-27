@@ -98,6 +98,7 @@
   <accessConstraints>Access Constraints</accessConstraints>
   <useConstraints>Use Constraints</useConstraints>
   <featureType>Feature Type</featureType>
+  <transferOptions>Transfer Options</transferOptions>
 
 
   <!-- Tufts minimal strings -->
