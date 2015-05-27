@@ -1295,38 +1295,9 @@
          <section name="mrc:MD_CoverageDescription"> 
          
 	                 
-              <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_CoverageDescription/mrc:attributeDescription">
+              <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_CoverageDescription">
               </field> 
-              
-              
-              <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_CoverageDescription/mrc:attributeGroup">
-              </field> 
-	          
-	          
-	          <action type="add" forceLabel="true" name="mrc:attributeGroup" or="attributeGroup"
-	                     in="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_CoverageDescription">
-	              <template>
-	                <mrc:attributeGroup>
-				        <mrc:MD_AttributeGroup>
-				          <mrc:contentType>
-				            <mrc:MD_CoverageContentTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CoverageContentTypeCode" codeListValue=""/>
-				          </mrc:contentType>
-				          <mrc:attribute>
-				            <mrc:MD_Band>
-				              <mrc:name>
-				                <mcc:MD_Identifier>
-				                  <mcc:code>
-				                    <gco:CharacterString></gco:CharacterString>
-				                  </mcc:code>
-				                </mcc:MD_Identifier>
-				              </mrc:name>
-				            </mrc:MD_Band>
-				          </mrc:attribute>
-				        </mrc:MD_AttributeGroup>
-				      </mrc:attributeGroup>
-	              </template>      
-	          </action>
-         
+          
           </section>
       </tab>
 

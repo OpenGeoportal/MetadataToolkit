@@ -14,6 +14,7 @@
 
   <xsl:include href="layout-custom-fields-keywords.xsl"/>
   <xsl:include href="layout-custom-fields-feature-catalog.xsl"/>
+  <xsl:include href="layout-custom-fields-coverage-description.xsl"/>
 
   <!-- Readonly elements
   [parent::mds:metadataIdentifier and
