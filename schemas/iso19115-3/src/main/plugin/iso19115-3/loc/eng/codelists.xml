@@ -20,7 +20,7 @@
  * - not set -: simple combo box
  * radio : radio button in one line
  * radio_linebreak : radio button with line break
- * radio_withdesc : radion button with line break and codelist entry description
+ * radio_withdesc : radio button with line break and codelist entry description
  * select : select box with size set to the number of items if lower than 7 entries.
  
 -->
