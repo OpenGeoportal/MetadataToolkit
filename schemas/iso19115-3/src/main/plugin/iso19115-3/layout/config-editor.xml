@@ -979,7 +979,8 @@
         </section>
       </tab>
       <tab id="distributionInformation" mode="flat">
-        <section name="distributionFormat">
+       <section>
+        <section>
           <field  name="distributionFormatField"
                   xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:distributionFormat"
                   templateModeOnly="true"
@@ -1033,12 +1034,12 @@
                 in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution">
         </section>
 
-        <section name="onlineResources">
+        <section>
           
           <field name="transferSize"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:transferSize"/>
-          
-          <action type="add" name="mrd:transferSize"
+         
+          <action type="add" name="transferSize"
                   or="transferSize" forceLabel="true"
                   in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions" >
             <template>
@@ -1049,6 +1050,7 @@
               </snippet>
             </template>
           </action>
+          
           <field name="onLine" templateModeOnly="true" notDisplayedIfMissing="true"
                  xpath="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:onLine"
                  del=".">
@@ -1115,6 +1117,34 @@
           </action>
         </section>
           
+        <action type="add" name="transferOptions"
+                or="transferOptions" forceLabel="true"
+                in="/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution" 
+                if="count(/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions) = 0">
+          <template>
+            <snippet>
+                <mrd:transferOptions>
+                  <mrd:MD_DigitalTransferOptions>
+                  </mrd:MD_DigitalTransferOptions>
+                </mrd:transferOptions>
+            </snippet>
+          </template>
+        </action>
+        
+        <action type="add" name="distributionInfo"
+                or="distributionInfo" forceLabel="true"
+                in="/mdb:MD_Metadata" 
+                if="count(/mdb:MD_Metadata/mdb:distributionInfo/mrd:MD_Distribution) = 0" >
+          <template>
+            <snippet>
+                <mdb:distributionInfo>
+                    <mrd:MD_Distribution></mrd:MD_Distribution>
+                </mdb:distributionInfo>
+            </snippet>
+          </template>
+        </action>
+        
+       </section>
       </tab>
 
       <tab id="tufts-metadata-reference-information" mode="flat">
@@ -1650,6 +1680,15 @@
             </template>
           </action>  
           
+           
+          
+        </section>
+         
+         <section name="mrc:MD_CoverageDescription"> 
+         
+                     
+              <field xpath="/mdb:MD_Metadata/mdb:contentInfo/mrc:MD_CoverageDescription">
+              </field> 
           
         </section>
 
