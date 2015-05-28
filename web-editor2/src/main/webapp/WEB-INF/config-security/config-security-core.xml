@@ -261,7 +261,7 @@
 	    <constructor-arg ref="securityContextRepository" />
 	</bean>
 	
-	<!-- This bean is here to allow evaluation permissions of the current user by Geonetwork -->
+	<!-- This bean is here to allow evaluation permissions of the current user by OgpAppHandler -->
 	<bean id="webPrivilegeEvaluatorCore" class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
 		<constructor-arg ref="filterSecurityInterceptor"/>
 	</bean>

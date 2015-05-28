@@ -15,6 +15,33 @@
     'gn_search_default_directive', 'gn_related_directive',
     'cookie_warning', 'gn_mdactions_directive']);
 
+  module.controller('gnsSearchPopularController', [
+    '$scope', 'gnSearchSettings',
+    function($scope, gnSearchSettings) {
+      $scope.searchObj = {
+        permalink: false,
+        params: {
+          sortBy: 'popularity',
+          from: 1,
+          to: 9
+        }
+      };
+    }]);
+
+
+  module.controller('gnsSearchLatestController', [
+    '$scope',
+    function($scope) {
+      $scope.searchObj = {
+        permalink: false,
+        params: {
+          sortBy: 'changeDate',
+          from: 1,
+          to: 9
+        }
+      };
+    }]);
+
   /**
    * @ngdoc controller
    * @name gn_search_ogp.controller:gnsOgp

@@ -7,6 +7,7 @@
 
   var module = angular.module('gn_search_controller', [
     'ui.bootstrap.typeahead',
+    'ui.bootstrap',
     'gn_searchsuggestion_service'
   ]);
 

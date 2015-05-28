@@ -15,7 +15,7 @@
 		<service>home</service>
 		<!-- the following service is called if there is an exception raised
 			during the initialization of resources or
-			the appHandler org.fao.geonet.Geonetwork
+			the appHandler org.fao.geonet.OgpAppHandlerler
 		-->
 		<startupErrorService>error</startupErrorService>
 		<language>eng</language>
@@ -62,7 +62,7 @@
 
 	<!-- ====================================================================== -->
 
-	<appHandler class="org.fao.geonet.Geonetwork">
+	<appHandler class="org.fao.geonet.OgpAppHandler">
 		<!-- language profiles for automatic language detection -->
 		<param name="languageProfilesDir" value="resources/language-profiles" />
 

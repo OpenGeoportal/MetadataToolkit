@@ -64,6 +64,7 @@ import org.fao.geonet.notifier.MetadataNotifierControl;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.SettingRepository;
 import org.fao.geonet.resources.Resources;
+import org.fao.geonet.services.metadata.BatchOpsMetadataReindexer;
 import org.fao.geonet.services.metadata.format.Format;
 import org.fao.geonet.services.metadata.format.FormatType;
 import org.fao.geonet.services.util.z3950.Repositories;
@@ -102,7 +103,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -113,7 +116,7 @@ import javax.sql.DataSource;
 /**
  * This is the main class, it handles http connections and inits the system.
  */
-public class Geonetwork implements ApplicationHandler {
+public class OgpAppHandler implements ApplicationHandler {
     private Logger logger;
     private Path appPath;
     private SearchManager searchMan;
@@ -391,6 +394,15 @@ public class Geonetwork implements ApplicationHandler {
         // TODO: Fix DataManager.getUnregisteredMetadata and uncomment next lines
         metadataNotifierControl = new MetadataNotifierControl(context);
         metadataNotifierControl.runOnce();
+
+        // Reindex Blank template metadata
+        DataManager dm =  _applicationContext.getBean(DataManager.class);
+        Set<Integer> metadataToReindex = new HashSet<>();
+        metadataToReindex.add(new Integer(1));
+        context.info("Re-indexing metadata");
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dm, metadataToReindex);
+        r.process();
+
 
         //--- load proxy information from settings into Jeeves for observers such
         //--- as jeeves.utils.XmlResolver to use

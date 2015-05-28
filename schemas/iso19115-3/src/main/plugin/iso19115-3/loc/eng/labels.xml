@@ -1387,6 +1387,12 @@
       <help></help>
       <condition>optional</condition>
    </element>
+  <element name="mrc:description" id="1001.0" context="mrc:MD:Band">
+    <label>Description</label>
+    <description>Description of the attribute</description>
+    <help></help>
+    <condition>optional</condition>
+  </element>
   <element name="mrd:description" id="238.0" context="mrd:MD_Distribution">
       <label>Description</label>
       <description>Brief description of a set of distribution options</description>
@@ -2010,6 +2016,11 @@
 	<element name="mrc:name" context="mrc:MD_RangeDimension" id="213.0">
     <label>Name</label>
 		<description>Identifiers for each attribute included in the resource NOTE These identifiers can be used to provide names for the attribute from a standard set of names.</description>
+  </element>
+  <element name="mrc:name" context="mrc:MdBand" id="214.0">
+    <label>Name</label>
+    <description>Name of the element</description>
+    <help></help>
   </element>
   <element name="mri:name" context="mri:MD_AbstractClass" id="560.0">
     <label>Name</label>
