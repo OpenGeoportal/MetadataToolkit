@@ -22,6 +22,12 @@ import java.util.List;
  * @author <a href="mailto:juanluisrp@geocat.net">Juan Luis Rodriguez</a>.
  */
 public class OgpClient extends AbstractHttpRequest {
+    /** Settings key for OGP Cloud server host. */
+    public static final String OGP_CLOUD_HOST = "ogpCloud/server/host";
+    /** Settings key for OGP Cloud server port. */
+    public static final String OGP_CLOUD_PORT = "ogpCloud/server/port";
+    /** Settings key for OGP Cloud server protocol. */
+    public static final String OGP_CLOUD_PROTOCOL = "ogpCloud/server/protocol";
 
 
     public OgpClient(String protocol, String host, int port, GeonetHttpRequestFactory requestFactory) {

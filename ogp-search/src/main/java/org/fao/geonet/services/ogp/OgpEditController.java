@@ -48,7 +48,7 @@ public class OgpEditController {
     @Autowired
     private SettingManager settingManager;
     @Autowired
-    private OgpDataTypes ogpController;
+    private OgpController ogpController;
     @Autowired
     private TransformService transformService;
 
