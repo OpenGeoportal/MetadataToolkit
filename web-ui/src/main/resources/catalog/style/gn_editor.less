@@ -211,16 +211,14 @@ form.gn-editor {
  //   color: #333333;
   }
   .gn-required > label:after {
-    content: "\f069";
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
+    content: "*";
+    font-size: 2.5em;
+    margin: 7px 0 0 7px;
     position: absolute;
-    font-size: 14px;
-    margin: 1px 0 0 7px;
     color: #a94442;
-}
+    font-weight: normal;
+  }
+
 .form-horizontal .form-group {
     margin-left: 0px;
     margin-right: 0px;
@@ -361,14 +359,7 @@ form.gn-editor {
       padding-right: 0px;
   }
 
-  .gn-required > label:after {
-      content: "*";
-      font-size: 2.5em;
-      margin: 7px 0 0 7px;
-      position: absolute;
-      color: #a94442;
-      font-weight: normal;
-  }
+
   .form-horizontal .form-group {
       margin-left: 0px;
       margin-right: 0px;
