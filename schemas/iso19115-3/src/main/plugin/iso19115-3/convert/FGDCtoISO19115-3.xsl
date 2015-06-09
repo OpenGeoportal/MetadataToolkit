@@ -187,12 +187,24 @@
     <mdb:dateInfo>
       <cit:CI_Date>
         <cit:date>
-          <gco:DateTime>
-            <xsl:call-template name="format-date">
-              <xsl:with-param name="dateval" select="." />
-              <xsl:with-param name="format" select="'datetime'" />
-            </xsl:call-template>
-          </gco:DateTime>
+          <xsl:choose>
+            <xsl:when test="string-length(.) &gt;= 8">
+              <gco:DateTime>
+                <xsl:call-template name="format-date">
+                  <xsl:with-param name="dateval" select="." />
+                  <xsl:with-param name="format" select="'datetime'" />
+                </xsl:call-template>
+              </gco:DateTime>
+            </xsl:when>
+            <xsl:otherwise>
+              <gco:Date>
+                <xsl:call-template name="format-date">
+                  <xsl:with-param name="dateval" select="." />
+                  <xsl:with-param name="format" select="'date'" />
+                </xsl:call-template>
+              </gco:Date>
+            </xsl:otherwise>
+          </xsl:choose>
         </cit:date>
         <cit:dateType><cit:CI_DateTypeCode codeList="" codeListValue="creation" /></cit:dateType>
       </cit:CI_Date>
@@ -607,12 +619,24 @@
         <cit:date>
           <cit:CI_Date>
             <cit:date>
-              <gco:DateTime>
-                <xsl:call-template name="format-date">
-                  <xsl:with-param name="dateval" select="citeinfo/pubdate" />
-                  <xsl:with-param name="format" select="'date'" />
-                </xsl:call-template>
-              </gco:DateTime>
+              <xsl:choose>
+                <xsl:when test="string-length(citeinfo/pubdate) &gt;= 8">
+                  <gco:DateTime>
+                    <xsl:call-template name="format-date">
+                      <xsl:with-param name="dateval" select="citeinfo/pubdate" />
+                      <xsl:with-param name="format" select="'datetime'" />
+                    </xsl:call-template>
+                  </gco:DateTime>
+                </xsl:when>
+                <xsl:otherwise>
+                  <gco:Date>
+                    <xsl:call-template name="format-date">
+                      <xsl:with-param name="dateval" select="citeinfo/pubdate" />
+                      <xsl:with-param name="format" select="'date'" />
+                    </xsl:call-template>
+                  </gco:Date>
+                </xsl:otherwise>
+              </xsl:choose>
             </cit:date>
             <cit:dateType>
               <cit:CI_DateTypeCode codeList="codeListLocation#CI_DateTypeCode" codeListValue="publication"/>
