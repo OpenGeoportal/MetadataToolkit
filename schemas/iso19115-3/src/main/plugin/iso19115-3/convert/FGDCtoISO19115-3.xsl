@@ -1086,7 +1086,6 @@
             </cit:contactInstructions>
           </cit:CI_Contact>
         </cit:contactInfo>
-        <cit:contactInfo/>
         <cit:individual>
           <cit:CI_Individual>
             <cit:name>
