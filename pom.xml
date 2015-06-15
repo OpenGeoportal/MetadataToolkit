@@ -1143,7 +1143,7 @@
     <module>services</module>
     <module>wro4j</module>
     <module>inspire-atom</module>
-    <module>ogp-search</module>
+    <module>ogp-services</module>
   </modules>
 
   <profiles>
