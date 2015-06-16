@@ -12,7 +12,7 @@
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-  <artifactId>web-editor2-app</artifactId>
+  <artifactId>web-editor-app</artifactId>
   <packaging>war</packaging>
   <name>GeoNetwork Metadata Editor Web module</name>
   <description> GeoNetwork metadata editor web module description (TODO). </description>

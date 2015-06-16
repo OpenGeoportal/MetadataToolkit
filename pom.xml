@@ -1160,7 +1160,7 @@
         <module>web-ui-docs</module>
         <module>web-client</module>
         <module>web</module>
-        <module>web-editor2</module>
+        <module>web-editor</module>
         <module>e2e-tests</module>
         <module>geoserver</module>
       </modules>
