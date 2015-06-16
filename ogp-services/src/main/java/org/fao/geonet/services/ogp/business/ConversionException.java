@@ -1,6 +1,7 @@
 package org.fao.geonet.services.ogp.business;
 
 /**
+ * Thrown when a conversion from one metadata standard to another cannot be performed.
  * Created by JuanLuis on 20/05/2015.
  */
 public class ConversionException  extends RuntimeException {

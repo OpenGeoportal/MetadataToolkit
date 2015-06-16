@@ -8,39 +8,39 @@ package org.fao.geonet.services.ogp.client;
  */
 public interface OgpRecord {
     /** Name Theme Keywords field. */
-    public static final String THEME_KEYWORDS = "ThemeKeywords";
+    String THEME_KEYWORDS = "ThemeKeywords";
 
     /** Name of Place Keywords field. */
-    public static final String PLACE_KEYWORDS = "PlaceKeywords";
+    String PLACE_KEYWORDS = "PlaceKeywords";
 
     /** Content date field name. */
-    public static final String CONTENT_DATE = "ContentDate";
+    String CONTENT_DATE = "ContentDate";
     /** Originator field name. */
-    public static final String ORIGINATOR = "Originator";
+    String ORIGINATOR = "Originator";
     /** Data type field name. */
-    public static final String DATA_TYPE = "DataType";
+    String DATA_TYPE = "DataType";
     /** Institution field name. */
-    public static final String INSTITUTION = "Institution";
+    String INSTITUTION = "Institution";
     /** Access field name. */
-    public static final String ACCESS = "Access";
+    String ACCESS = "Access";
     /** Solr timestamp field name. */
-    public static final String TIMESTAMP = "timestamp";
+    String TIMESTAMP = "timestamp";
 
-    public static final String LAYER_ID = "LayerId";
+    String LAYER_ID = "LayerId";
     /** Topic Category field name. */
-    public static final String ISO_TOPIC_CATEGORY = "ThemeKeywordsSynonymsIso";
+    String ISO_TOPIC_CATEGORY = "ThemeKeywordsSynonymsIso";
     /** MinX field name. */
-    public static final String MINX = "MinX";
+    String MINX = "MinX";
     /** MinY field name. */
-    public static final String MINY = "MinY";
+    String MINY = "MinY";
     /** MaxX field name. */
-    public static final String MAXX = "MaxX";
+    String MAXX = "MaxX";
     /** MaxY field name. */
-    public static final String MAXY = "MaxY";
+    String MAXY = "MaxY";
 
-    public static final String LAYER_DISPLAY_NAME = "LayerDisplayName";
+    String LAYER_DISPLAY_NAME = "LayerDisplayName";
 
-    public static final String LAYER_DISPLAY_NAME_SYNONYMS = "LayerDisplayNameSynonyms";
-    public static final String THEME_KEYWORDS_SYNONYMS_LCSH = "ThemeKeywordsSynonymsLcsh";
-    public static final String PLACE_KEYWORDS_SYNONYMS = "PlaceKeywordsSynonyms";
+    String LAYER_DISPLAY_NAME_SYNONYMS = "LayerDisplayNameSynonyms";
+    String THEME_KEYWORDS_SYNONYMS_LCSH = "ThemeKeywordsSynonymsLcsh";
+    String PLACE_KEYWORDS_SYNONYMS = "PlaceKeywordsSynonyms";
 }

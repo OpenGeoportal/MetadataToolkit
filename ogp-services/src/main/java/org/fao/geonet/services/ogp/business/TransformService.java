@@ -16,11 +16,13 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 /**
+ * Transform the metadata from one standard to another.
+ *
  * Created by JuanLuis on 20/05/2015.
  */
 @Service
 public class TransformService {
-    protected Logger logger;
+    protected final Logger logger;
     @Autowired
     private DataManager dataManager;
     @Autowired
@@ -38,10 +40,10 @@ public class TransformService {
      * @throws Exception
      */
     public Element convertToIso19115_3(Element originalMd) throws Exception {
-        Element transformedMd = null;
+        Element transformedMd;
         String standard = dataManager.autodetectSchema(originalMd);
         String stylesheetName = "";
-        boolean mustConvert = false;
+        boolean mustConvert;
         standard = StringUtils.upperCase(standard, Locale.ENGLISH);
         switch (standard) {
             case "FGDC-STD":

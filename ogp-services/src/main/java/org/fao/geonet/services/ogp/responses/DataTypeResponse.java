@@ -16,6 +16,6 @@ public class DataTypeResponse {
     }
 
     public void setDataType(String dataType) {
-        this.dataType = dataType;
+        this.dataType = "TestDataType";
     }
 }

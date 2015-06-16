@@ -1,18 +1,12 @@
 package org.fao.geonet.services.ogp;
 
-import jeeves.server.context.ServiceContext;
 import jeeves.services.ReadWriteController;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.Logger;
-import org.fao.geonet.domain.ISODate;
-import org.fao.geonet.domain.MetadataType;
-import org.fao.geonet.kernel.DataManager;
-import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.services.ogp.business.TransformService;
 import org.fao.geonet.services.ogp.client.OgpClient;
 import org.fao.geonet.services.ogp.client.OgpQuery;
-import org.fao.geonet.services.ogp.responses.DataTypeResponse;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
@@ -23,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.UUID;
 
 
 /**
@@ -35,10 +28,6 @@ import java.util.UUID;
 public class OgpController {
     private final Logger logger;
 
-    @Autowired
-    private DataManager dataManager;
-    @Autowired
-    private SchemaManager schemaManager;
     @Autowired
     private SettingManager settingManager;
 
@@ -53,18 +42,6 @@ public class OgpController {
 
         logger.warning("Initialising OdpDataTypes");
     }
-
-    @RequestMapping(value = "/{lang}/ogp.dataTypes", produces = {
-            MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-
-    public
-    @ResponseBody
-    DataTypeResponse getTypes(@PathVariable("lang") String lang) {
-        DataTypeResponse rep = new DataTypeResponse();
-        rep.setDataType("TestDataType");
-        return rep;
-    }
-
 
     /**
      * Query to OGP server about the metadata restrictions given by <code>formBean</code> parameter.
@@ -115,39 +92,6 @@ public class OgpController {
     String getMetadata(@RequestParam(value = "layerId") String layerId, @PathVariable("lang") String lang) throws IOException {
         OgpClient client = getOgpClient();
         return client.getMetadataAsHtml(layerId);
-    }
-
-    /**
-     * Retrieve a metadata from the remote OGP server, transform it to ISO-19115-3 if needed and create a new GeoNetwork
-     * metadata with that content
-     *
-     * @param layerId metadata remote identifier.
-     * @param group   GeoNetwork group to be assigned to the metadata
-     * @return the created metadata identifier or a -1 if there was any error.
-     */
-    @RequestMapping(value = "/{lang}/ogp.dataTypes.import", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public
-    @ResponseBody
-    String importMetadata(@RequestParam(value = "layerId") String layerId, @RequestParam(value = "group") String group, @PathVariable("lang") String lang) {
-        String createdId = "-1";
-        try {
-            Element transformedMd = getMetadataAsElement(layerId);
-            // Import record
-            String uuid = UUID.randomUUID().toString();
-            String date = new ISODate().toString();
-            ServiceContext context = ServiceContext.get();
-            int userId = context.getUserSession().getUserIdAsInt();
-            String docType = null, category = null;
-            boolean ufo = false, indexImmediate = true;
-            createdId = dataManager.insertMetadata(context, "iso19115-3", transformedMd, uuid,
-                    userId, group, settingManager.getSiteId(), MetadataType.METADATA.codeString, docType, category, date, date, ufo, indexImmediate);
-
-
-        } catch (Exception e) {
-            logger.error("Error importing OGP metadata");
-            logger.error(e);
-        }
-        return createdId;
     }
 
     /**

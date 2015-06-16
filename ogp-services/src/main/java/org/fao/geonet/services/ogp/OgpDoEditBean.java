@@ -1,6 +1,7 @@
 package org.fao.geonet.services.ogp;
 
 /**
+ * Form bean for the editor wizard.
  * Created by JuanLuis on 18/05/2015.
  */
 public class OgpDoEditBean {

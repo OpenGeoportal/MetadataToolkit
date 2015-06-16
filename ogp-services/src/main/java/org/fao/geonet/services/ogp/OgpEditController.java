@@ -11,6 +11,8 @@ import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.services.ogp.business.TransformService;
+import org.fao.geonet.services.ogp.client.OgpClient;
+import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
@@ -34,6 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
+ * Controller for the editor wizard.
  * Created by JuanLuis on 15/05/2015.
  */
 @Controller("ogp.editController")
@@ -51,9 +54,12 @@ public class OgpEditController {
     private OgpController ogpController;
     @Autowired
     private TransformService transformService;
+    private final GeonetHttpRequestFactory requestFactory;
+
 
     public OgpEditController() {
         logger = Log.createLogger("ogp.editController", "ogp");
+        requestFactory = new GeonetHttpRequestFactory();
 
     }
 
@@ -203,7 +209,7 @@ public class OgpEditController {
                 if (metadata == null && step2Metadata != null) {
                     metadata = step2Metadata;
                 } else if (metadata != null && step2Metadata !=null) {
-                    metadata = Xml.transformWithXmlParam(step2Metadata, etlMergeStylesheet.toString(), "etlXml", Xml.getString(metadata));;
+                    metadata = Xml.transformWithXmlParam(step2Metadata, etlMergeStylesheet.toString(), "etlXml", Xml.getString(metadata));
                 }
             }
             if (metadata == null) {
@@ -291,6 +297,32 @@ public class OgpEditController {
                 bean.setLocalMetadataRecord(metadata);
                 break;
         }
+    }
+
+    /**
+     * Retrieves the metadata from the remote server and return it transformed to ISO-19115-3 standard.
+     * @param layerId remote metadata identifier.
+     * @return the metadata transformed.
+     * @throws Exception
+     */
+    public Element getMetadataAsElement(String layerId) throws Exception {
+
+        OgpClient client = getOgpClient();
+        String metadata = client.getMetadataAsXml(layerId);
+        Element originalMd = Xml.loadString(metadata, false);
+        return transformService.convertToIso19115_3(originalMd);
+    }
+
+    /**
+     * Create a new OgpClient.
+     *
+     * @return an OgpClient configured with the URL set in Settings.
+     */
+    private OgpClient getOgpClient() {
+        String host = settingManager.getValue(OgpClient.OGP_CLOUD_HOST);
+        int port = settingManager.getValueAsInt(OgpClient.OGP_CLOUD_PORT);
+        String protocol = settingManager.getValue(OgpClient.OGP_CLOUD_PROTOCOL);
+        return new OgpClient(protocol, host, port, requestFactory);
     }
 
     /**

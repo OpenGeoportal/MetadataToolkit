@@ -3,6 +3,7 @@ package org.fao.geonet.services.ogp;
 import org.jdom.Element;
 
 /**
+ * Session bean for the editor wizard.
  * Created by JuanLuis on 15/05/2015.
  */
 

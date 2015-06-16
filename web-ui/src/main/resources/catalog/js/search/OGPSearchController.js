@@ -342,19 +342,6 @@
             };
             $scope.layerId = $scope.document.LayerId;
             $scope.metadataUrl = $sce.trustAsResourceUrl("ogp.dataTypes.getMetadata?layerId=" + $scope.layerId);
-
-
-            // retrieve the medatata from the server
-            /* $http.get("ogp.dataTypes.getMetadata", {
-             params: {layerId: $scope.document.LayerId}
-             }).success(function(data, status, headers, config) {
-             $scope.response = data;
-             }).
-             error(function(data, status, headers, config) {
-             console.log("Error retrieving metadata")
-             });
-             */
-
         }]);
 
     module.directive('iframeSetDimentionsOnload', [function () {

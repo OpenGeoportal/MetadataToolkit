@@ -204,9 +204,8 @@ public class OgpQuery {
         float mapDeltaY = Math.abs(maxy - miny);
         float mapArea = mapDeltaX * mapDeltaY;
         float smoothingFactor = mapArea * 10.0f;
-        String layerMatchesArea = "recip(sum(abs(sub(Area," + String.format(Locale.ENGLISH, "%f", mapArea)
+        return "recip(sum(abs(sub(Area," + String.format(Locale.ENGLISH, "%f", mapArea)
                 + ")),.01),1," + String.format(Locale.ENGLISH, "%f", smoothingFactor) + "," + String.format(Locale.ENGLISH, "%f", smoothingFactor) + ")";
-        return layerMatchesArea;
     }
 
     private String getYRange(Float miny, Float maxy) {
@@ -241,9 +240,8 @@ public class OgpQuery {
     }
 
     private String getRangeClause(String minVal, String minTerm, String maxVal, String maxTerm) {
-        String rangeClause =  "max(sub(min(" + maxVal + "," + maxTerm
+        return "max(sub(min(" + maxVal + "," + maxTerm
                 + "),max(" + minVal + "," + minTerm + ")),0)";
-        return rangeClause;
     }
 
     /**
