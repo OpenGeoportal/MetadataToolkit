@@ -96,7 +96,8 @@
             <list>
                 <value>WEB-INF/classes/setup/sql/migrate/v300/migrate-</value>
                 <value>WEB-INF/classes/setup/sql/migrate/v300/2-enable-self-register-</value>
-
+                <value>WEB-INF/classes/setup/sql/migrate/v300/3-insert-blank-template-</value>
+                <value>WEB-INF/classes/setup/sql/migrate/v300/4-ogp-server-settings-</value>
             </list>
         </entry>
     </util:map>
