@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <understandResource>Information about the dataset</understandResource>
+  <relatedResources>Related services and linked data</relatedResources>
+  <techInfo>Technical information</techInfo>
+  <contactInfo>Contact information</contactInfo>
+  <mdContactInfo>Metadata contact</mdContactInfo>
+  <refDate>Reference date</refDate>
+  <temporalRef>Temporal information</temporalRef>
+  <constraintInfo>Access constraint information</constraintInfo>
+  <xml_iso19139>Save this metadata as an ISO19139 XML file</xml_iso19139>
+  <xml_iso19139Tooai_dc>Save this metadata as an OAI Dublin Core XML file</xml_iso19139Tooai_dc>
+  <resourceLineageTab>Lineage</resourceLineageTab>
+
+  <!-- New strings added for the AngularJS editor -->
+  <!-- View and tabs -->
+  <advanced>Full</advanced>
+  <simple>Simple</simple>
+  <inspire>INSPIRE</inspire>
+  <resource>Resource</resource>
+  <xml>XML</xml>
+  <metadata>Metadata</metadata>
+  <identificationInfo>Identification</identificationInfo>
+  <distributionInfo>Distribution</distributionInfo>
+  <dataQualityInfo>Quality</dataQualityInfo>
+  <resourceLineage>Lineage</resourceLineage>
+  <spatialRepresentationInfo>Spatial rep.</spatialRepresentationInfo>
+  <referenceSystemInfo>Ref. system</referenceSystemInfo>
+  <contentInfo>Content</contentInfo>
+  <portrayalCatalogueInfo>Portrayal</portrayalCatalogueInfo>
+  <metadataConstraints>Md. constraints</metadataConstraints>
+  <metadataMaintenance>Md. maintenance</metadataMaintenance>
+  <applicationSchemaInfo>Schema info</applicationSchemaInfo>
+  <acquisitionInformation>Acquisition info</acquisitionInformation>
+
+
+  <!-- Tufts standard strings -->
+  <default>Standard</default>
+  <tufts-standard>Standard</tufts-standard>
+  <tufts-standard-tab-identification>Identication</tufts-standard-tab-identification>
+  <tufts-standard-data-quality>Data Quality</tufts-standard-data-quality>
+  <tufts-distribution-information>Distribution</tufts-distribution-information>
+  <tufts-metadata-reference-information>Metadata Reference</tufts-metadata-reference-information>
+  <tufts-spatial-representation-tab>Spatial Representation</tufts-spatial-representation-tab>
+  <featureCatalogTab>Feature Catalog</featureCatalogTab>
+  <publisher>Publisher</publisher>
+  <publicationPlace>Publication Place</publicationPlace>
+  <descriptiveKeywords>Descriptive Keywords</descriptiveKeywords>
+  <placeKeywords>Place Keywords</placeKeywords>
+  <themeKeywords>Theme Keywords</themeKeywords>
+  <spatialResolution>Spatial Resolution</spatialResolution>
+  <equivalentScale>Equivalent Scale</equivalentScale>
+  <tuftsSpatialRepresentation>Spatial Representation</tuftsSpatialRepresentation>
+  <processDescription>Process Description</processDescription>
+  <stepDescription>Process description</stepDescription>
+  <distributionInformation>Distribution</distributionInformation>
+  <distributionFormat>Format</distributionFormat>
+  <distributionFormatField>Distribution Format</distributionFormatField>
+  <onlineResources>Content Information</onlineResources>
+  <digitalTransferOptions>Digital Transfer Options</digitalTransferOptions>
+  <size>Size</size>
+  <linkage>URL</linkage>
+  <protocol>Protocol</protocol>
+  <metadataReferenceInformation>Metadata Reference</metadataReferenceInformation>
+  <metadataDate>Metadata Date</metadataDate>
+  <metadataStandard>Metadata Standard</metadataStandard>
+  <hierarchyLevel>Hierarchy Level</hierarchyLevel>
+  <fileIdentifier>File Identifier</fileIdentifier>
+  <language>Language</language>
+  <spatialRepresentation>Spatial Representation</spatialRepresentation>
+  <publisherOrganisationName>Organisation name</publisherOrganisationName>
+  <publisherIndividualName>Individual name</publisherIndividualName>
+  <publisherCityName>City</publisherCityName>
+  <publisherAdminAreaName>Admin area</publisherAdminAreaName>
+  <publisherCountryName>Country</publisherCountryName>
+  <mdContactOrganisationName>Organisation name</mdContactOrganisationName>
+  <mdContactIndividualName>Individual name</mdContactIndividualName>
+  <mdContactElectronicMailAddress>Email</mdContactElectronicMailAddress>
+  <featureCatalogSection>Feature Catalog</featureCatalogSection>
+  <featureAttributeDescription>Attribute Definition</featureAttributeDescription>
+  <featureTypeName>Attribute Type</featureTypeName>
+  <featureAttributeMemberName>Attribute Label</featureAttributeMemberName>
+  <typeName>Type Name</typeName>
+  <entityDefinition>Definition</entityDefinition>
+  <definitionSource>Definition Source</definitionSource>
+  <title>Feature Catalog for</title>
+  <extent>Temporal Extent</extent>
+  <EX_GeographicBoundingBox>Geographic Extent</EX_GeographicBoundingBox>
+  <topicCategory>Topic Category</topicCategory>
+  <onLine>Online Resource</onLine>
+  <transferSize>Transfer Size</transferSize>
+  <dateInfo>Metadata Date</dateInfo>
+  <contact>Metadata Contact</contact>
+  <name>Organisation</name>
+  <individual>Email</individual>
+  <email>Individual</email>
+  <otherLocale>Non Default Language</otherLocale>
+  <accessConstraints>Access Constraints</accessConstraints>
+  <useConstraints>Use Constraints</useConstraints>
+  <featureType>Feature Type</featureType>
+  <transferOptions>Transfer Options</transferOptions>
+
+
+  <!-- Tufts minimal strings -->
+  <tufts-minimal>Minimal</tufts-minimal>
+  <tufts-identificationinfo>Identification Information</tufts-identificationinfo>
+  <tufts-metadata>Metadata Reference Information</tufts-metadata>
+  <tufts-spatialrepresentation>Spatial Representation Information</tufts-spatialrepresentation>
+  <metadataOriginator>Originator</metadataOriginator>
+  <individualName>Individual name</individualName>
+  <organisationName>Organisation name</organisationName>
+  <electronicMailAddress>Email</electronicMailAddress>
+  <metadataContact>Point of Contact</metadataContact>
+  <publicationDate>Publication Date</publicationDate>
+
+  <add-resource-id>Compute resource identifier</add-resource-id>
+  <add-resource-idHelp>Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
+  <add-extent-from-geokeywords>Compute extent from keyword</add-extent-from-geokeywords>
+  <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add matching extent.</add-extent-from-geokeywordsHelp>
+</strings>

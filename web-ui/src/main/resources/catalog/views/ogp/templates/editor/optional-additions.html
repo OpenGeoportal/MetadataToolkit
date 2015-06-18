@@ -1,0 +1,87 @@
+<div class="ogp-optional-additions">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header col-md-3">
+                    <span class="navbar-brand" data-translate="">optionalAdditions</span>
+                </div>
+                <div class="col-md-6 container">
+
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <button class="btn btn-default navbar-btn"
+                                    data-ng-class="{'active': step === 'importDataProperties', 'btn-primary': step === 'importDataProperties' }"
+                                    data-ng-click="changeStep('importDataProperties')">
+                                <span class="order">1</span><span class="fa fa-angle-right button-decoration"></span><span class="button-text" data-translate>importDataProperties</span>
+                                <span class="label-help fa fa-question-circle" tooltip-append-to-body="true" data-tooltip="{{'importDataPropertiesTooltip' | translate}}"></span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-default navbar-btn"
+                                    data-ng-class="{'active': step === 'importXmlMetadata', 'btn-primary': step === 'importXmlMetadata' }"
+                                    data-ng-click="changeStep('importXmlMetadata')">
+                                <span class="order">2</span><span class="fa fa-angle-right button-decoration"></span><span class="button-text" data-translate>importXmlMetadata</span>
+                                <span class="label-help fa fa-question-circle" tooltip-append-to-body="true" data-tooltip="{{'importXmlMetadataTooltip' | translate}}"></span>
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <button class="btn btn-default navbar-btn"
+                                    data-ng-click="doEdit()" data-ng-disabled="editDisabled"><span class="fa fa-pencil fa-fw"></span><span data-translate="">editRecord</span></button>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    <div>
+        <pre data-ng-if="isDebug">
+            step: {{step}}
+            datasetImported: {{datasetImported}}
+            localRecordImported: {{localRecordImported}}
+            ogpRecordImported: {{ogpRecordImported}}
+            templateId: {{templateId}}
+        </pre>
+        <div class="container" data-ng-show="editError">
+            <div  data-alert data-type="danger" data-close="editError = null">
+                <p>
+                    <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>&nbsp;<span data-translate="">editRecordError</span>
+                </p>
+                <span class="sr-only">Error:</span>
+                <span>{{editError}}</span>
+            </div>
+        </div>
+        <div data-ng-if="step === 'importDataProperties'" class="container">
+            <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/views/ogp/templates/editor/upload-form.html'">
+            </div>
+        </div>
+        <div data-ng-if="step === 'importXmlMetadata'" class="container">
+            <h3 class="text-center" data-translate="">importXmlMetadataOptional</h3>
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation" data-ng-class="{'active': importXmlMetadataStep === 'importLocalRecord'}"
+                    data-ng-click="switchXmlStep('importLocalRecord')"><a><span data-translate="">importLocalRecord</span><span class="label-help fa fa-question-circle" data-tooltip="{{'importLocalRecordTooltip' | translate}}"></span></a>
+                </li>
+                <li role="presentation" data-ng-class="{'active': importXmlMetadataStep === 'importOgpCloud'}"
+                    data-ng-click="switchXmlStep('importOgpCloud')"><a><span data-translate="">importOgpCloud</span><span class="label-help fa fa-question-circle" data-tooltip="{{'importOgpCloudTooltip' | translate}}"></span></a>
+                </li>
+            </ul>
+            <div data-ng-if="importXmlMetadataStep === 'importLocalRecord'">
+                <div data-ng-controller="GnNewMetadataFromFileController" data-ng-include="'../../catalog/views/ogp/templates/editor/upload-form.html'">
+                </div>
+            </div>
+            <div data-ng-if="importXmlMetadataStep === 'importOgpCloud'">
+                <div data-ng-controller="OgpSearchController" data-ng-include="'../../catalog/templates/search/ogp/search.html'">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

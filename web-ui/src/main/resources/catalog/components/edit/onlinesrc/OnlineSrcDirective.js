@@ -57,12 +57,12 @@
    * </ul>
    *
    */
-  .directive('gnOnlinesrcList', ['gnOnlinesrc', 'gnCurrentEdit',
+      .directive('gnOnlinesrcList', ['gnOnlinesrc', 'gnCurrentEdit',
         function(gnOnlinesrc, gnCurrentEdit) {
           return {
             restrict: 'A',
             templateUrl: '../../catalog/components/edit/onlinesrc/' +
-                'partials/onlinesrcList.html',
+            'partials/onlinesrcList.html',
             scope: {},
             link: function(scope, element, attrs) {
               scope.onlinesrcService = gnOnlinesrc;
@@ -75,7 +75,7 @@
                */
               var loadRelations = function() {
                 gnOnlinesrc.getAllResources()
-                .then(function(data) {
+                    .then(function(data) {
                       scope.relations = data;
                     });
               };
@@ -112,7 +112,7 @@
           };
         }])
 
-      /**
+  /**
    * @ngdoc directive
    * @name gn_onlinesrc.directive:gnAddThumbnail
    * @restrict A
@@ -126,54 +126,53 @@
    * On submit, the metadata is saved, the thumbnail is added, then the form
    * and online resource list are refreshed.
    */
-   .directive('gnAddThumbnail', ['$http', '$rootScope', '$translate',
+      .directive('gnAddThumbnail', [
+        '$parse',
+        '$http', '$rootScope', '$translate',
         '$timeout', '$q',
         'gnOnlinesrc',
         'gnEditor',
         'gnCurrentEdit',
         'gnConfig',
         'gnMap',
-        function($http, $rootScope, $translate, $timeout, $q,
+        function($parse, $http, $rootScope, $translate, $timeout, $q,
                  gnOnlinesrc, gnEditor, gnCurrentEdit,
                  gnConfig, gnMap) {
           return {
             restrict: 'A',
             scope: {
-              gnPopupid: '='
+              gnDisableUpload: '@'
             },
             templateUrl: '../../catalog/components/edit/onlinesrc/' +
                 'partials/addThumbnail.html',
-            scope: {},
-            link: function(scope, element, attrs) {
+            compile: function(element, attrs) {
+              if (!attrs.gnDisableUpload) {
+                attrs.gnDisableUpload = false;
+              }
 
-              // mode can be 'url' or 'upload'
-              scope.mode = 'url';
-              scope.action = 'md.thumbnail.upload';
+              return {
+                post: function(scope, element, attrs) {
 
-              // the form params that will be submitted
-              scope.params = {};
+                  // mode can be 'url' or 'upload'
+                  scope.mode = 'url';
+                  scope.action = 'md.thumbnail.upload';
 
-              scope.popupid = attrs['gnPopupid'];
-              scope.mapId = 'gn-thumbnail-maker-map';
-              scope.loaded = false;
-              scope.layers = null;
-              scope.gnCurrentEdit = gnCurrentEdit;
-              scope.map = null;
+                  // the form params that will be submitted
+                  scope.params = {};
 
-              function loadLayers() {
-                if (!angular.isArray(scope.map.getSize()) ||
-                    scope.map.getSize().indexOf(0) >= 0) {
-                  $timeout(function() {
-                    scope.map.updateSize();
-                  });
-                }
+              	  scope.popupid = attrs['gnPopupid'];
+                  scope.mapId = 'gn-thumbnail-maker-map';
+                  scope.loaded = false;
+                  scope.layers = null;
+                  scope.gnCurrentEdit = gnCurrentEdit;
 
-                // Reset map
-                angular.forEach(scope.map.getLayers(), function(layer) {
-                  scope.map.removeLayer(layer);
-                });
-
-                scope.map.addLayer(gnMap.getLayersFromConfig());
+                  function loadLayers() {
+                    if (!angular.isArray(scope.map.getSize()) ||
+                        scope.map.getSize().indexOf(0) >= 0) {
+                      $timeout(function() {
+                        scope.map.updateSize();
+                      });
+                    }
 
                 // Add each WMS layer to the map
                 angular.forEach(scope.gnCurrentEdit.layerConfig,
@@ -205,32 +204,6 @@
                         scope.map.getSize());
                   }
                 });
-              };
-
-              var init = function() {
-
-                if (scope.mode === 'thumbnailMaker') {
-                  if (!scope.loaded) {
-                    scope.map = new ol.Map({
-                      layers: [],
-                      renderer: 'canvas',
-                      view: new ol.View({
-                        center: [0, 0],
-                        projection: gnMap.getMapConfig().projection,
-                        zoom: 2
-                      })
-                    });
-
-                    // we need to wait the scope.hidden binding is done
-                    // before rendering the map.
-                    scope.map.setTarget(scope.mapId);
-                    scope.loaded = true;
-                  }
-
-                  loadLayers();
-
-                  scope.$watch('gnCurrentEdit.layerConfig', loadLayers);
-                }
               };
 
               // TODO: should be in gnEditor ?
@@ -326,14 +299,11 @@
                   });
                 }
               };
-
-              scope.$watch('mode', init);
-
             }
           };
         }])
 
-      /**
+  /**
    * @ngdoc directive
    * @name gn_onlinesrc.directive:gnAddOnlinesrc
    * @restrict A
@@ -365,14 +335,22 @@
           return {
             restrict: 'A',
             templateUrl: '../../catalog/components/edit/onlinesrc/' +
-                'partials/addOnlinesrc.html',
-            link: function(scope, element, attrs) {
+            'partials/addOnlinesrc.html',
+            scope: {
+              gnDisableUpload: '@'
+            },
+            compile: function(element, attrs) {
+              if (!attrs.gnDisableUpload) {
+                attrs.gnDisableUpload = false;
+              }
 
-              scope.popupid = attrs['gnPopupid'];
+              return {
+                post: function(scope, element, attrs) {
+                  scope.popupid = attrs['gnPopupid'];
 
-              gnOnlinesrc.register('onlinesrc', function() {
-                scope.metadataId = gnCurrentEdit.id;
-                scope.schema = gnCurrentEdit.schema;
+                  gnOnlinesrc.register('onlinesrc', function() {
+                    scope.metadataId = gnCurrentEdit.id;
+                    scope.schema = gnCurrentEdit.schema;
 
                 if (angular.isUndefined(scope.isMdMultilingual) &&
                     gnCurrentEdit.mdOtherLanguages) {
@@ -384,6 +362,8 @@
                   if (Object.keys(scope.mdLangs).length > 1) {
                     scope.isMdMultilingual = true;
                     scope.mdLang = gnCurrentEdit.mdLanguage;
+                  // mode can be 'url' or 'upload'
+                  scope.mode = 'url';
 
                     for (var p in scope.mdLangs) {
                       var v = scope.mdLangs[p];
@@ -403,20 +383,6 @@
 
                 $(scope.popupid).modal('show');
 
-              });
-
-              // mode can be 'url' or 'upload'
-              scope.mode = 'url';
-
-              // the form parms that will be submited
-              scope.params = {};
-
-              // Tells if we need to display layer grid and send
-              // layers to the submit
-              scope.isWMSProtocol = false;
-
-              scope.onlinesrcService = gnOnlinesrc;
-
               var resetForm = function() {
                 if (scope.params) {
                   scope.params.desc = scope.isMdMultilingual ? {} : '';
@@ -426,22 +392,15 @@
                 }
                 scope.clear(scope.queue);
               };
+                  /**
+                   * Onlinesrc uploaded with error, broadcast it.
+                   */
 
-              /**
-               * Onlinesrc uploaded with success, close the popup,
-               * refresh the metadata.
-               */
               var uploadOnlinesrcDone = function(data) {
                 resetForm();
                 gnEditor.refreshEditorForm();
                 gnOnlinesrc.reload = true;
                 $(scope.popupid).modal('hide');
-              };
-
-              /**
-               * Onlinesrc uploaded with error, broadcast it.
-               */
-              var uploadOnlineSrcError = function(data) {
               };
 
               scope.onlinesrcUploadOptions = {
@@ -481,63 +440,62 @@
                       then(function() {
                         resetForm();
                       });
+
+                  scope.onAddSuccess = function() {
+                    gnEditor.refreshEditorForm();
+                    scope.onlinesrcService.reload = true;
+                  };
+
+                  /**
+                   * loadWMSCapabilities
+                   *
+                   * Call WMS capabilities request with params.url.
+                   * Update params.layers scope value, that will be also
+                   * passed to the layers grid directive.
+                   */
+                  scope.loadWMSCapabilities = function() {
+                    if (scope.isWMSProtocol) {
+                      gnOwsCapabilities.getWMSCapabilities(scope.params.url)
+                          .then(function(capabilities) {
+                            scope.layers = [];
+                            angular.forEach(capabilities.layers, function(l) {
+                              if (angular.isDefined(l.Name)) {
+                                scope.layers.push(l);
+                              }
+                            });
+                          });
+                    }
+                  };
+
+                  /**
+                   * On protocol combo Change.
+                   * Update isWMSProtocol values to display or hide
+                   * layer grid and call or not a getCapabilities.
+                   */
+                  scope.$watch('params.protocol', function() {
+                    if (!angular.isUndefined(scope.params.protocol)) {
+                      scope.isWMSProtocol = (scope.params.protocol.
+                          indexOf('OGC:WMS') >= 0);
+                      scope.loadWMSCapabilities();
+                    }
+                  });
+
+                  /**
+                   * On URL change, reload WMS capabilities
+                   * if the protocol is WMS
+                   */
+                  scope.$watch('params.url', function() {
+                    if (!angular.isUndefined(scope.params.url)) {
+                      scope.loadWMSCapabilities();
+                    }
+                  });
                 }
               };
-
-              scope.onAddSuccess = function() {
-                gnEditor.refreshEditorForm();
-                scope.onlinesrcService.reload = true;
-              };
-
-              /**
-               * loadWMSCapabilities
-               *
-               * Call WMS capabilities request with params.url.
-               * Update params.layers scope value, that will be also
-               * passed to the layers grid directive.
-               */
-              scope.loadWMSCapabilities = function() {
-                if (scope.isWMSProtocol) {
-                  gnOwsCapabilities.getWMSCapabilities(scope.params.url)
-                  .then(function(capabilities) {
-                        scope.layers = [];
-                        angular.forEach(capabilities.layers, function(l) {
-                          if (angular.isDefined(l.Name)) {
-                            scope.layers.push(l);
-                          }
-                        });
-                      });
-                }
-              };
-
-              /**
-               * On protocol combo Change.
-               * Update isWMSProtocol values to display or hide
-               * layer grid and call or not a getCapabilities.
-               */
-              scope.$watch('params.protocol', function() {
-                if (!angular.isUndefined(scope.params.protocol)) {
-                  scope.isWMSProtocol = (scope.params.protocol.
-                      indexOf('OGC:WMS') >= 0);
-                  scope.loadWMSCapabilities();
-                }
-              });
-
-              /**
-               * On URL change, reload WMS capabilities
-               * if the protocol is WMS
-               */
-              scope.$watch('params.url', function() {
-                if (!angular.isUndefined(scope.params.url)) {
-                  scope.loadWMSCapabilities();
-                }
-              });
-
             }
           };
         }])
 
-      /**
+  /**
    * @ngdoc directive
    * @name gn_onlinesrc.directive:gnLinkServiceToDataset
    * @restrict A
@@ -558,7 +516,7 @@
    * On submit, the metadata is saved, the thumbnail is added, then the form
    * and online resource list are refreshed.
    */
-  .directive('gnLinkServiceToDataset', [
+      .directive('gnLinkServiceToDataset', [
         'gnOnlinesrc',
         'Metadata',
         'gnOwsCapabilities',
@@ -572,7 +530,7 @@
             restrict: 'A',
             scope: {},
             templateUrl: '../../catalog/components/edit/onlinesrc/' +
-                'partials/linkServiceToDataset.html',
+            'partials/linkServiceToDataset.html',
             compile: function compile(tElement, tAttrs, transclude) {
               return {
                 pre: function preLink(scope) {
@@ -638,6 +596,8 @@
                         scope.stateObj.selectRecords.length > 0) {
                       var md = new Metadata(scope.stateObj.selectRecords[0]);
                       var links = [];
+                      links = links.concat(md.getLinksByType('OGC:WMS'));
+                      links = links.concat(md.getLinksByType('wms'));
 
                       scope.srcParams.selectedLayers = [];
                       if (scope.mode == 'service') {
@@ -692,7 +652,7 @@
           };
         }])
 
-      /**
+  /**
    * @ngdoc directive
    * @name gn_onlinesrc.directive:gnLinkToMetadata
    * @restrict A
@@ -779,7 +739,7 @@
           };
         }])
 
-      /**
+  /**
    * @ngdoc directive
    * @name gn_onlinesrc.directive:gnLinkToSibling
    * @restrict A

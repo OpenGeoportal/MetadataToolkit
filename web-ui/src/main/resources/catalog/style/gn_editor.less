@@ -3,7 +3,11 @@
 @import (less) "../lib/style/ol.css";
 @import (less) "../lib/style/datetimepicker.css";
 @import (less) "../lib/jquery.ext/jquery.fileupload-ui.css";
+@import (less) "../lib/style/bootstrap.vertical-tabs.css";
 @import "gn.less";
+@import (less) "../lib/angular-ui/ui-select/select.css";
+@import (less) "../lib/style/prismjs/prism.css";
+@import "ogp_search.less";
 
 body {
   
@@ -13,6 +17,9 @@ input[type=text], input[type=number], select {
   .form-control;
 }
 
+.label-equiv-vert-padding {
+  padding-top: 7px;
+}
 
 .gn-drawmap-panel {
   table .form-group {
@@ -71,7 +78,7 @@ input[type=text], input[type=number], select {
 form.gn-editor {
   /* Move each sub fieldset to the left */
   @editor-fieldset-padding-left: 5px;
-
+  
   /**
    * Make space on the following element of a well 
    */
@@ -290,6 +297,10 @@ form.gn-editor {
 
 }
 
+.label-help {
+  margin-left: 0.75em;
+}
+
 form.gn-tab-inspire {
   .control-label {
     color: inherit;
@@ -342,8 +353,56 @@ form.gn-tab-inspire {
 .gn-schematron-title {
   word-wrap: break-word;
 }
+
+ul.nav ~ fieldset > legend {
+  /*  color: red;*/
+  font-weight: bold;
+}
+
+ul.nav ~ fieldset fieldset > legend {
+  padding-left: 20px;
+  font-size: 18px;
+}
+
+ul.nav ~ fieldset fieldset {
+  /*margin-bottom: 20px;*/
+}
+ul.nav ~ fieldset fieldset fieldset > legend {
+  //color: green;
+  padding-left: 20px;
+  font-size: 16px;
+}
+
+ul.nav ~ fieldset fieldset fieldset {
+  margin-bottom: 0;
+}
 .navbar-collapse {
-  padding-right: 0px;
+  padding-right: 0;
+}
+
+// Do not show the bottom border in nav tabs when the list is empty
+.gn-metadata-tabs:empty {
+  border: none;
+}
+
+// tooltip question mark
+.field-tooltip {
+  color: #333333;
+  font-size: 14px;
+}
+
+.form-horizontal {
+  .field-tooltip {
+
+  }
+}
+
+.field-tooltip:hover {
+  color: #2a6496;
+}
+
+form.gn-editor .field-tooltip {
+  visibility: hidden;
 }
 
 .open > .dropdown-menu {

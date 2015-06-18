@@ -6,12 +6,16 @@
 
 <div data-ng-show="metadataFound">
 
-  <div
+
+  <div data-ng-if="gnConfig['system.ui.defaultView'] !== 'ogp'"
     data-ng-include="'../../catalog/templates/editor/top-toolbar.html'">
+  </div>
+  <div data-ng-if="gnConfig['system.ui.defaultView'] === 'ogp'"
+       data-ng-include="'../../catalog/views/ogp/templates/editor/top-toolbar-editor.html'">
   </div>
   <div class="row gn-editor-container">
     <div class="modal-backdrop fade in" data-ng-show="gnCurrentEdit.working"></div>
-    <div class="col-md-8">
+    <div class="col-md-9">
       
       <div class="alert alert-danger" data-ng-if="unsupportedSchema" 
         data-translate=""
@@ -20,7 +24,7 @@
       <div data-ng-include="editorFormUrl"
         data-onload="onFormLoad()"></div>
     </div>
-    <div class="col-md-4" 
+    <div class="col-md-3"
       data-ng-if="gnSchemaConfig.related.display === true || gnSchemaConfig.validation.display === true || gnSchemaConfig.suggestion.display === true">
       <div class="gn-editor-tools-container">
 
@@ -35,7 +39,7 @@
 
         <div data-gn-suggestion-list="" data-ng-if="gnSchemaConfig.suggestion.display === true"></div>
 
-        <div data-gn-need-help="editor"></div>
+        <div id="need-help-link" data-gn-need-help="editor"></div>
       </div>
     </div>
   </div>
@@ -44,14 +48,14 @@
 <div data-gn-modal="" class="onlinesrc-popup"
   data-gn-popup-options="{title:'addThumbnailTitle'}"
   id="addthumbnail-popup">
-  <div data-gn-add-thumbnail="" class="add-thumbnail"
+  <div data-gn-add-thumbnail="" data-gn-disable-upload="{{gnSchemaConfig.related.disableResourceUpload === true}}" class="add-thumbnail"
     data-gn-popupid="#addthumbnail-popup"></div>
 </div>
 
 <div data-gn-modal="" class="onlinesrc-popup"
   data-gn-popup-options="{title:'addOnlinesrcTitle'}"
   id="addonlinesrc-popup">
-  <div data-gn-add-onlinesrc="" class="add-onlinesrc"
+  <div data-gn-add-onlinesrc="" data-gn-disable-upload="{{gnSchemaConfig.related.disableResourceUpload === true}}" class="add-onlinesrc"
     data-gn-popupid="#addonlinesrc-popup"></div>
 </div>
 

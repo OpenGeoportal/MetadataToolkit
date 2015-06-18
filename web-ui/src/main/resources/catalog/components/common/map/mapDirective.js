@@ -23,9 +23,16 @@
              hrightRef: '@',
              dcRef: '@',
              lang: '=',
-             location: '@'
+             location: '@',
+             showRegionSelector: '@',
+             bbox: '=?'
            },
            link: function(scope, element, attrs) {
+             scope.bbox = scope.bbox || {};
+             scope.showRegion = scope.$eval(attrs.showRegionSelector);
+             if (scope.showRegion === undefined) {
+              scope.showRegion = true;
+             }
              scope.drawing = false;
              var mapRef = scope.htopRef || scope.dcRef;
              scope.mapId = 'map-drawbbox-' +
@@ -116,7 +123,7 @@
                style: boxStyle
              });
 
-             var map = new ol.Map({
+             scope.map = new ol.Map({
                layers: [
                  gnMap.getLayersFromConfig(),
                  bboxLayer
@@ -158,7 +165,7 @@
                });
              });
 
-             map.addInteraction(dragbox);
+             scope.map.addInteraction(dragbox);
 
              /**
               * Draw the map extent as a bbox onto the map.
@@ -193,10 +200,10 @@
               * - fit map extent
               */
              scope.$watch('gnCurrentEdit.version', function(newValue) {
-               map.setTarget(scope.mapId);
+               scope.map.setTarget(scope.mapId);
                drawBbox();
                if (gnMap.isValidExtent(scope.extent.map)) {
-                 map.getView().fitExtent(scope.extent.map, map.getSize());
+                 scope.map.getView().fitExtent(scope.extent.map, scope.map.getSize());
                }
              });
 
@@ -218,7 +225,7 @@
                reprojExtent('form', 'md');
                setDcOutput();
                drawBbox();
-               map.getView().fitExtent(scope.extent.map, map.getSize());
+               scope.map.getView().fitExtent(scope.extent.map, scope.map.getSize());
              };
 
              /**
@@ -237,10 +244,25 @@
                  reprojExtent('md', 'form');
                  setDcOutput();
                  drawBbox();
-                 map.getView().fitExtent(scope.extent.map, map.getSize());
+                 scope.map.getView().fitExtent(scope.extent.map, scope.map.getSize());
                });
              };
-           }
-         };
-       }]);
+
+
+             scope.$watch("extent.md", function(newValue) {
+              if (newValue) {
+                scope.bbox.minx = newValue[0];
+                scope.bbox.miny = newValue[1];
+                scope.bbox.maxx = newValue[2];
+                scope.bbox.maxy = newValue[3];
+              }
+             });
+
+             // To update size on first maps render
+             scope.$on('renderMap', function() {
+              scope.map.updateSize();
+
+              });
+         }
+       }}]);
 })();

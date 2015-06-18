@@ -170,7 +170,7 @@ public final class XslUtil
 
     /**
      * Convert a serialized XML node in JSON
-     * 
+     *
      * @param xml
      * @return
      */
@@ -249,16 +249,16 @@ public final class XslUtil
 
         return results.toString();
     }
-    
+
 
     /**
      * Get field value for metadata identified by uuid.
-     * 
+     *
      * @param appName 	Web application name to access Lucene index from environment variable
      * @param uuid 		Metadata uuid
      * @param field 	Lucene field name
      * @param lang 		Language of the index to search in
-     * 
+     *
      * @return metadata title or an empty string if Lucene index or uuid could not be found
      */
     public static String getIndexField(Object appName, Object uuid, Object field, Object lang) {
@@ -339,8 +339,8 @@ public final class XslUtil
      */
     public static @Nonnull String twoCharLangCode(String iso3LangCode, String defaultValue) {
         if(iso3LangCode==null || iso3LangCode.length() == 0) {
-    		return twoCharLangCode(Geonet.DEFAULT_LANGUAGE);
-    	} else {
+            return twoCharLangCode(Geonet.DEFAULT_LANGUAGE);
+        } else {
             String iso2LangCode = null;
 
             try {
@@ -366,7 +366,7 @@ public final class XslUtil
     }
     /**
      * Return '' or error message if error occurs during URL connection.
-     * 
+     *
      * @param url   The URL to ckeck
      * @return
      */
@@ -378,38 +378,38 @@ public final class XslUtil
             u = new URL(url);
             conn = u.openConnection();
             conn.setConnectTimeout(connectionTimeout);
-            
-            // TODO : set proxy
-            
-            if (conn instanceof HttpURLConnection) {
-               HttpURLConnection httpConnection = (HttpURLConnection) conn;
-               httpConnection.setInstanceFollowRedirects(true);
-               httpConnection.connect();
-               httpConnection.disconnect();
-               // FIXME : some URL return HTTP200 with an empty reply from server 
-               // which trigger SocketException unexpected end of file from server
-               int code = httpConnection.getResponseCode();
 
-               if (code == HttpURLConnection.HTTP_OK) {
-                   return "";
-               } else {
-                   return "Status: " + code;
-               } 
+            // TODO : set proxy
+
+            if (conn instanceof HttpURLConnection) {
+                HttpURLConnection httpConnection = (HttpURLConnection) conn;
+                httpConnection.setInstanceFollowRedirects(true);
+                httpConnection.connect();
+                httpConnection.disconnect();
+                // FIXME : some URL return HTTP200 with an empty reply from server
+                // which trigger SocketException unexpected end of file from server
+                int code = httpConnection.getResponseCode();
+
+                if (code == HttpURLConnection.HTTP_OK) {
+                    return "";
+                } else {
+                    return "Status: " + code;
+                }
             } // TODO : Other type of URLConnection
         } catch (Throwable e) {
             e.printStackTrace();
             return e.toString();
         }
-        
+
         return "";
     }
-    
-	public static String threeCharLangCode(String langCode) {
-	    if (langCode == null || langCode.length() < 2) {
+
+    public static String threeCharLangCode(String langCode) {
+        if (langCode == null || langCode.length() < 2) {
             return Geonet.DEFAULT_LANGUAGE;
         }
 
-		if (langCode.length() == 3) {
+        if (langCode.length() == 3) {
             return langCode;
         }
 
@@ -424,12 +424,12 @@ public final class XslUtil
 
     }
 
-	public static boolean match(Object src, Object pattern) {
-		if (src == null || src.toString().trim().isEmpty()) {
-			return false;
-		}
-		return src.toString().matches(pattern.toString());
-	}
+    public static boolean match(Object src, Object pattern) {
+        if (src == null || src.toString().trim().isEmpty()) {
+            return false;
+        }
+        return src.toString().matches(pattern.toString());
+    }
 
     private static ThreadLocal<Boolean> allowScripting = new InheritableThreadLocal<Boolean>();
     public static void setNoScript() {

@@ -46,12 +46,12 @@
       ];
 
       /**
-     * Prepare batch process request parameters.
-     *   - get parameters from onlinesrc form
-     *   - add process name
-     *   - encode URL
-     *   - update name and desc if we add layers
-     */
+       * Prepare batch process request parameters.
+       *   - get parameters from onlinesrc form
+       *   - add process name
+       *   - encode URL
+       *   - update name and desc if we add layers
+       */
       var setParams = function(processName, formParams) {
         var params = angular.copy(formParams);
         angular.extend(params, {
@@ -64,16 +64,16 @@
       };
 
       /**
-      * Prepare name and description parameters
-      * if we are adding resource with layers.
-      *
-      * Parse all selected layers, extract name
-      * and title to build name and desc params like
-      *   name : name1,name2,name3
-      *   desc : title1,title2,title3
-      */
-      var setLayersParams = function(params) {
-        if (angular.isArray(params.selectedLayers) &&
+       * Prepare name and description parameters
+       * if we are adding resource with layers.
+       *
+       * Parse all selected layers, extract name
+       * and title to build name and desc params like
+       *   name : name1,name2,name3
+       *   desc : title1,title2,title3
+       */
+ 	   var setLayersParams = function(params) {
+         if (angular.isArray(params.selectedLayers) &&
             params.selectedLayers.length > 0) {
           var names = [],
               descs = [];
@@ -164,7 +164,7 @@
        */
       var runService = function(service, params, scope) {
         return gnEditor.save(false, true)
-        .then(function() {
+            .then(function() {
               gnHttp.callService(service, params).success(function() {
                 refreshForm(scope);
               }).error(function(error) {
@@ -273,8 +273,8 @@
         addOnlinesrc: function(params, popupid) {
           return runProcess(this,
               setParams('onlinesrc-add', params)).then(function() {
-            closePopup(popupid);
-          });
+                closePopup(popupid);
+              });
         },
 
         /**
@@ -293,8 +293,8 @@
         addThumbnailByURL: function(params, popupid) {
           return runProcess(this,
               setParams('thumbnail-add', params)).then(function() {
-            closePopup(popupid);
-          });
+                closePopup(popupid);
+              });
         },
 
         /**
@@ -439,8 +439,8 @@
         linkToSibling: function(params, popupid) {
           return runProcess(this,
               setParams('sibling-add', params)).then(function() {
-            closePopup(popupid);
-          });
+                closePopup(popupid);
+              });
         },
 
         /**
@@ -668,7 +668,7 @@
               var key = p + 'Url';
               xml +=
                   this.buildOnLineResource(node[key], protocols[p].label,
-                  layerName, title + ' (' + protocols[p].label + ')') +
+                      layerName, title + ' (' + protocols[p].label + ')') +
                   '&&&';
             }
           }

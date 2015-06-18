@@ -89,7 +89,7 @@
 
       gnSearchSettings.resultViewTpls = [{
         tplUrl: '../../catalog/components/search/resultsview/' +
-            'partials/viewtemplates/editor.html',
+        'partials/viewtemplates/editor.html',
         tooltip: 'List',
         icon: 'fa-list'
       }];

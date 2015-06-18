@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<geonet>
+    <services package="org.fao.geonet">
+
+        <service name="metadata.select">
+            <class name=".services.main.Select">
+                <param name="type" value="metadata" />
+            </class>
+        </service>
+
+    </services>
+</geonet>
+

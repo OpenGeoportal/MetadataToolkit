@@ -1,0 +1,164 @@
+// File ogp_search.less
+
+@ogpImages: "../images";
+@ogpSearchSprite: "ogp-sprite.png";
+@ogpInstitutionsSprite: "ogp-institutions.png";
+@ogpSearchIconSize: 17px;
+@ogpRepositoryIcon: 17px;
+
+// override glyphicons from Bootstrap
+.glyphicon {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-arrow-left:before {
+  content: "\f053";
+}
+
+.glyphicon-arrow-right:before {
+ content: "\f054";
+}
+
+/*
+ Angular UI:
+   Original Bootstrap's CSS depends on empty href attributes to style cursors for several components
+   (pagination, tabs etc.). But in AngularJS adding empty href attributes to link tags will cause unwanted route
+   changes.This is why we need to remove empty href attributes from directive templates and as a result styling is not
+   applied correctly. The remedy is simple, just add the following styling to your application:
+
+      .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+*/
+.nav, .pagination, .carousel, .panel-title a {
+  cursor: pointer;
+}
+
+/* Angular UI:
+ *   Fix empty multiselect shrunk when is disabled.
+ */
+.ui-select-multiple.ui-select-bootstrap {
+    min-height: 34px;
+    height: auto;
+    padding: .3em;
+}
+
+.coords {
+  padding-left: 1em;
+}
+
+
+.bottom-buffer-md {
+  margin-bottom: 20px;
+}
+
+.modal-dialog {
+  iframe {
+    border: 0 none;
+  }
+
+  .modal-body-lg {
+    min-height: 350px;
+  }
+
+  .metadata-wrapper {
+    height: 380px;
+  }
+  
+  .xml-metadata-wrapper {
+    height: 380px;
+    overflow: auto;    
+  }
+}
+
+.ogp-search-results {
+
+  /** Add a max height for the modal body to show scroll bar */
+
+
+  .columnType {
+    vertical-align: middle;
+  }
+
+  .typeIcon {
+    margin: auto;
+    height: @ogpSearchIconSize;
+    width: @ogpSearchIconSize;
+    display: inline-block;
+  }
+
+  .polygonIcon {
+    background: url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -101px -36px transparent;
+  		width: @ogpSearchIconSize;
+  		height: @ogpSearchIconSize;
+  }
+  .pointIcon {
+    background: url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -80px -36px transparent;
+  	width: @ogpSearchIconSize;
+  	height: @ogpSearchIconSize;
+  }
+  .lineIcon {
+    background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -10px -36px transparent;
+  	width: @ogpSearchIconSize;
+  	height: @ogpSearchIconSize;
+  }
+  .rasterIcon {
+    background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -35px -36px transparent;
+  	width: @ogpSearchIconSize;
+  	height: @ogpSearchIconSize;
+  }
+  .mapIcon {
+    background:url("@{ogpImages}/@{ogpSearchSprite}") no-repeat scroll -58px -36px transparent;
+    width: @ogpSearchIconSize;
+    height:@ogpSearchIconSize;
+  }
+
+  /* Institution icons */
+  .repositoryIcon {
+    margin: auto;
+    height: @ogpRepositoryIcon;
+    width: @ogpRepositoryIcon;
+    display: inline-block;
+  }
+
+  .tuftsIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -33px -10px transparent;
+  }
+  .mitIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -129px -10px transparent;
+  }
+  .harvardIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -79px -10px transparent;
+  }
+  .berkeleyIcon{
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -35px -35px transparent;
+  }
+  .marylandIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -12px -35px transparent;
+  }
+  .unIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -10px -10px transparent;
+  }
+  .massgisIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -102px -10px transparent;
+  }
+  .princetonIcon {
+    background: url("@{ogpImages}/@{ogpInstitutionsSprite}") no-repeat scroll -56px -10px transparent;
+  }
+  .columbiaIcon {
+    background: url("@{ogpImages}/src_columbia.png") no-repeat transparent;
+  }
+
+
+  .results-table {
+    display: block;
+    max-height: 500px;
+    min-height: 500px;
+    overflow-y: scroll;
+  }
+}
+
+// End of file ogp_search.less

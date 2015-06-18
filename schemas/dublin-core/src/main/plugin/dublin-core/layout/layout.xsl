@@ -212,7 +212,8 @@
           data-htop="{$north}"
           data-dc-ref="_{gn:element/@ref}"
           data-lang="lang"
-          data-location="{$place}"></div>
+          data-location="{$place}"
+          data-bbox="bbox"></div>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>

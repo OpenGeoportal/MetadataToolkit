@@ -1094,7 +1094,7 @@
       <url>http://developer.k-int.com/maven2/</url>
     </repository>
 
-    
+
     <repository>
       <snapshots>
         <enabled>true</enabled>
@@ -1106,7 +1106,7 @@
       <name>GeoNetwork remote repository</name>
       <url>https://raw.githubusercontent.com/geonetwork/core-maven-repo/master</url>
     </repository>
-    
+
     <repository>
       <id>mvnrepository.com</id>
       <name>Repository that has juniversalchardet</name>
@@ -1149,6 +1149,7 @@
     <module>services</module>
     <module>wro4j</module>
     <module>inspire-atom</module>
+    <module>ogp-services</module>
   </modules>
 
   <profiles>
@@ -1165,6 +1166,7 @@
         <module>web-ui-docs</module>
         <module>web-client</module>
         <module>web</module>
+        <module>web-editor</module>
         <module>e2e-tests</module>
         <module>geoserver</module>
       </modules>
@@ -1184,13 +1186,12 @@
     </profile>
   </profiles>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>scp-repository.geonetwork-opensource.org</id>
-      <name>GeoNetwork opensource repositories</name>
-      <url>scpexe://TO DEFINED</url>
-    </snapshotRepository>
-  </distributionManagement>
+<distributionManagement>
+  <snapshotRepository>
+    <id>tufts</id>
+    <url>https://mavenrepo.geocat.net/content/repositories/tufts</url>
+  </snapshotRepository>
+</distributionManagement>
 
   <properties>
     <jetty.version>8.1.9.v20130131</jetty.version>

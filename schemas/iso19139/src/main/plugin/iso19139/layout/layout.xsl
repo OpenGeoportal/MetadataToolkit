@@ -306,7 +306,6 @@
 
     <xsl:variable name="labelConfig"
       select="gn-fn-metadata:getLabel($schema, name(), $labels)"/>
-
     <div data-gn-date-picker="{gco:Date|gco:DateTime}"
       data-label="{$labelConfig/label}"
       data-element-name="{name(gco:Date|gco:DateTime)}"

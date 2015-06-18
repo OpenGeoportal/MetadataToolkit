@@ -15,9 +15,9 @@
     'gnUtilityService',
     'gnMetadataManager',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
-            gnSearchManagerService, 
-            gnUtilityService,
-            gnMetadataManager) {
+             gnSearchManagerService,
+             gnUtilityService,
+             gnMetadataManager) {
 
       $scope.isTemplate = false;
       $scope.hasTemplates = true;

@@ -37,6 +37,8 @@
     <jsSource webappPath="/catalog/lib/ngeo/ngeo.js"/>
     <jsSource webappPath="/catalog/lib/d3.v3.min.js"/>
     <jsSource webappPath="/catalog/lib/nv.d3.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular-ui/angular-bootstrap/ui-bootstrap-tpls.js" />
+    <jsSource webappPath="/catalog/lib/angular-ui/ui-select/select.js" />
 
     <jsSource webappPath="/catalog/lib/jsonix/jsonix/Jsonix-min.js" minimize="false" />
 
@@ -54,5 +56,6 @@
     <jsSource webappPath="/catalog/lib/zip/zip.js"/>
     <jsSource webappPath="/catalog/lib/zip/include.js"/>
     <jsSource webappPath="/catalog/lib/base64.js"/>
+    <jsSource webappPath="/catalog/lib/prismjs/prism.js"/>
   </declarative>
 </sources>

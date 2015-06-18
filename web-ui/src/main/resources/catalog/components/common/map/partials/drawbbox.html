@@ -4,7 +4,9 @@
     
       <!-- Header with projection selection, draw button and area list -->
       <form class="form-horizontal" role="form">
-        <div data-gn-region-picker=""></div>
+          <div data-ng-show="showRegion">
+              <div data-gn-region-picker=""></div>
+          </div>
       </form>
 
       <!-- Hidden field that match xml metadata schema -->
@@ -18,8 +20,9 @@
       <table class="text-center">
         <tr align="center">
           <td>
+
             <select data-ng-model="projs.form"
-                title="{{'chooseAProj' | translate}}">
+                title="{{'chooseAProj' | translate}}" data-ng-show="projs.list && projs.list.length > 1">
               <option data-ng-repeat="proj in projs.list"
                       value="{{proj.code}}"
                       data-ng-selected="proj.code == projs.form">{{proj.label}}

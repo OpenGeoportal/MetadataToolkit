@@ -14,11 +14,11 @@
 
   var module = angular.module('gn_editor_controller',
       ['gn_fields', 'gn_new_metadata_controller',
-       'gn_import_controller',
-       'gn_editorboard_controller', 'gn_share',
-       'gn_directory_controller', 'gn_utility_directive',
-       'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker',
-       'ngRoute', 'gn_mdactions_service']);
+        'gn_import_controller',
+        'gn_editorboard_controller', 'gn_share',
+        'gn_directory_controller', 'gn_utility_directive',
+        'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker',
+        'ngRoute', 'gn_mdactions_service', 'ui.bootstrap']);
 
   var tplFolder = '../../catalog/templates/editor/';
 
@@ -107,7 +107,13 @@
           menu.empty();
           var button = $('#gn-view-menu-' + gnCurrentEdit.id);
           if (button) {
+            var originalParent = button.parent();
             menu.append(button);
+            // empty original container so we can use the CSS :empty selector on it and set an invisible border to it
+            // when it doesn't have more content.
+            if (originalParent && originalParent.children().length == 0 && originalParent.text().trim() == "") {
+              originalParent.empty();
+            }
           }
         }
       };
@@ -208,7 +214,7 @@
                   tab: $routeParams.tab || defaultTab,
                   displayAttributes: $routeParams.displayAttributes === 'true',
                   displayTooltips:
-                      gnCurrentEdit.schemaConfig.displayToolTip === true,
+                    gnCurrentEdit.schemaConfig.displayToolTip === true,
                   compileScope: $scope,
                   formScope: $scope.$new(),
                   sessionStartTime: moment(),
@@ -224,7 +230,7 @@
                 // appending a random int in order to avoid
                 // caching by route.
                 $scope.editorFormUrl = gnEditor
-                  .buildEditUrlPrefix('md.edit') + '&starteditingsession=yes&' +
+                        .buildEditUrlPrefix('md.edit') + '&starteditingsession=yes&' +
                     '_random=' + Math.floor(Math.random() * 10000);
 
                 window.onbeforeunload = function() {
@@ -342,7 +348,7 @@
           // and the newly created attributes.
           // Save to not lose current edits in main field.
           return gnEditor.save(false)
-            .then(function() {
+              .then(function() {
                 gnEditor.add(gnCurrentEdit.id, ref, name,
                     insertRef, position, attribute);
               });
@@ -368,7 +374,7 @@
       $scope.save = function(refreshForm) {
         $scope.saveError = false;
         var promise = gnEditor.save(refreshForm)
-          .then(function(form) {
+            .then(function(form) {
               $scope.savedStatus = gnCurrentEdit.savedStatus;
               $scope.saveError = false;
               $scope.toggleAttributes();
@@ -400,7 +406,7 @@
       $scope.cancel = function(refreshForm) {
         $scope.savedStatus = gnCurrentEdit.savedStatus;
         return gnEditor.cancel(refreshForm)
-          .then(function(form) {
+            .then(function(form) {
               // Refresh editor form after cancel
               //  $scope.savedStatus = gnCurrentEdit.savedStatus;
               //  $rootScope.$broadcast('StatusUpdated', {
@@ -420,7 +426,7 @@
 
       $scope.close = function() {
         var promise = gnEditor.save(false)
-          .then(function(form) {
+            .then(function(form) {
               closeEditor();
             }, function(error) {
               $rootScope.$broadcast('StatusUpdated', {
@@ -449,7 +455,7 @@
 
       $scope.$on('AddElement', function(event, ref, name,
           insertRef, position, attribute) {
-            $scope.add(ref, name, insertRef, position, attribute);
+             $scope.add(ref, name, insertRef, position, attribute);
           });
 
       $scope.validate = function() {
