@@ -1166,7 +1166,6 @@
         <module>web-ui-docs</module>
         <module>web-client</module>
         <module>web</module>
-        <module>web-editor</module>
         <module>e2e-tests</module>
         <module>geoserver</module>
       </modules>
@@ -1182,6 +1181,13 @@
       <id>jmeter</id>
       <modules>
         <module>jmeter</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>web-editor</id>
+      <modules>
+        <module>web-ui</module>
+        <module>web-editor</module>
       </modules>
     </profile>
   </profiles>
