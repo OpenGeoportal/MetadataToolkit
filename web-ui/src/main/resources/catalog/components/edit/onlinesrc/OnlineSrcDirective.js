@@ -152,6 +152,8 @@
 
               return {
                 post: function (scope, element, attrs) {
+                  scope.uploadDisabled = attrs.gnDisableUpload != "false";
+
 
                   // mode can be 'url' or 'upload'
                   scope.mode = 'url';
@@ -386,6 +388,8 @@
               }
               return {
                 post: function (scope, element, attrs) {
+                  scope.uploadDisabled = attrs.gnDisableUpload != "false";
+
 
                   scope.popupid = attrs['gnPopupid'];
 

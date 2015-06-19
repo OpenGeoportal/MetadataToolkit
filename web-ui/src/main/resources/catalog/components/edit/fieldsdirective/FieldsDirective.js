@@ -180,7 +180,7 @@
                             }
                           });
 
-                          tooltipIcon.on('shown.bs.popover', function(event) {
+                          /*tooltipIcon.on('shown.bs.popover', function(event) {
                             if ($('div.popover').css('top').charAt(0) === '-') {
                               // move popover under navbar.
                               var oldTopPopover = $('div.popover').position().top;
@@ -191,7 +191,7 @@
                               $('.popover>.arrow').css('top',
                                   oldTopArrow - newTopPopover + oldTopPopover);
                             }
-                          });
+                          });*/
 
                           isInitialized = true;
                           tooltipIcon.popover('show');
