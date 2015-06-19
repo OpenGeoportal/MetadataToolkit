@@ -33,9 +33,10 @@
 
   <xsl:template name="javascript-load">
 
-    <script>var geonet={provide:function(s){},require:function(s){}}</script>
+    <script>var geonet = {provide:function(s){},require:function(s){}};</script>
     <xsl:choose>
       <xsl:when test="$isDebugMode">
+        <!-- debug mode -->
 
         <script src="{$uiResourcesPath}lib/modernizr.js"></script>
         <script src="{$uiResourcesPath}lib/closure/base.js"></script>
@@ -104,9 +105,10 @@
         <script src="{$uiResourcesPath}lib/angular-ui/ui-select/select.js"></script>
         <script src="{$uiResourcesPath}lib/prismjs/prism.js"></script>
         <!--</xsl:if>-->
-
+        <!-- end debug mode -->
       </xsl:when>
       <xsl:otherwise>
+        <!-- not in debug mode -->
       </xsl:otherwise>
     </xsl:choose>
 

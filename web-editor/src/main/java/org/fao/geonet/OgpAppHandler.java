@@ -24,6 +24,7 @@
 package org.fao.geonet;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
+
 import jeeves.config.springutil.ServerBeanPropertyUpdater;
 import jeeves.interfaces.ApplicationHandler;
 import jeeves.server.JeevesEngine;
@@ -32,6 +33,7 @@ import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import jeeves.server.sources.http.ServletPathFinder;
 import jeeves.xlink.Processor;
+
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Metadata;
@@ -39,6 +41,8 @@ import org.fao.geonet.domain.Pair;
 import org.fao.geonet.domain.Profile;
 import org.fao.geonet.domain.Setting;
 import org.fao.geonet.domain.User;
+import org.fao.geonet.entitylistener.AbstractEntityListenerManager;
+import org.fao.geonet.exceptions.OperationAbortedEx;
 import org.fao.geonet.inspireatom.InspireAtomType;
 import org.fao.geonet.inspireatom.harvester.InspireAtomHarvesterScheduler;
 import org.fao.geonet.kernel.DataManager;
@@ -64,12 +68,13 @@ import org.fao.geonet.notifier.MetadataNotifierControl;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.SettingRepository;
 import org.fao.geonet.resources.Resources;
+import org.fao.geonet.services.config.LogUtils;
 import org.fao.geonet.services.metadata.BatchOpsMetadataReindexer;
 import org.fao.geonet.services.metadata.format.Format;
 import org.fao.geonet.services.metadata.format.FormatType;
+import org.fao.geonet.services.metadata.format.FormatterWidth;
 import org.fao.geonet.services.util.z3950.Repositories;
 import org.fao.geonet.services.util.z3950.Server;
-import org.fao.geonet.util.ThreadPool;
 import org.fao.geonet.util.ThreadUtils;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
@@ -95,6 +100,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import java.io.File;
 import java.net.URI;
@@ -110,6 +116,7 @@ import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
@@ -121,7 +128,6 @@ public class OgpAppHandler implements ApplicationHandler {
     private Path appPath;
     private SearchManager searchMan;
     private MetadataNotifierControl metadataNotifierControl;
-    private ThreadPool threadPool;
     private ConfigurableApplicationContext _applicationContext;
 
     //---------------------------------------------------------------------------
@@ -145,8 +151,20 @@ public class OgpAppHandler implements ApplicationHandler {
      */
     public Object start(Element config, ServiceContext context) throws Exception {
         context.setAsThreadLocal();
-        logger = context.getLogger();
         this._applicationContext = context.getApplicationContext();
+        ApplicationContextHolder.set(this._applicationContext);
+
+        logger = context.getLogger();
+        // If an error occur during logger configuration
+        // Continue starting the application with
+        // a logger initialized with the default log4j.xml.
+        try {
+            LogUtils.refreshLogConfiguration();
+        } catch (OperationAbortedEx e) {
+            logger.error("Error while setting log configuration. " +
+                         "Check the setting in the database for logger configuration file.");
+            logger.error(e.getMessage());
+        }
         ConfigurableListableBeanFactory beanFactory = context.getApplicationContext().getBeanFactory();
 
         ServletPathFinder finder = new ServletPathFinder(this._applicationContext.getBean(ServletContext.class));
@@ -192,13 +210,6 @@ public class OgpAppHandler implements ApplicationHandler {
         // force caches to be config'd so shutdown hook works correctly
         JeevesJCS.getInstance(Processor.XLINK_JCS);
         JeevesJCS.getInstance(XmlResolver.XMLRESOLVER_JCS);
-
-        //------------------------------------------------------------------------
-        //--- initialize thread pool
-
-        logger.info("  - Thread Pool...");
-
-        threadPool = new ThreadPool();
 
         //------------------------------------------------------------------------
         //--- initialize settings subsystem
@@ -367,7 +378,7 @@ public class OgpAppHandler implements ApplicationHandler {
         OaiPmhDispatcher oaipmhDis = new OaiPmhDispatcher(settingMan, schemaMan);
 
 
-        GeonetContext gnContext = new GeonetContext(_applicationContext, false, statusActionsClass, threadPool);
+        GeonetContext gnContext = new GeonetContext(_applicationContext, false, statusActionsClass);
 
         //------------------------------------------------------------------------
         //--- return application context
@@ -447,6 +458,7 @@ public class OgpAppHandler implements ApplicationHandler {
 
         fillCaches(context);
 
+        AbstractEntityListenerManager.setSystemRunning(true);
         return gnContext;
     }
 
@@ -457,6 +469,8 @@ public class OgpAppHandler implements ApplicationHandler {
             @Override
             public void run() {
                 final ServletContext servletContext = context.getServlet().getServletContext();
+                context.setAsThreadLocal();
+                ApplicationContextHolder.set(_applicationContext);
                 GeonetWro4jFilter filter = (GeonetWro4jFilter) servletContext.getAttribute(GeonetWro4jFilter.GEONET_WRO4J_FILTER_KEY);
 
                 @SuppressWarnings("unchecked")
@@ -487,7 +501,7 @@ public class OgpAppHandler implements ApplicationHandler {
                         final MockHttpServletResponse response = new MockHttpServletResponse();
                         try {
                             formatService.exec("eng", FormatType.html.toString(), mdId.toString(), null, formatterName,
-                                    Boolean.TRUE.toString(), false, servletRequest, response);
+                                    Boolean.TRUE.toString(), false, FormatterWidth._100, new ServletWebRequest(servletRequest, response));
                         } catch (Throwable t) {
                             Log.info(Geonet.GEONETWORK, "Error while initializing the Formatter with id: " + formatterName, t);
                         }
@@ -596,10 +610,11 @@ public class OgpAppHandler implements ApplicationHandler {
     private void createSiteLogo(String nodeUuid, ServiceContext context, Path appPath) {
         try {
             Path logosDir = Resources.locateLogosDir(context);
-            Path logo =logosDir.resolve(nodeUuid + ".gif");
+            Path logo =logosDir.resolve(nodeUuid + ".png");
             if (!Files.exists(logo)) {
                 final ServletContext servletContext = context.getServlet().getServletContext();
-                byte[] logoData = Resources.loadImage(servletContext, appPath, "images/logos/dummy.gif", new byte[0]).one();
+                byte[] logoData = Resources.loadImage(servletContext, appPath, "images/logos/OGP-icon-24.png", 
+											new byte[0]).one();
                 Files.write(logo, logoData);
             }
         } catch (Throwable e) {
@@ -639,6 +654,7 @@ public class OgpAppHandler implements ApplicationHandler {
 
     public void stop() {
         logger.info("Stopping geonetwork...");
+        AbstractEntityListenerManager.setSystemRunning(false);
 
         logger.info("shutting down CSW HarvestResponse executionService");
         CswHarvesterResponseExecutionService.getExecutionService().shutdownNow();
@@ -655,10 +671,6 @@ public class OgpAppHandler implements ApplicationHandler {
             logger.error("  Message   : " + e.getMessage());
             logger.error("  Stack     : " + Util.getStackTrace(e));
         }
-
-
-        logger.info("  - ThreadPool ...");
-        threadPool.shutDown();
 
         logger.info("  - MetadataNotifier ...");
         try {

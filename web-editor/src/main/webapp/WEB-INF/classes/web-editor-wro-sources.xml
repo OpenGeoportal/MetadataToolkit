@@ -1,102 +1,102 @@
 <sources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../webapp/WEB-INF/wro-sources.xsd" >
   <!-- <require pathOnDisk="web-ui/src/main/resources" >
-    <jsSource webappPath="catalog/js" />
-    <jsSource webappPath="catalog/components" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
-    <cssSource webappPath="catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+    <jsSource webappPath="/catalog/js" />
+    <jsSource webappPath="/catalog/components" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+    <cssSource webappPath="/catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
   </require> -->
 
   <require pathOnDisk="web-ui/src/main/resources">
-    <jsSource webappPath="catalog/js/edit" />
-    <!-- Moved the files under catalog/js to catalog/js/other, except
-    catalog/js/GnAdminModule.js to catalog/js/admin2/GnAdminModule.js,
-    not required in this app and catalog/js/GnModule.js to
-    catalog/js/gn/GnModule.js-->
-    <jsSource webappPath="catalog/js/other" />
-    <jsSource webappPath="catalog/js/search" />
-    <jsSource webappPath="catalog/js/gn" />
+    <jsSource webappPath="/catalog/js/edit/" />
+    <!-- Moved the files under /catalog/js to /catalog/js/other, except
+    /catalog/js/GnAdminModule.js to /catalog/js/admin2/GnAdminModule.js,
+    not required in this app and /catalog/js/GnModule.js to
+    /catalog/js/gn/GnModule.js-->
+    <jsSource webappPath="/catalog/js/other/" />
+    <jsSource webappPath="/catalog/js/search/" />
+    <jsSource webappPath="/catalog/js/gn/" />
 
-    <jsSource webappPath="catalog/views/default" />
-    <jsSource webappPath="catalog/views/ogp" />
+    <jsSource webappPath="/catalog/views/default/" />
+    <jsSource webappPath="/catalog/views/ogp/" />
 
-    <!-- Moved to catalog/components/utility, jsSource doesn't accept file
-    names and if added catalog/components all is added -->
-    <!--<jsSource webappPath="catalog/components/UrlUtilsService.js" />-->
-    <jsSource webappPath="catalog/components/admin/importxsl" />
-    <!-- Moved catalog/components/admin/BatchService.js to catalog/components/admin/batch/BatchService.js  -->
-    <jsSource webappPath="catalog/components/admin/batch" />
-    <jsSource webappPath="catalog/components/catalog" />
-    <jsSource webappPath="catalog/components/category" />
-    <jsSource webappPath="catalog/components/common" />
-    <jsSource webappPath="catalog/components/contactus" />
-    <jsSource webappPath="catalog/components/edit" />
-    <jsSource webappPath="catalog/components/metadatamanager" />
-    <jsSource webappPath="catalog/components/metadataactions" />
-    <jsSource webappPath="catalog/components/search" />
-    <jsSource webappPath="catalog/components/thesaurus" />
-    <jsSource webappPath="catalog/components/utility" />
-    <jsSource webappPath="catalog/components/vcs" />
-    <jsSource webappPath="catalog/components/viewer" />
-    <jsSource webappPath="catalog/components/cookieWarning" />
+    <!-- Moved to /catalog/components/utility, jsSource doesn't accept file
+    names and if added /catalog/components all is added -->
+    <!--<jsSource webappPath="/catalog/components/UrlUtilsService.js" />-->
+    <jsSource webappPath="/catalog/components/admin/importxsl/" />
+    <!-- Moved /catalog/components/admin/BatchService.js to /catalog/components/admin/batch/BatchService.js  -->
+    <jsSource webappPath="/catalog/components/admin/batch/" />
+    <jsSource webappPath="/catalog/components//catalog/" />
+    <jsSource webappPath="/catalog/components/category/" />
+    <jsSource webappPath="/catalog/components/common/" />
+    <jsSource webappPath="/catalog/components/contactus/" />
+    <jsSource webappPath="/catalog/components/edit/" />
+    <jsSource webappPath="/catalog/components/metadatamanager/" />
+    <jsSource webappPath="/catalog/components/metadataactions/" />
+    <jsSource webappPath="/catalog/components/search/" />
+    <jsSource webappPath="/catalog/components/thesaurus/" />
+    <jsSource webappPath="/catalog/components/utility/" />
+    <jsSource webappPath="/catalog/components/vcs/" />
+    <jsSource webappPath="/catalog/components/viewer/" />
+    <jsSource webappPath="/catalog/components/cookieWarning/" />
 
-    <cssSource webappPath="catalog/views" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
-    <cssSource webappPath="catalog/style" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+    <cssSource webappPath="/catalog/views/" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+    <cssSource webappPath="/catalog/style/" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
   </require>
 
 
   <declarative name="lib" pathOnDisk="web-ui/src/main/resources">
-    <jsSource webappPath="catalog/lib/modernizr.js"/>
-    <jsSource webappPath="catalog/lib/jquery-2.0.3.min.js"/>
-    <jsSource webappPath="catalog/lib/moment+langs.min.js"/>
-    <jsSource webappPath="catalog/lib/angular/angular.min.js"/>
-    <jsSource webappPath="catalog/lib/angular-filter.min.js" minimize="false"/>
-    <jsSource webappPath="catalog/lib/angular/angular-resource.min.js"/>
-    <jsSource webappPath="catalog/lib/angular/angular-route.min.js"/>
-    <jsSource webappPath="catalog/lib/angular/angular-sanitize.min.js"/>
-    <jsSource webappPath="catalog/lib/angular/angular-cookies.min.js"/>
-    <jsSource webappPath="catalog/lib/angular-translate.min.js"/>
-    <jsSource webappPath="catalog/lib/angular-md5.min.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/hotkeys/hotkeys.min.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/bindHtml.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/buttons.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/datetimepicker.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/position.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/slider.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/tabs.js"/>
-    <jsSource webappPath="catalog/lib/angular.ext/typeahead.js"/>
-    <jsSource webappPath="catalog/lib/style/bootstrap/dist/js/bootstrap.min.js"/>
-    <jsSource webappPath="catalog/lib/proj4js-compressed.js" minimize="false"/>
-    <jsSource webappPath="catalog/lib/ngeo/ngeo.js"/>
-    <jsSource webappPath="catalog/lib/d3.v3.min.js"/>
-    <jsSource webappPath="catalog/lib/nv.d3.min.js"/>
-    <jsSource webappPath="catalog/lib/angular-ui/angular-bootstrap/ui-bootstrap-tpls.js" />
-    <jsSource webappPath="catalog/lib/angular-ui/ui-select/select.js" />
+    <jsSource webappPath="/catalog/lib/modernizr.js"/>
+    <jsSource webappPath="/catalog/lib/jquery-2.0.3.min.js"/>
+    <jsSource webappPath="/catalog/lib/moment+langs.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular/angular.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular-filter.min.js" minimize="false"/>
+    <jsSource webappPath="/catalog/lib/angular/angular-resource.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular/angular-route.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular/angular-sanitize.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular/angular-cookies.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular-translate.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular-md5.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/hotkeys/hotkeys.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/bindHtml.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/buttons.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/datetimepicker.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/position.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/slider.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/tabs.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ext/typeahead.js"/>
+    <jsSource webappPath="/catalog/lib/style/bootstrap/dist/js/bootstrap.min.js"/>
+    <jsSource webappPath="/catalog/lib/proj4js-compressed.js" minimize="false"/>
+    <jsSource webappPath="/catalog/lib/ngeo/ngeo.js"/>
+    <jsSource webappPath="/catalog/lib/d3.v3.min.js"/>
+    <jsSource webappPath="/catalog/lib/nv.d3.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular-ui/angular-bootstrap/ui-bootstrap-tpls.js" />
+    <jsSource webappPath="/catalog/lib/angular-ui/ui-select/select.js" />
 
-    <jsSource webappPath="catalog/lib/jsonix/jsonix/Jsonix-min.js" minimize="false" />
-    <jsSource webappPath="catalog/lib/jsonix/w3c-schemas/XLink_1_0.js" />
-    <jsSource webappPath="catalog/lib/jsonix/ogc-schemas/OWS_1_0_0.js" />
-    <jsSource webappPath="catalog/lib/jsonix/ogc-schemas/Filter_1_0_0.js" />
-    <jsSource webappPath="catalog/lib/jsonix/ogc-schemas/GML_2_1_2.js" />
-    <jsSource webappPath="catalog/lib/jsonix/ogc-schemas/SLD_1_0_0.js" />
-    <jsSource webappPath="catalog/lib/jsonix/ogc-schemas/OWC_0_3_1.js" />
+    <jsSource webappPath="/catalog/lib/jsonix/jsonix/Jsonix-min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/jsonix/w3c-schemas/XLink_1_0.js" />
+    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/OWS_1_0_0.js" />
+    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/Filter_1_0_0.js" />
+    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/GML_2_1_2.js" />
+    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/SLD_1_0_0.js" />
+    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/OWC_0_3_1.js" />
 
-    <jsSource webappPath="catalog/lib/jquery.ext/jquery.ui.widget.js"/>
-    <jsSource webappPath="catalog/lib/jquery.ext/jquery.iframe-transport.js"/>
-    <jsSource webappPath="catalog/lib/jquery.ext/jquery.fileupload.js"/>
-    <jsSource webappPath="catalog/lib/jquery.ext/jquery.fileupload-process.js"/>
-    <jsSource webappPath="catalog/lib/jquery.ext/jquery.fileupload-angular.js"/>
-    <jsSource webappPath="catalog/lib/jquery.ext/jquery-ui-slider.min.js"/>
-    <jsSource webappPath="catalog/lib/bootstrap.ext/typeahead.js/typeahead.bundle.js"/>
-    <jsSource webappPath="catalog/lib/bootstrap.ext/typeahead.js/handlebars-v2.0.0.js"/>
-    <jsSource webappPath="catalog/lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.min.js"/>
-    <jsSource webappPath="catalog/lib/bootstrap.ext/tagsinput/bootstrap-tagsinput-angular.js"/>
-    <jsSource webappPath="catalog/lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"/>
-    <jsSource webappPath="catalog/lib/zip/zip.js"/>
-    <jsSource webappPath="catalog/lib/zip/include.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.ui.widget.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.iframe-transport.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-process.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-angular.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery-ui-slider.min.js"/>
+    <jsSource webappPath="/catalog/lib/bootstrap.ext/typeahead.js/typeahead.bundle.js"/>
+    <jsSource webappPath="/catalog/lib/bootstrap.ext/typeahead.js/handlebars-v2.0.0.js"/>
+    <jsSource webappPath="/catalog/lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.min.js"/>
+    <jsSource webappPath="/catalog/lib/bootstrap.ext/tagsinput/bootstrap-tagsinput-angular.js"/>
+    <jsSource webappPath="/catalog/lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"/>
+    <jsSource webappPath="/catalog/lib/zip/zip.js"/>
+    <jsSource webappPath="/catalog/lib/zip/include.js"/>
     
-    <jsSource webappPath="catalog/lib/prismjs/prism.js"/>
+    <jsSource webappPath="/catalog/lib/prismjs/prism.js"/>
 
-    <cssSource webappPath="catalog/lib/angular-ui/ui-select/select.css" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
+    <cssSource webappPath="/catalog/lib/angular-ui/ui-select/select.css" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
 
   </declarative>
 
