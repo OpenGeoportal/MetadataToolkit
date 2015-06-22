@@ -18,6 +18,7 @@
 
     <jsSource webappPath="/catalog/views/default/" />
     <jsSource webappPath="/catalog/views/ogp/" />
+    <jsSource webappPath="/catalog/js/jsonix/" />
 
     <!-- Moved to /catalog/components/utility, jsSource doesn't accept file
     names and if added /catalog/components all is added -->

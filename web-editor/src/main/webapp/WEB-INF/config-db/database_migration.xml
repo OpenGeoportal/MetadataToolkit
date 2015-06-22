@@ -94,10 +94,22 @@
         </entry>
         <entry key="3.0.0">
             <list>
+                <value>java:v300.SetSequenceValueToMaxOfMetadataAndStats</value>
                 <value>WEB-INF/classes/setup/sql/migrate/v300/migrate-</value>
+                <value>WEB-INF/classes/setup/sql/migrate/v300/migrate-cswservice-</value>
                 <value>WEB-INF/classes/setup/sql/migrate/v300/2-enable-self-register-</value>
                 <value>WEB-INF/classes/setup/sql/migrate/v300/3-insert-blank-template-</value>
                 <value>WEB-INF/classes/setup/sql/migrate/v300/4-ogp-server-settings-</value>
+            </list>
+        </entry>
+        <entry key="3.0.1">
+            <list>
+                <value>WEB-INF/classes/setup/sql/migrate/v301/migrate-</value>
+            </list>
+        </entry>
+        <entry key="3.1.0">
+            <list>
+                <value>WEB-INF/classes/setup/sql/migrate/v310/migrate-</value>
             </list>
         </entry>
     </util:map>
