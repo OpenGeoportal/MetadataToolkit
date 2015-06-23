@@ -24,7 +24,6 @@
       <link href="{/root/gui/url}/static/nv.d3.css{$minimizedParam}" rel="stylesheet" media="screen" />
     </xsl:if>
 
-    <link rel="shortcut icon" type="image/x-icon" href="../../images/logos/favicon.ico" />
     <link href="{/root/gui/url}/static/{$customFilename}.css{$minimizedParam}" rel="stylesheet" media="screen" />
 
     <link href="{/root/gui/url}/static/{/root/gui/nodeId}_custom_style.css{$minimizedParam}" rel="stylesheet" media="screen" />
@@ -36,13 +35,11 @@
     <script>var geonet = {provide:function(s){},require:function(s){}};</script>
     <xsl:choose>
       <xsl:when test="$isDebugMode">
-        <!-- debug mode -->
 
         <script src="{$uiResourcesPath}lib/modernizr.js"></script>
         <script src="{$uiResourcesPath}lib/closure/base.js"></script>
 
         <script src="{$uiResourcesPath}lib/base64.js"></script>
-
         <script src="{$uiResourcesPath}lib/jquery-2.0.3.js"></script>
 
         <script src="{$uiResourcesPath}lib/moment+langs.min.js"></script>
@@ -59,6 +56,7 @@
         <script src="{$uiResourcesPath}lib/angular.ext/hotkeys/hotkeys.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/datetimepicker.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/buttons.js"></script>
+        <script src="{$uiResourcesPath}lib/angular.ext/rating.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/typeahead.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/position.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/bindHtml.js"></script>
@@ -69,26 +67,21 @@
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery-ui-slider.min.js"></script>
         <script src="{$uiResourcesPath}lib/proj4js-compressed.js"></script>
         <script src="{$uiResourcesPath}lib/ngeo/ngeo-debug.js"></script>
+
+
         <xsl:if test="$withD3">
           <script src="{$uiResourcesPath}lib/d3.v3.js"></script>
           <script src="{$uiResourcesPath}lib/nv.d3.js"></script>
         </xsl:if>
 
-        <xsl:if test="$angularApp = 'gn_search'">
+        <xsl:if test="$angularApp = 'gn_search' or $angularApp = 'gn_editor'">
           <script src="{$uiResourcesPath}lib/zip/zip.js"></script>
+          <!-- Jsonix resources (OWS Context) -->
+          <script src="{$uiResourcesPath}lib/jsonix/jsonix/Jsonix-min.js"></script>
           <script type="text/javascript">
             zip.workerScriptsPath = "../../catalog/lib/zip/";
           </script>
         </xsl:if>
-
-        <!-- Jsonix resources (OWS Context) -->
-        <script src="{$uiResourcesPath}lib/jsonix/jsonix/Jsonix-min.js"></script>
-        <script src="{$uiResourcesPath}lib/jsonix/w3c-schemas/XLink_1_0.js"></script>
-        <script src="{$uiResourcesPath}lib/jsonix/ogc-schemas/OWS_1_0_0.js"></script>
-        <script src="{$uiResourcesPath}lib/jsonix/ogc-schemas/Filter_1_0_0.js"></script>
-        <script src="{$uiResourcesPath}lib/jsonix/ogc-schemas/GML_2_1_2.js"></script>
-        <script src="{$uiResourcesPath}lib/jsonix/ogc-schemas/SLD_1_0_0.js"></script>
-        <script src="{$uiResourcesPath}lib/jsonix/ogc-schemas/OWC_0_3_1.js"></script>
 
 
         <!--<xsl:if test="$isEditing">-->
@@ -105,12 +98,12 @@
         <script src="{$uiResourcesPath}lib/angular-ui/ui-select/select.js"></script>
         <script src="{$uiResourcesPath}lib/prismjs/prism.js"></script>
         <!--</xsl:if>-->
-        <!-- end debug mode -->
+
       </xsl:when>
       <xsl:otherwise>
-        <!-- not in debug mode -->
       </xsl:otherwise>
     </xsl:choose>
+
 
     <xsl:choose>
         <xsl:when test="/root/request/debug">
@@ -125,6 +118,30 @@
             <script src="{/root/gui/url}/static/{$angularModule}.js{$minimizedParam}"></script>
         </xsl:otherwise>
     </xsl:choose>
+
+
+    <!-- Load JS libs required for 3D maps when enabled
+    Those scripts are not bundle by Wro4j to avoid to increase size
+    of the bundle when 3D mode is not anabled.
+    -->
+    <xsl:if test="$is3DModeAllowed">
+      <script>var CESIUM_BASE_URL = '<xsl:value-of select="$uiResourcesPath"/>lib/ol3cesium/Cesium/';</script>
+
+
+      <script src="{$uiResourcesPath}lib/ol3cesium/Cesium/Cesium.js"></script>
+      <script src="{$uiResourcesPath}lib/ol3cesium/ol3cesium.js"></script>
+      <!--
+      Wro4j combining the 2 lib in one JS does not work.
+      <xsl:choose>
+        <xsl:when test="/root/request/debug">
+        </xsl:when>
+        <xsl:otherwise>
+          <script src="{/root/gui/url}/static/libcesium.js"></script>
+        </xsl:otherwise>
+      </xsl:choose>-->
+    </xsl:if>
+
+
 
 
     <xsl:variable name="mapConfig"

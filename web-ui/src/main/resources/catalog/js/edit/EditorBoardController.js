@@ -8,7 +8,7 @@
   goog.require('gn_search_form_controller');
 
   var module = angular.module('gn_editorboard_controller',
-      ['gn_search', 'gn_search_form_controller', 'gn_mdactions_service']);
+      ['gn_search', 'gn_search_form_controller', 'gn_mdactions_service', 'gn_catalog_service']);
 
 
   module.controller('GnEditorBoardSearchController', [
@@ -20,8 +20,10 @@
     'gnSearchSettings',
     'gnMetadataActions',
     'gnGlobalSettings',
+      'gnConfig',
     function($scope, $location, $rootScope, $translate, $q,
-        gnSearchSettings, gnMetadataActions, gnGlobalSettings) {
+        gnSearchSettings, gnMetadataActions, gnGlobalSettings, gnConfig) {
+      $scope.gnConfig = gnConfig;
       $scope.onlyMyRecord = false;
       $scope.modelOptions = angular.copy(gnGlobalSettings.modelOptions);
       $scope.defaultSearchObj = {

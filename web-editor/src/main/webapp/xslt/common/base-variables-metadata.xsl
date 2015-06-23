@@ -24,7 +24,10 @@
   <xsl:variable name="metadataUuid" select="$metadataInfo/uuid"/>
   <xsl:variable name="metadataId" select="$metadataInfo/id"/>
   <xsl:variable name="isTemplate" select="$metadataInfo/isTemplate"/>
-  <xsl:variable name="isService" select="count($metadata/gmd:identificationInfo/srv:SV_ServiceIdentification) > 0"/>
+
+  <xsl:variable name="isService">
+    <saxon:call-template name="{concat('get-', $schema, '-is-service')}"/>
+  </xsl:variable>
   
   <xsl:variable name="metadataLanguage">
     <saxon:call-template name="{concat('get-', $schema, '-language')}"/>
@@ -84,6 +87,7 @@
     else $tabConfig/@mode = 'flat'"/>
 
   <xsl:variable name="viewVerticalTabs" select="$editorConfig/editor/views/view[tab/@id = $tab]/@vertical-tabs"/>
+
   
   
 </xsl:stylesheet>

@@ -19,6 +19,7 @@
     <jsSource webappPath="/catalog/views/default/" />
     <jsSource webappPath="/catalog/views/ogp/" />
     <jsSource webappPath="/catalog/js/jsonix/" />
+    <jsSource webappPath="/catalog/js/formatter/" />
 
     <!-- Moved to /catalog/components/utility, jsSource doesn't accept file
     names and if added /catalog/components all is added -->
@@ -44,6 +45,10 @@
     <cssSource webappPath="/catalog/style/" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
   </require>
 
+  <declarative name="libcesium" pathOnDisk="web-ui/src/main/resources">
+    <jsSource webappPath="/catalog/lib/ol3cesium/Cesium/Cesium.js"/>
+    <jsSource webappPath="/catalog/lib/ol3cesium/ol3cesium.js"/>
+  </declarative>
 
   <declarative name="lib" pathOnDisk="web-ui/src/main/resources">
     <jsSource webappPath="/catalog/lib/modernizr.js"/>
@@ -74,12 +79,6 @@
     <jsSource webappPath="/catalog/lib/angular-ui/ui-select/select.js" />
 
     <jsSource webappPath="/catalog/lib/jsonix/jsonix/Jsonix-min.js" minimize="false" />
-    <jsSource webappPath="/catalog/lib/jsonix/w3c-schemas/XLink_1_0.js" />
-    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/OWS_1_0_0.js" />
-    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/Filter_1_0_0.js" />
-    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/GML_2_1_2.js" />
-    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/SLD_1_0_0.js" />
-    <jsSource webappPath="/catalog/lib/jsonix/ogc-schemas/OWC_0_3_1.js" />
 
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.ui.widget.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.iframe-transport.js"/>
@@ -100,9 +99,4 @@
     <cssSource webappPath="/catalog/lib/angular-ui/ui-select/select.css" pathOnDisk="${project.basedir}/../web-ui/src/main/resources" />
 
   </declarative>
-
-  <declarative name="testjs" pathOnDisk="../../testjs">
-    <jsSource webappPath="testjs/test.js"/>
-  </declarative>
-
 </sources>

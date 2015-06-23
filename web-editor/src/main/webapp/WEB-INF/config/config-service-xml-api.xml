@@ -32,10 +32,6 @@
       </error>
     </service>
 
-    <service name="xml.regions.list" deprecated="true" xmlapi="true">
-      <class name=".services.region.List" />
-    </service>
-
     <service name="xml.regions.category.list" deprecated="true" xmlapi="true">
       <class name=".services.region.ListCategories" />
     </service>
@@ -141,18 +137,13 @@
       <class name=".services.status.Get" />
     </service>
 
-    <service name="xml.metadata.rate" xmlapi="true">
+    <service name="xml.metadata.rate" xmlapi="true" deprecated="true">
       <class name=".services.metadata.Rate" />
     </service>
 
 
     <service name="xml.user.metadata" xmlapi="true">
       <class name=".guiservices.metadata.GetByOwner" />
-    </service>
-
-
-    <service name="xml.search.keywords" type="xml" deprecated="true" xmlapi="true">
-      <class name=".services.thesaurus.GetKeywords"/>
     </service>
 
     <service name="xml.search.keywordlink" type="xml" deprecated="true" xmlapi="true">

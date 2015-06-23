@@ -201,11 +201,12 @@
         <!-- Search for the related element identifier -->
         <xsl:variable name="relatedElementRef"
           select="$node/../*[name()=$helper/@rel]/*/gn:element/@ref"/>
-        
-        
+            
         <helper>
           <xsl:attribute name="relElementRef" select="$relatedElementRef"/>
           <xsl:copy-of select="$helper/@*"/>
+
+          <xsl:variable name="helpersMatchingCurrentRecord">
           <xsl:for-each select="$helper[@displayIf]">
             <xsl:variable name="match">
               <saxon:call-template name="{concat('evaluate-', $schema)}">
@@ -214,18 +215,22 @@
               </saxon:call-template>
             </xsl:variable>
 
-            <xsl:choose>
-              <xsl:when test="$match/*">
+              <xsl:if test="$match/*">
                 <xsl:copy-of select="option"/>
+              </xsl:if>
+            </xsl:for-each>
+          </xsl:variable>
+
+            <xsl:choose>
+            <xsl:when
+                    test="count($helpersMatchingCurrentRecord) > 0">
+              <xsl:copy-of select="$helpersMatchingCurrentRecord"/>
               </xsl:when>
-              <xsl:when test="$helper[not(@displayIf)]">
-                <!-- The defautl helper is the one with no condition. -->
+            <xsl:otherwise>
+              <!-- The default helper is the one with no condition. -->
                 <xsl:copy-of select="$helper[not(@displayIf)]/*"/>
-              </xsl:when>
-              <xsl:otherwise>
               </xsl:otherwise>
             </xsl:choose>
-          </xsl:for-each>
         </helper>
       </xsl:when>
       
@@ -345,6 +350,14 @@
     <xsl:value-of select="gn-fn-metadata:getXPath($node, false())"/>
   </xsl:function>
 
+  <xsl:function name="gn-fn-metadata:positionOfType" as="xs:string">
+    <xsl:param name="node" as="node()"/>
+    <xsl:variable name="nodePosition" select="$node/position()" />
+    <xsl:variable name="allPrecedingSiblings" select="$node/preceding-sibling::*[name() = name($node)]" />
+    <!--<xsl:value-of select="count($node/../*[name = name($node) and position() &lt; $nodePosition]) + 1"/>-->
+    <xsl:value-of select="count($allPrecedingSiblings) + 1"/>
+  </xsl:function>
+
   <!-- 
     Return the xpath of a node.
   -->
@@ -362,7 +375,7 @@
     <xsl:variable name="xpath">
       <xsl:for-each select="$ancestors[position() != $untilIndex]">
         <xsl:value-of select="if ($withPosition) 
-          then concat($xpathSeparator, name(.), '[', position(), ']')
+          then concat($xpathSeparator, name(.), '[', gn-fn-metadata:positionOfType(.), ']')
           else concat($xpathSeparator, name(.))"/>
       </xsl:for-each>
     </xsl:variable>
@@ -371,7 +384,7 @@
       select="if ($isAttribute) 
       then concat($xpath, $xpathSeparator, '@', $elementName) 
       else if ($withPosition) 
-        then concat($xpath, $xpathSeparator, $elementName, '[', $node/position(), ']')
+        then concat($xpath, $xpathSeparator, $elementName, '[', gn-fn-metadata:positionOfType($node), ']')
         else concat($xpath, $xpathSeparator, $elementName)
       "
     />
